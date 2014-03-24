@@ -426,6 +426,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\rtc\rtc.c</FilePath>
             </File>
+            <File>
+              <FileName>hyperterminal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\hyperterminal\hyperterminal.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

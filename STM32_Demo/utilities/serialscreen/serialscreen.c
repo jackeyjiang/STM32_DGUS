@@ -19,7 +19,7 @@
 #define ADR 0x00
 
 /*寄存器空间定义*/
-#define Version 0x00	/*DGUS版本号*/
+#define Version 0x00  /*DGUS版本号*/
 #define LED_NOW 0X01  /*LED亮度控制寄存器，0x00~0x40*/
 #define BZ_IME  0X02  /*蜂鸣器鸣叫控制寄存器，单位10ms*/
 #define PIC_ID  0x03  /*2字节 读：当前显示页面ID 写：切换到指定页面(页面控制)*/
@@ -119,7 +119,7 @@ void PageChange(char page)
 void DispLeftMeal(void)
 {
 		uint8_t i;
-	    unsigned char *temp;
+	    unsigned char *temp;  //存放串口数据的临时指针
 		for(i=0;i<9;i++){		
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
 		temp[2]= 4;
@@ -134,7 +134,7 @@ void DispLeftMeal(void)
  /*******************************************************************************
  * 函数名称:DealSeriAceptData                                                                   
  * 描    述:处理从迪文屏幕返回的数据                                                        
- *                                                                               
+ *          如何实现三个连续的数据：0xA5 0XA5 0X5A                                                                           
  * 输    入:无                                                                   
  * 输    出:无                                                                     
  * 返    回:void                                                               
@@ -142,6 +142,56 @@ void DispLeftMeal(void)
  *******************************************************************************/ 	
 void DealSeriAceptData(void)
 {
-		
+	unsigned char i;
+	unsigned char temp,temp1,length,checkout;
+	char RegisterAdress=0;
+	int16_t VariableAdress=0;
+	unsigned char Rx3DataBuff[30];/*设置一个数组大小，?以免越界(out of bounds),?可变长度数组*/
+	char RegisterData[]={0};  //?
+	char VariableData[]={0};  //?
+	while(UART3_GetCharsInRxBuf()>0) //获取缓冲区大小，直至缓冲区无数据
+	{	
+		if(USART3_GetChar(&temp)==1)
+		{	
+			if(temp==FH0)	//匹配帧头第一个字节
+			{ 
+loop:			if(USART3_GetChar(&temp1)==1)  
+				{
+					if(temp1==FH1)  //匹配帧头第二个字节：
+					{
+						if(USART3_GetChar(&length)==1)  //获取命令字节长度
+						{
+							checkout =1;//置位开始读取命令与数据标志	
+						}	
+					}
+					else if(temp1==FH0)	goto loop; //如果持续出现0xA5则继续判断下一个字节是否为0x5A
+				}
+			}
+			
+		}
+	 if(checkout==1) //直到获取数据长度，然后读缓存
+	 {
+	 	checkout =0;  //复位标志
+		for(i=0;i<length;i++) USART3_GetChar(Rx3DataBuff+i);
+		if(Rx3DataBuff[0]==0x81)  //读寄存器返回命令
+		{
+			RegisterAdress =Rx3DataBuff[1];
+			for(i=0;i<(length-2);i++)
+			RegisterData[i]=Rx3DataBuff[2+i];
+			//加入修改相关数据的功能
+		}
+		else if(Rx3DataBuff[0]==0x83) //读数据存储器返回命令
+		{
+			myunion.adr[0] =Rx3DataBuff[1];
+			myunion.adr[1] =Rx3DataBuff[2];
+			VariableAdress =myunion.adress;
+			for(i=0;i<(length-3);i++)
+			VariableData[i]=Rx3DataBuff[3+i];
+			////加入修改变量地址数据的功能
+		}
+	  for(i=0;i<length;i++) Rx3DataBuff[i]=0x00; //如果跳出了这个程序就可以不要此段，如果没有加上就可以将缓冲区清零
+
+	}
+	}		
 }
 

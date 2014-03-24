@@ -97,7 +97,7 @@ char USART3_GetChar(unsigned char *Chr)
 	*Chr =RX3_BUFF[RX_IndexR];			//待读取指针读取一个字节作为返回值
 	if(++RX_IndexR>=RX3BUF_SIZE)    //读取指针递增，且判断是否下标越界
 	{
-		RX_IndexR =0;                 //如果越界则写指针归(循环队列)
+		RX_IndexR =0;                 //如果越界则写指针归0(循环队列)
 	}
 	//_EINT();                      //FIFO操作完毕，恢复中断允许
 	return(1); 											//返回成功标志	
@@ -111,7 +111,7 @@ char USART3_GetChar(unsigned char *Chr)
  * 返    回: FIFO内数据的字节数
  * 修改日期: 2014年3月13日 
 *******************************************************************************/
-unsigned int UART3_GetCharInRxBuf(void)
+unsigned int UART3_GetCharsInRxBuf(void)
 {
 	return(UART_InpLen);           //返回FIFO内数据的字节数
 }
@@ -125,7 +125,7 @@ unsigned int UART3_GetCharInRxBuf(void)
  * 返    回: 无
  * 修改日期: 2014年3月13日 
 *******************************************************************************/
-void UART3_ClrRxBuf()
+void UART3_ClrRxBuf(void)
 {
 	//_DINT();
 	UART_InpLen =0;
@@ -137,44 +137,24 @@ void UART3_ClrRxBuf()
 
 
  /*******************************************************************************
-* Function Name  : USART3_IRQHandler
-* Description    : 协议的验证
-* Input          : 正确或错误
-* Output         : void
-* Return         : void
+ * 函数名称: USART3_IRQHandler
+ * 描    述: 中断触发将数据压入缓存
+ *           简单的数据帧接受
+ * 输    入: 无
+ * 输    出: 无
+ * 返    回: 无
+ * 修改日期: 2014年3月13日 
 *******************************************************************************/
 void USART3_IRQHandler(void)
 {	
 	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET)//数据接收扫描
-	{	
+	{
+  		
 	UART_InpLen++;
-	RX3_BUFF[RX_IndexW]=U
-	
-//	#define  FH0  0x5A
-//	#define  FH1  0XA5
-//	#define  AckReadRsgister  0x81
-//	#define  AckReadData      0x83
-//	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET)//数据接收扫描
-//	{	
-//	    USART_ClearITPendingBit(USART3,USART_FLAG_RXNE);//清接收标志
-//		//
-//		if(LedRecv[7] == RxBuffer0 && 
-//		   LedRecv[6] == RxBuffer1 &&
-//		   LedRecv[5] == RxBuffer2 &&
-//		   LedRecv[3] == RxBuffer4 &&
-//		   LedRecv[2] == RxBuffer5 &&
-//		   LedRecv[1] == RxBuffer6 &&
-//		   LedRecv[0] == RxBuffer7 
-//		   )
-//		{
-//		 USART_ITConfig(USART3,USART_IT_RXNE,DISABLE);
-//		 LedCmd = 0x01;	
-//		 	
-////		 printf("LedRecv[4]=%x\r\n" ,LedRecv[4])	;	   
-//		}
-//		
-//		
-//	}  
-	
-
+	RX3_BUFF[RX_IndexW]=USART_ReceiveData(USART3);
+	if(++RX_IndexW >=RX3BUF_SIZE)
+	{
+		RX_IndexW =0;
+	}
+	}
 }

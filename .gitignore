@@ -19,3 +19,11 @@
    *.sct
    *.__i
    *.htm
+   *.plg
+   *.sct
+   *.tra
+   *.administrator
+   *.jackey
+   *.uvopt
+   *.uvproj
+   *.dep
