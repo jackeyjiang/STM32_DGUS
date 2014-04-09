@@ -8,7 +8,7 @@
    *.bak
    *.dep
    *.uvgui.*
-   JLinkLog.txt
+   *.txt
    *.o
    *.d
    *.crf
@@ -29,3 +29,5 @@
    *.dep
    *.crf
    *.i
+   *.ini
+   *.bak
