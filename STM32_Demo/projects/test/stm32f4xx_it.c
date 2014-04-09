@@ -136,8 +136,10 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
+extern int ntime;
 void SysTick_Handler(void)
 {
+	ntime--;	
 }
 
 /******************************************************************************/
@@ -153,9 +155,25 @@ void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
-/*void PPP_IRQHandler(void)
-{
-}*/
+   /*******************************************************************************
+ * 函数名称:TIM2_IRQHandler                                                                     
+ * 描    述:用于定时                                                                 
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+
+unsigned char TimerFlag = 0 ;
+void TIM2_IRQHandler(void)
+{	    
+  if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
+	{
+	   TIM_ClearITPendingBit(TIM2, TIM_IT_Update); 
+	   TimerFlag ++ ;
+  }
+}
 
 /**
   * @}

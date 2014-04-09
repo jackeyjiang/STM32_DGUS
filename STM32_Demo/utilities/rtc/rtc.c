@@ -1,6 +1,6 @@
 #include "rtc.h"
 #include "stdio.h"
-#include "printf.h"
+#include "printer.h"
 #include "delay.h"
 Struct_TD TimeDate ;
 static RTC_TimeTypeDef RTC_TimeStructure;
@@ -96,13 +96,6 @@ void RTC_TimeShow()
 	TimeDate.Date     =RTC_DateStructure.RTC_Date;
 	TimeDate.Month    =RTC_DateStructure.RTC_Month;
 	TimeDate.Year     =RTC_DateStructure.RTC_Year;
-//	printf("RTC_TimeStructure.RTC_Hours=%d\r\n",RTC_TimeStructure.RTC_Hours);
-//    printf("RTC_TimeStructure.RTC_Minutes=%d\r\n",RTC_TimeStructure.RTC_Minutes);
-//    printf("RTC_TimeStructure.RTC_Seconds=%d\r\n",RTC_TimeStructure.RTC_Seconds) ;
-//    printf("RTC_TimeStructure.RTC_WeekDay=%d\r\n",RTC_DateStructure.RTC_WeekDay);
-//	printf("RTC_TimeStructure.RTC_Date=%d\r\n",RTC_DateStructure.RTC_Date);
-//    printf("RTC_TimeStructure.RTC_Month=%d\r\n",RTC_DateStructure.RTC_Month);
-//    printf("RTC_TimeStructure.RTC_Year=%d\r\n",RTC_DateStructure.RTC_Year) ;
 }
 
 
@@ -118,23 +111,18 @@ void RTC_TimeShow()
  * 修改日期:2013年4月20日                                                                    
  *******************************************************************************/
  
-	u32 tmp_hh = 0x17, tmp_mm = 0x3b, tmp_ss = 0x01;
-	u32 tmp_yy = 0x09, tmp_m2 = 0x01, tmp_dd = 0x01,tmp_ww=0x01;
+  u32 tmp_hh = 0x17, tmp_mm = 0x3b, tmp_ss = 0x01;
+  u32 tmp_yy = 0x09, tmp_m2 = 0x01, tmp_dd = 0x01,tmp_ww=0x01;
 void RTC_TimeRegulate(void)
 {
-//  	printf("tmp_yy=%d\r\n",tmp_yy); 
-//	  printf("tmp_yy=%d\r\n",tmp_m2); 
-//	  printf("tmp_dd=%d\r\n",tmp_dd);
-	  printf("Set time\r\n");
+	  //printf("Set time\r\n");
 	  RTC_TimeStructure.RTC_H12= RTC_HourFormat_24;		
    	RTC_TimeStructure.RTC_Hours = tmp_hh;
     RTC_TimeStructure.RTC_Minutes = tmp_mm;
     RTC_TimeStructure.RTC_Seconds = tmp_ss;	
   	if(RTC_SetTime(RTC_Format_BIN, &RTC_TimeStructure)!=ERROR)
   	RTC_WriteBackupRegister(RTC_BKP_DR0,0x32F2);
-//  tmp_hh = 0x01;
-//  tmp_mm = 0x01;
-//  tmp_ss = 0x01;
+		
   	RTC_AlarmCmd(RTC_Alarm_A, DISABLE);
   	RTC_AlarmStructure.RTC_AlarmTime.RTC_H12 = RTC_H12_AM;
   	RTC_AlarmStructure.RTC_AlarmTime.RTC_Hours = tmp_hh;
@@ -162,9 +150,6 @@ void RTC_AlarmShow()
 {
 
   	RTC_GetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmStructure);
-	printf("RTC_TimeStructure.RTC_Hours=%d\r\n",RTC_TimeStructure.RTC_Hours);
-   	printf("RTC_TimeStructure.RTC_Minutes=%d\r\n",RTC_TimeStructure.RTC_Minutes);
-   	printf("RTC_TimeStructure.RTC_Seconds=%d\r\n",RTC_TimeStructure.RTC_Seconds) ;
 
 }
 

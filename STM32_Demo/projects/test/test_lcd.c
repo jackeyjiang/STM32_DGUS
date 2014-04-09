@@ -18,12 +18,21 @@
 
 int main(void)
 {
-	Uart3_Configuration();
-	
+	//Uart3_Configuration();
+	//delay_ms(2000);
+	//PageChange(Logo_interface);
+	//DispLeftMeal();
+	hardfawreInit();
+	delay_ms(2000);	
+	PageChange(Logo_interface);
+	delay_ms(2000);	
+	PageChange(Menu_interface);
+	DispLeftMeal();
 	while(1) 
-   		{
-					
-		} 
+  {	
+		delay_ms(500);
+		DealSeriAceptData();
+	} 
 }
 
 /**

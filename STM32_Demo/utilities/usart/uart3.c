@@ -17,7 +17,7 @@ void Uart3_Configuration(void)
   	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   	GPIO_Init(GPIOD, &GPIO_InitStructure);//初始化串口1的GPIO  
 	 
-  	USART_InitStructure.USART_BaudRate = 115200;//波特率设置
+  	USART_InitStructure.USART_BaudRate = 38400;//波特率设置
   	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//8位数据模式
   	USART_InitStructure.USART_StopBits = USART_StopBits_1;//1位停止位
   	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
@@ -37,6 +37,16 @@ void Uart3_Configuration(void)
 }
 
 void Uart3_Send(const uint8_t *p,uint8_t length)
+{
+   uint8_t i=0;
+	 for(i=0;i<length;i++)
+	 {	  
+	    USART3->DR = (u8) p[i];       
+    	while((USART3->SR&0X40)==0);//循环发送,直到发送完毕   
+    	    
+	}
+}
+void Uart3_Sent(const char *p,uint8_t length)
 {
    uint8_t i=0;
 	 for(i=0;i<length;i++)
@@ -75,7 +85,7 @@ void _LCD_Enable_RxInit(void)
 
 
 
-#define RX3BUF_SIZE 32 				 /*接收FIFO的最大容量*/  
+#define RX3BUF_SIZE 200				 /*接收FIFO的最大容量*/  
 unsigned char RX3_BUFF[RX3BUF_SIZE];	 /*接收FIFO缓冲区数组*/
 unsigned char UART_InpLen =0;        /*接收FIFO内待读取的字节数*/
 unsigned int  RX_IndexR =0;          /*接受FIFO的读指针*/

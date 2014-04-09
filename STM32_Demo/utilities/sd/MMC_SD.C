@@ -1,7 +1,7 @@
 #include "stm32f4xx.h"
 #include "mmc_sd.h"			   
 #include "sd.h"
-#include "printf.h"	
+#include "printer.h"	
 /////////////////////////////////////////////////////////
 					   					   
 u8  SD_Type=0;//SDø®µƒ¿‡–Õ 

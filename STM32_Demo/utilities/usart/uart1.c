@@ -1,12 +1,6 @@
 #include "stm32f4xx.h"
-#include "printf.h"
+#include "printer.h"
 #include "stdio.h"
-
-
-
-/***************
-这里用串口和蓝牙通信。用UART+DMA传送可以节约CPU资源。CPU可以在这个时候做其他的事情
-****************/
 
 void Uart1_Configuration(void)
 {

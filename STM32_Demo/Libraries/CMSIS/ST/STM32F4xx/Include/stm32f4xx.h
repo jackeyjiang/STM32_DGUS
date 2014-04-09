@@ -282,6 +282,8 @@ typedef __I uint32_t vuc32;  /*!< Read Only */
 typedef __I uint16_t vuc16;  /*!< Read Only */
 typedef __I uint8_t vuc8;   /*!< Read Only */
 
+typedef enum {false = 0, true= !false} bool;
+
 typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus;
 
 typedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;

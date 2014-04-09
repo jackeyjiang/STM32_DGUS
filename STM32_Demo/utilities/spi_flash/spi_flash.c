@@ -10,8 +10,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "spi_flash.h"
-#include "printf.h"
-#include "bsp.h"
+#include "MsgHandle.h"
+#include "printer.h"
 #include <stdio.h>
 
  typedef enum 
@@ -21,11 +21,6 @@
 } TestStatus;
 
  TestStatus Buffercmp(u8* pBuffer1, u8* pBuffer2, u16 BufferLength);
-
-
-
-
-
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -752,9 +747,6 @@ TestStatus Buffercmp(u8* pBuffer1, u8* pBuffer2, u16 BufferLength)
 
 void  WriteMeal(void)
 {
-  
- 
-
   unsigned char TempBuffer[FloorMealNum*6];
     /* Read data from SPI FLASH Sector */
   SPI_FLASH_SectorErase(SPI_FLASH_Sector0);

@@ -27,3 +27,5 @@
    *.uvopt
    *.uvproj
    *.dep
+   *.crf
+   *.i
