@@ -14,19 +14,19 @@
 void InitCoins(void)
 {									 
     GPIO_InitTypeDef GPIO_InitStructure;//GPIO初始化结构体
-	NVIC_InitTypeDef NVIC_InitStructure;//中断向量初始化结构体
-	EXTI_InitTypeDef EXTI_InitStructure;//外部中断初始化结构体
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);//外设时钟使能
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+	  NVIC_InitTypeDef NVIC_InitStructure;//中断向量初始化结构体
+	  EXTI_InitTypeDef EXTI_InitStructure;//外部中断初始化结构体
+	  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);//外设时钟使能
+	  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;	//脉冲输入脚
+	  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;	//脉冲输入脚
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
     GPIO_InitStructure.GPIO_PuPd = 	GPIO_PuPd_UP ;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOE, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;	//投币机电源控制脚
+	  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;	//投币机电源控制脚
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_InitStructure.GPIO_PuPd = 	GPIO_PuPd_DOWN ;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -76,9 +76,8 @@ void CloseCoinMachine(void)
 * Return         : void
 *******************************************************************************/
  void TIM5_Init(void)//TIM_Period为16位的数	   //设置1秒钟中断一次
-{
-  
-	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+{ 
+	  TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
   	NVIC_InitTypeDef  NVIC_InitStructure; 
 	 
   	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);//外设时钟使能  
@@ -93,7 +92,7 @@ void CloseCoinMachine(void)
   	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//递增计数方式
   	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
   	TIM_PrescalerConfig(TIM5, (4200-1), TIM_PSCReloadMode_Immediate);//设置16位时钟分频系数,立即重载模式
-	TIM_ClearFlag(TIM5, TIM_FLAG_Update);							    		/* 清除溢出中断标志 */
+	  TIM_ClearFlag(TIM5, TIM_FLAG_Update);							    		/* 清除溢出中断标志 */
   	TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);//计满中断
   	TIM_Cmd(TIM5, DISABLE);
 

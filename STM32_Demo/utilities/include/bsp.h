@@ -14,6 +14,7 @@
 //#include "timer6.h"				   //用于采集温度
 #include "delay.h"			       //延时
 #include "uart3.h"				   //串口屏接口
+#include "uart4.h"           //纸币机接口
 
 //#include "led.h"				   //led灯
 #include "coin.h"				   //硬币机

@@ -41,6 +41,7 @@
 .\debug\test_lcd.o: ..\..\..\utilities\include\serialscreen.h
 .\debug\test_lcd.o: ..\..\..\utilities\include\delay.h
 .\debug\test_lcd.o: ..\..\..\utilities\include\uart3.h
+.\debug\test_lcd.o: ..\..\..\utilities\include\uart4.h
 .\debug\test_lcd.o: ..\..\..\utilities\include\coin.h
 .\debug\test_lcd.o: C:\Keil\ARM\RV31\INC\stdio.h
 .\debug\test_lcd.o: C:\Keil\ARM\RV31\INC\string.h

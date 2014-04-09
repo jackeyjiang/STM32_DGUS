@@ -31,3 +31,4 @@
    *.i
    *.ini
    *.bak
+   *.STM32_Demo/project/test/mdk

@@ -41,6 +41,7 @@
 .\debug\bill.o: ..\..\..\utilities\include\serialscreen.h
 .\debug\bill.o: ..\..\..\utilities\include\delay.h
 .\debug\bill.o: ..\..\..\utilities\include\uart3.h
+.\debug\bill.o: ..\..\..\utilities\include\uart4.h
 .\debug\bill.o: ..\..\..\utilities\include\coin.h
 .\debug\bill.o: C:\Keil\ARM\RV31\INC\stdio.h
 .\debug\bill.o: C:\Keil\ARM\RV31\INC\string.h

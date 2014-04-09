@@ -18,10 +18,6 @@
 
 int main(void)
 {
-	//Uart3_Configuration();
-	//delay_ms(2000);
-	//PageChange(Logo_interface);
-	//DispLeftMeal();
 	hardfawreInit();
 	delay_ms(2000);	
 	PageChange(Logo_interface);

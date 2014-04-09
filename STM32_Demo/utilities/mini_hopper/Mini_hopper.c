@@ -31,7 +31,7 @@ void InitMiniGPIO(void)
    GPIO_Init(GPIOE,&GPIO_InitStructure);
 
     SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOE,EXTI_PinSource10);
-	EXTI_InitStructure.EXTI_Line=EXTI_Line10;
+	  EXTI_InitStructure.EXTI_Line=EXTI_Line10;
     EXTI_InitStructure.EXTI_Mode =EXTI_Mode_Interrupt;
     EXTI_InitStructure.EXTI_Trigger=EXTI_Trigger_Falling;
     EXTI_InitStructure.EXTI_LineCmd=ENABLE;
@@ -63,9 +63,9 @@ void InitMiniGPIO(void)
 * Output         : void
 * Return         : void
 *******************************************************************************/
-void OpenCoins(void)	//控制继电器提供220v
+void OpenCoins(void)	
 {
-      GPIO_SetBits(COIN_GPIO_PORT, COIN_PIN);
+  GPIO_SetBits(COIN_GPIO_PORT, COIN_PIN);
 }
 	
 /*******************************************************************************
@@ -75,9 +75,9 @@ void OpenCoins(void)	//控制继电器提供220v
 * Output         : void
 * Return         : void
 *******************************************************************************/
-void CloseCoins(void) //控制继电器断开220v电压
+void CloseCoins(void) 
 {										   
-    GPIO_ResetBits(COIN_GPIO_PORT, COIN_PIN); 
+  GPIO_ResetBits(COIN_GPIO_PORT, COIN_PIN); 
 }
 
  /*******************************************************************************
@@ -88,7 +88,7 @@ void CloseCoins(void) //控制继电器断开220v电压
 * Return         : 
 *******************************************************************************/
 uint8_t ErrorType;
-u8 SendOutN_Coin(int num)
+uint8_t SendOutN_Coin(int num)
 {
   int i;
   ErrorType = 0;
@@ -102,64 +102,12 @@ u8 SendOutN_Coin(int num)
 		  delay_ms(15);
 		  GPIO_ResetBits(GPIOE,GPIO_Pin_11);
 		  delay_ms(70);
-	   }
-	   else
-	   {
-	     ErrorType = 1;
-	     return num-i;
-	   }
+	  }
+	  else
+	  {
+	    ErrorType = 1;
+	    return num-i;
+	  }
   }
   return 0;
 }
-
-    /*******************************************************************************
-* Function Name  : StatisticalCoin
-* Description    : 统计硬币的个数
-* Input          : void
-* Output         : uint16_t
-* Return         : uint16_t
-*******************************************************************************/
-uint16_t   CoinNum;
-uint8_t    StatisticalCoinFlag ;
-uint8_t   StatisticalCoin(void)
-{
-   static uint8_t CurrentPoint=0;
-   switch(CurrentPoint)
-   { 
-   case 0 :	  
-              CoinNum = 0 ;
-              //OpenCoinMachine();
-			  OpenCoins();
-//			  printf("CoinNum = %d\r\n",CoinNum);
-//			  printf("nihao = %d\r\n",CoinNum);
-			  StatisticalCoinFlag = 1 ;
-	          CurrentPoint =1 ;
-			  WaitTime = 0 ;
-			  OpenTIM5(); 
-         	  break;
-   case 1 :	//显示钱数
-             // printf("nihao = %d\r\n",CoinNum);
-         	  DisplayMealPrice1(CoinNum);  
-		  	  if(WaitTime > 8)
-			  {
-			   CloseTIM5();
-			   CloseCoins();
-			   StatisticalCoinFlag =  0 ;			  
-			   CurrentPoint = 2 ;
-			   printf("CoinNum = %d\r\n",CoinNum);
-			  }
-		      break; 
-  case 2 :    
-              delay_ms(3000);		 //3s
-              PictrueDisplay(1);
-		      DisplayMealCount();
-			  CurrentPoint = 0 ;
-			 // Current = 0 ; 
-			  return 0 ;    
-//		      break;
- 
-  default :   break;
-	}
-              return 1 ;
- }
-

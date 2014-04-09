@@ -42,6 +42,7 @@
 .\debug\serialscreen.o: ..\..\..\utilities\include\MsgHandle.h
 .\debug\serialscreen.o: ..\..\..\utilities\include\vioce.h
 .\debug\serialscreen.o: ..\..\..\utilities\include\delay.h
+.\debug\serialscreen.o: ..\..\..\utilities\include\uart4.h
 .\debug\serialscreen.o: ..\..\..\utilities\include\coin.h
 .\debug\serialscreen.o: C:\Keil\ARM\RV31\INC\stdio.h
 .\debug\serialscreen.o: C:\Keil\ARM\RV31\INC\string.h

@@ -41,6 +41,7 @@
 .\debug\mini_hopper.o: ..\..\..\utilities\include\serialscreen.h
 .\debug\mini_hopper.o: ..\..\..\utilities\include\delay.h
 .\debug\mini_hopper.o: ..\..\..\utilities\include\uart3.h
+.\debug\mini_hopper.o: ..\..\..\utilities\include\uart4.h
 .\debug\mini_hopper.o: ..\..\..\utilities\include\coin.h
 .\debug\mini_hopper.o: C:\Keil\ARM\RV31\INC\stdio.h
 .\debug\mini_hopper.o: C:\Keil\ARM\RV31\INC\string.h

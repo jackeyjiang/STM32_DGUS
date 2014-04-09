@@ -41,6 +41,7 @@
 .\debug\msghandle.o: ..\..\..\utilities\include\vioce.h
 .\debug\msghandle.o: ..\..\..\utilities\include\delay.h
 .\debug\msghandle.o: ..\..\..\utilities\include\uart3.h
+.\debug\msghandle.o: ..\..\..\utilities\include\uart4.h
 .\debug\msghandle.o: ..\..\..\utilities\include\coin.h
 .\debug\msghandle.o: C:\Keil\ARM\RV31\INC\stdio.h
 .\debug\msghandle.o: C:\Keil\ARM\RV31\INC\string.h

@@ -62,8 +62,8 @@ void PrintTickFun(unsigned char *PrintTickFlag)
 		 TIM_Cmd(TIM4, DISABLE);
 	 	*PrintTickFlag = 0 ;
 		/*打印小票的函数*/
-		  SPRT(UserAct.MealID-1);
-	    TIM_Cmd(TIM4, ENABLE);
+		 SPRT(UserAct.MealID-1);
+	   TIM_Cmd(TIM4, ENABLE);
 	}	 
 	if(*PrintTickFlag == 0x02 )
 	{
@@ -86,129 +86,126 @@ uint8_t CurrentPoint = 0 ;
 uint8_t UserPayMoney =0 ;
 unsigned char  WaitPayMoney(void)
 {
-    uint8_t PicNumber;
+  uint8_t PicNumber;
 	uint8_t temp = 0 ;
 	uint8_t temp1 ;
 	unsigned char times = 10 ;
 	unsigned char Status = 0;
   switch(CurrentPoint)
 	{
-	case 0 :	//发送那个位置的餐
-	     {	  
-	       if(FindMeal(DefineMeal) == 0)
-	       {
-			     CurrentPoint = 1 ; 
-		     }
-		     else 
-		       return Status_Error	;
- 	     }
-          break ;
-	case 1 : 
-	         /*显示付款方式，现金，银行卡，深圳通*/
-			  if(WaitTime<56)
+	  case 0 :	//发送那个位置的餐
+	  {	  
+	    if(FindMeal(DefineMeal) == 0)
+	    {
+			  CurrentPoint = 1 ; 
+		  }
+		  else 
+		    return Status_Error;
+ 	  }break;    
+	  case 1 : 
+	  {
+	    /*显示付款方式，现金，银行卡，深圳通*/
+			if(WaitTime<56)
+			{
+			  CurrentPoint = 3;
+			  /*支付方式*/			 
+			  UserAct.PayType = '1';/* 现金支付*/
+			}
+		}break;    		
+	  case 2:  //设计接收什么样的钱
+	  {
+	    /*跳到选择付款方式界面*/
+			CurrentPoint = 3 ;
+		  UserAct.PayType = '1' ;/* 现金支付*/
+	  }break;	  
+		         
+	  case 3 :  //读钱
+		{			
+	    UserPayMoney = ReadBills();			 
+		  if(UserPayMoney !=0 )	   //表示收到了钱
+		  {
+			  UserAct.PayAlready  += UserPayMoney;
+			  UserAct.PayForBills += UserPayMoney;	
+			  UserPayMoney = 0 ;
+			  WaitTimeInit(&WaitTime);
+			  CurrentPoint = 5 ;
+		  }
+		}break;    					
+	  case 4 :   //读刷卡机的钱
+	  {
+	    if( temp != 0)  //刷卡
+	    { 
+			  IsCard =1 ;	  //表示的是刷卡啦。
+			  UserAct.PayAlready  += temp;
+			  UserAct.PayForCards += temp ;
+			  temp = 0 ;      
+        CurrentPoint = 5 ;
+ 	    }
+		  else
+		    CurrentPoint = 5;
+		}break;
+	  case 5 ://显示接收了多少硬币	
+	  {
+			CurrentPoint = 6;
+		}break;		    
+	  case 6 : //统计钱数
+    {			
+	    if(UserAct.PayAlready +UserAct.PayForCards>=UserAct.PayShould)		//投的钱大于等于要付的钱
+		  {     
+		    CurrentPoint = 9;	                //测试	 
+			  if(UserAct.PayAlready <UserAct.PayShould)
 			  {
 			    CurrentPoint = 3;
-			    /*支付方式*/			 
-			    UserAct.PayType = '1';/* 现金支付*/
-			  }break;    		
-	case 2 :  //设计接收什么样的钱
-	       /*跳到选择付款方式界面*/
-			    CurrentPoint = 3 ;
-				  UserAct.PayType = '1' ;/* 现金支付*/
-		   break;	         
-	case 3 :  //读钱	  
-	       	//UserPayMoney = ReadBills();			 
-		      if(UserPayMoney !=0 )	   //表示收到了钱
-		      {
-			      UserAct.PayAlready  += UserPayMoney;
-			      UserAct.PayForBills += UserPayMoney;	
-			   	  UserPayMoney = 0 ;
-			   	  WaitTimeInit(&WaitTime);
-//				    DisplayBills(UserAct.PayForBills);
-			      CurrentPoint = 5 ;
-		      }
-        break;					
-	case 4 :   //读刷卡机的钱
-	        if( temp != 0)  //刷卡
-	        { 
-			      IsCard =1 ;	  //表示的是刷卡啦。
-			      UserAct.PayAlready  += temp;
-			      UserAct.PayForCards += temp ;
-			      temp = 0 ;      
-//			      DisplayCards(UserAct.PayForCards);
-        	  CurrentPoint = 5 ;
- 	        }
-		      else
-		        CurrentPoint = 5;
-				break;
-	case 5 ://显示接收了多少硬币		    
-		       CurrentPoint = 6 ;
-	      break;
-	case 6 :  
-         /*禁止点击餐屏幕*/
-	       if(UserAct.PayAlready +UserAct.PayForCards>=UserAct.PayShould)		//投的钱大于等于要付的钱
-		     {     
-		       CurrentPoint = 9;	                //测试	 
-			     if(UserAct.PayAlready <UserAct.PayShould)
-			     {
-			       CurrentPoint = 3;
-			       return Status_Error ;
-			     } 
-//		 	   CloseTIM3();
-//         CloseMoneySystem();			 
-	   	  }
-	      else
-	      { 	 /*判断是否收到了钱的标志位*/
-//		      if(Rev_Money_Flag == 1)
-//			    {
-//			      Rev_Money_Flag =0 ;
-//			      /*把钱放进钱箱*/
-//		        Polls();/*保留最好一张钱*/
-//			    }
-		      CurrentPoint = 3; 
-	      } 	
-	     	  break;   				 
+			    return Status_Error ;
+			  }  
+	   	}
+	    else
+	    { 
+		    CurrentPoint = 3; 
+	    } 	
+		}break;   				 
     case 7 :  /*银行卡支付*/
-			  UserAct.PayType = '2' ;/* 现金支付*/
-			  temp1 = 0;
-			  //temp1 = GpbocDeduct(UserAct.PayShould *100);
-			  //temp1 = GpbocDeduct(1);
-			  if(temp1 == 1)
-			  {
-			    UserAct.PayForCards = UserAct.PayShould ;
-			    UserAct.PayAlready += UserAct.PayForCards ;
-			    CurrentPoint =6;
-			  }
-	          break;
-	 case 8 :/*深圳通支付*/
-	      UserAct.PayType = '3' ;/* 现金支付*/
-			  temp1 = 0;
-			  //temp1 = SztDeduct(UserAct.PayShould * 100);
-			  //temp1 = SztDeduct(1);
-			  if(temp1 == 1)
-			  {
-			    UserAct.PayForCards = UserAct.PayShould ;
-			    UserAct.PayAlready += UserAct.PayForCards ;
-			    CurrentPoint =6;
-			  }
-	          break;
+		{
+			UserAct.PayType = '2' ;/* 现金支付*/
+			temp1 = 0;
+			//temp1 = GpbocDeduct(UserAct.PayShould *100);
+			//temp1 = GpbocDeduct(1);
+			if(temp1 == 1)
+			{
+			  UserAct.PayForCards = UserAct.PayShould ;
+			  UserAct.PayAlready += UserAct.PayForCards ;
+			  CurrentPoint =6;
+			}
+	  }break;
+	  case 8 :/*深圳通支付*/
+	  {
+	    UserAct.PayType = '3' ;/* 现金支付*/
+			temp1 = 0;
+			//temp1 = SztDeduct(UserAct.PayShould * 100);
+			//temp1 = SztDeduct(1);
+			if(temp1 == 1)
+			{
+			  UserAct.PayForCards = UserAct.PayShould ;
+        UserAct.PayAlready += UserAct.PayForCards ;
+			  CurrentPoint =6;
+			}
+		}break;
 	  case 9 :  //关闭所有的收银系统
-			  UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
-			  Print_Struct.P_ID        = UserAct.MealID ;
-			  Print_Struct.P_paymoney  = UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
-			  Print_Struct.P_PayShould = UserAct.PayShould ;
-			  Print_Struct.P_MoneyBack =	UserAct.MoneyBack ;
-	
-			 WaitTime  = 0;
-			 //DisplayWaitTime1(WaitTime);//等待时间
-			 /*倒计时*/
-			 TIM_Cmd(TIM4, ENABLE);
-			 if(UserAct.MoneyBack > 0)
-			 {
+		{
+			UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
+			Print_Struct.P_ID        = UserAct.MealID ;
+			Print_Struct.P_paymoney  = UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
+			Print_Struct.P_PayShould = UserAct.PayShould ;
+			Print_Struct.P_MoneyBack =	UserAct.MoneyBack ;
+			WaitTime  = 0;
+			TIM_Cmd(TIM4, ENABLE);
+			if(UserAct.MoneyBack > 0)
+			{
 			   //OpenCoins();    //找币		
-			 }
-			 CurrentPoint = 0 ;
+			}
+			CurrentPoint = 0 ;
 	       return  Status_OK;
+		}break;
 	  default :break;
   }
   return  Status_Action;

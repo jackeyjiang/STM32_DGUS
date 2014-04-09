@@ -119,8 +119,8 @@ void TextDisp(uint16_t meal_name)
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
 		temp[2]= 13; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
 		myunion.adress= column1st_name; 
-		temp[4]= myunion.adr[0];
-		temp[5]= myunion.adr[1];
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
 		switch(meal_name)
 		{
 			case column1st_name:strcat(temp,meat_name);break;	
@@ -681,7 +681,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 		          PassWordLen++;
 			        DisplayPassWord(PassWordLen);//显示一个字符串******
 		        }
-	        }					
+	        }break;					
 					case 0x10:/*退格键*/
 					{
 	          if(PassWordLen > 0)
@@ -714,7 +714,8 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 		        PageChange(Menu_interface);
 						DisplayPassWord(0);//清楚密码显示
 		        PassWordLen = 0;	
-					}break;	
+					}break;
+          default:break;					
         } 					
 			}
 			case admin_set:

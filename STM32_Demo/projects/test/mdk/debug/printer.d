@@ -41,6 +41,7 @@
 .\debug\printer.o: ..\..\..\utilities\include\serialscreen.h
 .\debug\printer.o: ..\..\..\utilities\include\delay.h
 .\debug\printer.o: ..\..\..\utilities\include\uart3.h
+.\debug\printer.o: ..\..\..\utilities\include\uart4.h
 .\debug\printer.o: ..\..\..\utilities\include\coin.h
 .\debug\printer.o: C:\Keil\ARM\RV31\INC\stdio.h
 .\debug\printer.o: C:\Keil\ARM\RV31\INC\string.h

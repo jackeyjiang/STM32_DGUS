@@ -2,103 +2,6 @@
 #include "bsp.h"
 
 unsigned char CmdNum=0;
-
-void InitBills(void)
-{
-  	GPIO_InitTypeDef GPIO_InitStructure;
-  	USART_InitTypeDef USART_InitStructure;
-  	NVIC_InitTypeDef NVIC_InitStructure;
-  	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);//外设时钟使能 
-  	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
-  	GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_UART4);//连接复用引脚  
-  	GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_UART4);
-  	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
-  	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  	GPIO_Init(GPIOC, &GPIO_InitStructure);//初始化串口1的GPIO   
-  	USART_InitStructure.USART_BaudRate = 9600;//波特率设置
-  	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//8位数据模式
-  	USART_InitStructure.USART_StopBits = USART_StopBits_1;//1位停止位
-  	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
-  	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件溢出控制
-  	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;//双工模式
-	  USART_ITConfig(UART4,USART_IT_RXNE,ENABLE);
-  	USART_Init(UART4, &USART_InitStructure);
-  	USART_Cmd(UART4, ENABLE);
-  	USART_ClearFlag(UART4, USART_FLAG_TC);//清传送完成标志
-	  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); //嵌套优先级分组为1
-	  NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;//嵌套通道为USART6_IRQn
-	  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;//抢占优先级为0
-	  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;//响应优先级为0
-	  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //通道中断使能 
-	  NVIC_Init(&NVIC_InitStructure);
-}
-
-/*******************************************************************************
-* Function Name  : Uart4_Bill
-* Description    : 串口4发送函数
-* Input          : 数组以及大小
-* Output         : void
-* Return         : void
-*******************************************************************************/
-void Uart4Send(uint8_t *p,uint8_t sizeData)
-{
-  uint8_t i=0;		   
-	for(i=0;i<sizeData;i++)
-	{
-	  printf("p[%d]=%x\r\n",i,p[i]);
-    USART_SendData(UART4, p[i]);//串口1发送一个字符
-		while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET);//等待发送完成
- 	}
-}
-
-void Uart4_Bill(uint8_t *p,uint8_t sizeData)
-{
-  uint8_t i;  
-	for(i=0; i<sizeData; i++)
-	{									
-    USART_SendData(UART4, p[i]);//串口1发送一个字符
-		while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET);//等待发送完成
- 	}
-}
-
-    /*******************************************************************************
-* Function Name  : GetCrc16
-* Description    : 进行CRC校验
-* Input          : CRC
-* Output         : 数组以及大小
-* Return         : CRC
-*******************************************************************************/
-static unsigned int GetCrc16Fun(unsigned char *bufData,unsigned int sizeData)
- {
-  	 unsigned int Crc ,i = 0;
-	 unsigned char j = 0;
-	 if(sizeData == 0)
-	 return 1 ;
-
-	 Crc = 0 ;
-	 for(i=0;i<sizeData;i++)
-	 {
-	   Crc ^= bufData[i];
-	   for(j=0;j<8;j++)
-	   {
-	    if(Crc&0x0001)
-		{ 
-
-		Crc >>=1 ;
-		Crc ^=0x08408 ;
-
-		}
-		else 
-		Crc >>=1 ;
-
-	   }
-	 } 
-	 return Crc ; 
- }
- 
  /*******************************************************************************
  * 函数名称:SetBills                                                                     
  * 描    述:设置接受10  20 5  的钱                                                                  
@@ -130,16 +33,174 @@ void DisableBills(void)
 	}
     CmdNum=2;	
 }
+/*******************************************************************************/
+#define Normal 1 //纸币机初始化成功	30 06 09
+#define Abnormal 2  //纸币机处于关闭状态 30 09
+#define Erro 3     //纸币机返回的是0xff
+#define BillInEscrow 4 //钱在暂存器中
 
+#define		BillStacked  1
+#define		EscrowRequest  2
+#define		BillReturned  3
+#define		DisabledBillRejected  4	
+
+char BillStatus= 0; //纸币机状态
+char BillRunStatus;	  //纸币机运行状态
+extern unsigned char BillDataBuffer[20];
+uint8_t  ReadBill(void)
+{ 
+  uint8_t	BillValue=0;
+  if(BillDataBuffer[0]==0x30) //money form cash macthin 
+	{
+	   if(BillDataBuffer[1]&0x80)	//cash was valuable
+		{
+			switch(BillDataBuffer[1]&0x70)    //cash matchine status
+			{
+				case 0x00: BillStatus =BillStacked;break;
+				case 0x10: BillStatus =EscrowRequest;break;
+				case 0x20: BillStatus =BillReturned;break;
+				case 0x40: BillStatus =DisabledBillRejected;break;
+				default:break ;
+				//return BillValue; //
+			}
+			if(BillStatus ==BillStacked) //正常接受纸币
+			{
+			   switch(BillDataBuffer[1]&0x0F)
+			   {
+				//case 0x00: BillValue = 1;break; /*不收1元*/
+				   case 0x01: BillValue = 5;break;
+				   case 0x02: BillValue = 10;break;
+				   case 0x03: BillValue = 20;break;
+				   default:break ;
+			  }
+				memset(BillDataBuffer,0,sizeof(BillDataBuffer));
+			  return BillValue;
+		    }
+			if(BillStatus ==EscrowRequest)
+			{
+ 			   switch(BillDataBuffer[1]&0x0F)
+				{
+				   case 0x00: BillValue = 1;break;
+				   case 0x01: BillValue = 5;break;
+				   case 0x02: BillValue = 10;break;
+				   case 0x03: BillValue = 20;break;
+				   default:break ;
+				}
+			/*在暂存器中的钱币*/
+			BillRunStatus =BillInEscrow;            
+      }
+	  }
+	  else if(BillDataBuffer[1]==0x06)
+	  {			
+		   if(BillDataBuffer[2]==0x09) 
+       BillRunStatus = Normal;
+	  }
+    else if(BillDataBuffer[1]==0x09)
+	  {
+		  BillRunStatus = Abnormal;
+	  }
+		return 0 ;
+	}
+	else if(BillDataBuffer[0]==0xFF)
+	{
+		if(CmdNum==1)SetBills(); 
+		if(CmdNum==2)DisableBills();
+    delay_ms(100);	
+  }
+	 memset(BillDataBuffer,0,sizeof(BillDataBuffer));
+   return 0 ;	
+}
+
+
+   /*******************************************************************************
+ * 函数名称:Polls                                                                     
+ * 描    述:把钱放进钱箱                                                                  
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日  
+ *******************************************************************************/
+
+void  Polls(void)
+{
+//      char i;
+//      char Polls_Cmd[2]={0x34,0x01};	
+// 	 for(i = 0; i < 2; i++)
+// 	 {
+// 	    while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET);//等待发送完成
+//         USART_SendData(UART4, Polls_Cmd[i]);//串口1发送一个字符
+// 	 }
+}
+
+    /*******************************************************************************
+ * 函数名称:Polls                                                                     
+ * 描    述:把钱退回给用户                                                                  
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日  
+ *******************************************************************************/
+
+void  BackPolls(void)
+{
+//      char i;
+//      char Polls_Cmd[2]={0x34,0x00};	
+// 	 for(i = 0; i < 2; i++)
+// 	 {
+// 	    while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET);//等待发送完成
+//         USART_SendData(UART4, Polls_Cmd[i]);//串口1发送一个字符
+// 	 }
+}
+  /*******************************************************************************
+ * 函数名称:ReadBills                                                                     
+ * 描    述:设置接受10  20 5  的钱                                                                  
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日  
+ *******************************************************************************/
+unsigned char  Rev_Money_Flag ; 
+uint8_t  ReadBills(void)
+{
+  uint8_t CurrentPoint = 0;
+ 	CurrentPoint=ReadBill();
+/*如果能锁存最好，因为是公共数据，但是如果只在中断进行改变，不影响数
+  据的完整性，中断会打断程序的运行，不会同时操作 */	                          
+	switch(CurrentPoint)
+	{
+	   case 0:
+	           return 0 ;
+	   		 
+	   case 1  :	  //1元
+	   case 5  : 	  //5元
+	   case 10 :      //10元
+	   case 20 :      //20元		
+	              //Polls(); //进钱箱
+		  Rev_Money_Flag = 1 ;
+	    return(CurrentPoint);
+  	  default : break;
+	}
+   return 0 ;
+}
+
+  /*******************************************************************************
+ * 函数名称:StringToHexGroup                                                                    
+ * 描    述:将字符数组转换为hex数组,功能有所修改                                                                  
+ *                                                                               
+ * 输    入:                                                                   
+ * 输    出:bool                                                                      
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日  
+ *******************************************************************************/
 bool StringToHexGroup(unsigned char *OutHexBuffer, char *InStrBuffer, unsigned int strLength)
 {
   unsigned int i, k=0;
   unsigned char HByte,LByte;
 	if(InStrBuffer[strLength-1]!=0x0A)
 		return false;
-//   if(strLength%2 !=0) //判断末尾是否为LF,CR 无就return
-//     return FALSE;
- 
   for(i=0; i<strLength; i=i+3)
   {
     if(InStrBuffer[i]>='0' && InStrBuffer[i]<='9')
@@ -179,7 +240,6 @@ bool StringToHexGroup(unsigned char *OutHexBuffer, char *InStrBuffer, unsigned i
 			OutHexBuffer[k++]=HByte |LByte;
 			return true ;
 		}
-		
  }
  return true;
 }
