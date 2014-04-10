@@ -17,7 +17,6 @@
 ".\debug\coin.o"
 ".\debug\bill.o"
 ".\debug\uart4.o"
-".\debug\mini_hopper.o"
 ".\debug\diskio.o"
 ".\debug\ff.o"
 ".\debug\ccsbcs.o"

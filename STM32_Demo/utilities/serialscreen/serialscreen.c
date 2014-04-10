@@ -94,13 +94,13 @@ void VariableChage(uint16_t Variable,uint16_t Value)
 {
 	  unsigned char temp[8]={0};  //存放串口数据的临时指针
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
-		temp[2]= 4;
+		temp[2]= 5;
 		myunion.adress= Variable; 
-		temp[4]= myunion.adr[0];
-		temp[5]= myunion.adr[1];
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
 		myunion.adress= Value; 
-		temp[6]= myunion.adr[0];
-		temp[7]= myunion.adr[1];		
+		temp[6]= myunion.adr[1];
+		temp[7]= myunion.adr[0];		
 		Uart3_Send(temp,sizeof(temp));	
 }							
 
@@ -146,7 +146,7 @@ void DisplayPassWord(char PassWordLen)
 	char i=0;
 	char temp[20]={0};  //存放串口数据的临时数组
 	memcpy(temp,VariableWrite,sizeof(VariableWrite));
-	temp[2]= PassWordLen+ 3; //  0x83 00 00 ******
+	temp[2]= PassWordLen+ 4; //  0x83 00 00 ****** 如果无密码显示则清空数据
 	myunion.adress= password_show; 
   temp[4]= myunion.adr[1];
   temp[5]= myunion.adr[0];
@@ -188,10 +188,10 @@ void DispLeftMeal(void)
 	  unsigned char temp[8]={0};  //存放串口数据的临时指针
 		for(i=0;i<4;i++){		
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
-		temp[2]= 4;
+		temp[2]= 5;
 		myunion.adress= meat+i; //在基地址推移位置
-		temp[4]= myunion.adr[0];
-		temp[5]= myunion.adr[1];
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
 		//将数据进行填充，需要用到flash
 		temp[7]= DefineMeal[i].MealCount;
 		Uart3_Send(temp,sizeof(temp));	
@@ -650,9 +650,11 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 			case bill_print:
 			{
 				switch(VariableData[1])
+				{
 					case 0x01:   /*打印小票*/
 					case 0x02:   /*不打印小票*/
-					  default:break;
+					default:break;
+				}
 			}break;
 			case password:
 			{
@@ -706,6 +708,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 		           /*进入 管理员界面*/
 		           PageChange(MealSet_interface);
 							 DisplayPassWord(0);//清楚密码显示
+							 InitSetting();//清空第一二三列的数据 //对放餐的数据进行初始化
 			         PassWordLen = 0;
 		        }
 	        }break;						
@@ -732,7 +735,6 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 			{
 				//VariableData[1]; 需要对当前餐号进行记录,然后再处理
 			  CurFloor.MealID= VariableData[1];	
-        InitSetting();//清空第一二三列的数据 
 			}break;
       case floor_num:
 			{
@@ -802,17 +804,25 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							}
 							 /*统计各个餐的数目的总和*/
 							for(i = 0; i < FloorMealNum; i++)
-							{														 /*餐的ID是从1-9*/
+							{														 /*餐的ID是从1-4*/
 								if(FloorMealMessageWriteToFlash.FloorMeal[i].MealID == j + 1)
 								{
 									DefineMeal[j].MealCount      = DefineMeal[j].MealCount + FloorMealMessageWriteToFlash.FloorMeal[i].MealCount;
 									DefineMeal[j].Position[i][0] = FloorMealMessageWriteToFlash.FloorMeal[i].FCount;
 									DefineMeal[j].Position[i][1] = FloorMealMessageWriteToFlash.FloorMeal[i].SCount;
 									DefineMeal[j].Position[i][2] = FloorMealMessageWriteToFlash.FloorMeal[i].TCount;
+									//printf("DefineMeal[%d].Position[%d][0]=%d\r\n",j,i,DefineMeal[j].Position[i][0]);
 								}
 							}
 						}
-						WriteMeal();
+				    for(i=0;i<90;i++)
+			      {
+			      //printf("FloorMealMessageWriteToFlash.FlashBuffer[%d]=%d\r\n",i,FloorMealMessageWriteToFlash.FlashBuffer[i]);
+			      }
+						StatisticsTotal(); //先统计数目在写入
+						WriteMeal(); //写数据到flash
+						DispLeftMeal(); //更新餐品数据
+						//printf("DefineMeal[%d].MealCount=%d\r\n",i,DefineMeal[i].MealCount);
 					}break;
 					case 0x04:  /*取消*/
 					{
@@ -823,6 +833,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						CurFloor.MealCount = 0;
 						CurFloor.FloorNum  = 0;	
 						PageChange(Menu_interface);
+						DispLeftMeal();//改变剩余餐品数量显示
 					}break;
 					case 0x05:  /*返回*/
 					{

@@ -320,7 +320,7 @@ uint8_t WaitMeal(void)
 //				}   
 			break;
 	 case 5 :  /*显示金额*/	
-	      WriteMeal();   /*保存当前的份数*/
+	      //WriteMeal();   /*保存当前的份数*/
 				//PlayMusic(VOICE_4);	    //4.欢迎下次光临
 				CurrentPointer = 6 ;			   
 			break;
@@ -433,7 +433,7 @@ void hardfawreInit(void)
 //	 delay_ms(30000);
 //	 LED_Init();
 //     InitBills();               //纸币机初始化 
-// 	 Uart1_Configuration();	    //串口1初始化
+	 Uart1_Configuration();	    //串口1初始化
 	 Uart3_Configuration();	    // 串口屏初始化
 //	 Uart2_Configuration();	    //深圳通、银联卡串口
 //	 Uart5_Configuration();		//网络串口初始化
@@ -450,18 +450,20 @@ void hardfawreInit(void)
 ////	 CAN_InitConfig();	        //can初始化
 // 	 PictrueDisplay(0);        //显示LOGO
 //	 InitVoice()  ;             //语音初始化
-	 MyRTC_Init();              //RTC初始化
+//	 MyRTC_Init();              //RTC初始化
 	 SPI_FLASH_Init();          //Flash初始化
+	 SPI_FLASH_Init();
+	 
+   SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);	 
 //	 LED_Init();
-  // SPI_FLASH_SectorErase(SPI_FLASH_Sector0);
-	 ReadMeal();
-	 for(i=0;i<90;i++)
-	 {
-	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
-	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
-	 }
-	 WriteMeal();
-	 StatisticsTotal();   	
+//	 ReadMeal();
+//	 for(i=0;i<90;i++)
+//	 {
+//	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
+//	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
+//	 }
+	 WriteMeal();  //
+	 StatisticsTotal(); //后面的程序需要使用  	
 // PictrueDisplay(HOME_PAGE);	       //显示菜单页面
 // DS18B20_DEMO();
 // TemperatureDisplay(Temperature);  //显示温度	  

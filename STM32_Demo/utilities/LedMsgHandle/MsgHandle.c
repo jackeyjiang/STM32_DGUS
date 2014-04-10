@@ -26,7 +26,7 @@ uint8_t  WaitTime=0;
 		    DefineMeal[j].MealCount = 0;
 		    for(i = 0; i < 15; i++)
 		    {
-		        if(FloorMealMessageWriteToFlash.FloorMeal[i].MealID == j + 1)	 /*前面那个表示的是卸载flash里面的ID 与外面的进行比较*/
+		      if(FloorMealMessageWriteToFlash.FloorMeal[i].MealID == j + 1)	 /*前面那个表示的是卸载flash里面的ID 与外面的进行比较*/
 			    {
 			      DefineMeal[j].MealCount      = DefineMeal[j].MealCount + FloorMealMessageWriteToFlash.FloorMeal[i].MealCount;
 				    DefineMeal[j].Position[i][0] = FloorMealMessageWriteToFlash.FloorMeal[i].FCount;
@@ -59,12 +59,14 @@ void InitSetting(void)
 		  CurFloor.MealCount = 0;
 		  CurFloor.FCount    = 0;
 		  CurFloor.SCount    = 0;
-		  CurFloor.TCount    = 0;
+		  CurFloor.TCount    = 0;			
 	  }
+		CurFloor.FloorNum  = 1; 
 		VariableChage(row_1st,CurFloor.FCount);
 		VariableChage(row_2nd,CurFloor.SCount);
 		VariableChage(row_3rd,CurFloor.TCount);
-    
+		VariableChage(floor_num,CurFloor.FloorNum);
+		//之后在加入放餐设置
 }
  /*******************************************************************************
  * 函数名称:MealArr                                                                     
@@ -188,5 +190,5 @@ void MealArr(unsigned char index)
 				CustomerSel.DealBalance[4]      =       CustomerSel.DealBalance[4]/10 *16 +CustomerSel.DealBalance[4]%10 ;
 				CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
 				CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;
-
 }
+

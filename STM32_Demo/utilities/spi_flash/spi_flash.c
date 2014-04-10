@@ -12,6 +12,7 @@
 #include "spi_flash.h"
 #include "MsgHandle.h"
 #include "printer.h"
+#include "delay.h"
 #include <stdio.h>
 
  typedef enum 
@@ -745,45 +746,46 @@ TestStatus Buffercmp(u8* pBuffer1, u8* pBuffer2, u16 BufferLength)
 
 */
 
-void  WriteMeal(void)
+void  WriteMeal(void)  //读取错误
 {
-  unsigned char TempBuffer[FloorMealNum*6];
-    /* Read data from SPI FLASH Sector */
-  SPI_FLASH_SectorErase(SPI_FLASH_Sector0);
+	
+   __IO uint32_t FlashID = 0;
+   __IO uint32_t DeviceID = 0;
+	unsigned char TempBuffer[FloorMealNum*6]={0};
+  /* Initialize the SPI FLASH driver */
+    SPI_FLASH_Init();
+	  SPI_FLASH_Init();
+	  //SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+    /* Perform a write in the Flash followed by a read of the written data */
+    /* Erase SPI FLASH Sector to write on */
+	    DeviceID = SPI_FLASH_ReadDeviceID();
+    /* Get SPI Flash ID */
+     FlashID = SPI_FLASH_ReadID(); 
+    /* Write Tx_Buffer data to SPI FLASH memory */
+	  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);/*参看原始数据*/
+	
+	  SPI_FLASH_SectorErase(FLASH_SectorToErase);
+    SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
     /* Read data from SPI FLASH memory */
-  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0,sizeof(TempBuffer));
-  /* Write Tx_Buffer data to SPI FLASH memory */
-  SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
-  /* Read data from SPI FLASH memory */
-  SPI_FLASH_BufferRead(TempBuffer,  SPI_FLASH_Sector0 , FloorMealNum*6);
-  /* Check the corectness of written dada */
-  TransferStatus1 = Buffercmp(TempBuffer, FloorMealMessageWriteToFlash.FlashBuffer, FloorMealNum*6);
-  
-  if(TransferStatus1 == FAILED )
-  {
-	  SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
-    /* Read data from SPI FLASH memory */
-      SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
-   /* Check the corectness of written dada */
-      TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
-  }
+	  delay_ms(10); //延时测试
+    SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
 
+    /* Check the corectness of written dada */
+    TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
+//		if(TransferStatus1 == FAILED )
+//    {
+//	    SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+//      /* Read data from SPI FLASH memory */
+//      SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+//      /* Check the corectness of written dada */
+//      TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
+//    }
 }
-
 
 void ReadMeal(void)
 {
-  SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
+    SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
 }
-
-
-
-
-
-
-
-
-
 
 
 
