@@ -19,17 +19,15 @@
 int main(void)
 {
 	hardfawreInit();
-	delay_ms(2000);	
+	PageChange(Logo_interface);
 	PageChange(Logo_interface);
 	delay_ms(2000);
-  //SPI_FLASH_TEST();	
 	PageChange(Menu_interface);
 	DispLeftMeal();
 	while(1) 
   {		
-		delay_ms(100);
+		delay_ms(200);
 		DealSeriAceptData();
-		//DispLeftMeal();
 	} 
 }
 

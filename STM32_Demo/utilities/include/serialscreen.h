@@ -18,7 +18,7 @@
 #define TicketPrint_interface 0x13 /*小票打印界面*/
 #define Password_interface    0x15 /*密码输入界面*/
 #define MealSet_interface     0x17 /*放餐设置界面*/
-#define MealInput_interface   0x18 /*放餐数量选择*/
+#define MealInput_interface   0x19 /*放餐数量选择*/
 #define TemperatureSet_interface 0x1B  /*温度设置界面*/
 
 /*寄存器空间定义*/
@@ -83,18 +83,18 @@
 #define  mealout_already  0x002B  //餐品已出餐总数
 
 /*购物车显示*/
-#define column1st_name  0x0040  //第一栏商品名
-#define column1st_count 0x0041  //第一栏餐品数量
-#define column1st_cost  0x0042  //第一栏商品总价
-#define column2nd_name  0x0043  //第二栏商品名
-#define column2nd_count 0x0044  //第二栏餐品数量
-#define column2nd_cost  0x0045  //第二栏商品总价
-#define column3rd_name  0x0046  //第三栏商品名
-#define column3rd_count 0x0047  //第三栏餐品数量
-#define column3rd_cost  0x0048  //第三栏商品总价
-#define column4th_name  0x0049  //第四栏商品名
-#define column4th_count 0x004A  //第四栏餐品数量
-#define column4th_cost  0x004B  //第四栏商品总价
+#define column1st_name  0x4100  //第一栏商品名
+#define column1st_count 0x0042  //第一栏餐品数量
+#define column1st_cost  0x0043  //第一栏商品总价
+#define column2nd_name  0x4200  //第二栏商品名
+#define column2nd_count 0x0045  //第二栏餐品数量
+#define column2nd_cost  0x0046  //第二栏商品总价
+#define column3rd_name  0x4300  //第三栏商品名
+#define column3rd_count 0x0048  //第三栏餐品数量
+#define column3rd_cost  0x0049  //第三栏商品总价
+#define column4th_name  0x4400  //第四栏商品名
+#define column4th_count 0x004B  //第四栏餐品数量
+#define column4th_cost  0x004C  //第四栏商品总价
 
 #define mealtotoal_cost 0x004F  //总价
 
@@ -128,6 +128,6 @@
 void PageChange(char page);
 void DispLeftMeal(void);
 void DealSeriAceptData(void);
-void VariableChage(uint16_t Variable,uint16_t Value);		
+void VariableChage(uint16_t Variable,uint16_t Value);	
 
 #endif

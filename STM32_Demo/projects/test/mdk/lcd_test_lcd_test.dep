@@ -1,5 +1,5 @@
 Dependencies for Project 'lcd_test', Target 'lcd_test': (DO NOT MODIFY !)
-F (..\test_lcd.c)(0x534692F6)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\test_lcd.o --omf_browse .\debug\test_lcd.crf --depend .\debug\test_lcd.d)
+F (..\test_lcd.c)(0x5347BA27)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\test_lcd.o --omf_browse .\debug\test_lcd.crf --depend .\debug\test_lcd.d)
 I (..\..\..\utilities\include\bsp.h)(0x53455F23)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -38,7 +38,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
 I (..\..\..\utilities\include\MsgHandle.h)(0x5344F922)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\vioce.h)(0x5264FC3A)
-I (..\..\..\utilities\include\serialscreen.h)(0x5344FA87)
+I (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)
 I (..\..\..\utilities\include\delay.h)(0x525F4176)
 I (..\..\..\utilities\include\uart3.h)(0x5343F185)
 I (..\..\..\utilities\include\uart4.h)(0x53455E0B)
@@ -93,7 +93,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x519EEB80
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x4EBDD424)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x4EBDD424)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
-F (..\..\..\utilities\serialscreen\serialscreen.c)(0x534692F6)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\serialscreen.o --omf_browse .\debug\serialscreen.crf --depend .\debug\serialscreen.d)
+F (..\..\..\utilities\serialscreen\serialscreen.c)(0x5347BE73)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\serialscreen.o --omf_browse .\debug\serialscreen.crf --depend .\debug\serialscreen.d)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x5284661A)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -129,7 +129,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x519EEB80
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x4EBDD424)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x4EBDD424)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
-I (..\..\..\utilities\include\serialscreen.h)(0x5344FA87)
+I (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\uart3.h)(0x5343F185)
 I (..\..\..\utilities\include\bsp.h)(0x53455F23)
@@ -303,7 +303,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
 I (..\..\..\utilities\include\MsgHandle.h)(0x5344F922)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\vioce.h)(0x5264FC3A)
-I (..\..\..\utilities\include\serialscreen.h)(0x5344FA87)
+I (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)
 I (..\..\..\utilities\include\delay.h)(0x525F4176)
 I (..\..\..\utilities\include\uart3.h)(0x5343F185)
 I (..\..\..\utilities\include\uart4.h)(0x53455E0B)
@@ -477,7 +477,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x4EBDD42
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
 I (..\..\..\utilities\include\MsgHandle.h)(0x5344F922)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\serialscreen.h)(0x5344FA87)
+I (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)
 I (..\..\..\utilities\include\bsp.h)(0x53455F23)
 I (..\..\..\utilities\include\vioce.h)(0x5264FC3A)
 I (..\..\..\utilities\include\delay.h)(0x525F4176)
@@ -579,7 +579,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
 I (..\..\..\utilities\include\MsgHandle.h)(0x5344F922)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\vioce.h)(0x5264FC3A)
-I (..\..\..\utilities\include\serialscreen.h)(0x5344FA87)
+I (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)
 I (..\..\..\utilities\include\delay.h)(0x525F4176)
 I (..\..\..\utilities\include\uart3.h)(0x5343F185)
 I (..\..\..\utilities\include\uart4.h)(0x53455E0B)
@@ -676,7 +676,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
 I (..\..\..\utilities\include\MsgHandle.h)(0x5344F922)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\vioce.h)(0x5264FC3A)
-I (..\..\..\utilities\include\serialscreen.h)(0x5344FA87)
+I (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)
 I (..\..\..\utilities\include\delay.h)(0x525F4176)
 I (..\..\..\utilities\include\uart3.h)(0x5343F185)
 I (..\..\..\utilities\include\uart4.h)(0x53455E0B)
@@ -734,7 +734,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
 I (..\..\..\utilities\include\MsgHandle.h)(0x5344F922)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\vioce.h)(0x5264FC3A)
-I (..\..\..\utilities\include\serialscreen.h)(0x5344FA87)
+I (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)
 I (..\..\..\utilities\include\delay.h)(0x525F4176)
 I (..\..\..\utilities\include\uart3.h)(0x5343F185)
 I (..\..\..\utilities\include\uart4.h)(0x53455E0B)
@@ -792,7 +792,7 @@ I (..\..\..\utilities\include\bsp.h)(0x53455F23)
 I (..\..\..\utilities\include\MsgHandle.h)(0x5344F922)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\vioce.h)(0x5264FC3A)
-I (..\..\..\utilities\include\serialscreen.h)(0x5344FA87)
+I (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)
 I (..\..\..\utilities\include\delay.h)(0x525F4176)
 I (..\..\..\utilities\include\uart3.h)(0x5343F185)
 I (..\..\..\utilities\include\uart4.h)(0x53455E0B)
@@ -1986,3 +1986,18 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x519EEB80
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x4EBDD424)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x4EBDD424)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x4EBDD424)
+F (..\..\..\utilities\include\bill.h)(0x53455D06)()
+F (..\..\..\utilities\include\bsp.h)(0x53455F23)()
+F (..\..\..\utilities\include\coin.h)(0x53355578)()
+F (..\..\..\utilities\include\delay.h)(0x525F4176)()
+F (..\..\..\utilities\include\Mini_hopper.h)(0x53355BB7)()
+F (..\..\..\utilities\include\MMC_SD.H)(0x52DF587C)()
+F (..\..\..\utilities\include\MsgHandle.h)(0x5344F922)()
+F (..\..\..\utilities\include\network_handle.h)(0x53423463)()
+F (..\..\..\utilities\include\printer.h)(0x534268C2)()
+F (..\..\..\utilities\include\rtc.h)(0x522FFA4E)()
+F (..\..\..\utilities\include\sd.h)(0x52FF27C2)()
+F (..\..\..\utilities\include\serialscreen.h)(0x5347ABD0)()
+F (..\..\..\utilities\include\spi_flash.h)(0x53467727)()
+F (..\..\..\utilities\include\uart1.h)(0x534242D5)()
+F (..\..\..\utilities\include\uart3.h)(0x5343F185)()

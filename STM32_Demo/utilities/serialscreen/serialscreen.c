@@ -79,7 +79,27 @@ const unsigned char VariableRead[7]={
 							0x00 , 0x00 ,	/*变量存储空间2字节*/
 							RD_LEN , /*长度*/
 							//0x00 , 0x00  	/*CRC校验侦尾*/
-							};										
+							};	
+
+const char ABC[20]={
+							FH0 , FH1 , /*帧头2字节 */
+							0x05 , /*长度 包括命令和数据*/	
+							0x82 , /*指定地址开始写入数据串(字数据)到变量存储区*/
+							0x40 , 0x00 ,	/*变量存储空间2字节*/
+							0xBA , 0xA0   /*数据*/
+              };	
+#include "stdio.h"
+
+char *mystrcat(char *dest, const char *src, char length)
+{
+  int i=0;
+	for(i=0;i<length;i++)
+	{
+		dest[6+i] = src[i];
+	}
+  return dest;
+}
+
 
  /*******************************************************************************
  * 函数名称:VariableChage                                                                    
@@ -131,7 +151,74 @@ void TextDisp(uint16_t meal_name)
 		}
 		Uart3_Sent(temp,sizeof(temp));	
 }
+ /*******************************************************************************
+ * 函数名称:MealNameDisp                                                                  
+ * 描    述:显示餐品名称                                                          
+ *           根据ID 显示名称 ，根据floor 改变现实变量的地址                                                                    
+ * 输    入:meal_id ,floor                                                               
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void MealNameDisp(uint8_t meal_id,uint8_t floor)							
+{
+	  char temp[30]={0};  //存放串口数据的临时数组
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 15; //0x83 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+		myunion.adress= column1st_name+floor*(0x0100); 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+		switch(meal_id)
+		{
+			case 0x01:mystrcat(temp,meat_name,10);break;	
+			case 0x02:mystrcat(temp,chicken_name,8);break;		
+			case 0x03:mystrcat(temp,duck_name,8);break;	
+			case 0x04:mystrcat(temp,fish_name,8);break;
+			default:break;			
+		}
+		Uart3_Sent(temp,sizeof(temp));	
+}
+ /*******************************************************************************
+ * 函数名称:MealCntDisp                                                                 
+ * 描    述:显示餐品数量                                                          
+ *           更具floor 改变变量 ，meal_cnt 是要现实的数量                                                                    
+ * 输    入:meal_id                                                                
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void MealCntDisp(uint8_t meal_cnt,uint8_t floor)							
+{
+	  char temp[20]={0};  //存放串口数据的临时数组
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 13; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+		myunion.adress= column1st_count+floor*3; 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+    temp[7]= meal_cnt;
+		Uart3_Sent(temp,sizeof(temp));	
+}
 
+ /*******************************************************************************
+ * 函数名称:MealCostDisplay                                                                
+ * 描    述:显示餐品数量                                                          
+ *           更具floor 改变变量 ，meal_cnt 是要现实的数量                                                                    
+ * 输    入:meal_id                                                                
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void MealCostDisplay(uint8_t meal_cost,uint8_t floor)							
+{
+	  char temp[20]={0};  //存放串口数据的临时数组
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 13; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+		myunion.adress= column1st_cost+floor*3; 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+    temp[7]= meal_cost;
+		Uart3_Sent(temp,sizeof(temp));	
+}
  /*******************************************************************************
  * 函数名称:DisplayPassWord                                                                 
  * 描    述:显示密码长度以*表示                                                     
@@ -210,10 +297,10 @@ void CutDownDisp(char time)
 {
 	  unsigned char temp[8]={0};
 	  memcpy(temp,VariableWrite,sizeof(VariableWrite));
-	  temp[2]= 4;
+	  temp[2]= 5;
 		myunion.adress= count_dowm; //在基地址推移位置
-		temp[4]= myunion.adr[0];
-		temp[5]= myunion.adr[1];
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
     temp[7]= time;	
 		Uart3_Send(temp,sizeof(temp));	
 }
@@ -265,8 +352,8 @@ void MealCostDisp(char meal_id,char meal_count)
 {
 	  unsigned char temp[8]={0};
 	  memcpy(temp,VariableWrite,sizeof(VariableWrite));
-	  temp[2]= 4;
-		temp[5]= (0x31+(meal_id-1)*2); //钱币变量地址
+	  temp[2]= 5;
+		temp[5]= (0x32+(meal_id-1)*3); //钱币变量地址
     temp[7]= GetMealPrice(meal_id,meal_count);	
 		Uart3_Send(temp,sizeof(temp));		
 }
@@ -303,7 +390,7 @@ void PutIntoShopCart(void)
 		}break;
 		default:break;	
 	}
-	PageChange(UserAct.MealID*3+6);
+	PageChange((UserAct.MealID-1)*3+6);
 }	
 
  /*******************************************************************************
@@ -317,6 +404,7 @@ void PutIntoShopCart(void)
 char Floor= 0; //作为有商品种类的层数
 void SettleAccounts(void)
 {
+	uint8_t tempcnt=0;
   PageChange(Acount_interface);//结算界面
 	//在这里做标记 current = payformoney
   //显示硬币数
@@ -329,6 +417,7 @@ void SettleAccounts(void)
 	VariableChage(wait_payfor,60);
 	//程序显示部分
 	Floor= 0; //每次进一次结账界面就需要从新写入数据
+	
 	if(UserAct.MealCnt_1st>0)
 	{
 		DispMeal[Floor].meal_id= 0x01; //0x01为第一个餐品的ID
@@ -355,8 +444,15 @@ void SettleAccounts(void)
 		DispMeal[Floor].meal_id= 0x04; //0x01为第四个餐品的ID
 		DispMeal[Floor].meal_cnt= UserAct.MealCnt_4th; //餐品的数量赋值
 		DispMeal[Floor].meal_cost= UserAct.MealCost_4th; //餐品单总价的赋值
+		Floor++;	
 	}
-	//加入显示的部分
+	//加入显示的部分：从第一栏开始到第四栏
+	for(tempcnt=0;tempcnt<Floor;tempcnt++)
+	{
+		MealNameDisp(DispMeal[tempcnt].meal_id,tempcnt);//显示菜名  
+		MealCntDisp(DispMeal[tempcnt].meal_cnt,tempcnt);//显示数量
+		MealCostDisplay(DispMeal[tempcnt].meal_cost,tempcnt);//显示单总价 有两个重复
+	}
 	UserAct.PayShould= (UserAct.MealCost_1st+UserAct.MealCost_2nd+UserAct.MealCost_3rd+UserAct.MealCost_4th);
 	VariableChage(mealtotoal_cost,UserAct.PayShould);
 }
@@ -474,6 +570,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				if(VariableData[1]<= DefineMeal[0].MealCount)	//设置餐品选择的上限
 				{
 					UserAct.MealCnt_1st_t= VariableData[1];
+					UserAct.MealCost_1st = GetMealPrice(UserAct.MealID,UserAct.MealCnt_1st_t);//有一些重复计算
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_1st_t);
 				}
 				else
@@ -488,6 +585,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				if(VariableData[1]<= DefineMeal[1].MealCount)	//设置餐品选择的上限
 				{
 					UserAct.MealCnt_2nd_t= VariableData[1];
+					UserAct.MealCost_2nd = GetMealPrice(UserAct.MealID,UserAct.MealCnt_2nd_t);//有一些重复计算
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_2nd_t);
 				}
 				else
@@ -502,6 +600,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				if(VariableData[1]<= DefineMeal[2].MealCount)	//设置餐品选择的上限
 				{
 					UserAct.MealCnt_3rd_t= VariableData[1];
+					UserAct.MealCost_3rd = GetMealPrice(UserAct.MealID,UserAct.MealCnt_3rd_t);//有一些重复计算
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_3rd_t);
 				}
 				else
@@ -516,6 +615,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				if(VariableData[1]<= DefineMeal[3].MealCount)	//设置餐品选择的上限
 				{
 					UserAct.MealCnt_4th_t= VariableData[1];
+					UserAct.MealCost_4th = GetMealPrice(UserAct.MealID,UserAct.MealCnt_4th_t);//有一些重复计算
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_4th_t);
 				}
 				else
@@ -533,15 +633,15 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					case 0x01:  /*放入购物车*/
 					{
 						PutIntoShopCart();		
-					}
+					}break;
 					case 0x02:  /*继续选餐*/
 					{
 						PageChange(Menu_interface);
-					}
+					}break;
  					case 0x03:  /*结算*/
 					{
 						SettleAccounts();
-					}
+					}break;
 					case 0x04:  /*取消*/
 					{
 						//清空所有的用户数据
@@ -550,7 +650,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						UserAct.MealCnt_3rd_t=0;
 						UserAct.MealCnt_4th_t=0;
 						PageChange(Menu_interface);
-					}
+					}break;
 					default:break;
 				}
 			}break;
@@ -643,6 +743,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					case 0x04:   /*取消*/
 					{
 						//CloseCashSystem();
+						PageChange(Menu_interface);
 					}break;
 					default:break;		
 				}					
@@ -720,14 +821,23 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
           default:break;					
         } 					
-			}
+			}break;
 			case admin_set:
 			{
 				switch(VariableData[1])
 				{
 					case 0x01:  /*温度设置按钮*/
+					{
+						PageChange(TemperatureSet_interface);
+					}break;
 					case 0x02:  /*餐品设置按钮*/
+					{
+						PageChange(MealInput_interface);
+					}break;
 					case 0x03:	/*取消键*/
+					{
+						PageChange(Menu_interface);
+					}
           default:break;
 				}					
 			}break;
@@ -778,6 +888,8 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
 					case 0x03:  /*确认*/
 					{
+						/*计算总共的餐品数*/
+						CurFloor.MealCount=  CurFloor.FCount + CurFloor.SCount + CurFloor.TCount;
 						/*把当前第一列设置的参数保存起来*/
 						FloorMealMessageWriteToFlash.FloorMeal[CurFloor.FloorNum - 1].FCount    = CurFloor.FCount;
 						/*把当前第2列设置的参数保存起来*/
@@ -874,7 +986,7 @@ void DealSeriAceptData(void)
 	char RegisterData[5]={0};  //寄存器数据数组
 	char VariableData[5]={0};  //变量数据数组
 	char VariableLength= 0;   //变量数据的长度
-	while(UART3_GetCharsInRxBuf()>0) //获取缓冲区大小，直至缓冲区无数据
+	while(UART3_GetCharsInRxBuf()>7) //获取缓冲区大小，直至缓冲区无数据
 	{	
 		if(USART3_GetChar(&temp)==1)
 		{	
