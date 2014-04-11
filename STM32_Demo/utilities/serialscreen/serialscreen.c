@@ -14,6 +14,7 @@
 #include "bsp.h"
 #include "MsgHandle.h"
 
+#define Null 0x00
 typedef struct DispMeal
 {
 	char meal_id;
@@ -170,6 +171,7 @@ void MealNameDisp(uint8_t meal_id,uint8_t floor)
 		temp[5]= myunion.adr[0];
 		switch(meal_id)
 		{
+			case 0x00:break;
 			case 0x01:mystrcat(temp,meat_name,10);break;	
 			case 0x02:mystrcat(temp,chicken_name,8);break;		
 			case 0x03:mystrcat(temp,duck_name,8);break;	
@@ -249,13 +251,15 @@ void DisplayPassWord(char PassWordLen)
  * 输    出:无                                                                     
  * 返    回:void                                                               
  * 修改日期:2014年3月13日                                                                    
- *******************************************************************************/ 							
+ *******************************************************************************/ 	
+char pageunitil= 0;
 void PageChange(char page)
 {
 		unsigned char temp[7]={0};
 		memcpy(temp,RegisterWrite,sizeof(RegisterWrite));	
 		temp[4]=	PIC_ID;	
 	  temp[6]=  page;
+		pageunitil = page;
 		Uart3_Send(temp,sizeof(temp));
 }	
 
@@ -357,7 +361,31 @@ void MealCostDisp(char meal_id,char meal_count)
     temp[7]= GetMealPrice(meal_id,meal_count);	
 		Uart3_Send(temp,sizeof(temp));		
 }
-
+ /*******************************************************************************
+ * 函数名称:ClearUserBuffer                                                                     
+ * 描    述:清除用户选择数据                                                          
+ *                                                                               
+ * 输    入:无                                                                 
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 
+void ClearUserBuffer(void)
+{
+	UserAct.MealCnt_1st=0;
+	UserAct.MealCnt_1st_t=0;
+	UserAct.MealCnt_2nd=0;
+	UserAct.MealCnt_2nd_t=0;
+	UserAct.MealCnt_3rd=0;
+	UserAct.MealCnt_3rd_t=0;
+	UserAct.MealCnt_4th=0;
+	UserAct.MealCnt_4th_t=0;
+	UserAct.MealCost_1st=0;
+	UserAct.MealCost_2nd=0;
+	UserAct.MealCost_3rd=0;
+	UserAct.MealCost_4th=0;
+	UserAct.MealID=0;
+}
  /*******************************************************************************
  * 函数名称:PutIntoShopCart                                                                     
  * 描    述:在选产界面将点击放入购物车之后的程序响应                                                        
@@ -369,28 +397,31 @@ void MealCostDisp(char meal_id,char meal_count)
  *******************************************************************************/ 
 void PutIntoShopCart(void)
 {
-
 	switch(UserAct.MealID)
 	{
 		case 0x01:
 		{
-			UserAct.MealCnt_1st=UserAct.MealCnt_1st_t;
+			UserAct.MealCnt_1st= UserAct.MealCnt_1st_t;
+			UserAct.MealCost_1st = GetMealPrice(UserAct.MealID,UserAct.MealCnt_1st);
 		}break;
 		case 0x02:
 		{
 			UserAct.MealCnt_2nd=UserAct.MealCnt_2nd_t;
+			UserAct.MealCost_2nd = GetMealPrice(UserAct.MealID,UserAct.MealCnt_2nd);
 		}break;
 		case 0x03:
 		{
 			UserAct.MealCnt_3rd=UserAct.MealCnt_3rd_t;
+			UserAct.MealCost_3rd = GetMealPrice(UserAct.MealID,UserAct.MealCnt_3rd);
 		}break;
 		case 0x04:
 		{
 			UserAct.MealCnt_4th=UserAct.MealCnt_4th_t;
+			UserAct.MealCost_4th = GetMealPrice(UserAct.MealID,UserAct.MealCnt_4th);
 		}break;
 		default:break;	
 	}
-	PageChange((UserAct.MealID-1)*3+6);
+	PageChange((UserAct.MealID-1)*3+6); //不知道这个是否出问题???
 }	
 
  /*******************************************************************************
@@ -405,6 +436,14 @@ char Floor= 0; //作为有商品种类的层数
 void SettleAccounts(void)
 {
 	uint8_t tempcnt=0;
+	//清除屏幕显示数据
+  for(tempcnt=0;tempcnt<4;tempcnt++)
+	{
+		MealNameDisp(Null,tempcnt);
+		MealCntDisp(Null,tempcnt);//显示数量
+		MealCostDisplay(Null,tempcnt);//显示单总价 有两个重复		
+	}
+	tempcnt=0; /*计数清零*/
   PageChange(Acount_interface);//结算界面
 	//在这里做标记 current = payformoney
   //显示硬币数
@@ -523,38 +562,42 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						if(DefineMeal[0].MealCount > 0)	   //判断餐品是否大于0
 						{
 							UserAct.MealID= VariableData[1]; //当前用户选餐的ID
-							UserAct.MealCnt_1st= 1;//设置默认分数为 1
+							UserAct.MealCnt_1st_t= 1;//设置默认分数为 1
 							PageChange(Meal1st_interface);//显示相应界面
 							CutDownDisp(60);//显示倒计时时间
-							MealCostDisp(UserAct.MealID,UserAct.MealCnt_1st);//根据用户所选餐品ID号显示合计钱数
+              VariableChage(meat_cnt_t,0x01);
+ 							MealCostDisp(UserAct.MealID,UserAct.MealCnt_1st_t);//根据用户所选餐品ID号显示合计钱数
 						}break;						
 					case 0x02:
 						if(DefineMeal[1].MealCount > 0)	   //判断餐品是否大于0
 						{
 							UserAct.MealID= VariableData[1];
-							UserAct.MealCnt_2nd= 1;//设置默认分数为 1
+							UserAct.MealCnt_2nd_t= 1;//设置默认分数为 1
 							PageChange(Meal2rd_interface);//显示相应界面	
 							CutDownDisp(60);//显示倒计时时间
-							MealCostDisp(UserAct.MealID,UserAct.MealCnt_2nd);//根据用户所选餐品ID号显示合计钱数
+							VariableChage(chicken_cnt,0x01);
+							MealCostDisp(UserAct.MealID,UserAct.MealCnt_2nd_t);//根据用户所选餐品ID号显示合计钱数
 						}break;							
 					case 0x03:
 						if(DefineMeal[2].MealCount > 0)	   //判断餐品是否大于0
 						{
 							UserAct.MealID= VariableData[1];
-							UserAct.MealCnt_3rd= 1;//设置默认分数为 1
+							UserAct.MealCnt_3rd_t= 1;//设置默认分数为 1
 							PageChange(Meal3ns_interface);//显示相应界面	
 							CutDownDisp(60);//显示倒计时时间
-							MealCostDisp(UserAct.MealID,UserAct.MealCnt_3rd);//根据用户所选餐品ID号显示合计钱数
+							VariableChage(duck_cnt,0x01);
+							MealCostDisp(UserAct.MealID,UserAct.MealCnt_3rd_t);//根据用户所选餐品ID号显示合计钱数
 						}break;						
 					case 0x04:
 					{
 						if(DefineMeal[3].MealCount > 0)	   //判断餐品是否大于0
 						{
 							UserAct.MealID= VariableData[1];
-							UserAct.MealCnt_4th= 1;//设置默认分数为 1
+							UserAct.MealCnt_4th_t= 1;//设置默认分数为 1
 							PageChange(Meal4th_interface);//显示相应界面	
 							CutDownDisp(60);//显示倒计时时间
-							MealCostDisp(UserAct.MealID,UserAct.MealCnt_4th);//根据用户所选餐品ID号显示合计钱数
+							VariableChage(fish_cnt,0x01);
+							MealCostDisp(UserAct.MealID,UserAct.MealCnt_4th_t);//根据用户所选餐品ID号显示合计钱数
 						}			
 					}break;
 					case 0x05:  /*管理用户键*/
@@ -644,11 +687,8 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
 					case 0x04:  /*取消*/
 					{
-						//清空所有的用户数据
-						UserAct.MealCnt_1st_t=0;
-						UserAct.MealCnt_2nd_t=0;
-						UserAct.MealCnt_3rd_t=0;
-						UserAct.MealCnt_4th_t=0;
+						//清空所有的用户数据???
+						ClearUserBuffer();
 						PageChange(Menu_interface);
 					}break;
 					default:break;
@@ -656,16 +696,16 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 			}break;
 			/*改变四栏中餐品的数量*/
 			/*需要餐品的ID和行号:column1st_count, MealID*/
-			case column1st_count:MealID= DispMeal[0].meal_id;
-			case column2nd_count:MealID= DispMeal[1].meal_id;
-			case column3rd_count:MealID= DispMeal[2].meal_id;
-			case column4th_count:MealID= DispMeal[3].meal_id;
+			case column1st_count:MealID= DispMeal[0].meal_id;goto loop1;
+			case column2nd_count:MealID= DispMeal[1].meal_id;goto loop1;
+			case column3rd_count:MealID= DispMeal[2].meal_id;goto loop1;
+			case column4th_count:MealID= DispMeal[3].meal_id;goto loop1;
 			{
-				switch(MealID)
+loop1:	switch(MealID)
 				{
 					case 0x01:
 					{
-					  if(VariableData[1]<=DefineMeal[MealID].MealCount)//当用户选择数量小于或等于存货时
+					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//当用户选择数量小于或等于存货时
 				    {
 					    UserAct.MealCnt_1st =VariableData[1]; //将改变的值返回到结构体中
 					    UserAct.MealCost_1st =UserAct.MealCnt_1st *price_1st; //计算单总价
@@ -679,7 +719,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
 					case 0x02:
 					{
-					  if(VariableData[1]<=DefineMeal[MealID].MealCount)//还是要判断数量
+					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
 				    {
 					    UserAct.MealCnt_2nd =VariableData[1]; //将改变的值返回到结构体中
 					    UserAct.MealCost_2nd =UserAct.MealCnt_2nd *price_2nd; //计算单总价
@@ -693,7 +733,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
 					case 0x03:
 					{
-					  if(VariableData[1]<=DefineMeal[MealID].MealCount)//还是要判断数量
+					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
 				    {
 					    UserAct.MealCnt_3rd =VariableData[1]; //将改变的值返回到结构体中
 					    UserAct.MealCost_3rd =UserAct.MealCnt_3rd *price_3rd; //计算单总价
@@ -707,7 +747,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
 					case 0x04:
 					{
-					  if(VariableData[1]<=DefineMeal[MealID].MealCount)//还是要判断数量
+					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
 				    {
 					    UserAct.MealCnt_4th =VariableData[1]; //将改变的值返回到结构体中
 					    UserAct.MealCost_4th =UserAct.MealCnt_4th *price_4th; //计算单总价
@@ -743,6 +783,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					case 0x04:   /*取消*/
 					{
 						//CloseCashSystem();
+						ClearUserBuffer();
 						PageChange(Menu_interface);
 					}break;
 					default:break;		
@@ -802,6 +843,9 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 		          /*密码验证错误，进入密码输入界面*/
 		           PageChange(Password_interface);
 							 DisplayPassWord(0);
+							 VariableChage(row_1st,Null);
+		           VariableChage(row_2nd,Null);
+		           VariableChage(row_3rd,Null);   							
 			         PassWordLen = 0;
 		        }
 		        else
@@ -844,6 +888,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 			case meal_num:
 			{
 				//VariableData[1]; 需要对当前餐号进行记录,然后再处理
+				InitSetting();
 			  CurFloor.MealID= VariableData[1];	
 			}break;
       case floor_num:
@@ -927,10 +972,6 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 								}
 							}
 						}
-				    for(i=0;i<90;i++)
-			      {
-			      //printf("FloorMealMessageWriteToFlash.FlashBuffer[%d]=%d\r\n",i,FloorMealMessageWriteToFlash.FlashBuffer[i]);
-			      }
 						StatisticsTotal(); //先统计数目在写入
 						WriteMeal(); //写数据到flash
 						DispLeftMeal(); //更新餐品数据
