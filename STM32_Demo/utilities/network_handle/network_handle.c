@@ -37,7 +37,7 @@ unsigned char  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};											    /*½»Ò
 unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};							/*×ÜÕÒÁã½ğ¶î d7*/
 	
 unsigned char  UpdataFlag[4];
-unsigned char  ACK[3];  //Õâ¸öÊÇÊ²Ã´?
+unsigned char  ACK[4];  //Õâ¸öÊÇÊ²Ã´?
 unsigned char  WordKeyCipher[11];
 Meal_struction Meal[9]={
 	                        /*²ÍÆ·ID*/				/*²ÍÆ·Ãû×Ö*/  	       /*²ÍÆ·ÊıÁ¿*/	     /*²ÍÆ·¼Û¸ñ*/			  /*²ÍÆ·ÀàĞÍ*/
@@ -84,33 +84,27 @@ void GetBRWN(void)
 *******************************************************************************/
 static unsigned int GetCrc16(unsigned char *bufData,unsigned int sizeData)
  {
-  	 unsigned int Crc ,i = 0;
+  unsigned int Crc ,i = 0;
 	 unsigned char j = 0;
 	 if(sizeData == 0)
-	 return 1 ;
-
+	   return 1 ;
 	 Crc = 0 ;
 	 for(i=0;i<sizeData;i++)
 	 {
-	 
 	   Crc ^= bufData[i];
 	   for(j=0;j<8;j++)
 	   {
-	    if(Crc&0x0001)
-		{ 
-
-		Crc >>=1 ;
-		Crc ^=0x08408 ;
-
-		}
-		else 
-		Crc >>=1 ;
-
+	     if(Crc&0x0001)
+		   { 
+		     Crc >>=1 ;
+		     Crc ^=0x08408 ;
+		   }
+		   else 
+		     Crc >>=1 ;
 	   }
-	 } 
-	
-	 return Crc ; 
- }
+	} 
+	return Crc ; 
+}
  
 /*---------------------------------------------------------------------------
 void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf);
@@ -122,7 +116,6 @@ static void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf)
     ret_buf[0] = (unsigned char)(int_v >> 8);  // [0] ¶ÔÓ¦ --> ¸ßÎ»
     ret_buf[1] = (unsigned char)(int_v & 0xff);
 
- 
 }
 /*---------------------------------------------------------------------------
  uint16_t HL_BufferToInt(const unsigned char *in_buf);
@@ -132,12 +125,9 @@ static void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf)
 uint16_t HL_BufferToInit(const unsigned char *in_buf)
 {
     uint16_t ret_n;
-
     ret_n = in_buf[0];           // È¡¸ßÎ»
     ret_n = (ret_n << 8);
-
     ret_n += in_buf[1];          // È¡µÍÎ»
-
     return ret_n;
 }
 
@@ -173,9 +163,7 @@ void HL_LongToBuffer00(const uint32_t in_n, unsigned char *ret_buf)
     ret_buf[0] = (unsigned char)((in_n >> 24) & 0xff);   // [0] ¶ÔÓ¦ --> ¸ßÎ»
     ret_buf[1] = (unsigned char)((in_n >> 16) & 0xff);
     ret_buf[2] = (unsigned char)((in_n >> 8) & 0xff);
-    ret_buf[3] = (unsigned char)(in_n & 0xff);
-
-    
+    ret_buf[3] = (unsigned char)(in_n & 0xff);   
 }
  //---------------------------------------------------------------------------
 // ¹¦ÄÜ: ½«»º³åÇøÇåÁã
@@ -189,7 +177,7 @@ void HL_LongToBuffer00(const uint32_t in_n, unsigned char *ret_buf)
 static void mem_set_00(unsigned char *dest, const long s_len)
 {
     long j0;
-
+	
     for(j0 = 0; j0 < s_len; j0++)  dest[j0] = 0;
 }
 
@@ -204,17 +192,15 @@ static void mem_set_00(unsigned char *dest, const long s_len)
 *******************************************************************************/
 uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len)
 {
-    long j0;
-
-    for(j0 = 0; j0 < s_len; j0++)  dest[j0] = source[j0];
-
-    return s_len;
+  long j0;
+  for(j0 = 0; j0 < s_len; j0++)  dest[j0] = source[j0];
+  return s_len;
 }
 /*********************/
 typedef struct
 {
- unsigned char  Lenght[2] ;
- unsigned char  MealNO[35*9];    /*²ÍÆ·¾ßÌåÊıÄ¿*/
+  unsigned char  Lenght[2] ;
+  unsigned char  MealNO[35*9];    /*²ÍÆ·¾ßÌåÊıÄ¿*/
 
 }ReturnData_Struction;
 ReturnData_Struction  ReturnData;
@@ -229,80 +215,73 @@ ReturnData_Struction  ReturnData;
 unsigned char CheckResponseCode(unsigned char Cmd)
 {
 // unsigned char  i = 0 ;
- switch(Cmd)
- {
- 	case 0x00 :  
-	              /*½»Ò×³É¹¦*/
-	             return 0 ;
-	case 0x01 :/*°üCRC´íÎó*/
-	             
-				  return 1 ;
-			 //   break ;
-	case 0x02 :  /*°üCRC´íÎó*/	 
-	            
-	            break;
-	case 0x03 :/*ÎŞĞ§µÄÖÕ¶ËÀàĞÍ*/
-			    break  ;
-	case 0x04 :/*Ğ­Òé°æ±¾´íÎó*/
-	            break ;
-	case 0x05 : /*ÎŞĞ§µÄÖÕ¶ËSN*/
+  switch(Cmd)
+  {
+		case 0x00 : /*½»Ò×³É¹¦*/       
+			return 0 ;
+		case 0x01 : /*°üCRC´íÎó*/      
+			return 1 ;
+		case 0x02 : /*°üCRC´íÎó*/	 
+				break;                     
+		case 0x03 : /*ÎŞĞ§µÄÖÕ¶ËÀàĞÍ*/
+				break  ;
+		case 0x04 : /*Ğ­Òé°æ±¾´íÎó*/
+				break ;
+		case 0x05 : /*ÎŞĞ§µÄÖÕ¶ËSN*/
 				break;
-	case 0x06 : /*ÎŞĞ§µÄÉÌ»§ºÅ(MID)*/
-	            break;
-	case 0x07 :	/*ÎŞĞ§ÎÄ¼şÆ«ÒÆµØÖ·*/
-	            break ;
-	case 0x08 : /*ÎŞĞ§ÎÄ¼şÆ«ÒÆµØÖ·*/
-	            break ;
-	case 0x09 : /*ÆäËû°üÄÚÈİ´íÎó*/
+		case 0x06 : /*ÎŞĞ§µÄÉÌ»§ºÅ(MID)*/
 				break;
-	case 10 :	/*ÉÌ»§ºÅÓëÉè±¸ºÅ¶ÔÓ¦¹ØÏµ´íÎó*/
-	            break ;
-	case 11 : /*²ÍÆ·Êı¾İ¶Ô±È²»Ò»ÖÂ*/
-	           {
-			   }
-	            break ;
-	case 12 : /*ºóÌ¨²»´æÔÚÉè±¸ÇøÓòID¡¢ËùÔÚµãIDĞÅÏ¢*/
-	            break;
-	case 13 : /*Éè±¸ÉÏËÍµÄÇøÓòID¡¢ËùÔÚµãIDĞÅÏ¢ÓëºóÌ¨²»Æ¥Åä*/
-			    break ;
-	case 14 : /*Éè±¸ÉÏËÍ²ÍÆ·ĞÅÏ¢¸ñÊ½²»ÕıÈ·*/
-	          	break ;
-	case 15 :  /*È¡²Í½»Ò×£¨Åú´ÎºÅ¡¢Á÷Ë®ºÅ£©ÖØ¸´*/
-	            break;
-	case 16 : /*ÖÕ¶ËÉÏËÍµÄ²ÍÆ·Êı¾İÀïÄ³²ÍÆ·ĞÅÏ¢²»´æÔÚÓÚºóÌ¨Êı¾İ¿â*/
- 				break;
-	case 17 : /*ÅúÉÏËÍÈÕÖ¾¸ñÊ½²»ÕıÈ·*/
-	            break;
-	case 20 :  /*ÎŞĞ§½ğ¶î*/
-	            break;
-    case 21 : /*Ô­Ê¼½ğ¶î´íÎó*/
-	            break;
-    case 22 : /*ÎŞĞ§²ÍÆ·IDºÅ*/
-	            break;
-	case 23 : /*¹ºÂòÊıÁ¿ÎŞĞ§*/
-	            break ;
-    case 0x24 : Batch ++ ;
-	            break;
-	case 30: /*ÃÜÂë´í*/
-	            break ;
-	case 31 : /*ÕË»§ÄÚÓà¶î²»×ã*/
-	            break;
-	case 40 : /*Ëø¶¨ÖÕ¶Ë*/
-	            break;
-	case 41 : /*½âËøÖÕ¶Ë*/
-	            break ;
-	case 50 : /*ºóÌ¨ÎÄ¼ş°æ±¾²»´æÔÚ*/
-	            break;
-	case 51 :/*ÇëÇóÎÄ¼ş°æ±¾ÓëºóÌ¨·¢²¼µÄÎÄ¼ş°æ±¾²»Ò»ÖÂ*/
-	            break ;
-	case 96 : /*ºóÌ¨ÏµÍ³´íÎó*/
-	            break ;
-	default :   break ;
- 
- 
- 
- 
- }
+		case 0x07 :	/*ÎŞĞ§ÎÄ¼şÆ«ÒÆµØÖ·*/
+				break ;
+		case 0x08 : /*ÎŞĞ§ÎÄ¼şÆ«ÒÆµØÖ·*/
+				break ;
+		case 0x09 : /*ÆäËû°üÄÚÈİ´íÎó*/
+				break;
+		case 10 :	/*ÉÌ»§ºÅÓëÉè±¸ºÅ¶ÔÓ¦¹ØÏµ´íÎó*/
+				break ;
+		case 11 : /*²ÍÆ·Êı¾İ¶Ô±È²»Ò»ÖÂ*/
+					 {
+					 }
+				break ;          
+		case 12 : /*ºóÌ¨²»´æÔÚÉè±¸ÇøÓòID¡¢ËùÔÚµãIDĞÅÏ¢*/
+				break;
+		case 13 : /*Éè±¸ÉÏËÍµÄÇøÓòID¡¢ËùÔÚµãIDĞÅÏ¢ÓëºóÌ¨²»Æ¥Åä*/
+				break ;
+		case 14 : /*Éè±¸ÉÏËÍ²ÍÆ·ĞÅÏ¢¸ñÊ½²»ÕıÈ·*/
+				break ;
+		case 15 :  /*È¡²Í½»Ò×£¨Åú´ÎºÅ¡¢Á÷Ë®ºÅ£©ÖØ¸´*/
+				break;
+		case 16 : /*ÖÕ¶ËÉÏËÍµÄ²ÍÆ·Êı¾İÀïÄ³²ÍÆ·ĞÅÏ¢²»´æÔÚÓÚºóÌ¨Êı¾İ¿â*/
+				break;
+		case 17 : /*ÅúÉÏËÍÈÕÖ¾¸ñÊ½²»ÕıÈ·*/
+				break;
+		case 20 :  /*ÎŞĞ§½ğ¶î*/
+				break;
+		case 21 : /*Ô­Ê¼½ğ¶î´íÎó*/
+				break;
+		case 22 : /*ÎŞĞ§²ÍÆ·IDºÅ*/
+				break;
+		case 23 : /*¹ºÂòÊıÁ¿ÎŞĞ§*/
+				break ;
+		case 0x24 : Batch ++ ;
+				break;
+		case 30: /*ÃÜÂë´í*/
+				 break ;
+		case 31 : /*ÕË»§ÄÚÓà¶î²»×ã*/
+				 break;
+		case 40 : /*Ëø¶¨ÖÕ¶Ë*/
+				 break;
+		case 41 : /*½âËøÖÕ¶Ë*/
+				 break ;
+		case 50 : /*ºóÌ¨ÎÄ¼ş°æ±¾²»´æÔÚ*/
+				 break;
+		case 51 :/*ÇëÇóÎÄ¼ş°æ±¾ÓëºóÌ¨·¢²¼µÄÎÄ¼ş°æ±¾²»Ò»ÖÂ*/
+					break ;
+		case 96 : /*ºóÌ¨ÏµÍ³´íÎó*/
+					break ;
+		default :break;
+  }
+	return 3; /*ºóÀ´¼ÓµÄ·ÀÖ¹ÓĞwaring*/
 }
  /*******************************************************************************
 * Function Name  : GetData
@@ -311,28 +290,25 @@ unsigned char CheckResponseCode(unsigned char Cmd)
 * Output         : void
 * Return         : void
 *******************************************************************************/ 
- long   GetData(unsigned char *dest,unsigned char *souce, long s_len,unsigned char Cmd)
- {
-	  long i = 0 ,j=0,Cmdlenght=0;
-	  for(i=0;i<s_len;i++)
+long  GetData(unsigned char *dest,unsigned char *souce, long s_len,unsigned char Cmd)
+{
+	long i = 0 ,j=0,Cmdlenght=0;
+	for(i=0;i<s_len;i++)
+	{ 
+	  if(souce[i] == Cmd)	 /*µÃµ½ÃüÁî*/
 	  {
-	  
-	   if(souce[i] == Cmd)	 /*µÃµ½ÃüÁî*/
-	    {
-		   Cmdlenght= HL_BufferToInit(&souce[i+1]);    /*µÃµ½Êı¾İ³¤¶È*/
-//		   printf("Cmdlenght=%d\r\n",Cmdlenght);
-		   for(j=0;j<Cmdlenght;j++)				      /*µÃµ½Êı¾İ  */
-		   {
-			 dest[j] = souce[i+j+3] ;
-//			 printf("dest[%d]=%x\r\n",j,dest[j]);
-			 
-		   }
+		  Cmdlenght= HL_BufferToInit(&souce[i+1]);    /*µÃµ½Êı¾İ³¤¶È*/
+//		printf("Cmdlenght=%d\r\n",Cmdlenght);
+		  for(j=0;j<Cmdlenght;j++)				      /*µÃµ½Êı¾İ  */
+		  {
+			  dest[j] = souce[i+j+3] ;
+//			printf("dest[%d]=%x\r\n",j,dest[j]); 
+		  }
 		  return Cmdlenght  ;
 		}
-	 
-	  }
-  	     return 0 ;
- }
+	}
+	return 0 ;
+}
  /*******************************************************************************
 * Function Name  : CmdDataSend
 * Description    : ·¢ËÍÊı¾İº¯Êı
@@ -342,59 +318,50 @@ unsigned char CheckResponseCode(unsigned char Cmd)
 *******************************************************************************/
 static void CmdDataSend(unsigned char *p,long Lenght)
 {
-  	 uint16_t i=0;
+  uint16_t i=0;
 	 /*³õÊ¼»¯*/
- 	 F_RX1_SYNC = 0;
-	 rx1BufIndex = 0;
-	 F_RX1_VAILD = 1;
-	 CrcValue = 0;
-	 F_RX1_Right = 0 ;
-
-	 for(i=0;i<Lenght;i++)
-	 {
-	  
-	    UART5->DR = (u8) p[i];       
-    	while((UART5->SR&0X40)==0);//Ñ­»··¢ËÍ,Ö±µ½·¢ËÍÍê±Ï       
-	    //delay_ms(5);
-//	    printf(" p[%d]=%x\r\n", i,p[i]);
-	}
-   
- 
+ 	F_RX1_SYNC = 0;
+	rx1BufIndex = 0;
+	F_RX1_VAILD = 1;
+	CrcValue = 0;
+	F_RX1_Right = 0 ;
+	for(i=0;i<Lenght;i++)
+	{ 
+	  UART5->DR = (u8) p[i];       
+    while((UART5->SR&0X40)==0);//Ñ­»··¢ËÍ,Ö±µ½·¢ËÍÍê±Ï       
+	  //delay_ms(5);
+	  //printf(" p[%d]=%x\r\n", i,p[i]);
+	} 
 }
 
- 
 unsigned char  MealComparefunDemo(long Cmd ,unsigned char *p,unsigned long lenght)
 {
-
- long  CRCValue= 0 ;
+  long  CRCValue= 0 ;
 // static  int Bno = 0 ;
- unsigned char Waittimeout = 250 ;
- /*¸øÊı×é¸³ÖµÃüÁî*/
- HL_IntToBuffer(Cmd,&p[1]);
- /*Êı×é³¤¶È*/	 
- HL_IntToBuffer(lenght-8,&p[3]);
- /*µÃµ½Êı¾İµÄCRC*/	    
- CRCValue=GetCrc16(&p[1],lenght-4);
- /*°ÑCRC¸³Öµµ½Êı×éÖĞ*/
- HL_IntToBuffer(CRCValue,&p[lenght-2]);
- /*·¢ËÍÃüÁî*/
- CmdDataSend(p,lenght);	//·¢ËÍÊı¾İ
- /*µÈ´ıÊı¾İ·µ»Ø*/
- while(--Waittimeout)
+  unsigned char Waittimeout = 250 ;
+  /*¸øÊı×é¸³ÖµÃüÁî*/
+  HL_IntToBuffer(Cmd,&p[1]);
+  /*Êı×é³¤¶È*/	 
+  HL_IntToBuffer(lenght-8,&p[3]);
+  /*µÃµ½Êı¾İµÄCRC*/	    
+  CRCValue=GetCrc16(&p[1],lenght-4);
+  /*°ÑCRC¸³Öµµ½Êı×éÖĞ*/
+  HL_IntToBuffer(CRCValue,&p[lenght-2]);
+  /*·¢ËÍÃüÁî*/
+  CmdDataSend(p,lenght);	//·¢ËÍÊı¾İ
+  /*µÈ´ıÊı¾İ·µ»Ø*/
+  while(--Waittimeout)
 	{
-		   delay_ms(10);
-		   if(F_RX1_Right)
-		   {
-		   F_RX1_Right = 0 ;
-		   break;
-		   }		   
-   }
-
+		delay_ms(10);
+		if(F_RX1_Right) //½ÓÊÕµ½ÓĞÏŞÊı¾İCRCÕıÈ·
+		{
+		  F_RX1_Right = 0 ;
+		  break;
+		}		   
+  }
   if(Waittimeout == 0 )
-  return 1 ;
- 
+		return 1 ;//³¬Ê±·µ»Ø1
   return 0 ;
-
 }
 
 
@@ -405,12 +372,12 @@ unsigned char  MealComparefunDemo(long Cmd ,unsigned char *p,unsigned long lengh
 /*Ç©µ½*/	            //0X0100
 unsigned char  SignInFun(void)
 {
-	 unsigned char i = 0 ;
-	 long  Command = 0x0100 ;
-	 long  Lenght = 0,j = 0  ;
-	 long 	CmdLenght = 0 ;
-	 unsigned char 	  Send_Buf[400];
-	 mem_set_00(rx1Buf,sizeof(rx1Buf));	 //Êı¾İÇåÁã
+	unsigned char i = 0 ;
+	long  Command = 0x0100 ;
+	long  Lenght = 0,j = 0  ;
+	long 	CmdLenght = 0 ;
+	unsigned char 	  Send_Buf[400];
+	mem_set_00(rx1Buf,sizeof(rx1Buf));	 //Êı¾İÇåÁã
 
 	/*Ë®Á÷ºÅ++*/
 	Send_Buf[0] =  0x02 ;
@@ -425,20 +392,20 @@ unsigned char  SignInFun(void)
 	GetBRWN();														 /*µÃµ½Á÷Ë®ºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));   /*½»Ò×Á÷Ë®Ïß*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));     /*Åú´ÎºÅ*/
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*ÖÕ¶ËËùÔÚÇøÓò±àºÅ*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*ÖÕ¶ËËùÔÚÇøÓò±àºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO)); /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],APPVersion,sizeof(APPVersion)); /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],ParaFileVersion,sizeof(ParaFileVersion)); /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BDataFileVersion,sizeof(BDataFileVersion)); /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],ChechStatus,sizeof(ChechStatus)); /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],ChechStatus,sizeof(ChechStatus)); /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
 	Send_Buf[CmdLenght] = 0x03 	;
 	CmdLenght+=0x03;
 	 /*·¢ËÍÃüÁî*/
-     i = MealComparefunDemo(Command,Send_Buf,CmdLenght);
- 	 if(i == 0x01)	 //
+  i = MealComparefunDemo(Command,Send_Buf,CmdLenght);
+ 	if(i == 0x01)	 //
  	 return 1;  	  	 
-	 Lenght = HL_BufferToInit(&rx1Buf[2]);	 //ÅĞ¶ÏÊı¾İ³¤¶ÈÊÇ·ñ
-	 if(Lenght == 0x00)
+	Lenght = HL_BufferToInit(&rx1Buf[2]);	 //ÅĞ¶ÏÊı¾İ³¤¶ÈÊÇ·ñ
+	if(Lenght == 0x00)
 	 return  1 ;
 //	 if(rx1Buf[7]!=0x00)/*ÊÇ·ñÓ¦´ğÃüÁî*/
 //	 return 1 ;
@@ -462,73 +429,72 @@ unsigned char  SignInFun(void)
 //	 printf("\r\nMName: ");
 	 for(i=0;i<23;i++)
 	 {
-	 MName[i] = rx1Buf[i+4];//µÃµ½ÉÌ»§
+	   MName[i] = rx1Buf[i+4];//µÃµ½ÉÌ»§
 //	 printf("%x ",MName[i]);
 	 }
 //	 printf("\r\nBNO: ");
 	 for(i=0;i<3;i++)
 	 {
-	 BNO[i+3] = rx1Buf[i+27+3];//µÃµ½Åú´ÎºÅ
+	   BNO[i+3] = rx1Buf[i+27+3];//µÃµ½Åú´ÎºÅ
 //	 printf("%x ",BNO[i+3]);
 	 }										 
 //	 printf("\r\nAPPVersion: ");
 	 for(i=0;i<11;i++)
 	 {
-	 APPVersion[i] = rx1Buf[i+0x21];//µÃµ½Åú´ÎºÅ
+	   APPVersion[i] = rx1Buf[i+0x21];//µÃµ½Åú´ÎºÅ
 //	 printf("%x ",APPVersion[i]);
 	 }
 //	 printf("\r\nParaFileVersion: ");
 	 for(i=0;i<11;i++)
 	 {
-	 ParaFileVersion[i] = rx1Buf[i+0x2c];//µÃµ½Åú´ÎºÅ
+	   ParaFileVersion[i] = rx1Buf[i+0x2c];//µÃµ½Åú´ÎºÅ
 //	 printf("%x ",ParaFileVersion[i]);
 	 }
 	 printf("\r\nBDataFileVersion: ");
 	 for(i=0;i<11;i++)
 	 {
-	 BDataFileVersion[i] = rx1Buf[i+0x37];//µÃµ½Åú´ÎºÅ
+	   BDataFileVersion[i] = rx1Buf[i+0x37];//µÃµ½Åú´ÎºÅ
 //	 printf("%x ",BDataFileVersion[i]); 
 	 }
 //	 printf("\r\nUpdataFlag: ");
 	 for(i=0;i<4;i++)
 	 {
-	 UpdataFlag[i] = rx1Buf[i+0x42];//µÃµ½Åú´ÎºÅ
+	   UpdataFlag[i] = rx1Buf[i+0x42];//µÃµ½Åú´ÎºÅ
 //	 printf("%x ",UpdataFlag[i]);
 	 }
 
 //	 printf("\r\nACK: ");
 	 for(i=0;i<4;i++)
 	 {
-	 ACK[i] = rx1Buf[i+0x46];//µÃµ½
+	   ACK[i] = rx1Buf[i+0x46];//µÃµ½
 //	 printf("%x ",ACK[i]);
 	 }
 //
  //    printf("\r\nWordKeyCipher: ");
 	 for(i=0;i<11;i++)
 	 {
-	 WordKeyCipher[i] = rx1Buf[i+0x4a];//µÃµ½Åú´ÎºÅ
+	   WordKeyCipher[i] = rx1Buf[i+0x4a];//µÃµ½Åú´ÎºÅ
 //	 printf("%x ",WordKeyCipher[i]);
 	 }
 
 //	 printf("\r\nMAC: ");						
-     for(i=0;i<11;i++)
+   for(i=0;i<11;i++)
 	 {
-	 MAC[i] = rx1Buf[i+0x55];//µÃµ½¹¤×÷ÃÜÎÄ
+	   MAC[i] = rx1Buf[i+0x55];//µÃµ½¹¤×÷ÃÜÎÄ
 //	 printf("%x ",MAC[i]);
 	 }
-     if(ACK[3]==0x24)
+   if(ACK[3]==0x24)
 	 {
 	   return 1 ;
 	 }
-
    return 0 ;
-
 }
+
 void StructCopyToBuffer(unsigned char *dest)
 {
-    long j0=0,i=0,k=0;
-   	 
-    for(j0 = 0; j0 < 9; j0++) 
+  long j0=0,i=0,k=0;
+// ÓĞj0<9¸ÄÎªj0<4 ÊÇ²ÍÆ·µÄÊı¾İ	 
+  for(j0 = 0; j0 < 4; j0++) 
 	{
 	// dest[j0] = source[j0];
 	  for(i=0;i<4;i++)
@@ -544,13 +510,12 @@ void StructCopyToBuffer(unsigned char *dest)
 	   
 	  for(i=0;i<4;i++)
 	  dest[k++]=Meal[j0].MealType[i];
-	 }
- 
+	}
 }
 void BufferToStructCopy(unsigned char *dest,unsigned char Index)
 {
-      long i=0,k=0;
-   	   
+    long i=0,k=0;
+	
 	  for(i=0;i<4;i++)
 	  Meal[Index].MealID[i]=dest[k++];
 	  for(i=0;i<20;i++)
@@ -558,22 +523,19 @@ void BufferToStructCopy(unsigned char *dest,unsigned char Index)
 	   
 	  for(i=0;i<2;i++)
 	  {
-	  Meal[Index].MealNum[i]=dest[k++];
+	    Meal[Index].MealNum[i]=dest[k++];
 	//  printf("Meal[%d].MealNum[%d]=%x\r\n",Index,i,Meal[Index].MealNum[i]);
-	   } 
+	  } 
 	  for(i=0;i<4;i++)
 	  Meal[Index].MealPreace[i]=dest[k++];
 	   
 	  for(i=0;i<4;i++)
 	  Meal[Index].MealType[i]=dest[k++];
-	 
- 
 }
 
 /*²úÆ·¶Ô±È*/	            //0X0200
 unsigned char  MealDataCompareFun(void)
 {
-
  	unsigned char i = 0 ;
   long  Lenght = 0 ,j;
 //	unsigned char MealID = 0 ;
@@ -600,9 +562,9 @@ unsigned char  MealDataCompareFun(void)
 //	BRWN[4] =    BRWN[4] /10 *16 + BRWN[4]%10 ;
 //	BRWN[5] =	 Batch %100;
 //	BRWN[5] =    BRWN[5] /10 *16 + BRWN[5]%10 ;
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));                   /*½»Ò×Á÷Ë®Ïß*/
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));                     /*Åú´ÎºÅ*/
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));       /*ÖÕ¶ËËùÔÚÇøÓò±àºÅ*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));                   /*½»Ò×Á÷Ë®Ïß*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));                     /*Åú´ÎºÅ*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));       /*ÖÕ¶ËËùÔÚÇøÓò±àºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO));   /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
  	Send_Buf[CmdLenght] =  0xbc ;	 //T
 	Send_Buf[CmdLenght+1] =  0x01 ;	 //L
@@ -614,9 +576,8 @@ unsigned char  MealDataCompareFun(void)
 	CmdLenght+=0x03;									
 	
 	/*·¢ËÍÃüÁî*/
-    i = MealComparefunDemo(0x0200,Send_Buf,CmdLenght);
- 
-    /*µ¥Æ¬ÊÇ·ñ³É¹¦*/
+  i = MealComparefunDemo(0x0200,Send_Buf,CmdLenght); 
+  /*µ¥Æ¬ÊÇ·ñ³É¹¦*/
 	if(i==0x01)
 	return 1;
 	Lenght = HL_BufferToInit(&rx1Buf[2]);		//µÃµ½Êı¾İ³¤¶È
@@ -626,38 +587,35 @@ unsigned char  MealDataCompareFun(void)
   return 0;	 /*Êı¾İÕıÈ·*/
 	if(ReturnData.Lenght[0] == 0x24 )
 	{
-	 Batch ++ ;
+	   Batch ++ ;
      return 1;	 /*Êı¾İÕıÈ·*/
 	}
-	   CmdLenght = GetData(TempBuffer,rx1Buf,Lenght,0xBC);/*²ÍÆ·¶Ô±È*/
-//	   	printf("StatusCmdLenght=%x\r\n",CmdLenght);
-	   if(CmdLenght>34)
-	   {				 
-	      status  = CmdLenght / 35  ;
-//		  	printf("Statusstatus=%x\r\n",status);
-		  for(i=0;i<status;i++)
+	CmdLenght = GetData(TempBuffer,rx1Buf,Lenght,0xBC);/*²ÍÆ·¶Ô±È*/
+//printf("StatusCmdLenght=%x\r\n",CmdLenght);
+	if(CmdLenght>34)
+	{				 
+	  status  = CmdLenght / 35  ;
+//	printf("Statusstatus=%x\r\n",status);
+		for(i=0;i<status;i++)
+		{
+	    if(rx1Buf[45+i*35] ==0x03)
 		  {
-	       if(rx1Buf[45+i*35] ==0x03)
-		   {
-//		      printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[45+i*35]);
-//			  printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[14+i*35]);
-	          for(j=0;j<34;j++)
-		     {
+//		  printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[45+i*35]);
+//			printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[14+i*35]);
+	      for(j=0;j<34;j++)
+		    {
 		      BufferToStructCopy(&TempBuffer[i*35],rx1Buf[14+35*i]-0x20);
-		     }
-		   }
+		    }
 		  }
-		   return 1 ;/*²ÍÆ·¶Ô±È´íÎó*/
-	   }
-
-    for(j=0;j<Lenght;j++)
-    {
-//	  CheckInitReturnUnion.CheckInitReturnBuffer[j]= rx1Buf[j];
-//	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-    }
-
+		}
+		return 1 ;/*²ÍÆ·¶Ô±È´íÎó*/
+	}
+  for(j=0;j<Lenght;j++)
+  {
+//	CheckInitReturnUnion.CheckInitReturnBuffer[j]= rx1Buf[j];
+//	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+  }
   return 0;
-
 }
 
 	          
@@ -672,13 +630,12 @@ unsigned char SignOutFun()
 {
 
  	unsigned char i = 0 ;
-    long  Lenght = 0 ,j;
+  long  Lenght = 0 ,j;
 	long 	CmdLenght = 0 ;
 	unsigned char 	  Send_Buf[400];
 
-   	mem_set_00(rx1Buf,sizeof(rx1Buf));
-  /*Ë®Á÷ºÅ++*/
-	 
+  mem_set_00(rx1Buf,sizeof(rx1Buf));
+  /*Ë®Á÷ºÅ++*/ 
 	Send_Buf[0] =  0x02 ;
 	Send_Buf[1] =  0x00 ;
 	Send_Buf[2] =  0x00 ;
@@ -707,22 +664,17 @@ unsigned char SignOutFun()
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*Åú´ÎºÅ*/
 	Send_Buf[CmdLenght] = 0x03 	;
 	CmdLenght+=0x03;
-    i = MealComparefunDemo(0x0300,Send_Buf,CmdLenght);
+  i = MealComparefunDemo(0x0300,Send_Buf,CmdLenght);
 
 	if(i == 0x01)
 	return 1 ;
 	 Lenght = HL_BufferToInit(&rx1Buf[2]);
 	 for(j=0;j<Lenght+7;j++)
 	 {
-	 
-//	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-	  }
-  
-  return 0 ;
-
+//	 printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+	 }
+   return 0 ;
 }
-
-
 	       
  /*******************************************************************************
 * Function Name  : ×´Ì¬ÉÏ´«º¯Êı		 0X0300
@@ -733,7 +685,6 @@ unsigned char SignOutFun()
 *******************************************************************************/
 unsigned char StatusUploadingFun()
 {
-
  	unsigned char i = 0 ;
 	long  Lenght = 0 ,j;
 	long 	CmdLenght = 0 ;
@@ -762,25 +713,21 @@ unsigned char StatusUploadingFun()
 	BRWN[8] =    BRWN[8] /10 *16 + BRWN[8]%10 ;
 	BRWN[9] =	 Batch %100;
 	BRWN[9] =    BRWN[9] /10 *16 + BRWN[9]%10 ;
-
-
+	
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*Á÷Ë®ºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*Åú´ÎºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(DeviceStatus));  /*ÖÕ¶ËµÄ×´Ì¬*/
 	Send_Buf[CmdLenght] = 0x03 	;
 	CmdLenght+=0x03;
-    i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);
+  i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);
 	if(i == 0x01)
 	return 1 ;
-    Lenght = HL_BufferToInit(&rx1Buf[2]) ;
+  Lenght = HL_BufferToInit(&rx1Buf[2]) ;
 	for(j=0;j<Lenght+7;j++)
-	{
-	 
-//	 printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-	
+	{ 
+//	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
 	}
   return 0 ;
-
 }
 
  /*******************************************************************************
@@ -798,8 +745,6 @@ unsigned char EchoFun(void)
 	long 	CmdLenght = 0 ;
 	unsigned char 	  Send_Buf[400];
 	mem_set_00(rx1Buf,sizeof(rx1Buf));
-
-
     /*Ë®Á÷ºÅ++*/
 	Send_Buf[0] =  0x02 ;
 	Send_Buf[1] =  0x00 ;
@@ -812,26 +757,24 @@ unsigned char EchoFun(void)
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DealTime,sizeof(DealTime));  /*ÖÕ¶ËµÄTID*/
 	Send_Buf[CmdLenght] = 0x03 	;
 	CmdLenght+=0x03;
-    i = MealComparefunDemo(0x0700,Send_Buf,CmdLenght);
+  i = MealComparefunDemo(0x0700,Send_Buf,CmdLenght);
 	if(i == 0x01)  // ·µ»ØÊı¾İ³¬Ê±
-	return 1 ;
+	  return 1 ;
 
 	USART_ITConfig(UART5,USART_IT_RXNE,DISABLE);
-    Lenght = HL_BufferToInit(&rx1Buf[2]) ;
+  Lenght = HL_BufferToInit(&rx1Buf[2]) ;
 
 	if(Lenght == 0x00)
 	{
-	 USART_ITConfig(UART5,USART_IT_RXNE,ENABLE);
-	 return 1 ;
+	  USART_ITConfig(UART5,USART_IT_RXNE,ENABLE);
+	  return 1 ;
 	}
 	for(j=0;j<Lenght+7;j++)
 	{	 
-//	 printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+//	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
 	}
 	 if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)	 //±íÊ¾ÕıÈ·
 	 {
-
-
 		 //  tmp_yy  = rx1Buf[7]/16*10+rx1Buf[7]%16 ;/*Äê*/
 		   tmp_yy  = rx1Buf[8]/16*10+rx1Buf[8]%16 ;/*Äê*/ 
 //		   printf("tmp_yy=%d\r\n",tmp_yy); 
@@ -899,7 +842,7 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	GetBRWN();
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*Á÷Ë®ºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*Åú´ÎºÅ*/
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*ÖÕ¶ËËùÔÚÇøÓò±àºÅ*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*ÖÕ¶ËËùÔÚÇøÓò±àºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO)); /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
 	for(i=0;i<6;i++)
 	{
@@ -914,38 +857,37 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealID,sizeof(MealID)); /*²ÍÆ·ID*/
 	
 	/*ÕâÀï¸³Öµ²ÍÆ·µÄID*/
-    MealNO[3] = CustomerSel.MealNo; 
+  MealNO[3] = CustomerSel.MealNo; 
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealNO,sizeof(MealNO)); /*²ÍÆ·¹ºÂòÊıÁ¿*/
 
 	 //ÕâÀï¸³Öµ²ÍÆ·µÄÃû×Ö					  
-	 for(j=0;j<20;j++)
-	 MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));             /*²ÍÆ·Ãû×Ö*/
+	for(j=0;j<20;j++)
+	MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
+	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));             /*²ÍÆ·Ãû×Ö*/
 	/*ÕâÀï¸³Öµ²ÍÆ·µÄ¼Û¸ñ*/
 	for(i=0;i<6;i++)
-    MealPrice[3+i] = CustomerSel.MealPrice[i] ; 
+  MealPrice[3+i] = CustomerSel.MealPrice[i] ; 
 
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealPrice,sizeof(MealPrice));          /*²ÍÆ·¼Û¸ñ*/	
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealPrice,sizeof(MealPrice));          /*²ÍÆ·¼Û¸ñ*/	
    /*¸¶Ç®µÄ·½Ê½*/
 	PayType[3] = CustomerSel.PayType ;										
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PayType,sizeof(PayType));              /*Ö§¸¶·½Ê½*/
 	/*ÕÒÁã½ğ¶î*/
 	for(i=0;i<6;i++)
 	Change[3+i] = CustomerSel.Change[i] ;	    
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change));                /*ÕÒÁã½ğ¶î*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change));                /*ÕÒÁã½ğ¶î*/
 	/*Ê£Óà²ÍÆ·ÊıÁ¿*/
 	for(i=0;i<2;i++)
 	{
-     RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
+    RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
 //	 printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
 	}
- 	  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*Ê£Óà²ÍÆ·ÊıÁ¿*/			 
-	  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));                      /*MAC*/
+ 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*Ê£Óà²ÍÆ·ÊıÁ¿*/			 
+	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));                      /*MAC*/
 //  if(UserAct.PayType == '2' )	                                                                       /* ±íÊ¾Èç¹ûÊÇË¢¿¨*/
 //	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);                /*¼ÇÂ¼Ë¢¿¨ĞÅÏ¢*/
 //	if(UserAct.PayType == '3')
-//  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);                /*¼ÇÂ¼Ë¢¿¨ĞÅÏ¢*/	
-	
+//  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);                /*¼ÇÂ¼Ë¢¿¨ĞÅÏ¢*/		
 	Send_Buf[CmdLenght] = 0x03 	;
 	CmdLenght+=0x03;	
 	                                
@@ -959,27 +901,22 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	if(Lenght == 0x00)/*ÅĞ¶ÏÊı¾İ³¤¶È*/
 	return 1 ;
 	for(j=0;j<Lenght+7;j++)
-	{
-	 
-//	 printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-
-	 }
-	 if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)	 //±íÊ¾ÕıÈ·
-	 {
-	  	
+	{ 
+//	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+	}
+	if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)	 //±íÊ¾ÕıÈ·
+	{  	
 		if(rx1Buf[7]==0x00)/*ÊÇ·ñÓ¦´ğÃüÁî*/
 		{
-		   return 0 ;
+		  return 0 ;
 		}
 		if(rx1Buf[7]==0x24)/*½»Ò×Á÷Ë®ºÅ£¨ÖÕ¶ËÁ÷Ë®£©ÖØ¸´*/
 		{
-		 //   Batch ++ ;   /*Á÷Ë®ºÅ×Ô¼Ó*/
-           return 1 ;
-		}
-	   
-	 }
+//    Batch ++ ;   /*Á÷Ë®ºÅ×Ô¼Ó*/
+      return 1 ;
+		} 
+	}
   return 0 ;
-
 }
 
 
@@ -1022,36 +959,24 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	BRWN[8] =    BRWN[8] /10 *16 + BRWN[8]%10 ;
 	BRWN[9] =	 Batch %100;
 	BRWN[9] =    BRWN[9] /10 *16 + BRWN[9]%10 ;
-
-
-
+	
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*Á÷Ë®ºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*Åú´ÎºÅ*/
   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*ÖÕ¶ËËùÔÚÇøÓò±àºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO)); /*ÖÕ¶ËËùÔÚµØÓò±àºÅ*/
-
-
 	 /*
-	 
 	  ÕâÀïÌí¼ÓÃ»ÓĞÉÏ´«µÄ²úÆ·Ãû×Ö
-	 
 	 */
-
-
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC)); /*MAC*/
-	  Send_Buf[CmdLenght] = 0x03 	;
-	  CmdLenght+=0x03;
-
-
-	   i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);
-
-
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC)); /*MAC*/
+	Send_Buf[CmdLenght] = 0x03 	;
+	CmdLenght+=0x03;
+	i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);
 	if(i == 0x01)
-	return 1 ;
+	  return 1 ;
   Lenght = HL_BufferToInit(&rx1Buf[2]) ;
 	for(j=0;j<Lenght+7;j++)
 	{
-//	 printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+//	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
 	}
 	return 0 ;
  }
@@ -1093,43 +1018,42 @@ typedef struct
 void StructCopyToBuffer00(unsigned char *dest,unsigned char index)
 {
 
-    long i=0,k=0;
-   	for(i=0;i<3;i++)
-	  {		 
-	   dest[k++]=MealGroup[index].BRWN[i];
-	  }
-	  for(i=0;i<4;i++)
-	  {
+  long i=0,k=0;
+  for(i=0;i<3;i++)
+	{		 
+	  dest[k++]=MealGroup[index].BRWN[i];
+	}
+	for(i=0;i<4;i++)
+	{
 	  dest[k++]=MealGroup[index].MealID[i];
-	  }
-	  for(i=0;i<6;i++)
-	  {
+	}
+	for(i=0;i<6;i++)
+	{
 	  dest[k++]=MealGroup[index].DealBalance[i];
-	  }
-	  dest[k++]=MealGroup[index].MealNO;
-	  for(i=0;i<2;i++)
-	  {
+	}
+	dest[k++]=MealGroup[index].MealNO;
+	for(i=0;i<2;i++)
+	{
 	   dest[k++]=MealGroup[index].RemainMealNum[i];
-	  }
-	    
-	  for(i=0;i<6;i++)
-	  dest[k++]=MealGroup[index].MealPrice[i];
-	  dest[k++]=MealGroup[index].PayType;
-	  if(MealGroup[index].PayType==0x01)
-	  {
-	    for(i=0;i<4;i++)
-	    dest[k++]=MealGroup[index].Change[i];
-	  }
- 	  for(i=0;i<6;i++)
-	  dest[k++]=MealGroup[index].TimeData[i];
+	}   
+	for(i=0;i<6;i++)
+	dest[k++]=MealGroup[index].MealPrice[i];
+	dest[k++]=MealGroup[index].PayType;
+	if(MealGroup[index].PayType==0x01)
+	{
+	  for(i=0;i<4;i++)
+	  dest[k++]=MealGroup[index].Change[i];
+	}
+ 	for(i=0;i<6;i++)
+	dest[k++]=MealGroup[index].TimeData[i];
 }
 
 unsigned char MealGroupUploadingFun(void)
 {
-   	unsigned char i = 0 ;
+  unsigned char i = 0 ;
 	long  Lenght = 0 ,j=0;
 	long  CmdLenght = 0 ;
-	 unsigned char 	 Send_Buf[500];
+	unsigned char 	 Send_Buf[500];
 	unsigned char    Buffer[327]={0x00,0x00,0x0a}; 
 	/*½ÓÊÜ»º³åÇøÇå0*/
 	mem_set_00(rx1Buf,sizeof(rx1Buf));
@@ -1177,9 +1101,6 @@ unsigned char MealGroupUploadingFun(void)
 
    printf("%x\r\n",sizeof(MealGroup_struction));
  	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*Åú´ÎºÅ*/
-
-	 
-
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Buffer,sizeof(Buffer));  /*Åú´ÎºÅ*/
 	 Send_Buf[CmdLenght] = 0x03 	;
 	 CmdLenght+=0x03;
@@ -1194,9 +1115,7 @@ unsigned char MealGroupUploadingFun(void)
 	 {
 //	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
 	 }
-
 	 return 0 ;
-
 }
   /*******************************************************************************
 * Function Name  : ClearingFun		 ÅûÉÏËÍ
@@ -1235,24 +1154,21 @@ unsigned char    ClearingFun(void)
 //	BRWN[8] =    BRWN[8] /10 *16 + BRWN[8]%10 ;
 //	BRWN[9] =	 Batch %100;
 //	BRWN[9] =    BRWN[9] /10 *16 + BRWN[9]%10 ;
-
-    GetBRWN();
-
+  GetBRWN();
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*Á÷Ë®ºÅ*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*Åú´ÎºÅ*/
   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC)); /*MAC*/
 	Send_Buf[CmdLenght] = 0x03 	;
 	CmdLenght+=0x03;
-	 i = MealComparefunDemo(0x0500,Send_Buf,CmdLenght);
-	 if(i == 0x01)
-	 return 1 ;
-     Lenght = HL_BufferToInit(&rx1Buf[2]) ;
-	 for(j=0;j<Lenght+7;j++)
-	 {
-//	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-	 }
-
-	 return 0 ;
+	i = MealComparefunDemo(0x0500,Send_Buf,CmdLenght);
+	if(i == 0x01)
+	  return 1 ;
+  Lenght = HL_BufferToInit(&rx1Buf[2]) ;
+	for(j=0;j<Lenght+7;j++)
+	{
+//	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+	}
+	return 0 ;
 }
 
  /*******************************************************************************
@@ -1262,21 +1178,18 @@ unsigned char    ClearingFun(void)
 * Output         : void
 * Return         : void	  
 *******************************************************************************/
- void  SignInFunction(void)
- {
- unsigned char i = 10 ;
-    do 
+void  SignInFunction(void)
+{
+  unsigned char i = 10 ;
+  do 
 	{
 	  if(SignInFun()==0x00)
 	  break;
 	  delay_ms(500);   
 	}while(--i);
-
 	if(i == 0x00)
-	return ;
-	
-	 
- }
+	return ;	 
+}
  
   /*******************************************************************************
 * Function Name  : SignInFunction		 
@@ -1287,17 +1200,16 @@ unsigned char    ClearingFun(void)
 *******************************************************************************/
  void  EchoFuntion(void (*fptr)(void))
  {
- unsigned char i = 10 ;
-    do 
-	{
-	  if(EchoFun()==0x00)
-	  break;
-	  delay_ms(500);   
-	}while(--i);
-
-	if(i == 0x00)
-	return ;
-	(*fptr)() ;
+   unsigned char i = 10 ;
+   do 
+	 {
+	   if(EchoFun()==0x00)
+	   break;
+	   delay_ms(500);   
+	 }while(--i);
+	 if(i == 0x00)
+	 return ;
+	 (*fptr)() ;
 	 
  }
    /*******************************************************************************
@@ -1340,33 +1252,26 @@ unsigned char 	Resend(unsigned char *p,long lenght)
   if(Waittimeout == 0 )
   return 1 ;
 	
-	 Lenght = HL_BufferToInit(&rx1Buf[2]) ;
+	Lenght = HL_BufferToInit(&rx1Buf[2]) ;
 	if(Lenght == 0x00)/*ÅĞ¶ÏÊı¾İ³¤¶È*/
 	return 1 ;
 	for(j=0;j<Lenght+7;j++)
-	{
-	 
-//	 printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-
-	 }
-	 if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)	 //±íÊ¾ÕıÈ·
-	 {
-	  	
+	{ 
+//	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+	}
+	if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)	 //±íÊ¾ÕıÈ·
+	{ 	
 		if(rx1Buf[7]==0x00)/*ÊÇ·ñÓ¦´ğÃüÁî*/
 		{
-		   return 0 ;
+		  return 0 ;
 		}
 		else
-		return 1 ;
-//		if(rx1Buf[7]==0x24)/*½»Ò×Á÷Ë®ºÅ£¨ÖÕ¶ËÁ÷Ë®£©ÖØ¸´*/
-//		{	 
-//           return 1 ;
-//		}
-	   
-	 }
-  return 0 ;
-
- 
+		  return 1 ;
+//  if(rx1Buf[7]==0x24)/*½»Ò×Á÷Ë®ºÅ£¨ÖÕ¶ËÁ÷Ë®£©ÖØ¸´*/
+//	{	 
+//     return 1 ;
+//	}  
+	}
   return 0 ;
 }
- 
+

@@ -87,7 +87,6 @@ void SD_GPIO_Configuration(void)
  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
  GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-  	
  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ;	   //MISO
  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//GPIO_Mode_OUT;
 // GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
@@ -122,34 +121,28 @@ unsigned char is_init;  //ÔÚ³õÊ¼»¯µÄÊ±ºòÉèÖÃ´Ë±äÁ¿Îª1,Í¬²½Êý¾Ý´«Êä£¨SPI£©»á·ÅÂý
 
 #define DELAY_TIME 1000 //SD¿¨µÄ¸´Î»Óë³õÊ¼»¯Ê±SPIµÄÑÓÊ±²ÎÊý£¬¸ù¾ÝÊµ¼ÊËÙÂÊÐÞ¸ÄÆäÖµ£¬·ñÔò»áÔì³ÉSD¿¨¸´Î»»ò³õÊ¼»¯Ê§°Ü
 
-
 void delay(unsigned int time) 
 {
  while(time--);
 }
 
-
-
- void SD_spi_write(unsigned char x) 
+void SD_spi_write(unsigned char x) 
 {
  unsigned char i;
-
  for(i=0;i<8;i++)
- {
-  
-	ResetSCLK ;
-	if(x&0x80)
-	{
-    GPIOB->BSRRL = GPIO_Pin_5;
-
-	}
-	else
-	{
+ { 
+	 ResetSCLK ;
+	 if(x&0x80)
+	 {
+     GPIOB->BSRRL = GPIO_Pin_5;
+	 }
+	 else
+	 {
      GPIOB->BSRRH = GPIO_Pin_5;
-	}
-	if(is_init) delay(DELAY_TIME);
-	SetSCLK 	;
-    x <<= 1 ;
+	 }
+	 if(is_init) delay(DELAY_TIME);
+	 SetSCLK 	;
+   x <<= 1 ;
  }
 }
 
@@ -163,84 +156,70 @@ void delay(unsigned int time)
 
 unsigned char SD_spi_read() //SPI¶ÁÒ»¸ö×Ö½Ú
 {  
- unsigned char i,temp=0;
+  unsigned char i,temp=0;
 
- for(i=0;i<8;i++)
- {
-   SetSCLK ;
-   if(is_init) delay(DELAY_TIME);
-   ResetSCLK ;
-   if(is_init) delay(DELAY_TIME);
-   if(GPIOA->IDR & GPIO_Pin_6)
-   {
-     temp|=(0x80>>i);
-   }
- 
- }
-
- return (temp);
+  for(i=0;i<8;i++)
+  {
+    SetSCLK ;
+    if(is_init) delay(DELAY_TIME);
+    ResetSCLK ;
+    if(is_init) delay(DELAY_TIME);
+    if(GPIOA->IDR & GPIO_Pin_6)
+    {
+      temp|=(0x80>>i);
+    }
+  }
+  return (temp);
 }
 
 /*************************************************************************
 ÒÔÉÏÊÇÄ£ÄâSPI	 end
 **************************************************************************/
-
-/*
-*??????
-*??:   y ??, ?????
-*???: ??, ??0?1, 0???, 1???
-*/
+//ÅÐ¶ÏÊÇ·ñÈòÄê
 u8 isRunNian(u16 y)
 {
-return (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) ? 1 : 0;
+  return (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) ? 1 : 0;
 }
-/*
-*????????
-*??:   y ??,?????; m ??,?????;
-*???: ??, ?0, 28, 29, 30, 31??????
-*??:   ????0,???????????????????????.
-*/
+//¸ù¾ÝÔÂÓëÄêµÃµ½ÔÂµÄÌìÊý
 u8 getDays(u16 y, u8 m)
 {
-u8 days = 0;
-switch(m)
-{
-	case 1:
-	case 3:
-	case 5:
-	case 7:
-	case 8:
-	case 10:
-	case 12:
-		days = 31; break;
-	case 4:
-	case 6:
-	case 9:
-	case 11:
-		days = 30; break;
-	case 2:
-		days = isRunNian(y) ? 29 : 28; break;
-	default:;
+  u8 days = 0;
+  switch(m)
+  {
+		case 1:
+		case 3:
+		case 5:
+		case 7:
+		case 8:
+		case 10:
+		case 12:
+			days = 31; break;
+		case 4:
+		case 6:
+		case 9:
+		case 11:
+			days = 30; break;
+		case 2:
+			days = isRunNian(y) ? 29 : 28; break;
+		default:;
 	}
 	return days;
 }
 
 
   /*******************************************************************************
- * º¯ÊýÃû³Æ:itoa   °Ñint×ª»»³É×Ö·ûÐÍ                                                                 
- * Ãè    Êö:ÎÞ                                                                   
+ * º¯ÊýÃû³Æ:itoa                                                                   
+ * Ãè    Êö:°Ñint×ª»»³É×Ö·ûÐÍ                                                              
  *                                                                               
  * Êä    Èë:ÎÞ                                                                     
  * Êä    ³ö:ÎÞ                                                                     
  * ·µ    »Ø:ÎÞ                                                                  
  * ÐÞ¸ÄÈÕÆÚ:2013Äê4ÔÂ20ÈÕ                                                                    
  *******************************************************************************/
- unsigned char 	f_name[12];
-  void itoa(uint8_t *f_name, Struct_TD  a)
+char 	f_name[12];
+void itoa(char *f_name, Struct_TD  a)
 {
-
 	 uint8_t i,j=0;
-	
 	 f_name[j++] = 2               ;
 	 f_name[j++] = 0			         ;
 	 f_name[j++] = a.Year     /	10 ;
@@ -255,13 +234,11 @@ switch(m)
 //	 f_name[j++] = a.Minutes  % 10;
 	
 	 for(i=0;i<8;i++)
-	 f_name[i] += '0';
+	 f_name[i] += '0'; //ÈÕÆÚÊý¾Ý×ª»»Îª×Ö·û
 	 f_name[j++]  = '.';
 	 f_name[j++]  = 't';
 	 f_name[j++]	= 'x';
 	 f_name[j++]	= 't';
-
-
 }
   /*******************************************************************************
  * º¯ÊýÃû³Æ:itoa   °Ñint×ª»»³É×Ö·ûÐÍ                                                                 
@@ -287,7 +264,7 @@ void Fwriter(unsigned char *p)
 	  res = f_mount(0, &fs); 
 		if(res!=FR_OK)
 		{
-		return ;
+		  return ;
 		}
 		else
 		{
@@ -329,7 +306,7 @@ void Fwriter(unsigned char *p)
 
   /*******************************************************************************
  * º¯ÊýÃû³Æ: Fread                                                                
- * Ãè    Êö: Ð´Êý¾Ý½øsd¿¨                                                                   
+ * Ãè    Êö: ´Ó¿¨ÖÐ¶ÁÈ¡Êý¾Ý                                                                
  *                                                                               
  * Êä    Èë:ÎÞ                                                                     
  * Êä    ³ö:ÎÞ                                                                     
@@ -342,88 +319,76 @@ unsigned char    Fread(unsigned char *p)
 {
 		uint8_t   sd_time;   
     uint32_t  rd; 
-	  uint16_t  Lenght = 0 ;
-	 // uint32_t  Index = 0 ;
-	  
+	  uint16_t  Lenght = 0 ;	  
 	  uint32_t  indexflag = 0; 
-//	  long i = 0 ;
 	
 	  res = f_mount(0, &fs); 
 		if(res!=FR_OK)
 		{
-		return ;
+			return 0;
 		}
-		else
+		for(sd_time=0;sd_time<20;sd_time++) //ÖØ¸´´ò¿ª20´Î
 		{
-		}
-		for(sd_time=0;sd_time<20;sd_time++)
-		{
-     res = f_open(&fsrc,f_name,FA_OPEN_EXISTING|FA_READ |FA_WRITE);
+      res = f_open(&fsrc,f_name,FA_OPEN_EXISTING|FA_READ |FA_WRITE);  //Ä¬ÈÏ´ò¿ªÒ»¸öÎÄ¼þ
 		//res = f_open(&fsrc,"0:123456789.txt", FA_OPEN_EXISTING|FA_READ );  //ÎÄ¼þ²»´æÔÚÔò´´½¨ÐÂÎÄ¼þ
-		if(res==FR_OK) 	
-		break;
-	   }
-		if(res!=FR_OK)
+		  if(res==FR_OK) 	
+		     break;
+	  }
+		if(res!=FR_OK) 
 		{
-
-		return  1;
+		  return  1; //·µ»Ø´íÎó
 		}
 		else
-		{ 
-		
-		   // res = f_lseek(&fsrc,fsrc.fsize); 
-				res = f_lseek(&fsrc,Index); 
+		{ 	
+		  // res = f_lseek(&fsrc,fsrc.fsize); 
+		  res = f_lseek(&fsrc,Index); //Ö¸ÕëÖ¸ÏòµÚIndex¸ö×Ö½Ú
 			//	printf("Index = %d \r\n",res);
-				res = f_read(&fsrc,Buffer,512, &rd);
+		  res = f_read(&fsrc,Buffer,512, &rd);//¶ÁÈ¡512×Ö½ÚµÄÊý¾Ýµ½Buffer,rd ´æ´¢µÄÊÇ¶Áµ½µÄ×Ö½ÚÊý
 			//	printf("Index = %d \r\n",res);
-				res = f_lseek(&fsrc,Index+512); 
+		  res = f_lseek(&fsrc,Index+512); //Ö¸ÕëÆ«ÒÆIndex+512¸ö×Ö½Ú
 			//	printf("Index = %d \r\n",res);
-				res = f_read(&fsrc,&Buffer[512],512, &rd);
+			res = f_read(&fsrc,&Buffer[512],512, &rd);//´«µÝµÄÊÇBuffer[512]µÄµØÖ·£¬¶ÁÈ¡ÁË512×Ö½ÚµÄÊý¾Ý
 //				printf("Index = %d \r\n",res);
 //			  printf("Buffer = %c \r\n",Buffer[1021]);
 //			  printf("Buffer = %c \r\n",Buffer[1022]);
 //				printf("Buffer = %c \r\n",Buffer[1023]);
-			 if(Buffer[1022]== 'N' && Buffer[1023]== 'O') //±íÊ¾Ã»ÓÐ·¢ËÍ³É¹¦
-			 {
+			if(Buffer[1022]== 'N' && Buffer[1023]== 'O') //±íÊ¾Ã»ÓÐ·¢ËÍ³É¹¦
+			{
 //				  printf("Buffer = %c \r\n",Buffer[1021]);
 //				  printf("Buffer = %c \r\n",Buffer[1022]);
 //				  printf("Buffer = %c \r\n",Buffer[1023]);
-				  Lenght = Buffer[1019] << 8 | Buffer[1020];
-				   if(1)
-				  //if(Resend(Buffer,Lenght) == 0x00)
-					{   
-			
-						    indexflag = Index+1021 ;
-						 		res = f_lseek(&fsrc,indexflag); 
-					   	  
-               	res = f_write(&fsrc,"Yes",3, &rd);
-						    f_close(&fsrc);
-          } 
-					else 
-					{
-						    *p =  0x01 ; 
-						    res = f_lseek(&fsrc,1000);
-						    res = f_write(&fsrc,"Uncomplete",10, &rd);
-						    f_close(&fsrc);		
-               						
-          }
-       }	 
-			 Index += 1024 ;
-		//	 printf("Index = %d \r\n",Index);
-	  if(res!=FR_OK ||fsrc.fsize <= Index )
-	{
-	  f_close(&fsrc);
-	//  f_mount(0, NULL);
-	  return 1;
-	}
-	else
-	{
-	   f_close(&fsrc);
-//	   f_mount(0, NULL);
-		 return 0 ;
-	}  
-
-}
+				Lenght = Buffer[1019] << 8 | Buffer[1020];
+				if(1)
+				//if(Resend(Buffer,Lenght) == 0x00)
+				{   		
+					indexflag = Index+1021 ;
+					res = f_lseek(&fsrc,indexflag);//Æ«ÒÆIndex+1021  	  
+          res = f_write(&fsrc,"Yes",3, &rd); //Ð´"Yes"
+				  f_close(&fsrc);
+        } 
+				else 
+				{
+					*p =  0x01 ; 
+					res = f_lseek(&fsrc,1000);
+					res = f_write(&fsrc,"Uncomplete",10, &rd);
+					f_close(&fsrc);		      						
+        }
+      }	 
+		  Index += 1024 ; //Æ«ÒÆ1024
+		  // printf("Index = %d \r\n",Index);
+	    if(res!=FR_OK ||fsrc.fsize <= Index ) //fsrc.fsizeÊÇÎÄ¼þ´óÐ¡£¬ÕâÀïÅÐ¶ÏÎÄ¼þ´óÐ¡
+	    {
+	      f_close(&fsrc);
+//      f_mount(0, NULL);
+	      return 1;
+	    }
+	    else
+	    {
+	      f_close(&fsrc);
+//	    f_mount(0, NULL);
+		    return 0 ;
+	    }  
+   }
 }
   /*******************************************************************************
  * º¯ÊýÃû³Æ:WriteDatatoSD                                                                  
@@ -443,8 +408,8 @@ void WriteDatatoSD(unsigned char *data)
 
 
   /*******************************************************************************
- * º¯ÊýÃû³Æ:WriteDatatoSD                                                                  
- * Ãè    Êö:°ÑÐÅÏ¢Ð´½øsd¿¨                                                                 
+ * º¯ÊýÃû³Æ:ReadDatatoBuffer                                                                  
+ * Ãè    Êö:´ÓSD¿¨ÖÐ¶ÁÈ¡Êý¾Ý                                                               
  *                                                                               
  * Êä    Èë:ÎÞ                                                                     
  * Êä    ³ö:ÎÞ                                                                     
@@ -453,24 +418,16 @@ void WriteDatatoSD(unsigned char *data)
  *******************************************************************************/
 void ReadDatatoBuffer(void)
 {
-  unsigned char DelteFlag = 0 ;//ÓÃÀ´±ê¼ÇÊÇ·ñÈ«²¿ÉÏ´ÎÁËÊý¾ÝµÄº¯Êý
+  unsigned char DelteFlag = 0 ;//ÓÃÀ´±ê¼ÇÊÇ·ñÈ«²¿ÉÏ´«ÁËÊý¾ÝµÄº¯Êý
 	unsigned char Times  = 0  ;
-//	RTC_TimeShow();
-//	itoa(f_name,TimeDate);	  //°ÑÊ±¼ä×ª»»³É×Ö·û
 	Index = 0 ;
 	for(Times = 0 ;Times <10 ;Times--)
 	{
-	do
-	{ 
-	   if( Fread(&DelteFlag)==0x01)					      //¼ÙÈç³ö´íÁË¡
-		 break ;
-  }while(1);
-//	 printf("DelteFlag=%d",DelteFlag);
-//	 if(DelteFlag == 0x00)
-//	{
-//	   f_unlink(f_name);
-//     break;
-//	}
+	  do
+	  { 
+	     if(Fread(&DelteFlag)== 0x01)					      //¼ÙÈç³ö´íÁË¡???
+		   break ;
+    }while(1);
   }
 }
 
@@ -491,44 +448,20 @@ void SendtoServce(void)
 	RTC_TimeShow();
 	for(i=0;i<7;i++)
 	{
-		itoa(f_name,TimeDate);	  //°ÑÊ±¼ä×ª»»³É×Ö·û 
-//		printf("%s\r\n",f_name);
+		itoa(f_name,TimeDate);	  //ÎÄ¼þÃûÎªTimeDate
+//	printf("%s\r\n",f_name);
 	 	if(TimeDate.Date == 1)
 		{
 			TimeDate.Date  = getDays(2000+TimeDate.Year,TimeDate.Month);
 			if(TimeDate.Month == 1)
 		  TimeDate.Month   = 12;
     }
-		 //·¢ËÍÊý¾Ý 
+		 //·¢ËÍÊý¾Ý ???
 		ReadDatatoBuffer();
-		TimeDate.Date -- ;
-		
+		TimeDate.Date -- ;	
   }	 
 }
-//unsigned char GetageMonth(unsigned char Month)
-//{
-//	 unsigned char temp = 0;
-//	// return  Month>1 ?  Month: 12; 
-//	 switch(Month)
-//{
-//	case 1:
-//		      temp = 12 ; break;
-//	case 2: temp = 1 ; break;
-//	case 3: temp = 2 ; break;
-//	case 4: temp = 3 ; break;
-//	case 5:temp = 4; break;
-//	case 6:temp = 5; break;
-//	case 7:temp = 6 ; break;
-//	case 8:temp = 7 ; break;
-//	case 9:temp = 8 ; break;
-//	case 10:temp = 9 ; break;
-//	case 11:temp = 10 ; break;
-//	case 12:temp = 11 ; break;
-//		
-//	default:break;
-//	}
-//	return temp;
-//}
+
   /*******************************************************************************
  * º¯ÊýÃû³Æ:File_delete                                                                  
  * Ãè    Êö:ÉÏµçÊ±¿ÌÉ¾³ýÇ°2¸öÔÂµÄ¼ÇÂ¼                                                                
@@ -547,15 +480,15 @@ void File_delete(void)
 //	 printf("%s\r\n",f_name);
 	 if(TimeDate.Month == 0x01)
 	 {
-	 TimeDate.Month = 11;
-		TimeDate.Year -=1 ; 
+		 TimeDate.Month = 11;
+		 TimeDate.Year -=1 ; 
 	 }
 	 if(TimeDate.Month == 0x02)
 	 {
-	 TimeDate.Month = 12;
-	 TimeDate.Year -=1 ; 
+		 TimeDate.Month = 12;
+	   TimeDate.Year -=1 ; 
 	 }
-		 // TimeDate.Month =TimeDate.Month>2 ? TimeDate.Month-2: 12-TimeDate.Month;        
+// TimeDate.Month =TimeDate.Month>2 ? TimeDate.Month-2: 12-TimeDate.Month;        
 	 for(i=0;i<2;i++)
 	 { 
 			res = f_mount(0, &fs); 
@@ -563,16 +496,15 @@ void File_delete(void)
 			{
 			return ;
 			}
-	//	  TimeDate.Month= GetageMonth(TimeDate.Month);
-	    itoa(f_name,TimeDate);	  //°ÑÊ±¼ä×ª»»³É×Ö·û 
-		  
+//	  TimeDate.Month= GetageMonth(TimeDate.Month);
+	    itoa(f_name,TimeDate);	  //°ÑÊ±¼ä×ª»»³É×Ö·û 	  
 		  TimeDate.Date  = getDays(2000+TimeDate.Year,TimeDate.Month);
 		  days = TimeDate.Date ;
 		  for(j=0;j<days;j++)
 		  {
 				itoa(f_name,TimeDate);	  //°ÑÊ±¼ä×ª»»³É×Ö·û 
 //				printf("%s\r\n",f_name);
-				f_unlink(f_name);
+				f_unlink(f_name);  //
 				TimeDate.Date -- ;
       }
 			TimeDate.Month-- ;

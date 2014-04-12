@@ -493,6 +493,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\usart\uart4.c</FilePath>
             </File>
+            <File>
+              <FileName>voice.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\vioce\voice.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mini_hopper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\mini_hopper\Mini_hopper.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

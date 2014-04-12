@@ -23,6 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
+#include "bsp.h"
 
 /** @addtogroup STM32F4xx_StdPeriph_Examples
   * @{
@@ -175,6 +176,43 @@ void TIM2_IRQHandler(void)
   }
 }
 
+   /*******************************************************************************
+ * 函数名称:EXTI15_10_IRQHandler                                                                     
+ * 描    述:投币机中断线接收                                                                 
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+unsigned int   CoinsCount=0;
+unsigned int   CoinsOutFlat=1;
+extern unsigned char NewCoinsCnt;
+void EXTI15_10_IRQHandler(void)
+{
+  unsigned char PinStatus;
+  if (EXTI_GetITStatus(EXTI_Line12) != RESET)
+	{
+	  PinStatus=GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_12);
+		if(PinStatus == 0)
+		{
+		  CoinsCount++;
+		  if(CoinsCount == 2)
+			{
+				//CoinsCount = 0;
+				UserAct.PayForCoins++;
+				UserAct.PayAlready++;
+			}
+		}
+    EXTI_ClearITPendingBit(EXTI_Line12);
+	}
+	
+	if( EXTI_GetITStatus(EXTI_Line10) != RESET)	
+	{
+		NewCoinsCnt++; //新的硬币机接收个数
+	  EXTI_ClearITPendingBit(EXTI_Line10);	
+	}
+}
 /**
   * @}
   */ 

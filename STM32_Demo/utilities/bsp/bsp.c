@@ -29,7 +29,7 @@
  uint8_t    Line = 0,Column = 0 ;
  uint8_t FindMeal(MealAttribute *DefineMeal) 
  {
-     for(Line = 0; Line < FloorMealNum; Line++)
+    for(Line = 0; Line < FloorMealNum; Line++)
 		{
 			for(Column = 0; Column < 3; Column++)
 			{
@@ -84,16 +84,17 @@ void PrintTickFun(unsigned char *PrintTickFlag)
  *******************************************************************************/ 
 uint8_t CurrentPoint = 0 ; 
 uint8_t UserPayMoney =0 ;
+unsigned char NewCoinsCnt=0;
+unsigned char OldCoinsCnt=0;
 unsigned char  WaitPayMoney(void)
 {
-  uint8_t PicNumber;
 	uint8_t temp = 0 ;
 	uint8_t temp1 ;
 	unsigned char times = 10 ;
 	unsigned char Status = 0;
   switch(CurrentPoint)
 	{
-	  case 0 :	//发送那个位置的餐
+	  case 0 :	//发一次UserAct.MealID 的位置
 	  {	  
 	    if(FindMeal(DefineMeal) == 0)
 	    {
@@ -193,16 +194,14 @@ unsigned char  WaitPayMoney(void)
 	  case 9 :  //关闭所有的收银系统
 		{
 			UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
+      OldCoinsCnt= UserAct.MoneyBack ; //在这里程序只执行一次
+      NewCoinsCnt= 0;    
 			Print_Struct.P_ID        = UserAct.MealID ;
 			Print_Struct.P_paymoney  = UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
 			Print_Struct.P_PayShould = UserAct.PayShould ;
 			Print_Struct.P_MoneyBack =	UserAct.MoneyBack ;
 			WaitTime  = 0;
 			TIM_Cmd(TIM4, ENABLE);
-			if(UserAct.MoneyBack > 0)
-			{
-			   //OpenCoins();    //找币		
-			}
 			CurrentPoint = 0 ;
 	       return  Status_OK;
 		}break;
@@ -343,7 +342,59 @@ uint8_t WaitMeal(void)
   return 1 ;
 }   
 
-
+  /*******************************************************************************
+ * 函数名称:CloseCashSystem                                                                     
+ * 描    述:关闭现金接受                                                        
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+bool CloseCashSystem(void)
+{
+	char cnt_t=20;
+  CloseCoinMachine();			    //关闭投币机	
+	DisableBills();             //设置并关闭纸币机
+	do
+  {
+		cnt_t--;
+		delay_ms(1);	
+	}  // 超时
+	while((cnt_t>0)&&(DisableBillFlag== NACK)); //当超时或者接收到ACK后
+	if(DisableBillFlag== ACK) 
+	{
+		DisableBillFlag= NACK;
+			return true;
+	}
+	else 
+	{
+		DisableBillFlag= NACK;
+			return false;
+	}
+}
+bool OpenCashSystem(void)
+{
+	char cnt_t=20;	
+	OpenCoinMachine();    //打开投币机	
+	SetBills();           //设置并打开纸币机
+	do
+  {
+		cnt_t--;
+		delay_ms(1);	
+	}
+	while((cnt_t>=0)&&(EnableBillFlag== NACK));//
+	if(EnableBillFlag== ACK) 
+	{
+		EnableBillFlag= NACK;
+			return true;
+	}
+	else 
+	{
+		EnableBillFlag= NACK;
+			return false;
+	}
+}
 
   /*******************************************************************************
  * 函数名称:ClearingFuntion                                                                     
@@ -406,69 +457,52 @@ void ClearingFuntion(void)
 
 void hardfawreInit(void)
 {
-    uint8_t i, j, k;
-
-    for(i = 0; i < 4; i++)
+  uint8_t i, j, k;
+//初始化存放位置数据结构体
+  for(i = 0; i < 4; i++)
 	{
-	
 		DefineMeal[i].MealPrice = 0;
 		DefineMeal[i].MealCount = 0;
 		for(j = 0; j < 15; j++)
 		{
 			for(k = 0; k < 3; k++)
 			{
-				DefineMeal[i].Position[j][k] = 0; /**/
+				DefineMeal[i].Position[j][k] = 0; 
 			}
-		}
-		
+		}	
 	}
  	 UserAct.PayForCoins     = 0;
 	 UserAct.PayForBills     = 0;
 	 UserAct.PayForCards     = 0;
 	 UserAct.PayAlready      = 0;
-	 IsCard            = 0;
-//	 LCD_En_Temp();
-
    SystemInit();
-//	 delay_ms(30000);
-//	 LED_Init();
-//     InitBills();               //纸币机初始化 
-	 Uart1_Configuration();	    //串口1初始化
+//	 delay_ms(30000); //上电等待路由器启动
+	 Uart4_Configuration();     //纸币机串口初始化 
+	 Uart1_Configuration();	    //打印机串口初始化
 	 Uart3_Configuration();	    // 串口屏初始化
 //	 Uart2_Configuration();	    //深圳通、银联卡串口
 //	 Uart5_Configuration();		//网络串口初始化
 //	 Uart6_Configuration();
-//	 //InitCards();			    //IC卡初始化
 //	 TIM2_Init();		        //电机
 //	 TIM3_Init();		        //用于定时，倒计时
 //	 TIM4_Init();		        //待定
 //	 TIM5_Init();		        //倒计时退币
-//	 TIM7_Init();				//用于定时采集温度
-//	 InitCoins();		        //硬币初始化
-//	 InitCoinsHopper() ;		 //退币器始化
-////	 InitCoinMachine();		    //硬币机初始化
-////	 CAN_InitConfig();	        //can初始化
-// 	 PictrueDisplay(0);        //显示LOGO
-//	 InitVoice()  ;             //语音初始化
-//	 MyRTC_Init();              //RTC初始化
+//	 TIM7_Init();				  //用于定时采集温度
+   InitCoins();		        //投币机初始化
+   InitMiniGPIO() ;		   //退币器始化
+	 PageChange(Logo_interface); //显示logo
+	 PageChange(Logo_interface); //重复一次就可以成功
+	 InitVoice()  ;             //语音初始化
+	 MyRTC_Init();              //RTC初始化
 	 SPI_FLASH_Init();          //Flash初始化
-	 SPI_FLASH_Init();
-	 
-   SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);	 
-//	 LED_Init();
-//	 ReadMeal();
-//	 for(i=0;i<90;i++)
-//	 {
-//	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
-//	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
-//	 }
-	 WriteMeal();  //
+	 SPI_FLASH_Init();          //重复初始化才行
+   SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品	 
+	 for(i=0;i<90;i++)
+	 {
+	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
+	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
+	 }
+	 WriteMeal();  //写入餐品数据
 	 StatisticsTotal(); //后面的程序需要使用  	
-// PictrueDisplay(HOME_PAGE);	       //显示菜单页面
-// DS18B20_DEMO();
-// TemperatureDisplay(Temperature);  //显示温度	  
-// DisplayMealCount();			   //显示餐的数目 
- //delay_ms(30000);
-	 
 }														 
 

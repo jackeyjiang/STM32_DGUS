@@ -84,65 +84,61 @@ void UART5_IRQHandler(void)
 	if(USART_GetITStatus(UART5,USART_IT_RXNE)!=RESET)//数据接收扫描
 	{	
 	  USART_ClearITPendingBit(UART5,USART_FLAG_RXNE);//清接收标志
-      res=UART5->DR;
+    res=UART5->DR;
 	  if(!F_RX1_SYNC)
 	  {		
-
-		if(res ==DEF_RX1_Head )//判断是否是串口帧头
-		{
-			F_RX1_SYNC = 1;	 //接受同步标志
-			rx1BufIndex = 0; //缓冲区个数清零
-			F_RX1_VAILD = 1; //收到有效数据
-			CrcValue = 0;
-			F_RX1_Right = 0 ;
-		}
-		
-  	 }
- 	else 
-  	{	
-	   rx1Buf[rx1BufIndex]=res;
-	   if(rx1BufIndex==0x04)
+		  if(res ==DEF_RX1_Head )//判断是否是串口帧头
+		  {
+			  F_RX1_SYNC = 1;	 //接受同步标志
+			  rx1BufIndex = 0; //缓冲区个数清零
+			  F_RX1_VAILD = 1; //收到有效数据
+			  CrcValue = 0;
+			  F_RX1_Right = 0 ;
+		  }	
+    }
+ 	  else 
+    {	
+	    rx1Buf[rx1BufIndex]=res;
+	    if(rx1BufIndex==0x04)
 	    {
-	        rx1DataLen   = rx1Buf[2] << 8 | rx1Buf[3] ; 	 /*接受数据长度*/	
+	      rx1DataLen   = rx1Buf[2] << 8 | rx1Buf[3] ; 	 /*接受数据长度*/	
 	    }
-	   if(F_RX1_VAILD == 0x01)/*接受的是数据*/
+	    if(F_RX1_VAILD == 0x01)/*接受的是数据*/
 	    {
 		    if((rx1BufIndex == rx1DataLen + 3)&&(rx1DataLen != 0x00)) /*判断接受的数据长度是否对应，并接受的数据不为0*/
-		     {
-			     F_RX1_VAILD = 0;  /*???标志一个接受的数据是正确的*/
-			 }
+		    {
+			    F_RX1_VAILD = 0;  /*???标志一个接受的数据是正确的*/
+			  }
 		    /*校验数据*/
-		    if(1){
-	   		        CrcValue ^= res;
-				    for(j=0;j<8;j++)
-				    {
-				        if(CrcValue&0x0001)
-						    { 
-						    	CrcValue >>=1 ;
-								CrcValue ^=0x08408 ;
-			
-							}
-						else 
-								CrcValue >>=1 ;
-				   }
-		    	}	 
-		}
-		if(rx1BufIndex == rx1DataLen + 6) /*?数组接收完*/
+		    if(1)
+			  {
+	   		  CrcValue ^= res;
+				  for(j=0;j<8;j++)
+				  {
+				    if(CrcValue&0x0001)
+					  { 
+						  CrcValue >>=1 ;
+						  CrcValue ^=0x08408 ;
+					  }
+					  else 
+						  CrcValue >>=1 ;
+				  }
+		    }	 
+		  }
+		  if(rx1BufIndex == rx1DataLen + 6) /*?数组接收完*/
 		  {	 
 		  	/*?判断结束，判断CRC是否正确*/	
-		     if(rx1Buf[rx1DataLen +4] == DEF_RX1_End && (rx1Buf[rx1DataLen +5]<<8| rx1Buf[rx1DataLen +6]) == CrcValue)
+		    if(rx1Buf[rx1DataLen +4] == DEF_RX1_End && (rx1Buf[rx1DataLen +5]<<8| rx1Buf[rx1DataLen +6]) == CrcValue)
 			  {
-			     F_RX1_SYNC = 0;
-				 rx1BufIndex = 0;
-				 F_RX1_VAILD = 1;
-				 CrcValue = 0;
-				 F_RX1_Right = 1 ;
-				 return ;
+			    F_RX1_SYNC = 0;
+				  rx1BufIndex = 0;
+				  F_RX1_VAILD = 1;
+				  CrcValue = 0;
+				  F_RX1_Right = 1 ;
+				  return ;
 			  }
 		  }
-		 rx1BufIndex++;
+	    rx1BufIndex++;
     }
 	}  
-	
-
 }

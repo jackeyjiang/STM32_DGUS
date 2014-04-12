@@ -1,7 +1,7 @@
 #include "stm32f4xx.h" 
 #include "string.h"
 #include "bill.h"
-void InitBills(void)
+void Uart4_Configuration(void)
 {
   	GPIO_InitTypeDef GPIO_InitStructure;
   	USART_InitTypeDef USART_InitStructure;

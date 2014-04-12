@@ -27,14 +27,14 @@ u8 SD_SPI_ReadWriteByte(u8 data)
 //SPI硬件层初始化
 void SD_SPI_Init(void)
 {
-    SD_GPIO_Configuration();
+  SD_GPIO_Configuration();
 	Set_SD_CS;
 }
 ///////////////////////////////////////////////////////////////////////////////////
 //取消选择,释放SPI总线
 void SD_DisSelect(void)
 {
-    unsigned char i ;
+  unsigned char i ;
 	Set_SD_CS;
 	for(i=0;i<8;i++)
  	SD_spi_write(0xff);//提供额外的8个时钟
@@ -120,7 +120,7 @@ u8 SD_SendBlock(u8*buf,u8 cmd)
 //返回值:SD卡返回的响应															  
 u8 SD_SendCmd(u8 cmd, u32 arg, u8 crc)
 {
-    u8 r1;	
+  u8 r1;	
 	u8 Retry=0; 
 	SD_DisSelect();//取消上次片选
 	if(SD_Select())return 0XFF;//片选失效 
@@ -147,10 +147,10 @@ u8 SD_SendCmd(u8 cmd, u32 arg, u8 crc)
 //		 1：错误														   
 u8 SD_GetCID(u8 *cid_data)
 {
-    u8 r1;	   
-    //发CMD10命令，读CID
-    r1=SD_SendCmd(CMD10,0,0x01);
-    if(r1==0x00)
+  u8 r1;	   
+  //发CMD10命令，读CID
+  r1=SD_SendCmd(CMD10,0,0x01);
+  if(r1==0x00)
 	{
 		r1=SD_RecvData(cid_data,16);//接收16个字节的数据	 
     }
@@ -164,12 +164,12 @@ u8 SD_GetCID(u8 *cid_data)
 //		 1：错误														   
 u8 SD_GetCSD(u8 *csd_data)
 {
-    u8 r1;	 
-    r1=SD_SendCmd(CMD9,0,0x01);//发CMD9命令，读CSD
-    if(r1==0)
+  u8 r1;	 
+  r1=SD_SendCmd(CMD9,0,0x01);//发CMD9命令，读CSD
+  if(r1==0)
 	{
-    	r1=SD_RecvData(csd_data, 16);//接收16个字节的数据 
-    }
+		r1=SD_RecvData(csd_data, 16);//接收16个字节的数据 
+  }
 	SD_DisSelect();//取消片选
 	if(r1)return 1;
 	else return 0;
@@ -180,36 +180,36 @@ u8 SD_GetCSD(u8 *csd_data)
 //每扇区的字节数必为512，因为如果不是512，则初始化不能通过.														  
 u32 SD_GetSectorCount(void)
 {
-    u8 csd[16];
-    u32 Capacity;  
-    u8 n;
+  u8 csd[16];
+  u32 Capacity;  
+  u8 n;
 	u16 csize;  					    
 	//取CSD信息，如果期间出错，返回0
-    if(SD_GetCSD(csd)!=0) return 0;	    
-    //如果为SDHC卡，按照下面方式计算
-    if((csd[0]&0xC0)==0x40)	 //V2.00的卡
-    {	
+  if(SD_GetCSD(csd)!=0) return 0;	    
+  //如果为SDHC卡，按照下面方式计算
+  if((csd[0]&0xC0)==0x40)	 //V2.00的卡
+  {	
 		csize = csd[9] + ((u16)csd[8] << 8) + 1;
 		Capacity = (u32)csize << 10;//得到扇区数	 		   
-    }else//V1.XX的卡
-    {	
+  }
+	else//V1.XX的卡
+  {	
 		n = (csd[5] & 15) + ((csd[10] & 128) >> 7) + ((csd[9] & 3) << 1) + 2;
 		csize = (csd[8] >> 6) + ((u16)csd[7] << 2) + ((u16)(csd[6] & 3) << 10) + 1;
 		Capacity= (u32)csize << (n - 9);//得到扇区数   
-    }
+  }
     return Capacity;
 }
 //初始化SD卡
 u8 SD_Initialize(void)
 {
-    u8 r1;      // 存放SD卡的返回值
-    u16 retry;  // 用来进行超时计数
-    u8 buf[4];  
+  u8 r1;      // 存放SD卡的返回值
+  u16 retry;  // 用来进行超时计数
+  u8 buf[4];  
 	u16 i;
-
 	SD_SPI_Init();		//初始化IO
 // 	SD_SPI_SpeedLow();	//设置到低速模式 
-    is_init = 1;
+  is_init = 1;
  	for(i=0;i<10;i++)SD_spi_write(0Xff);//发送最少74个脉冲
 	retry=20;
 	do
@@ -344,34 +344,3 @@ u8 SD_WriteDisk(u8*buf,u32 sector,u8 cnt)
 	SD_DisSelect();//取消片选
 	return r1;//
 }	   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	  
-
-
-
-
-
-

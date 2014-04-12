@@ -1,7 +1,8 @@
 #include "stm32f4xx.h"										 
 #include "bsp.h"
 
-unsigned char CmdNum=0;
+
+FLAG_ENUM EnableBillFlag, DisableBillFlag;
  /*******************************************************************************
  * 函数名称:SetBills                                                                     
  * 描    述:设置接受10  20 5  的钱                                                                  
@@ -13,26 +14,36 @@ unsigned char CmdNum=0;
  *******************************************************************************/ 
 void SetBills(void)
 {
-    unsigned char bufCmd[5] = {0x34, 0x00, 0x1e, 0x00, 0x00};
+  unsigned char bufCmd[5] = {0x34, 0x00, 0x1e, 0x00, 0x00};
 	uint8_t i;
 	for(i = 0; i < 5; i++)
 	{	
 	    while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET);//等待发送完成
 	    USART_SendData(UART4, bufCmd[i]);//串口1发送一个字符	
 	}
-	CmdNum=1;
+	EnableBillFlag= NACK;
 }
+ /*******************************************************************************
+ * 函数名称:DisableBills                                                                     
+ * 描    述:设置不接受钱                                                               
+ *           设置接收到暂存器，在程序处理过程中选择进钱或退钱                                                                     
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
 void DisableBills(void)
 {
-    unsigned char bufCmd[5] = {0x34, 0x00, 0x00, 0x00, 0x00};
+  unsigned char bufCmd[5] = {0x34, 0x00, 0x00, 0x00, 0x00};
 	uint8_t i;
 	for(i = 0; i < 5; i++)
 	{	
 	    while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET);//等待发送完成
 	    USART_SendData(UART4, bufCmd[i]);//串口1发送一个字符	
 	}
-    CmdNum=2;	
+  DisableBillFlag= NACK;
 }
+
 /*******************************************************************************/
 #define Normal 1 //纸币机初始化成功	30 06 09
 #define Abnormal 2  //纸币机处于关闭状态 30 09
@@ -65,17 +76,17 @@ uint8_t  ReadBill(void)
 			}
 			if(BillStatus ==BillStacked) //正常接受纸币
 			{
-			   switch(BillDataBuffer[1]&0x0F)
-			   {
+			  switch(BillDataBuffer[1]&0x0F)
+			  {
 				//case 0x00: BillValue = 1;break; /*不收1元*/
-				   case 0x01: BillValue = 5;break;
-				   case 0x02: BillValue = 10;break;
-				   case 0x03: BillValue = 20;break;
-				   default:break ;
+				  case 0x01: BillValue = 5;break;
+				  case 0x02: BillValue = 10;break;
+				  case 0x03: BillValue = 20;break;
+				  default:break ;
 			  }
 				memset(BillDataBuffer,0,sizeof(BillDataBuffer));
 			  return BillValue;
-		    }
+		  }
 			if(BillStatus ==EscrowRequest)
 			{
  			   switch(BillDataBuffer[1]&0x0F)
@@ -102,11 +113,16 @@ uint8_t  ReadBill(void)
 		return 0 ;
 	}
 	else if(BillDataBuffer[0]==0xFF)
-	{
-		if(CmdNum==1)SetBills(); 
-		if(CmdNum==2)DisableBills();
+	{ 
+		EnableBillFlag=NACK;
+		DisableBillFlag=NACK;
     delay_ms(100);	
   }
+  else if(BillDataBuffer[0]==0x00)
+	{
+		EnableBillFlag=ACK;
+		DisableBillFlag=ACK;	
+	}
 	 memset(BillDataBuffer,0,sizeof(BillDataBuffer));
    return 0 ;	
 }

@@ -2,10 +2,11 @@
 #define __bill__
 #include "stdint.h"
 #include "stm32f4xx.h"
-
-extern unsigned char CmdNum;
-uint8_t   CashCodeInit(void);
-void InitBills(void);
+typedef enum {NACK = 0, ACK = !RESET}FLAG_ENUM; 
+extern FLAG_ENUM EnableBillFlag, DisableBillFlag;
+extern unsigned char NewCoinsCnt;
+extern unsigned char OldCoinsCnt;
+void Uart4_Configuration(void);
 void SetBills(void);
 uint8_t  ReadBills(void);
 void DisableBills(void);

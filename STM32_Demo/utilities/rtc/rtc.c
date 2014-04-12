@@ -87,7 +87,7 @@ void RTC_GetTime_HM(uint16_t *time)
  *******************************************************************************/
 void RTC_TimeShow()
 {
-  	RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
+  RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
 	RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
 	TimeDate.Hours    =RTC_TimeStructure.RTC_Hours;
 	TimeDate.Minutes  =RTC_TimeStructure.RTC_Minutes;
@@ -148,9 +148,7 @@ void RTC_TimeRegulate(void)
 
 void RTC_AlarmShow()
 {
-
   	RTC_GetAlarm(RTC_Format_BIN, RTC_Alarm_A, &RTC_AlarmStructure);
-
 }
 
 

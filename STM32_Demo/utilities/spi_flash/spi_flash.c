@@ -746,9 +746,8 @@ TestStatus Buffercmp(u8* pBuffer1, u8* pBuffer2, u16 BufferLength)
 
 */
 
-void  WriteMeal(void)  //读取错误
+void  WriteMeal(void) //在初始化时，flash的数据易丢失
 {
-	
    __IO uint32_t FlashID = 0;
    __IO uint32_t DeviceID = 0;
 	unsigned char TempBuffer[FloorMealNum*6]={0};
