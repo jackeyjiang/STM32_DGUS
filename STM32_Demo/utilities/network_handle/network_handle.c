@@ -69,11 +69,8 @@ void GetBRWN(void)
 	BRWN[6] =    TimeDate.Date /10 *16 +  TimeDate.Date%10 ;
 	BRWN[7] =    TimeDate.Hours /10 *16 + TimeDate.Hours%10 ;
 	BRWN[8] =    TimeDate.Minutes /10 *16 + TimeDate.Minutes%10 ;
-	BRWN[9] =    TimeDate.Senconds /10 *16 + TimeDate.Senconds%10 ;
-  
+	BRWN[9] =    TimeDate.Senconds /10 *16 + TimeDate.Senconds%10 ;  
 }		
-
-
 
 /*******************************************************************************
 * Function Name  : GetCrc16
@@ -83,25 +80,25 @@ void GetBRWN(void)
 * Return         : CRC
 *******************************************************************************/
 static unsigned int GetCrc16(unsigned char *bufData,unsigned int sizeData)
- {
+{
   unsigned int Crc ,i = 0;
-	 unsigned char j = 0;
-	 if(sizeData == 0)
-	   return 1 ;
-	 Crc = 0 ;
-	 for(i=0;i<sizeData;i++)
-	 {
-	   Crc ^= bufData[i];
-	   for(j=0;j<8;j++)
-	   {
-	     if(Crc&0x0001)
-		   { 
-		     Crc >>=1 ;
-		     Crc ^=0x08408 ;
-		   }
-		   else 
-		     Crc >>=1 ;
-	   }
+	unsigned char j = 0;
+	if(sizeData == 0)
+	  return 1 ;
+	Crc = 0 ;
+	for(i=0;i<sizeData;i++)
+	{
+	  Crc ^= bufData[i];
+	  for(j=0;j<8;j++)
+	  {
+	    if(Crc&0x0001)
+		  { 
+		    Crc >>=1 ;
+		    Crc ^=0x08408 ;
+		  }
+		  else 
+		    Crc >>=1 ;
+	  }
 	} 
 	return Crc ; 
 }
@@ -813,12 +810,12 @@ unsigned char EchoFun(void)
 
  /*******************************************************************************
 * Function Name  : 状态上传函数		 0X0300
-* Description    :退签函数
+* Description    : 退签函数
 * Input          : void
 * Output         : void
 * Return         : void
-                                       08 10 00 0f c0 00 01 24 c9 00 08 00 00 00 00 00 00 00 00 03 e8 47 
-                                     //应答码 2位          MAC 8位
+    08 10 00 0f c0 00 01 24 c9 00 08 00 00 00 00 00 00 00 00 03 e8 47 
+   //应答码 2位          MAC 8位
 *******************************************************************************/
 
 CustomerSel__struction CustomerSel;
@@ -928,9 +925,9 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 * Output         : void
 * Return         : void	  
 *******************************************************************************/
- unsigned char MealUploadingFun(void)
- {
-   	unsigned char i = 0 ;
+unsigned char MealUploadingFun(void)
+{
+  unsigned char i = 0 ;
 	long  Lenght = 0 ,j=0;
 	unsigned char 	  Send_Buf[400];
 	long  CmdLenght = 0 ;	 
@@ -945,20 +942,20 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	CmdLenght = 5 ;
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));  /*终端的TID*/
 
-	BRWN[3] =    Batch /1000000000000 ;
-	BRWN[3] =    BRWN[3] /10 *16 + BRWN[3]%10 ;
+	BRWN[3] =  Batch /1000000000000 ;
+	BRWN[3] =  BRWN[3] /10 *16 + BRWN[3]%10 ;
 	BRWN[4] =	 Batch /10000000000 %100 ;
-	BRWN[4] =    BRWN[4] /10 *16 + BRWN[4]%10 ;
+	BRWN[4] =  BRWN[4] /10 *16 + BRWN[4]%10 ;
 	BRWN[5] =	 Batch /100000000%100;
-	BRWN[5] =    BRWN[5] /10 *16 + BRWN[5]%10 ;
+	BRWN[5] =  BRWN[5] /10 *16 + BRWN[5]%10 ;
 	BRWN[6] =	 Batch /1000000%100;
-	BRWN[6] =    BRWN[6] /10 *16 + BRWN[6]%10 ;
+	BRWN[6] =  BRWN[6] /10 *16 + BRWN[6]%10 ;
 	BRWN[7] =	 Batch /10000 %100 ;
-	BRWN[7] =    BRWN[7] /10 *16 + BRWN[7]%10 ;
+	BRWN[7] =  BRWN[7] /10 *16 + BRWN[7]%10 ;
 	BRWN[8] =	 Batch/100 %100;
-	BRWN[8] =    BRWN[8] /10 *16 + BRWN[8]%10 ;
+	BRWN[8] =  BRWN[8] /10 *16 + BRWN[8]%10 ;
 	BRWN[9] =	 Batch %100;
-	BRWN[9] =    BRWN[9] /10 *16 + BRWN[9]%10 ;
+	BRWN[9] =  BRWN[9] /10 *16 + BRWN[9]%10 ;
 	
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*批次号*/
@@ -1234,27 +1231,26 @@ unsigned char MealDataCompareFunction(void)
 
  
 unsigned char 	Resend(unsigned char *p,long lenght)
- {
-	 unsigned char Waittimeout = 100 ;
-	 long Lenght,j;
-	 mem_set_00(rx1Buf,sizeof(rx1Buf));
-	 CmdDataSend(p,lenght);	//发送数据
-   /*等待数据返回*/
-   while(--Waittimeout)
-	 {
-		   delay_ms(10);
-		   if(F_RX1_Right)
-		   {
-		    F_RX1_Right = 0 ;
-		    break;
-		   }		   
-   }
-  if(Waittimeout == 0 )
-  return 1 ;
-	
+{
+	unsigned char Waittimeout = 100 ;
+	long Lenght,j;
+	mem_set_00(rx1Buf,sizeof(rx1Buf));
+	CmdDataSend(p,lenght);	//发送数据
+  /*等待数据返回*/
+  while(--Waittimeout)
+	{
+		delay_ms(10);
+		if(F_RX1_Right)
+		{
+		  F_RX1_Right = 0 ;
+		  break;
+		}		   
+  }
+  if(Waittimeout == 0)
+    return 1 ;
 	Lenght = HL_BufferToInit(&rx1Buf[2]) ;
 	if(Lenght == 0x00)/*判断数据长度*/
-	return 1 ;
+	  return 1 ;
 	for(j=0;j<Lenght+7;j++)
 	{ 
 //	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);

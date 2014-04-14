@@ -15,11 +15,12 @@
 #define Meal3ns_interface     0x0A /*脆皮烤鸭主界面*/
 #define Meal4th_interface     0x0D /*红烧鱼块主界面*/
 #define Acount_interface      0x10 /*结算界面*/
-#define TicketPrint_interface 0x13 /*小票打印界面*/
-#define Password_interface    0x15 /*密码输入界面*/
-#define MealSet_interface     0x17 /*放餐设置界面*/
-#define MealInput_interface   0x19 /*放餐数量选择*/
-#define TemperatureSet_interface 0x1B  /*温度设置界面*/
+#define TicketPrint_interface 0x14 /*小票打印界面*/
+#define Password_interface    0x16 /*密码输入界面*/
+#define MealSet_interface     0x18 /*放餐设置界面*/
+#define MealInput_interface   0x1A /*放餐数量选择*/
+#define TemperatureSet_interface 0x1C  /*温度设置界面*/
+#define Data_synchronization  0x20  /*数据同步*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -124,6 +125,11 @@
 #define row_3rd   0x0013
 #define floor_num 0x0014
 #define meal_num  0x0015
+
+//退币变量
+#define coins_back  0x0050 //退币计数
+#define coins_in    0x0051 //退币机内的硬币总量
+#define coins_key   0x0052 //退币的按键
 
 void PageChange(char page);
 void DispLeftMeal(void);

@@ -1,11 +1,22 @@
 #ifndef _bsp_H
 #define _bsp_H
 
+#define current_temperature  0x01
+#define waitfor_money        0x02
+#define payment_success      0x03
+#define hpper_out            0x04
+#define print_tick           0x05
+#define meal_out             0x06
+#define data_upload          0x07
+#define data_record          0x08
+#define status_upload        0x09
+
 #include "stm32f4xx.h"
 #include "stm32f4xx_conf.h"
 #include "MsgHandle.h"	         //处理关于点餐的数据
 #include "vioce.h"			       //声音函数
 #include "serialscreen.h"	       //串口屏函数
+#include "protocol.h"            //机械手子程序
 //#include "led.h"			       //led灯函数
 //#include "ICcard.h"			       //ic卡函数
 //#include "timer2.h" 				//用于倒计时
@@ -13,8 +24,11 @@
 //#include "timer3.h"		           //用于秒表
 //#include "timer6.h"				   //用于采集温度
 #include "delay.h"			       //延时
+#include "uart2.h"           //深圳通银联卡接口
 #include "uart3.h"				   //串口屏接口
 #include "uart4.h"           //纸币机接口
+#include "uart6.h"           //机械手接口
+
 
 //#include "led.h"				   //led灯
 #include "coin.h"				     //硬币机
@@ -33,7 +47,7 @@
 #include "sd.h"
 #include "uart5.h"
 #include "spi_flash.h"  
-//#include "szt_gpboc.h"       //深圳通、银联
+#include "szt_gpboc.h"       //深圳通、银联
 
 #include "network_handle.h"    //后台网络数据的传输
 #include "uart5.h"				     //网络数据传输接口
@@ -71,16 +85,18 @@ extern uint8_t   BillActionFlag;      //表示纸币机在收钱中。这个时候不能关闭纸币
 extern uint8_t   CurrentPoint ;
 extern uint8_t   CoinFlag;			 //用于退币机的标志
 extern uint8_t   TemperatureCur;
-
+extern uint8_t   Current ;    //主状态
 
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);	
-uint8_t FindMeal(MealAttribute *DefineMeal) ;
+bool FindMeal(MealAttribute *DefineMeal); 
 // uint8_t CanRecvCmd(uint8_t p);
 unsigned char  WaitPayMoney(void);
 uint8_t WaitMeal(void);
 void hardfawreInit(void);
 void  WaitTimeInit(uint8_t *Time);
+void StateSend(void);
+void DataUpload(void);
 // void LcdHandler(void);
 // void  TempHandler(void);
 // void ClearingFuntion(void) ;//退签上送

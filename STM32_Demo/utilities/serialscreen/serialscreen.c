@@ -681,9 +681,10 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					{
 						PageChange(Menu_interface);
 					}break;
- 					case 0x03:  /*结算*/
+ 					case 0x03:  /*进入购物车*/
 					{
 						SettleAccounts();
+						Current= waitfor_money;//进入读钱界面
 					}break;
 					case 0x04:  /*取消*/
 					{
@@ -770,19 +771,22 @@ loop1:	switch(MealID)
 				{
 					case 0x01:   /*现金支付*/
 					{
-						//OpenCashSystem();
+						CurrentPoint =2;
+						if(!OpenCashSystem()) printf("cash system is erro");  //关闭现金接受
 					}break;
 					case 0x02:   /*银行预付卡*/
 					{
-						//CloseCashSystem();
+						CurrentPoint =7;
+						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 					}break;
 					case 0x03:   /*深圳通支付*/
 					{
-						//CloseCashSystem();
+						CurrentPoint =8;
+						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 					}break;
 					case 0x04:   /*取消*/
 					{
-						//CloseCashSystem();
+						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 						ClearUserBuffer();
 						PageChange(Menu_interface);
 					}break;
@@ -977,7 +981,7 @@ loop1:	switch(MealID)
 						DispLeftMeal(); //更新餐品数据
 						//printf("DefineMeal[%d].MealCount=%d\r\n",i,DefineMeal[i].MealCount);
 					}break;
-					case 0x04:  /*取消*/
+					case 0x04:  /*数据同步*/
 					{
 						CurFloor.FCount    = 0;
 						CurFloor.SCount    = 0;

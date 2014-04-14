@@ -503,6 +503,26 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\mini_hopper\Mini_hopper.c</FilePath>
             </File>
+            <File>
+              <FileName>protocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\protocol\protocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart6.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart6.c</FilePath>
+            </File>
+            <File>
+              <FileName>szt_gpboc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\szt&amp;Gpboc\szt_gpboc.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart2.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -759,6 +779,13 @@
         </Group>
         <Group>
           <GroupName>Doc</GroupName>
+          <Files>
+            <File>
+              <FileName>readme.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\readme.txt</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>include</GroupName>
@@ -837,6 +864,31 @@
               <FileName>uart3.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\utilities\include\uart3.h</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\protocol.h</FilePath>
+            </File>
+            <File>
+              <FileName>szt_gpboc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\szt_gpboc.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart5.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart5.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart6.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart6.h</FilePath>
+            </File>
+            <File>
+              <FileName>vioce.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\vioce.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -15,19 +15,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "bsp.h"
-
-#define current_temperature  0x01
-#define waitfor_money        0x02
-#define payment_success      0x03
-#define hpper_out            0x04
-#define print_tick           0x05
-#define meal_out             0x06
-#define data_upload          0x07
-#define data_record          0x08
-
-uint8_t Current= 0x01;  //
+uint8_t Current= 0x01;        //状态机变量
+uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
 int main(void)
 {
+	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
   SendtoServce();  //上传前七天的数据
 //  ReadDatatoBuffer(); //上一个程序有这个函数
@@ -48,20 +40,38 @@ int main(void)
 	  {  
 	    case current_temperature : /*温度处理函数*/
 			{
-
+				if(LinkTime >=5)
+				{
+				  LinkTime =0;
+					SendLink();
+					temp = 0;
+					temp = manageretry1(SendLink);
+					if(temp ==1)
+					{
+					  LinkMachineFlag =0;
+					}
+					else
+					{
+					  LinkMachineFlag =1;
+					}
+				}
 			}break;
-	    case waitfor_money:	  /*等待付钱*/
+	    case waitfor_money:	 /*等待付钱*/
 			{				
         if( WaitPayMoney()==Status_OK)
 				{
+					UserAct.Meal_totoal=UserAct.MealCnt_1st + UserAct.MealCnt_2nd  + UserAct.MealCnt_3rd+ UserAct.MealCnt_4th;
+					//改变用户所选餐的总数
 					Current= data_record;
 			  }
 				}break;
-			case data_record: /*数据记录*/
+			case data_record:  /*数据记录*/
 			{
+				//将售餐的数据全部写入SD卡 			
+				//WriteDatatoSD();
 				Current= hpper_out;
 			}break;
-      case hpper_out:	//退币状态
+      case hpper_out:	 /*退币状态*/
 			{
 		    if(UserAct.MoneyBack > 0) //需要找币的时候进入
 		    {
@@ -74,7 +84,7 @@ int main(void)
 				}
 				else  //无需找币的时候直接进入出餐状态
 				{					
-					Current= hpper_out;break;
+					Current= meal_out;break;
 				}
 			  if(OldCoinsCnt>NewCoinsCnt)
 		    {
@@ -93,12 +103,19 @@ int main(void)
 				else
 					Current = current_temperature;
 			}break;
-	    case data_upload:	 //数据上传
-	    {	
+	    case data_upload:	 /*数据上传*/
+	    {
+        DataUpload();//根据UserAct.ID 判断需要上传的数据				
 			  Current = meal_out ; 
-	    }break ; 
-	} 
-}
+				
+	    }break ;
+      case status_upload: /*状态上传*/
+      {
+					StateSend();
+				  Current = current_temperature; 				
+			}			
+	  } 
+  }
 }
 /**
   * @brief  Inserts a delay time.

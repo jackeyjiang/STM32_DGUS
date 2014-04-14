@@ -56,12 +56,12 @@ uint8_t CheckPrintStatus(void)
   switch(CurrentPoint)
   {
     case 0:
-	   {			
+	  {			
 			PrintIndex = 0;
 	    Uart1_Card(Cmd,sizeof(Cmd));
 	    CurrentPoint = 1;
 			delay_ms(100);
-	   }break;	  
+	  }break;	  
 	  case 1: 
 	  {
 	    switch(PrintBuf[0])
@@ -88,7 +88,6 @@ uint8_t CheckPrintStatus(void)
  *******************************************************************************/
 void COPY(Struct_TD  a,unsigned char *p0,unsigned char *p1)
 {										
-
 	p0[5]=UserAct.PayShould/100+'0';
 	p0[6]=UserAct.PayShould%100/10+'0';
 	p0[7]=UserAct.PayShould%100%10+'0';
@@ -96,7 +95,6 @@ void COPY(Struct_TD  a,unsigned char *p0,unsigned char *p1)
 	p0[13]=Print_Struct.P_paymoney /100+'0';
 	p0[14]=Print_Struct.P_paymoney %100/10+'0';
 	p0[15]=Print_Struct.P_paymoney %100%10+'0';
-
 
 	p0[21]=Print_Struct.P_MoneyBack/100+'0';
 	p0[22]=Print_Struct.P_MoneyBack%100/10+'0';
@@ -116,7 +114,6 @@ void COPY(Struct_TD  a,unsigned char *p0,unsigned char *p1)
 	p1[20] = a.Minutes  % 10+'0';
 
 }
-
 
  /*******************************************************************************
  * º¯ÊýÃû³Æ:CheckPrintStatus                                                                     
