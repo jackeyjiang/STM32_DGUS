@@ -414,9 +414,24 @@
           <GroupName>utilities</GroupName>
           <Files>
             <File>
-              <FileName>serialscreen.c</FileName>
+              <FileName>uart1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\serialscreen\serialscreen.c</FilePath>
+              <FilePath>..\..\..\utilities\usart\uart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart2.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart3.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart4.c</FilePath>
             </File>
             <File>
               <FileName>uart5.c</FileName>
@@ -424,9 +439,9 @@
               <FilePath>..\..\..\utilities\usart\uart5.c</FilePath>
             </File>
             <File>
-              <FileName>uart3.c</FileName>
+              <FileName>uart6.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\usart\uart3.c</FilePath>
+              <FilePath>..\..\..\utilities\usart\uart6.c</FilePath>
             </File>
             <File>
               <FileName>MMC_SD.C</FileName>
@@ -439,6 +454,31 @@
               <FilePath>..\..\..\utilities\sd\sd.c</FilePath>
             </File>
             <File>
+              <FileName>spi_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\spi_flash\spi_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>serialscreen.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\serialscreen\serialscreen.c</FilePath>
+            </File>
+            <File>
+              <FileName>szt_gpboc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\szt_Gpboc\szt_gpboc.c</FilePath>
+            </File>
+            <File>
+              <FileName>bill.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\bill\bill.c</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\protocol\protocol.c</FilePath>
+            </File>
+            <File>
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\rtc\rtc.c</FilePath>
@@ -449,9 +489,14 @@
               <FilePath>..\..\..\utilities\delay\delay.c</FilePath>
             </File>
             <File>
-              <FileName>spi_flash.c</FileName>
+              <FileName>coin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\spi_flash\spi_flash.c</FilePath>
+              <FilePath>..\..\..\utilities\coins\coin.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mini_hopper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\mini_hopper\Mini_hopper.c</FilePath>
             </File>
             <File>
               <FileName>MsgHandle.c</FileName>
@@ -469,59 +514,14 @@
               <FilePath>..\..\..\utilities\printer\printer.c</FilePath>
             </File>
             <File>
-              <FileName>uart1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\usart\uart1.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\bsp\bsp.c</FilePath>
             </File>
             <File>
-              <FileName>coin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\coins\coin.c</FilePath>
-            </File>
-            <File>
-              <FileName>bill.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\bill\bill.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\usart\uart4.c</FilePath>
-            </File>
-            <File>
               <FileName>voice.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\vioce\voice.c</FilePath>
-            </File>
-            <File>
-              <FileName>Mini_hopper.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\mini_hopper\Mini_hopper.c</FilePath>
-            </File>
-            <File>
-              <FileName>protocol.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\protocol\protocol.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\usart\uart6.c</FilePath>
-            </File>
-            <File>
-              <FileName>szt_gpboc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\szt&amp;Gpboc\szt_gpboc.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\usart\uart2.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -791,6 +791,36 @@
           <GroupName>include</GroupName>
           <Files>
             <File>
+              <FileName>uart1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart1.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart2.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart3.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart4.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart5.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart5.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart6.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart6.h</FilePath>
+            </File>
+            <File>
               <FileName>bill.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\utilities\include\bill.h</FilePath>
@@ -856,16 +886,6 @@
               <FilePath>..\..\..\utilities\include\spi_flash.h</FilePath>
             </File>
             <File>
-              <FileName>uart1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\utilities\include\uart1.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\utilities\include\uart3.h</FilePath>
-            </File>
-            <File>
               <FileName>protocol.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\utilities\include\protocol.h</FilePath>
@@ -874,16 +894,6 @@
               <FileName>szt_gpboc.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\utilities\include\szt_gpboc.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart5.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\utilities\include\uart5.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart6.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\utilities\include\uart6.h</FilePath>
             </File>
             <File>
               <FileName>vioce.h</FileName>

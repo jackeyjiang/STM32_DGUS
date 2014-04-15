@@ -1,5 +1,5 @@
-#ifndef __Uart5__h
-#define __Uart5__h
+#ifndef __network_handle__h
+#define __network_handle__h
 #include "stdint.h"
 
 extern   unsigned char   F_RX1_Right ;
@@ -48,9 +48,6 @@ extern CustomerSel__struction CustomerSel;
 extern unsigned char  F_RX1_Right;
 extern unsigned char  rx1Buf[512];	  //发送数据给服务器，服务器返回数据存在这个buffer
 
-void Uart5_Configuration(void);
-void Uart5Send(unsigned char *p,unsigned char lenght);
-
 
 unsigned char SignInFun(void);
 unsigned char MealDataCompareFun(void);
@@ -62,5 +59,11 @@ unsigned char MealUploadingFun(void);/*上送餐品数据*/
 unsigned char ClearingFun(void);/*结算命令*/
 void  EchoFuntion(void (*fptr)(void)) ;
 unsigned char 	Resend(unsigned char *p,long lenght);
+void WriteToSD_data(void);
+void DataUpload(void);
+void StateSend(void);
+
+
+
 #endif
 

@@ -6,7 +6,6 @@ typedef enum {NACK = 0, ACK = !RESET}FLAG_ENUM;
 extern FLAG_ENUM EnableBillFlag, DisableBillFlag;
 extern unsigned char NewCoinsCnt;
 extern unsigned char OldCoinsCnt;
-void Uart4_Configuration(void);
 void SetBills(void);
 uint8_t  ReadBills(void);
 void DisableBills(void);

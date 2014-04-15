@@ -126,6 +126,44 @@ void VariableChage(uint16_t Variable,uint16_t Value)
 }							
 
  /*******************************************************************************
+ * 函数名称:RegisterChage                                                                   
+ * 描    述:改变指定变量的值                                                              
+ *                                                                               
+ * 输    入:page                                                                    
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void RegisterChage(uint8_t Register,uint16_t Value)							
+{
+	  unsigned char temp[8]={0};  //存放串口数据的临时指针
+		memcpy(temp,RegisterWrite,sizeof(RegisterWrite));
+		temp[3]= Register;
+		myunion.adress=Value;
+		temp[5]= myunion.adr[1];
+		temp[6]= myunion.adr[0];		
+		Uart3_Send(temp,sizeof(temp));	
+}	
+
+ /*******************************************************************************
+ * 函数名称:RegisterChage                                                                   
+ * 描    述:改变指定变量的值                                                              
+ *                                                                               
+ * 输    入:page                                                                    
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void ScreenControl(char cmd)							
+{
+	  unsigned char temp[8]={0};  //存放串口数据的临时指针
+		memcpy(temp,RegisterWrite,sizeof(RegisterWrite));
+		temp[3]= TPC_Enable;
+		temp[5]= cmd ;	//0x00 关闭
+		Uart3_Send(temp,sizeof(temp));	
+}	
+
+ /*******************************************************************************
  * 函数名称:TextDisp                                                                  
  * 描    述:显示字符串函数,                                                          
  *                                                                               
@@ -515,6 +553,15 @@ void GetPassWord(unsigned char *PassWord)
 	PassWord[5] = 8;
 }
 
+void GetAdminPassWord(unsigned char *PassWord)
+{
+  PassWord[0] = 1;
+	PassWord[1] = 2;
+	PassWord[2] = 3;
+	PassWord[3] = 4;
+	PassWord[4] = 5;
+	PassWord[5] = 6;
+}
  /*******************************************************************************
  * 函数名称:VerifyPassword                                                                   
  * 描    述:数组比较                                                                 
@@ -767,6 +814,7 @@ loop1:	switch(MealID)
 			}break;
 			case payment_method: /*付款方式*/
 			{
+				PageChange(Acount_interface+2); //当按下付款后，跳转到另一个页面禁止分数加减
 				switch(VariableData[1])
 				{
 					case 0x01:   /*现金支付*/
@@ -799,6 +847,10 @@ loop1:	switch(MealID)
 				{
 					case 0x01:   /*打印小票*/
 					case 0x02:   /*不打印小票*/
+					{
+						UserAct.PrintTick= VariableData[1];
+						PageChange(Mealout_interface);
+					}break;  
 					default:break;
 				}
 			}break;
@@ -839,27 +891,32 @@ loop1:	switch(MealID)
 		          DisplayPassWord(PassWordLen);
 		        }
 					}break;
-					case 0x11:/*确认件*/
+					case 0x11:/*确认件*/ //需要加入超级密码
 					{
 	          GetPassWord(PassWord);
-    	      if(VerifyPassword(PassWord, InputPassWord,6) == 0)
+    	      if(VerifyPassword(PassWord, InputPassWord,6) == 1) //放餐密码正确
 		        {
-		          /*密码验证错误，进入密码输入界面*/
-		           PageChange(Password_interface);
-							 DisplayPassWord(0);
-							 VariableChage(row_1st,Null);
-		           VariableChage(row_2nd,Null);
-		           VariableChage(row_3rd,Null);   							
-			         PassWordLen = 0;
-		        }
-		        else
-		        {
-		           /*进入 管理员界面*/
+		           /*进入餐品放置界面*/
 		           PageChange(MealSet_interface);
 							 DisplayPassWord(0);//清楚密码显示
 							 InitSetting();//清空第一二三列的数据 //对放餐的数据进行初始化
-			         PassWordLen = 0;
+			         PassWordLen = 0;break;
 		        }
+						GetAdminPassWord(PassWord);
+    	      if(VerifyPassword(PassWord, InputPassWord,6) == 1) //退币密码正确
+		        {
+		           /*进入管理员界面*/
+		           PageChange(Coinset_interface);
+							 DisplayPassWord(0);//清楚密码显示
+			         PassWordLen = 0;break;
+		        }
+		        else
+		        {
+		          /*密码验证错误，进入密码输入界面*/
+		           PageChange(Password_interface);
+							 DisplayPassWord(0);							
+			         PassWordLen = 0;
+		        }						
 	        }break;						
 					case 0x12:/*返回*/
 					{
@@ -983,13 +1040,13 @@ loop1:	switch(MealID)
 					}break;
 					case 0x04:  /*数据同步*/
 					{
-						CurFloor.FCount    = 0;
-						CurFloor.SCount    = 0;
-						CurFloor.TCount    = 0;
-						CurFloor.MealID    = 0;
-						CurFloor.MealCount = 0;
-						CurFloor.FloorNum  = 0;	
-						PageChange(Menu_interface);
+						//禁止屏幕点击*/
+             ScreenControl(ScreenDisable);
+						//数据同步子程序
+						//超时时退出，错误退出
+						PageChange(Data_synchronization);
+						//使能屏幕点击*/
+						ScreenControl(ScreenEnable);
 						DispLeftMeal();//改变剩余餐品数量显示
 					}break;
 					case 0x05:  /*返回*/
@@ -1007,8 +1064,30 @@ loop1:	switch(MealID)
 			}break;
 			case temprature_set:
 			{
+				SetTemper(VariableData[1]);
 			//VariableData[1]; 温度变量=VariableData[1];
 			}break;
+			case coins_key:
+      {
+				if(VariableData[1]==0x01)
+				{
+					RefundButton();
+				  if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)
+				  {
+				    delay_ms(500);//延时500ms显示后显示最终值
+            VariableChage(coins_back,Coins_cnt);
+				  }		    
+				}
+				else if((VariableData[1]==0x02))
+				{
+					PageChange(Menu_interface);
+				}
+			}break;	
+      case 	coins_in:
+      {	
+				Coins_totoal= VariableData[1];
+				//WriteCoins();
+			}break;			
 			  default:break;		
 		}
 }
@@ -1049,31 +1128,30 @@ loop:	  if(USART3_GetChar(&temp1)==1)
 					else if(temp1==FH0)	goto loop; //如果持续出现0xA5则继续判断下一个字节是否为0x5A
 				}
 			}
-			
 		}
-	 if(checkout==1) //直到获取数据长度，然后读缓存
-	 {
-	 	checkout =0;  //复位标志
-		for(i=0;i<length;i++) USART3_GetChar(Rx3DataBuff+i);
-		if(Rx3DataBuff[0]==0x81)  //读寄存器返回命令
-		{
-			RegisterAdress =Rx3DataBuff[1];
-			for(i=0;i<(length-2);i++)
-			RegisterData[i]=Rx3DataBuff[2+i];
-			//加入修改相关数据的功能
-		}
-		else if(Rx3DataBuff[0]==0x83) //读数据存储器返回命令
-		{
-			myunion.adr[1] =Rx3DataBuff[1]; //有可能是小端模式引起的
-			myunion.adr[0] =Rx3DataBuff[2];
-			VariableAdress =myunion.adress;
-			VariableLength =Rx3DataBuff[3];
-			for(i=0;i<(length-4);i++)
-			VariableData[i]=Rx3DataBuff[4+i];
-			//加入修改变量地址数据的功能
-			ChangeVariableValues(VariableAdress,VariableData,VariableLength);
-		}
-	}
-	}		
+	  if(checkout==1) //直到获取数据长度，然后读缓存
+	  {
+	 	  checkout =0;  //复位标志
+		  for(i=0;i<length;i++) USART3_GetChar(Rx3DataBuff+i);
+		  if(Rx3DataBuff[0]==0x81)  //读寄存器返回命令
+		  {
+			  RegisterAdress =Rx3DataBuff[1];
+			  for(i=0;i<(length-2);i++)
+			  RegisterData[i]=Rx3DataBuff[2+i];
+			  //加入修改相关数据的功能
+		  }
+		  else if(Rx3DataBuff[0]==0x83) //读数据存储器返回命令
+		  {
+			  myunion.adr[1] =Rx3DataBuff[1]; //有可能是小端模式引起的
+			  myunion.adr[0] =Rx3DataBuff[2];
+			  VariableAdress =myunion.adress;
+			  VariableLength =Rx3DataBuff[3];
+			  for(i=0;i<(length-4);i++)
+			  VariableData[i]=Rx3DataBuff[4+i];
+			  //加入修改变量地址数据的功能
+			  ChangeVariableValues(VariableAdress,VariableData,VariableLength);
+		   }
+	   } 
+	 }		
 }
 

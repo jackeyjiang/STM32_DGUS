@@ -13,9 +13,10 @@
 #include "MsgHandle.h"
 #include "printer.h"
 #include "delay.h"
+#include "Mini_hopper.h"
 #include <stdio.h>
 
- typedef enum 
+typedef enum 
 {
   FAILED = 0, 
   PASSED = !FAILED
@@ -771,21 +772,38 @@ void  WriteMeal(void) //在初始化时，flash的数据易丢失
 
     /* Check the corectness of written dada */
     TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
-//		if(TransferStatus1 == FAILED )
-//    {
-//	    SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
-//      /* Read data from SPI FLASH memory */
-//      SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
-//      /* Check the corectness of written dada */
-//      TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
-//    }
+		if(TransferStatus1 == FAILED )/*加入可以排错*/
+    {
+	    SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+      /* Read data from SPI FLASH memory */
+      SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+      /* Check the corectness of written dada */
+      TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
+    }
 }
 
 void ReadMeal(void)
 {
-    SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
+  SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
 }
-
-
+void ClearMealInfo(void)
+{
+  SPI_FLASH_SectorErase(FLASH_SectorToErase);	
+}
+void WriteCoins(void)
+{
+	uint8_t TempBuffer[1]={0};
+	SPI_FLASH_Init();
+	SPI_FLASH_SectorErase(FLASH_SectorToErase);	
+	TempBuffer[0]= Coins_totoal;
+	SPI_FLASH_BufferWrite(TempBuffer, SPI_FLASH_Sector1, 1); 
+}
+void ReadCoins(void)
+{
+	unsigned char TempBuffer[1]={0};
+	SPI_FLASH_Init();
+	SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 1);/*参看原始数据*/
+	Coins_totoal= TempBuffer[0];	
+}
 
 /******************* (C) COPYRIGHT 2010 www.armjishu.com *****END OF FILE****/

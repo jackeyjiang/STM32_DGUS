@@ -88,6 +88,9 @@ void SPI_FLASH_TEST(void);
 
  void  WriteMeal(void);
  void  ReadMeal(void);
+ void ClearMealInfo(void);
+ void  ReadCoins(void);
+ void  WriteCoins(void);
 #endif /* __SPI_FLASH_H */
 
 /******************* (C) COPYRIGHT 2010 www.armjishu.com *****END OF FILE****/

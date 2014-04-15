@@ -199,7 +199,7 @@ void EXTI15_10_IRQHandler(void)
 		  CoinsCount++;
 		  if(CoinsCount == 2)
 			{
-				//CoinsCount = 0;
+				CoinsCount = 0;
 				UserAct.PayForCoins++;
 				UserAct.PayAlready++;
 			}
@@ -210,6 +210,7 @@ void EXTI15_10_IRQHandler(void)
 	if( EXTI_GetITStatus(EXTI_Line10) != RESET)	
 	{
 		NewCoinsCnt++; //新的硬币机接收个数
+		Coins_cnt++; 
 	  EXTI_ClearITPendingBit(EXTI_Line10);	
 	}
 }

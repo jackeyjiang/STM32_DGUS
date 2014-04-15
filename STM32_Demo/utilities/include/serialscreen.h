@@ -15,12 +15,14 @@
 #define Meal3ns_interface     0x0A /*脆皮烤鸭主界面*/
 #define Meal4th_interface     0x0D /*红烧鱼块主界面*/
 #define Acount_interface      0x10 /*结算界面*/
-#define TicketPrint_interface 0x14 /*小票打印界面*/
+#define TicketPrint_interface 0x13 /*小票打印界面*/
+#define Mealout_interface     0x15 /*出餐界面显示*/
 #define Password_interface    0x16 /*密码输入界面*/
 #define MealSet_interface     0x18 /*放餐设置界面*/
 #define MealInput_interface   0x1A /*放餐数量选择*/
 #define TemperatureSet_interface 0x1C  /*温度设置界面*/
 #define Data_synchronization  0x20  /*数据同步*/
+#define Coinset_interface     0x22  /*硬币设置*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -31,6 +33,9 @@
 #define TP_Status 0x06  /*0x01=第一次按下 0x03一直按压中 0x02=抬起 其他=无效*/
 #define TP_Position 0x07 /*4字节 触摸屏按压坐标位置：X_H:L Y_H:L*/
 #define TPC_Enable 0x0B /*0x00=触控不起用 其他=启用*/
+
+#define ScreenEnable  0x01 
+#define ScreenDisable 0x00
 
 /*剩余菜品变量地址*/
 #define meat     0x0021 /*红萝卜炒肉*/
@@ -132,6 +137,7 @@
 #define coins_key   0x0052 //退币的按键
 
 void PageChange(char page);
+void ScreenControl(char cmd);
 void DispLeftMeal(void);
 void DealSeriAceptData(void);
 void VariableChage(uint16_t Variable,uint16_t Value);	

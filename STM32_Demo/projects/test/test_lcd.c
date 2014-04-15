@@ -21,7 +21,7 @@ int main(void)
 {
 	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
-  SendtoServce();  //上传前七天的数据
+//  SendtoServce();  //上传前七天的数据
 //  ReadDatatoBuffer(); //上一个程序有这个函数
 //   /*从网络获得时间，更新本地时钟*/
 //  EchoFuntion(RTC_TimeRegulate);
@@ -29,16 +29,17 @@ int main(void)
 //	SignInFunction();	
 // 	/*餐品对比数据*/
 //	MealDataCompareFun();	 
-//	Szt_GpbocAutoCheckIn(); 
+	Szt_GpbocAutoCheckIn(); 
 	PageChange(Menu_interface); //显示选餐界面 
 	DispLeftMeal();             //显示餐品数据
 	if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 	while(1) 
-  {		
+  {
+    delay_ms(200);		
 		DealSeriAceptData();
     switch(Current)
 	  {  
-	    case current_temperature : /*温度处理函数*/
+	    case current_temperature: /*温度处理函数*/
 			{
 				if(LinkTime >=5)
 				{
@@ -55,12 +56,14 @@ int main(void)
 					  LinkMachineFlag =1;
 					}
 				}
+				VariableChage(current_temprature,Temperature);
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
 			{				
         if( WaitPayMoney()==Status_OK)
 				{
 					UserAct.Meal_totoal=UserAct.MealCnt_1st + UserAct.MealCnt_2nd  + UserAct.MealCnt_3rd+ UserAct.MealCnt_4th;
+					PageChange(TicketPrint_interface);
 					//改变用户所选餐的总数
 					Current= data_record;
 			  }
@@ -79,7 +82,7 @@ int main(void)
           {
              SendOutN_Coin(1);		//找币
 	           --UserAct.MoneyBack;	
-	           delay_ms(100); //延时得好好控制			
+	           delay_ms(200); //延时得好好控制			
           }
 				}
 				else  //无需找币的时候直接进入出餐状态
@@ -88,7 +91,7 @@ int main(void)
 				}
 			  if(OldCoinsCnt>NewCoinsCnt)
 		    {
-		      delay_ms(1000); //延时得好好控制	
+		      delay_ms(2000); //延时得好好控制	
           UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;// 
 		    }
 		    else if(OldCoinsCnt==NewCoinsCnt)
@@ -106,13 +109,12 @@ int main(void)
 	    case data_upload:	 /*数据上传*/
 	    {
         DataUpload();//根据UserAct.ID 判断需要上传的数据				
-			  Current = meal_out ; 
-				
+			  Current = meal_out ; 		
 	    }break ;
       case status_upload: /*状态上传*/
       {
-					StateSend();
-				  Current = current_temperature; 				
+			  StateSend();
+				Current = current_temperature; 				
 			}			
 	  } 
   }

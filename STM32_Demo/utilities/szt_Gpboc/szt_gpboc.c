@@ -3204,8 +3204,8 @@ uint8_t Szt_CheckIn(void)
 
   if(flag1 == 1)
   	{
-	/*
-  	  Order_SztTimeCheck();
+	/**/
+  	Order_SztTimeCheck();
 	  delay_us(5);
 	  temp = 0xff;
 	  temp = ManageReOrderType();
@@ -3213,7 +3213,7 @@ uint8_t Szt_CheckIn(void)
 	  	{
 	  	  flag2 = ManageSztTimeCheck();
 	  	}
-	  */
+	  
 	  Order_SztUserLogin();
 	  delay_us(5);
 	  temp = 0xff;
@@ -3400,37 +3400,37 @@ uint8_t SztAutoSend(void)
 
 
 
-/*开机银联、深圳通签到*/
+/*深圳通签到*/
 void Szt_GpbocAutoCheckIn(void)
 {
   uint8_t Szt_DiverInitFlag =0;
   uint8_t Gpboc_DiverInitFlag =0;
 
-  while(1)
+  while(1)	 
   {
-    if( Gpboc_DiverInitFlag ==0)//判断银联是否已做签到
-	 	{
-	 	  delay_us(500);
-	 	  Gpboc_DiverInitFlag = Gpboc_CheckIn();
-	 	}
-	  
-	 if( Szt_DiverInitFlag ==0)//判断深圳通是否已做签到
-	 	{
-	 	  delay_us(500);
-	 	  Szt_DiverInitFlag = Szt_CheckIn();
-	 	}
-		/**/
-
-
-	if(( Gpboc_DiverInitFlag == 1) &&(Gpboc_DiverInitFlag == 1))
-	//if( Gpboc_DiverInitFlag == 1)
-	{
-	  break;
-	}
-
+    if( Gpboc_DiverInitFlag ==0)
+ 	  {
+ 	    delay_us(500);
+ 	    Gpboc_DiverInitFlag = Gpboc_CheckIn();
+ 	  }
+	  if( Gpboc_DiverInitFlag == 1)
+	  {
+	    break;
+	  }
+  }  
+  while(1)	 
+  {
+    if( Szt_DiverInitFlag ==0)
+ 	  {
+ 	    delay_us(500);
+ 	    Szt_DiverInitFlag = Szt_CheckIn();
+ 	  }
+	  if(Szt_DiverInitFlag == 1)
+	  {
+		  break;
+	  }
   }
 }
-
 
 /*一个2位的BCD码转换成一个十进制码*/
 uint8_t  BCDtoDec(uint8_t bcd)  

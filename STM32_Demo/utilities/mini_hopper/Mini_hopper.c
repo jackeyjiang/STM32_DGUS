@@ -10,6 +10,9 @@
 #define COIN_GPIO_INT_PORT                   GPIOB
 #define COIN_GPIO_INT_CLK                    RCC_AHB1Periph_GPIOB
 
+uint16_t Coins_cnt =0; //一键退币计数
+uint16_t Coins_totoal=0; //硬币总数统计
+
 /*
 PE11为出币控制信号
 P10为吃币点数输出
@@ -110,4 +113,25 @@ uint8_t SendOutN_Coin(int num)
 	  }
   }
   return 0;
+}
+
+ /*******************************************************************************
+* Function Name  : refund_button
+* Description    : 全部退币
+* Input          : 要退的币数
+* Output         : 未退的币数，修改
+* Return         : 
+*******************************************************************************/
+void RefundButton(void)
+{
+	uint16_t i;
+	for(i=0;i<500;i++)
+	{
+		GPIO_ResetBits(GPIOE,GPIO_Pin_11);
+		delay_ms(15);
+		GPIO_SetBits(GPIOE,GPIO_Pin_11);
+		delay_ms(15);
+		GPIO_ResetBits(GPIOE,GPIO_Pin_11);
+		delay_ms(70);
+	}	
 }

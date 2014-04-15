@@ -112,10 +112,11 @@ unsigned char  WaitPayMoney(void)
 		  {
 			  UserAct.PayAlready  += UserPayMoney;
 			  UserAct.PayForBills += UserPayMoney;	
+				VariableChage(payment_bill,UserAct.PayForBills);
 			  UserPayMoney = 0 ;
-			  WaitTimeInit(&WaitTime);
-			  CurrentPoint = 5 ;
+			  WaitTimeInit(&WaitTime); 
 		  }
+			CurrentPoint = 4 ;
 		}break;    					
 	  case 4 :   //读刷卡机的钱
 	  {
@@ -132,6 +133,8 @@ unsigned char  WaitPayMoney(void)
 		}break;
 	  case 5 ://显示接收了多少硬币	
 	  {
+		  VariableChage(payment_coin,UserAct.PayForCoins);	
+		  VariableChage(payment_card,UserAct.PayForCards);
 			CurrentPoint = 6;
 		}break;		    
 	  case 6 : //统计钱数
@@ -178,6 +181,7 @@ unsigned char  WaitPayMoney(void)
 		}break;
 	  case 9 :  //付款成功关闭所有的收银系统
 		{
+			if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 			UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
       OldCoinsCnt= UserAct.MoneyBack ; //在这里程序只执行一次
       NewCoinsCnt= 0;    
@@ -195,14 +199,12 @@ unsigned char  WaitPayMoney(void)
   return  Status_Action;
 }												
 
-
-unsigned char  Record_buffer[1024] = {0} ;  //为什么定义局部变量没有用呢？
 uint8_t WaitMeal(void)
 {
 	static uint8_t  CurrentPointer = 0 ;
   //static unsigned char Cmd[20]={0x05, 0x31, 0x30, 0x30, 0x31, 0x30 ,0x30, 0x36, 0x34, 0x30, 0x30, 0x30, 0x34, 0x4D, 0x31, 0x35, 0x43, 0x03, 0x0D ,0x0A};
 	 /*判断是否打印小票*/ 			
-  //PrintTickFun(&UserAct.PrintTick);
+  PrintTickFun(&UserAct.PrintTick);
 	switch(CurrentPointer)
 	{
 		case 0 : /*查找用户所选餐品的位置*/
@@ -350,75 +352,6 @@ void ClearingFuntion(void)
 	}		 		 
 }
 
-    /*******************************************************************************
- * 函数名称:TempHandler                                                                     
- * 描    述:温度处理函数                                                                   
- *                                                                               
- * 输    入:无                                                                     
- * 输    出:无                                                                     
- * 返    回:void                                                               
- * 修改日期:2013年8月28日                                                                    
- *******************************************************************************/ 
- void  TempHandler(void)
- {
- }
- 
-   /*******************************************************************************
- * 函数名称:StateSend                                                                 
- * 描    述:状态上送                                                                   
- *                                                                               
- * 输    入:无                                                                     
- * 输    出:无                                                                     
- * 返    回:void                                                               
- * 修改日期:2014年4月4日                                                                    
- *******************************************************************************/ 
-void StateSend(void)
-{ 
-	RTC_TimeShow();//获得时间
-  switch(TimeDate.Minutes)
-  {
-    case 10:
-    case 20:
-		case 30:
-    case 40:
-	  case 50:
-	  case 59:
-		{
-			delay_ms(900);
-			if(TimeDate.Senconds==10) //控制多次传输
-			{
-        StatusUploadingFun(); //状态上送
-      }		
-	  }break;
-	  default : break;		
-  }						 
-}
-   /*******************************************************************************
- * 函数名称:DataUpload                                                                 
- * 描    述:数据上传                                                                  
- *                                                                               
- * 输    入:无                                                                     
- * 输    出:无                                                                     
- * 返    回:void                                                               
- * 修改日期:2014年4月4日                                                                    
- *******************************************************************************/ 
-void DataUpload(void)
-{
-	MealArr(UserAct.MealID);
-	/*发送取餐数据给服务器*/
-	memset(Record_buffer,0,1024);    
-	Record_buffer[1012] = 'L' ;
-	Record_buffer[1013] = 'e' ; 
-	Record_buffer[1014] = 'n' ;
-	Record_buffer[1015] = 'g' ;  
-	Record_buffer[1016] = 'h' ;
-	Record_buffer[1017] = 't' ;
-	Record_buffer[1018] = ':' ; 
-	if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-	{
-		//改变当前最后两位为N0
-	}
-}
  /*
   PVD ---- 低电压检测                抢占优先级  0      亚优先级 0 		用于保护sd卡
   硬币机               外部中断5                 0                1
@@ -484,7 +417,9 @@ void hardfawreInit(void)
 	 MyRTC_Init();              //RTC初始化
 	 SPI_FLASH_Init();          //Flash初始化
 	 SPI_FLASH_Init();          //重复初始化才行
-   SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品	 
+   SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品
+   //ReadCoins();//读取有多少硬币	 
+	 VariableChage(coins_in,Coins_totoal);//显示机内硬币数
 	 for(i=0;i<90;i++)
 	 {
 	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
