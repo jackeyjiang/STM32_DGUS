@@ -86,6 +86,7 @@ extern uint8_t   CurrentPoint ;
 extern uint8_t   CoinFlag;			 //用于退币机的标志
 extern uint8_t   TemperatureCur;
 extern uint8_t   Current ;    //主状态
+extern uint8_t  CurrentPointer; //餐品出餐状态
 
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);	
@@ -97,6 +98,7 @@ void hardfawreInit(void);
 void  WaitTimeInit(uint8_t *Time);
 void StateSend(void);
 void DataUpload(void);
+void PrintTickFun(unsigned char *PrintTickFlag);
 // void LcdHandler(void);
 // void  TempHandler(void);
 // void ClearingFuntion(void) ;//退签上送

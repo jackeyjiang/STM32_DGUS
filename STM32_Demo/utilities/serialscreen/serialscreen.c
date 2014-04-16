@@ -612,7 +612,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							UserAct.MealCnt_1st_t= 1;//设置默认分数为 1
 							PageChange(Meal1st_interface);//显示相应界面
 							CutDownDisp(60);//显示倒计时时间
-              VariableChage(meat_cnt_t,0x01);
+              VariableChage(meat_cnt,0x01);
  							MealCostDisp(UserAct.MealID,UserAct.MealCnt_1st_t);//根据用户所选餐品ID号显示合计钱数
 						}break;						
 					case 0x02:
@@ -849,7 +849,11 @@ loop1:	switch(MealID)
 					case 0x02:   /*不打印小票*/
 					{
 						UserAct.PrintTick= VariableData[1];
+							 /*判断是否打印小票*/ 			
+            PrintTickFun(&UserAct.PrintTick); 
 						PageChange(Mealout_interface);
+						delay_ms(1000);
+						PageChange(Menu_interface);
 					}break;  
 					default:break;
 				}
@@ -935,9 +939,17 @@ loop1:	switch(MealID)
 					{
 						PageChange(TemperatureSet_interface);
 					}break;
-					case 0x02:  /*餐品设置按钮*/
+					case 0x02:  /*餐品设置按钮 应该改为一键清空所有数据 */
 					{
-						PageChange(MealInput_interface);
+						//VariableChage(meal_num,0x01);
+						//PageChange(MealInput_interface);
+							for(i=0;i<90;i++)
+	            {
+	              FloorMealMessageWriteToFlash.FlashBuffer[i] = 0 ;
+	            }
+	            WriteMeal();  //写入餐品数据
+							StatisticsTotal(); 
+							DispLeftMeal();//
 					}break;
 					case 0x03:	/*取消键*/
 					{
@@ -1078,7 +1090,7 @@ loop1:	switch(MealID)
             VariableChage(coins_back,Coins_cnt);
 				  }		    
 				}
-				else if((VariableData[1]==0x02))
+				else if((VariableData[1] == 0x02))
 				{
 					PageChange(Menu_interface);
 				}
@@ -1110,7 +1122,7 @@ void DealSeriAceptData(void)
 	char RegisterData[5]={0};  //寄存器数据数组
 	char VariableData[5]={0};  //变量数据数组
 	char VariableLength= 0;   //变量数据的长度
-	while(UART3_GetCharsInRxBuf()>7) //获取缓冲区大小，直至缓冲区无数据
+	while(UART3_GetCharsInRxBuf()>=9) //获取缓冲区大小，直至缓冲区无数据
 	{	
 		if(USART3_GetChar(&temp)==1)
 		{	

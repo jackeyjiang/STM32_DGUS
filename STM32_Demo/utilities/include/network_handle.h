@@ -24,7 +24,7 @@ typedef struct
 	unsigned char MealType[4];
 	
 }Meal_struction;
-extern	Meal_struction  	Meal[9];
+extern	Meal_struction  	Meal[4];
 
 
 /*******************************************
@@ -62,6 +62,7 @@ unsigned char 	Resend(unsigned char *p,long lenght);
 void WriteToSD_data(void);
 void DataUpload(void);
 void StateSend(void);
+void SignInFunction(void);
 
 
 

@@ -58,7 +58,7 @@ void PrintTickFun(unsigned char *PrintTickFlag)
 		 TIM_Cmd(TIM4, DISABLE);
 	 	*PrintTickFlag = 0 ;
 		/*打印小票的函数*/
-		 SPRT(UserAct.MealID-1);
+		 SPRT();
 	   TIM_Cmd(TIM4, ENABLE);
 	}	 
 	if(*PrintTickFlag == 0x02 )
@@ -184,11 +184,20 @@ unsigned char  WaitPayMoney(void)
 			if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 			UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
       OldCoinsCnt= UserAct.MoneyBack ; //在这里程序只执行一次
-      NewCoinsCnt= 0;    
-			Print_Struct.P_ID        = UserAct.MealID ;
+			VariableChage(mealout_totle,UserAct.Meal_totoal);	
+      NewCoinsCnt= 0; 
+      //将需要打印的数据赋值到相关结构体	
+     	Print_Struct.P_Number1st = UserAct.MealCnt_1st;
+			Print_Struct.P_Number2nd = UserAct.MealCnt_2nd;
+			Print_Struct.P_Number3rd = UserAct.MealCnt_3rd;
+			Print_Struct.P_Number4th = UserAct.MealCnt_4th;
+			Print_Struct.P_Cost1st   = UserAct.MealCost_1st;
+			Print_Struct.P_Cost2nd   = UserAct.MealCost_2nd;
+			Print_Struct.P_Cost3rd   = UserAct.MealCost_3rd;
+			Print_Struct.P_Cost4th   = UserAct.MealCost_4th;
 			Print_Struct.P_paymoney  = UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
 			Print_Struct.P_PayShould = UserAct.PayShould ;
-			Print_Struct.P_MoneyBack =	UserAct.MoneyBack ;
+			Print_Struct.P_MoneyBack = UserAct.MoneyBack ;
 			WaitTime  = 0;
 			TIM_Cmd(TIM4, ENABLE);
 			CurrentPoint = 0 ;
@@ -199,12 +208,12 @@ unsigned char  WaitPayMoney(void)
   return  Status_Action;
 }												
 
+
+uint8_t  CurrentPointer = 0 ;
+
 uint8_t WaitMeal(void)
 {
-	static uint8_t  CurrentPointer = 0 ;
   //static unsigned char Cmd[20]={0x05, 0x31, 0x30, 0x30, 0x31, 0x30 ,0x30, 0x36, 0x34, 0x30, 0x30, 0x30, 0x34, 0x4D, 0x31, 0x35, 0x43, 0x03, 0x0D ,0x0A};
-	 /*判断是否打印小票*/ 			
-  PrintTickFun(&UserAct.PrintTick);
 	switch(CurrentPointer)
 	{
 		case 0 : /*查找用户所选餐品的位置*/
@@ -224,9 +233,7 @@ uint8_t WaitMeal(void)
 				 printf("UserAct.MealCnt is none");
 			}
 			if(FindMeal(DefineMeal)) /**/
-			   CurrentPointer= 1;	
-      else 
-				 printf("there is no %c meal",UserAct.MealID);			
+			   CurrentPointer= 1;break;	
 		}break;
 	  case 1 : /* 发送餐的数目减一*/
 		{			 
@@ -245,18 +252,20 @@ uint8_t WaitMeal(void)
     case 2 : /*发送行和列的位置，等待响应*/
 		{
        //根据[Line][Column]的值发送坐标 等待ACK	 
+			CurrentPointer = 3 ;
 	  }break;  
 		case 3 :    /*发送取餐命令*/
 		{
 			//查询机械手是否准备好，如果准备好发送取餐命令
 			//如果超时则 返回错误，
 		  //如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
+			CurrentPointer=4;
 		}break;
 	  case 4 :  	/*播放语音，请取餐*/
 		{ 	
       //如果餐品到达取餐口播放语音
 			//如果餐品取出则 跳出子程序进行数据上传  
-			//CurrentPointer=5
+			CurrentPointer=5;
 	  }break;			    
     case 5:     /*对用户数据进行减一*/
 		{
@@ -268,9 +277,10 @@ uint8_t WaitMeal(void)
 				UserAct.MealCnt_3rd--; 	
       else if(UserAct.MealID == 0x04)
 				UserAct.MealCnt_4th--; 	
-      UserAct.Meal_takeout--;//取餐数据减一
-      //UI显示减一			
-			return 1;
+      UserAct.Meal_takeout++;//取餐数据加一
+      VariableChage(mealout_already,UserAct.Meal_takeout++);	//UI显示减一	
+			CurrentPointer= 0;
+			return 0;
 		}
 		default:break;
 	}
@@ -288,13 +298,14 @@ uint8_t WaitMeal(void)
  *******************************************************************************/ 
 bool CloseCashSystem(void)
 {
-	char cnt_t=20;
+	uint8_t cnt_t=20,money=0;
   CloseCoinMachine();			    //关闭投币机	
 	DisableBills();             //设置并关闭纸币机
 	do
   {
 		cnt_t--;
-		delay_ms(1);	
+		delay_ms(10);
+    ReadBill();		
 	}  // 超时
 	while((cnt_t>0)&&(DisableBillFlag== NACK)); //当超时或者接收到ACK后
 	if(DisableBillFlag== ACK) 
@@ -316,7 +327,8 @@ bool OpenCashSystem(void)
 	do
   {
 		cnt_t--;
-		delay_ms(1);	
+		ReadBill();
+		delay_ms(10);	
 	}
 	while((cnt_t>=0)&&(EnableBillFlag== NACK));//
 	if(EnableBillFlag== ACK) 

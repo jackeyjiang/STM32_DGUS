@@ -285,7 +285,7 @@ void Fwriter(unsigned char *p)
 		
 
 		res = f_lseek(&fsrc,fsrc.fsize); 
-   	res = f_write(&fsrc,p,1024, &rd);
+   	res = f_write(&fsrc,p,2, &rd);
 	//	res = f_write(&fsrc,"Ğ¡ÍõÍ¯Ğ¬ÄãºÃ£¡£¡£¡\r\n",512, &rd);
 		f_sync(&fsrc)	;	
 	  if(res!=FR_OK)

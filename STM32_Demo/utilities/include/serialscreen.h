@@ -136,6 +136,8 @@
 #define coins_in    0x0051 //退币机内的硬币总量
 #define coins_key   0x0052 //退币的按键
 
+#define erro_num    0x0053 //错误显示
+
 void PageChange(char page);
 void ScreenControl(char cmd);
 void DispLeftMeal(void);

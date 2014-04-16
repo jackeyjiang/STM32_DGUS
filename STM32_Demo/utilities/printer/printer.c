@@ -123,111 +123,83 @@ void COPY(Struct_TD  a,unsigned char *p0,unsigned char *p1)
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:unsigned char                                                               
- * 修改日期:2013年8月28日                                                                    
+ * 修改日期:2013年8月28日 
+
+
+ 菜品       数量  单价  单总价
+胡萝卜炒肉    1    15     15
+香菇滑鸡      1    20     20
+红烧鱼块      1    25     25
+脆皮烤鸭      1    30     30
+付款方式：银行卡支付/深圳通支付/现金支付
+应收:90  已收:100  找回:10
+时间:2014-04-16 23:19
+
  *******************************************************************************/
 
+
  P_stuction Print_Struct;
-void  SPRT(uint8_t flag)
+void  SPRT(void)
 {
   unsigned char   SendStc[3]={0x1d,0x56,0x01};		//切纸命令
 	unsigned char  huan3[]={0x1b,0x64,0x06};
 	unsigned char  p0[]={"应收:201已收:   找回:   \r\n"};
 	unsigned char  p1[]={"时间:2013-12-15-12:30\r\n"};
 	unsigned char  p2[]={"胡萝卜炒蛋1\t15\t015\r\n"};
-	unsigned char  p3[]={"菜谱煎蛋1\t15\t015\r\n"};
-	unsigned char  p4[]={"土豆牛腩1\t15\t015\r\n"};
-	unsigned char  p5[]={"香菇滑鸡1\t20\t020\r\n"};
-	unsigned char  p6[]={"红烧鱼块1\t20\t020\r\n"};
-	unsigned char  p7[]={"咖喱土鸡1\t20\t020\r\n"};
-	unsigned char  p8[]={"脆皮烤鸭1\t25\t025\r\n"};
-	unsigned char  p9[]={"梅菜扣肉1\t25\t025\r\n"};
-	unsigned char  p10[]={"秘制叉烧1\t25\t025\r\n"};	  
+	unsigned char  p3[]={"香菇滑鸡1\t20\t020\r\n"};
+	unsigned char  p4[]={"红烧鱼块1\t20\t020\r\n"};
+	unsigned char  p5[]={"脆皮烤鸭1\t25\t025\r\n"};
 
   printf("\r\n");//打印回车换行
   printf("菜品\t数量\t单价\t金额\r\n"); 	
   RTC_TimeShow();//得到当前的时间
 	COPY(TimeDate,p0,p1);
-	switch(flag)
-	 {
-	   case 0:	     
-	          p2[10]= Print_Struct.P_Number%10 +'0'; 
-			    	p2[15]=UserAct.PayShould/100+'0';
-	          p2[16]=UserAct.PayShould%100/10+'0';
-	          p2[17]=UserAct.PayShould%100%10+'0';
-					  printf("%s",p2);
-	        break;   	     	          
-     case	1 :	
-	          p3[8]= Print_Struct.P_Number%10 +'0'; 
-			    	p3[13]=UserAct.PayShould/100+'0';
-	          p3[14]=UserAct.PayShould%100/10+'0';
-	          p3[15]=UserAct.PayShould%100%10+'0';
-	          printf("%s",p3);
-	      	break;      	
-	   case 2 :	
-	          p4[8]= Print_Struct.P_Number%10 +'0'; 
-			    	p4[13]=UserAct.PayShould/100+'0';
-	          p4[14]=UserAct.PayShould%100/10+'0';
-	          p4[15]=UserAct.PayShould%100%10+'0';
-					  printf("%s",p4);
-					break;  
-	   case 3:	
-	          p5[8]= Print_Struct.P_Number%10 +'0'; 
-			    	p5[13]=UserAct.PayShould/100+'0';
-	          p5[14]=UserAct.PayShould%100/10+'0';
-	          p5[15]=UserAct.PayShould%100%10+'0';
-	   	   	  printf("%s",p5);
-					break;   	          
-     case	4 :	
-	          p6[8]= Print_Struct.P_Number%10 +'0'; 
-			    	p6[13]=UserAct.PayShould/100+'0';
-	          p6[14]=UserAct.PayShould%100/10+'0';
-	          p6[15]=UserAct.PayShould%100%10+'0';
-	   	   	  printf("%s",p6);
-					break;       	
-	   case 5 : 
-	          p7[8]= Print_Struct.P_Number%10 +'0'; 
-			      p7[13]=UserAct.PayShould/100+'0';
-	          p7[14]=UserAct.PayShould%100/10+'0';
-	          p7[15]=UserAct.PayShould%100%10+'0';
-				    printf("%s",p7);
-					break;  
-	   case 6:	
-	          p8[8]= Print_Struct.P_Number%10 +'0'; 
-			      p8[13]=UserAct.PayShould/100+'0';
-	          p8[14]=UserAct.PayShould%100/10+'0';
-	          p8[15]=UserAct.PayShould%100%10+'0';
-	   	   	  printf("%s",p8);
-				 break;   	          
-    case	7 :
-	          p9[8]= Print_Struct.P_Number%10 +'0'; 
-			      p9[13]=UserAct.PayShould/100+'0';
-	          p9[14]=UserAct.PayShould%100/10+'0';
-	          p9[15]=UserAct.PayShould%100%10+'0';
-	     		  printf("%s",p9);
-					break;  
-	   case 8 :	
-	          p10[8]= Print_Struct.P_Number%10 +'0'; 
-			      p10[13]=UserAct.PayShould/100+'0';
-	          p10[14]=UserAct.PayShould%100/10+'0';
-	          p10[15]=UserAct.PayShould%100%10+'0';
-			    	printf("%s",p10);
-					break;  
-	   default :break;
-	 } 
-     printf("%s",p0);
-		 printf("%s",p1);
-		 if(UserAct.PayType == '2' )
-		 {
-		    printf("支付方式：银行卡支付\r\n");
-		 }
-		 	 if(UserAct.PayType == '1')
-		 {
-		    printf("支付方式：现金支付\r\n");
-		 }
-		 	 if(UserAct.PayType == '3')
-		 {
-		    printf("支付方式：深圳通支付\r\n");
-		 }
-		 Uart1_Card(huan3,sizeof(huan3)); 
-		 Uart1_Card(SendStc,sizeof(SendStc));//	切纸
+  if(Print_Struct.P_Number1st>0)
+  {	
+		p2[10]= Print_Struct.P_Number1st%10 +'0'; 
+		p2[15]=UserAct.PayShould/100+'0';
+		p2[16]=UserAct.PayShould%100/10+'0';
+		p2[17]=UserAct.PayShould%100%10+'0';
+		printf("%s",p2);
+  }
+	if(Print_Struct.P_Number2nd>0)
+	{
+		p3[8]= Print_Struct.P_Number2nd%10 +'0'; 
+		p3[13]=UserAct.PayShould/100+'0';
+		p3[14]=UserAct.PayShould%100/10+'0';
+		p3[15]=UserAct.PayShould%100%10+'0';
+		printf("%s",p3);
+	}
+  if(Print_Struct.P_Number3rd>0)
+	{
+		p4[8]= Print_Struct.P_Number3rd%10 +'0'; 
+		p4[13]=UserAct.PayShould/100+'0';
+		p4[14]=UserAct.PayShould%100/10+'0';
+		p4[15]=UserAct.PayShould%100%10+'0';
+		printf("%s",p4);
+	}
+	if(Print_Struct.P_Number4th>0)
+	{		
+		p5[8]= Print_Struct.P_Number4th%10 +'0'; 
+		p5[13]=UserAct.PayShould/100+'0';
+		p5[14]=UserAct.PayShould%100/10+'0';
+		p5[15]=UserAct.PayShould%100%10+'0';
+		printf("%s",p5);
+	} 
+  printf("%s",p0);
+	printf("%s",p1);
+	if(UserAct.PayType == '2' )
+	{
+		 printf("支付方式：银行卡支付\r\n");
+	}
+  if(UserAct.PayType == '1')
+	{
+		 printf("支付方式：现金支付\r\n");
+	}
+	if(UserAct.PayType == '3')
+	{
+		printf("支付方式：深圳通支付\r\n");
+	}
+	Uart1_Card(huan3,sizeof(huan3)); 
+	Uart1_Card(SendStc,sizeof(SendStc));//	切纸
 }

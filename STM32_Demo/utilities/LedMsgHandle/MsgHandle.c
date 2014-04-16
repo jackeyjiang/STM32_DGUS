@@ -67,10 +67,9 @@ void InitSetting(void)
  *******************************************************************************/ 
 void MealArr(unsigned char index)
 {
-    int  MoneyBack = 0 ,PayBill = 0;
+    int MoneyBack = 0 ,PayBill = 0;
 	  switch(index)
 	  {
-     
       case 1 :	/*购买餐品的ID*/
 			{				
  		    CustomerSel.MealID[0]		   =   0x10;
@@ -84,8 +83,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[3]      =	   0x00 ;
 				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
-			}
-				break ;
+			}break ;
       case 2 :	/*购买餐品的ID*/
 			{
  		    CustomerSel.MealID[0]		   =   0x10;
@@ -99,8 +97,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[3]      =	   0x00 ;
 				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
-			}
-				 break ;
+			}break ;
       case 3 :	/*购买餐品的ID*/
 			{
  		  	CustomerSel.MealID[0]		   =   0x10;
@@ -114,10 +111,9 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[3]      =	   0x00 ;
 				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
-				 break ;
-			}
-       case 4 :	/*购买餐品的ID*/
-			 {
+			}break ;
+      case 4 :	/*购买餐品的ID*/
+			{
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
@@ -129,54 +125,57 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[3]      =	   0x00 ;
 				CustomerSel.MealPrice[4]      =	   0x20 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
-			 }
-				 break ;
-	   default : break ;
-
-	}	
+			}break ;	 
+	    default : break ;
+	  }	
 /*------购买餐品的数量-----------------*/
-				CustomerSel.MealNo         =  Print_Struct.P_Number;
-				/*购买餐品的类型*/
-        CustomerSel.PayType        =  UserAct.PayType; //	UserAct.PayType  ;
-				if(CustomerSel.PayType == '1')	/*如果是现金购买*/
-				{
-				MoneyBack  =Print_Struct.P_MoneyBack *100 ;  /*扩大10倍*/
-			//	printf("UserAct.MoneyBack=%d\r\n",UserAct.MoneyBack);
-				/*十进制转换成16*/
-				CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
-				CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
-				CustomerSel.Change[1]      =	     MoneyBack / 100000000 %100;
-				CustomerSel.Change[1]      =         CustomerSel.Change[1]/10 *16 +CustomerSel.Change[1]%10 ;                              
-				CustomerSel.Change[2]      =	     MoneyBack / 1000000 %100;
-				CustomerSel.Change[2]      =         CustomerSel.Change[2]/10 *16 +CustomerSel.Change[2]%10 ;
-				CustomerSel.Change[3]      =	     MoneyBack / 10000 %100;
-				CustomerSel.Change[3]      =         CustomerSel.Change[3]/10 *16 +CustomerSel.Change[3]%10 ;
-				CustomerSel.Change[4]      =	     MoneyBack / 100 %100;
-				CustomerSel.Change[4]      =         CustomerSel.Change[4]/10 *16 +CustomerSel.Change[4]%10 ;
-				CustomerSel.Change[5]      =	     MoneyBack % 100 ;
-				CustomerSel.Change[5]      =         CustomerSel.Change[5]/10 *16 +CustomerSel.Change[5]%10 ;
-				MoneyBack = 0 ;
-			 	}
-				/*购买餐品的剩余份数*/
-				CustomerSel.RemainMealNum[0]  =	 (DefineMeal[index-1].MealCount>>8)&0xff;
-				CustomerSel.RemainMealNum[1]  =	  DefineMeal[index-1].MealCount &0xff;
-				/*购买的类型*/
-				CustomerSel.MealName	   =  	   index ;
-				/*付了多少现金*/
-			  //PayBill  =UserAct.PayForBills +*100 ;  /*扩大10倍*/
-		    PayBill  =	UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
-	 			 /*支付了多少钱*/
-				CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
-				CustomerSel.DealBalance[0]      =       CustomerSel.DealBalance[0]/10 *16 +CustomerSel.DealBalance[0]%10 ;   
-				CustomerSel.DealBalance[1]      =	      PayBill / 100000000 %100;
-				CustomerSel.DealBalance[1]      =       CustomerSel.DealBalance[1]/10 *16 +CustomerSel.DealBalance[1]%10 ;                              
-				CustomerSel.DealBalance[2]      =	      PayBill / 1000000 %100;
-				CustomerSel.DealBalance[2]      =       CustomerSel.DealBalance[2]/10 *16 +CustomerSel.DealBalance[2]%10 ;
-				CustomerSel.DealBalance[3]      =	      PayBill / 10000 %100;
-				CustomerSel.DealBalance[3]      =       CustomerSel.DealBalance[3]/10 *16 +CustomerSel.DealBalance[3]%10 ;
-				CustomerSel.DealBalance[4]      =	      PayBill / 100 %100;
-				CustomerSel.DealBalance[4]      =       CustomerSel.DealBalance[4]/10 *16 +CustomerSel.DealBalance[4]%10 ;
-				CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
-				CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;
+	  switch(index)
+	  {
+			case 1:CustomerSel.MealNo  =  Print_Struct.P_Number1st;break;
+			case 2:CustomerSel.MealNo  =  Print_Struct.P_Number2nd;break;
+			case 3:CustomerSel.MealNo  =  Print_Struct.P_Number3rd;break;
+			case 4:CustomerSel.MealNo  =  Print_Struct.P_Number4th;break;
+	  }
+		/*购买餐品的类型*/
+    CustomerSel.PayType =  UserAct.PayType;  //	UserAct.PayType  ;
+	 if(CustomerSel.PayType == '1')	/*如果是现金购买*/
+	 { 
+		 MoneyBack  =Print_Struct.P_MoneyBack *100 ;  /*扩大10倍*/
+		//	printf("UserAct.MoneyBack=%d\r\n",UserAct.MoneyBack);
+		 /*十进制转换成16*/
+		 CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
+		 CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
+		 CustomerSel.Change[1]      =	     MoneyBack / 100000000 %100;
+		 CustomerSel.Change[1]      =         CustomerSel.Change[1]/10 *16 +CustomerSel.Change[1]%10 ;                              
+		 CustomerSel.Change[2]      =	     MoneyBack / 1000000 %100;
+		 CustomerSel.Change[2]      =         CustomerSel.Change[2]/10 *16 +CustomerSel.Change[2]%10 ;
+		 CustomerSel.Change[3]      =	     MoneyBack / 10000 %100;
+		 CustomerSel.Change[3]      =         CustomerSel.Change[3]/10 *16 +CustomerSel.Change[3]%10 ;
+		 CustomerSel.Change[4]      =	     MoneyBack / 100 %100;
+		 CustomerSel.Change[4]      =         CustomerSel.Change[4]/10 *16 +CustomerSel.Change[4]%10 ;
+		 CustomerSel.Change[5]      =	     MoneyBack % 100 ;
+		 CustomerSel.Change[5]      =         CustomerSel.Change[5]/10 *16 +CustomerSel.Change[5]%10 ;
+		 MoneyBack = 0 ;
+	 }
+		/*购买餐品的剩余份数*/
+		CustomerSel.RemainMealNum[0]  =	 (DefineMeal[index-1].MealCount>>8)&0xff;
+		CustomerSel.RemainMealNum[1]  =	  DefineMeal[index-1].MealCount &0xff;
+		/*购买的类型*/
+		CustomerSel.MealName	   =  	   index ;
+		/*付了多少现金*/
+		//PayBill  =UserAct.PayForBills +*100 ;  /*扩大10倍*/
+		PayBill  =	UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
+	 	/*支付了多少钱*/
+		CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
+		CustomerSel.DealBalance[0]      =       CustomerSel.DealBalance[0]/10 *16 +CustomerSel.DealBalance[0]%10 ;   
+		CustomerSel.DealBalance[1]      =	      PayBill / 100000000 %100;
+		CustomerSel.DealBalance[1]      =       CustomerSel.DealBalance[1]/10 *16 +CustomerSel.DealBalance[1]%10 ;                              
+		CustomerSel.DealBalance[2]      =	      PayBill / 1000000 %100;
+		CustomerSel.DealBalance[2]      =       CustomerSel.DealBalance[2]/10 *16 +CustomerSel.DealBalance[2]%10 ;
+		CustomerSel.DealBalance[3]      =	      PayBill / 10000 %100;
+		CustomerSel.DealBalance[3]      =       CustomerSel.DealBalance[3]/10 *16 +CustomerSel.DealBalance[3]%10 ;
+		CustomerSel.DealBalance[4]      =	      PayBill / 100 %100;
+		CustomerSel.DealBalance[4]      =       CustomerSel.DealBalance[4]/10 *16 +CustomerSel.DealBalance[4]%10 ;
+		CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
+		CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;
 }
-

@@ -19,23 +19,22 @@ uint8_t Current= 0x01;        //状态机变量
 uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
 int main(void)
 {
-	uint16_t temp = 0;
+ 	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
-//  SendtoServce();  //上传前七天的数据
-//  ReadDatatoBuffer(); //上一个程序有这个函数
-//   /*从网络获得时间，更新本地时钟*/
-//  EchoFuntion(RTC_TimeRegulate);
-//	/*网络签到*/
-//	SignInFunction();	
-// 	/*餐品对比数据*/
-//	MealDataCompareFun();	 
+  SendtoServce();  //上传前七天的数据
+  ReadDatatoBuffer(); //上一个程序有这个函数
+   /*从网络获得时间，更新本地时钟*/
+  EchoFuntion(RTC_TimeRegulate);
+	/*网络签到*/
+	SignInFunction();	
+ 	/*餐品对比数据*/
+	MealDataCompareFun();	 
 	Szt_GpbocAutoCheckIn(); 
 	PageChange(Menu_interface); //显示选餐界面 
 	DispLeftMeal();             //显示餐品数据
 	if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 	while(1) 
   {
-    delay_ms(200);		
 		DealSeriAceptData();
     switch(Current)
 	  {  
@@ -56,6 +55,7 @@ int main(void)
 					  LinkMachineFlag =1;
 					}
 				}
+				StateSend();
 				VariableChage(current_temprature,Temperature);
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
@@ -72,7 +72,8 @@ int main(void)
 			{
 				//将售餐的数据全部写入SD卡 			
 				//WriteDatatoSD();
-				Current= hpper_out;
+				//Current= hpper_out;
+				Current= meal_out;
 			}break;
       case hpper_out:	 /*退币状态*/
 			{
@@ -103,17 +104,31 @@ int main(void)
 			{
 			  if( WaitMeal()==Status_OK) //出一次餐发一次数据
 			    Current = data_upload;
-				else
-					Current = current_temperature;
+//				else
+//				{
+//				  UserAct.MoneyBack   = 0;
+//				  UserAct.PayAlready  = 0;
+//		    	UserAct.PayForBills = 0;
+//		    	UserAct.PayForCoins = 0;
+//		    	UserAct.PayForCards = 0;
+//					Current = current_temperature;
+//				}
 			}break;
 	    case data_upload:	 /*数据上传*/
 	    {
-        DataUpload();//根据UserAct.ID 判断需要上传的数据				
-			  Current = meal_out ; 		
+        DataUpload();//根据UserAct.ID 判断需要上传的数据	
+				
+				  UserAct.MoneyBack   = 0;
+				  UserAct.PayAlready  = 0;
+		    	UserAct.PayForBills = 0;
+		    	UserAct.PayForCoins = 0;
+		    	UserAct.PayForCards = 0;
+					Current = current_temperature;		
+				
+			  Current = current_temperature ; 		
 	    }break ;
       case status_upload: /*状态上传*/
       {
-			  StateSend();
 				Current = current_temperature; 				
 			}			
 	  } 

@@ -5,6 +5,7 @@
 #include "delay.h"
 #include "rtc.h"
 #include "stdio.h"
+#include "string.h"
 #include "MsgHandle.h"
 
 
@@ -14,8 +15,8 @@ static long Batch = 0x00 ;//交易流水号
 unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x04}; /*终端TID码 10000004*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
-unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x01};         /*终端所在区域编号*/
-unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x01,0x06};   /*终端所在地域编号*/  
+unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
+unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/  
 unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,'0','0'};	   /*终端状态*/
 unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/   
@@ -42,18 +43,30 @@ unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};
 unsigned char  UpdataFlag[4];
 unsigned char  ACK[4];  //这个是什么?
 unsigned char  WordKeyCipher[11];
-Meal_struction Meal[9]={
-	                        /*餐品ID*/				/*餐品名字*/  	       /*餐品数量*/	     /*餐品价格*/			  /*餐品类型*/
-							      0x10,0x00,0x00,0x20,  {"红萝卜炒蛋          "}, 0x00,0xc8,      0x00,0x00,0x15,0x00,	   {"C005"},
-							      0x10,0x00,0x00,0x21,  {"菜脯煎蛋            "}, 0x00,0x00,      0x00,0x00,0x15,0x00,	   {"C005"},
-							      0x10,0x00,0x00,0x22,  {"土豆牛腩            "}, 0x00,0x00,      0x00,0x00,0x15,0x00,	   {"C005"},
-							      0x10,0x00,0x00,0x23,  {"香菇滑鸡            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
-							      0x10,0x00,0x00,0x24,  {"红烧鱼块            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
-							      0x10,0x00,0x00,0x25,  {"咖喱土鸡            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
-							      0x10,0x00,0x00,0x26,  {"脆皮烧鸭            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},
-							      0x10,0x00,0x00,0x27,  {"梅菜扣肉            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},
-							      0x10,0x00,0x00,0x28,  {"秘制叉烧            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},	
-	                      };
+
+//Meal_struction Meal[9]={
+//	                        /*餐品ID*/				/*餐品名字*/  	       /*餐品数量*/	     /*餐品价格*/			  /*餐品类型*/
+//							      0x10,0x00,0x00,0x20,  {"红萝卜炒蛋          "}, 0x00,0xc8,      0x00,0x00,0x15,0x00,	   {"C005"},
+//							      0x10,0x00,0x00,0x21,  {"菜脯煎蛋            "}, 0x00,0x00,      0x00,0x00,0x15,0x00,	   {"C005"},
+//							      0x10,0x00,0x00,0x22,  {"土豆牛腩            "}, 0x00,0x00,      0x00,0x00,0x15,0x00,	   {"C005"},
+//							      0x10,0x00,0x00,0x23,  {"香菇滑鸡            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
+//							      0x10,0x00,0x00,0x24,  {"红烧鱼块            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
+//							      0x10,0x00,0x00,0x25,  {"咖喱土鸡            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
+//							      0x10,0x00,0x00,0x26,  {"脆皮烧鸭            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},
+//							      0x10,0x00,0x00,0x27,  {"梅菜扣肉            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},
+//							      0x10,0x00,0x00,0x28,  {"秘制叉烧            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},	
+//	                      };
+
+
+
+ Meal_struction Meal[4]={
+							 /*餐品ID*/ 			 /*餐品名字*/			/*餐品数量*/	  /*餐品价格*/			   /*餐品类型*/
+								   0x10,0x00,0x00,0x20,  {"红萝卜炒蛋		   "}, 0x00,0xc8,	   0x00,0x00,0x15,0x00, 	{"C005"},
+								   0x10,0x00,0x00,0x23,  {"香菇滑鸡 		   "}, 0x00,0x00,	   0x00,0x00,0x20,0x00, 	{"C005"},
+								   0x10,0x00,0x00,0x26,  {"脆皮烧鸭 		   "}, 0x00,0x00,	   0x00,0x00,0x25,0x00, 	{"C005"},
+								   0x10,0x00,0x00,0x24,  {"红烧鱼块 		   "}, 0x00,0x00,	   0x00,0x00,0x20,0x00, 	{"C005"}, 
+						   };
+
  
  /******************************/
  unsigned char	Record_buffer[1024] = {0} ;  
@@ -267,7 +280,7 @@ uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long
 typedef struct
 {
   unsigned char  Lenght[2] ;
-  unsigned char  MealNO[35*9];    /*餐品具体数目*/
+  unsigned char  MealNO[35*4];    /*餐品具体数目*/
 
 }ReturnData_Struction;
 ReturnData_Struction  ReturnData;
@@ -441,7 +454,7 @@ unsigned char  MealComparefunDemo(long Cmd ,unsigned char *p,unsigned long lengh
 * Input 		 : void
 * Output		 : void
 * Return		 : char
-* Time	       :2014-4-7  MrLao
+* Time	       :2014-4-7  MrLao  ok
 *******************************************************************************/
 
 unsigned char  SignInFun(void)
@@ -450,7 +463,7 @@ unsigned char  SignInFun(void)
 	 long  Command = 0x0100 ;
 	 long  Lenght = 0,j = 0  ;
 	 long 	CmdLenght = 0 ;  //命令长度
-	 unsigned char 	  Send_Buf[400];
+	 unsigned char 	  Send_Buf[400]={0};
 	 mem_set_00(rx1Buf,sizeof(rx1Buf));	 //数据清零
 
 	/* 命令包 ++*/
@@ -626,7 +639,7 @@ unsigned char  MealDataCompareFun(void)
 	long  CmdLenght = 0 ;
 	unsigned char status = 0 ;
 	unsigned char 	  Send_Buf[400];
-	unsigned char     TempBuffer[35*9]={0};
+	unsigned char     TempBuffer[35*4]={0};
 	unsigned char     Buffer[306]={0};
 	mem_set_00(rx1Buf,sizeof(rx1Buf));
 
@@ -748,7 +761,7 @@ unsigned char SignOutFun()
 }
 	       
  /*******************************************************************************
-* Function Name  : 状态上传函数		 0X0300
+* Function Name  : 状态上传函数		 0X0400
 * Description    :状态函数
 * Input          : void
 * Output         : void
@@ -776,7 +789,7 @@ unsigned char StatusUploadingFun()
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(DeviceStatus));  /*终端的状态*/
 	 Send_Buf[CmdLenght] = 0x03  ;
 	 CmdLenght+=0x03;
-	 i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);
+	 i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);//0x0400 状态上送
 	 if(i == 0x01)
 	 return 1 ;
 	 Lenght = HL_BufferToInit(&rx1Buf[2]) ;
@@ -792,8 +805,8 @@ unsigned char StatusUploadingFun()
 
 
  /*******************************************************************************
-* Function Name  : 状态上传函数		 0X0300
-* Description    :退签函数
+* Function Name  : 回响测试	 0X0700
+* Description    :回响测试
 * Input          : void
 * Output         : void
 * Return         : void
@@ -873,8 +886,8 @@ unsigned char EchoFun(void)
 
 
  /*******************************************************************************
-* Function Name  : 状态上传函数		 0X0300
-* Description    : 退签函数
+* Function Name  : 取餐发送数据  OK
+* Description    : 取餐发送数据
 * Input          : void
 * Output         : void
 * Return         : void
@@ -884,101 +897,113 @@ unsigned char EchoFun(void)
 
 CustomerSel__struction CustomerSel;
 unsigned char TakeMealsFun(unsigned char *SendBuffer)
-//unsigned char TakeMealsFun(unsigned char *Cardbuff,long 	CardLenght)
-{
+ {
+	 unsigned char i = 0 ;
+	 long  Lenght = 0 ,j=0;
+	 long  CmdLenght = 0 ;
+	 unsigned char	   Send_Buf[1024];	//要发送的数据啦
+	 mem_set_00(rx1Buf,sizeof(rx1Buf));
+	 /*水流号++*/
+	 Send_Buf[0] =	0x02 ;
+	 Send_Buf[1] =	0x00 ;
+	 Send_Buf[2] =	0x00 ;
+	 Send_Buf[3] =	0x00 ;
+	 Send_Buf[4] =	0x00 ;
+	 CmdLenght = 5 ;
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));	/*终端的TID*/
+	 GetBRWN();
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));	/*批次号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*终端所在区域编号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO)); /*终端所在地域编号*/
+	 for(i=0;i<6;i++)
+	 {
+	   DealBalance[3+i] = CustomerSel.DealBalance[i] ;	 
+	 }
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DealBalance,sizeof(DealBalance)); /*交易金额(支付金额) */
+	 
+	 for(i=0;i<4;i++)
+	 {
+	  //这里赋值餐品的ID
+	   MealID[3+i] = CustomerSel.MealID[i] ; //(10000020)
+	 }
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealID,sizeof(MealID)); /*餐品ID*/
+	 
+	 /*这里赋值餐品的ID*/
+	 MealNO[3] = CustomerSel.MealNo; 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealNO,sizeof(MealNO)); /*餐品购买数量*/
+ 
+	  //这里赋值餐品的名字					   
+	  for(j=0;j<20;j++)
+	  MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
+	  
+	  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));			  /*餐品名字*/
+	  
+	 /*这里赋值餐品的价格*/
+	 for(i=0;i<6;i++)
+	 MealPrice[3+i] = CustomerSel.MealPrice[i] ; 
+ 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealPrice,sizeof(MealPrice));			/*餐品价格*/ 
+	/*付钱的方式*/
+	 PayType[3] = CustomerSel.PayType ; 									 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PayType,sizeof(PayType));				/*支付方式*/
+	 /*找零金额*/
+	 for(i=0;i<6;i++)
+	 Change[3+i] = CustomerSel.Change[i] ;		 
+	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change)); 			   /*找零金额*/
+	 /*剩余餐品数量*/
+	 for(i=0;i<2;i++)
+	 {
+	  RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
+    printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
+	 }
+	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/			  
+	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
+ //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
+ //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
+ //  if(UserAct.PayType == '3')
+ //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/	 
+	 
+	 Send_Buf[CmdLenght] = 0x03  ;
+	 CmdLenght+=0x03;
+	 for(i=0;i<CmdLenght;i++)
+	 {	 
+	   printf("%02X",Send_Buf[CmdLenght]);
+	 }		 
+   i = MealComparefunDemo(0x0800,Send_Buf,CmdLenght); //发送数据(取餐交易)
+   mem_copy00(SendBuffer, Send_Buf,CmdLenght);	//把发送的参数传入数组写入SD卡
+ /***************************************************************************/	 
+	 HL_IntToBuffer(CmdLenght,&SendBuffer[1019]);	/*保存数据的长度*/
+	 
+	 if(i == 0x01) /*判断是否超时*/
+	 return 1 ;   
+	 Lenght = HL_BufferToInit(&rx1Buf[2]) ;
+	 if(Lenght == 0x00)/*判断数据长度*/
+	 return 1 ;
+	 for(j=0;j<Lenght+7;j++)
+	 {
+	  
+ //   printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+ 
+	  }
+	  if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)  //表示正确
+	  {
+		 
+		 if(rx1Buf[7]==0x00)/*是否应答命令*/
+		 {
+			return 0 ;
+		 }
+		 if(rx1Buf[7]==0x24)/*交易流水号（终端流水）重复*/
+		 {
+		  //   Batch ++ ;	/*流水号自加*/
+			return 1 ;
+		 }
+		
+	  }
+   return 0 ;
+ 
+ }
 
- 	unsigned char i = 0 ;
-	long  Lenght = 0 ,j=0;
-	long  CmdLenght = 0 ;
-	unsigned char 	  Send_Buf[1024];  //要发送的数据啦
-	mem_set_00(rx1Buf,sizeof(rx1Buf));
-	/*水流号++*/
-	Send_Buf[0] =  0x02 ;
-	Send_Buf[1] =  0x00 ;
-	Send_Buf[2] =  0x00 ;
-	Send_Buf[3] =  0x00 ;
-	Send_Buf[4] =  0x00 ;
-	CmdLenght = 5 ;
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));  /*终端的TID*/
-	GetBRWN();
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*批次号*/
-  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*终端所在区域编号*/
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO)); /*终端所在地域编号*/
-	for(i=0;i<6;i++)
-	{
-	  DealBalance[3+i] = CustomerSel.DealBalance[i] ;
-	}
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DealBalance,sizeof(DealBalance)); /*交易金额*/
-	for(i=0;i<4;i++)
-	{
-	 //这里赋值餐品的ID
-	  MealID[3+i] = CustomerSel.MealID[i] ;
-	}
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealID,sizeof(MealID)); /*餐品ID*/
-	
-	/*这里赋值餐品的ID*/
-  MealNO[3] = CustomerSel.MealNo; 
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealNO,sizeof(MealNO)); /*餐品购买数量*/
-
-	 //这里赋值餐品的名字					  
-	for(j=0;j<20;j++)
-	MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));             /*餐品名字*/
-	/*这里赋值餐品的价格*/
-	for(i=0;i<6;i++)
-  MealPrice[3+i] = CustomerSel.MealPrice[i] ; 
-
-  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealPrice,sizeof(MealPrice));          /*餐品价格*/	
-   /*付钱的方式*/
-	PayType[3] = CustomerSel.PayType ;										
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PayType,sizeof(PayType));              /*支付方式*/
-	/*找零金额*/
-	for(i=0;i<6;i++)
-	Change[3+i] = CustomerSel.Change[i] ;	    
-  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change));                /*找零金额*/
-	/*剩余餐品数量*/
-	for(i=0;i<2;i++)
-	{
-    RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
-//	 printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
-	}
- 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/			 
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));                      /*MAC*/
-//  if(UserAct.PayType == '2' )	                                                                       /* 表示如果是刷卡*/
-//	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);                /*记录刷卡信息*/
-//	if(UserAct.PayType == '3')
-//  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);                /*记录刷卡信息*/		
-	Send_Buf[CmdLenght] = 0x03 	;
-	CmdLenght+=0x03;	
-	                                
-  i = MealComparefunDemo(0x0800,Send_Buf,CmdLenght);
-  mem_copy00(SendBuffer, Send_Buf,CmdLenght);
-	
-	HL_IntToBuffer(CmdLenght,&SendBuffer[1019]);   /*保存数据的长度*/
-	if(i == 0x01) /*判断是否超时*/
-	return 1 ;	 
-  Lenght = HL_BufferToInit(&rx1Buf[2]) ;
-	if(Lenght == 0x00)/*判断数据长度*/
-	return 1 ;
-	for(j=0;j<Lenght+7;j++)
-	{ 
-//	printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-	}
-	if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)	 //表示正确
-	{  	
-		if(rx1Buf[7]==0x00)/*是否应答命令*/
-		{
-		  return 0 ;
-		}
-		if(rx1Buf[7]==0x24)/*交易流水号（终端流水）重复*/
-		{
-//    Batch ++ ;   /*流水号自加*/
-      return 1 ;
-		} 
-	}
-  return 0 ;
-}
 
 
 
@@ -1006,21 +1031,7 @@ unsigned char MealUploadingFun(void)
 	CmdLenght = 5 ;
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));  /*终端的TID*/
 
-	BRWN[3] =  Batch /1000000000000 ;
-	BRWN[3] =  BRWN[3] /10 *16 + BRWN[3]%10 ;
-	BRWN[4] =	 Batch /10000000000 %100 ;
-	BRWN[4] =  BRWN[4] /10 *16 + BRWN[4]%10 ;
-	BRWN[5] =	 Batch /100000000%100;
-	BRWN[5] =  BRWN[5] /10 *16 + BRWN[5]%10 ;
-	BRWN[6] =	 Batch /1000000%100;
-	BRWN[6] =  BRWN[6] /10 *16 + BRWN[6]%10 ;
-	BRWN[7] =	 Batch /10000 %100 ;
-	BRWN[7] =  BRWN[7] /10 *16 + BRWN[7]%10 ;
-	BRWN[8] =	 Batch/100 %100;
-	BRWN[8] =  BRWN[8] /10 *16 + BRWN[8]%10 ;
-	BRWN[9] =	 Batch %100;
-	BRWN[9] =  BRWN[9] /10 *16 + BRWN[9]%10 ;
-	
+	  GetBRWN();
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*批次号*/
   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*终端所在区域编号*/
@@ -1126,22 +1137,7 @@ unsigned char MealGroupUploadingFun(void)
 	Send_Buf[4] =  0x00 ;
 	CmdLenght = 5 ;
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));  /*终端的TID*/
-	Batch ++ ;
-	Batch = 239 ;
-	BRWN[3] =    Batch /1000000000000 ;
-	BRWN[3] =    BRWN[3] /10 *16 + BRWN[3]%10 ;
-	BRWN[4] =	 Batch /10000000000 %100 ;
-	BRWN[4] =    BRWN[4] /10 *16 + BRWN[4]%10 ;
-	BRWN[5] =	 Batch /100000000%100;
-	BRWN[5] =    BRWN[5] /10 *16 + BRWN[5]%10 ;
-	BRWN[6] =	 Batch /1000000%100;
-	BRWN[6] =    BRWN[6] /10 *16 + BRWN[6]%10 ;
-	BRWN[7] =	 Batch /10000 %100 ;
-	BRWN[7] =    BRWN[7] /10 *16 + BRWN[7]%10 ;
-	BRWN[8] =	 Batch/100 %100;
-	BRWN[8] =    BRWN[8] /10 *16 + BRWN[8]%10 ;
-	BRWN[9] =	 Batch %100;
-	BRWN[9] =    BRWN[9] /10 *16 + BRWN[9]%10 ;
+	  GetBRWN();
 
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*批次号*/
@@ -1180,7 +1176,7 @@ unsigned char MealGroupUploadingFun(void)
 }
   /*******************************************************************************
 * Function Name  : ClearingFun		 披上送
-* Description    : 退签功能
+* Description    :
 * Input          : void
 * Output         : void
 * Return         : void	  
@@ -1201,20 +1197,7 @@ unsigned char    ClearingFun(void)
 	Send_Buf[4] =  0x00 ;
 	CmdLenght = 5 ;
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));  /*终端的TID*/
-//	BRWN[3] =    Batch /1000000000000 ;
-//	BRWN[3] =    BRWN[3] /10 *16 + BRWN[3]%10 ;
-//	BRWN[4] =	 Batch /10000000000 %100 ;
-//	BRWN[4] =    BRWN[4] /10 *16 + BRWN[4]%10 ;
-//	BRWN[5] =	 Batch /100000000%100;
-//	BRWN[5] =    BRWN[5] /10 *16 + BRWN[5]%10 ;
-//	BRWN[6] =	 Batch /1000000%100;
-//	BRWN[6] =    BRWN[6] /10 *16 + BRWN[6]%10 ;
-//	BRWN[7] =	 Batch /10000 %100 ;
-//	BRWN[7] =    BRWN[7] /10 *16 + BRWN[7]%10 ;
-//	BRWN[8] =	 Batch/100 %100;
-//	BRWN[8] =    BRWN[8] /10 *16 + BRWN[8]%10 ;
-//	BRWN[9] =	 Batch %100;
-//	BRWN[9] =    BRWN[9] /10 *16 + BRWN[9]%10 ;
+
   GetBRWN();
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*批次号*/
@@ -1302,7 +1285,7 @@ void  SignInFunction(void)
  
   /*******************************************************************************
 * Function Name  : SignInFunction		 
-* Description    : 签到函数
+* Description    : 数据回响
 * Input          : void
 * Output         : void
 * Return         : void	  
@@ -1322,8 +1305,8 @@ void  SignInFunction(void)
 	 
  }
    /*******************************************************************************
-* Function Name  : MealGroupUploadingFun		 披上送
-* Description    : 餐品披上送
+* Function Name  : 
+* Description    : 餐品数据对比
 * Input          : void
 * Output         : void
 * Return         : void	  
@@ -1561,7 +1544,7 @@ void WriteToSD_data(void)
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:void                                                               
- * 修改日期:2014年4月4日                                                                    
+ * 修改日期:2014年4月4日        ok                                                            
  *******************************************************************************/ 
 void DataUpload(void)
 {

@@ -1710,7 +1710,7 @@ uint8_t ManageSztTimeCheck(void)
 	  MachineTime.Minutes = PrintBuf2[33];
 	  MachineTime.Senconds = PrintBuf2[34];
 	  MachineTime.WeekDay = PrintBuf2[35];
-	   
+	   /*
 	  tmp_yy = MachineTime.Year_L;
 	  tmp_m2 = MachineTime.Month;
 	  tmp_dd = MachineTime.Day;
@@ -1719,10 +1719,10 @@ uint8_t ManageSztTimeCheck(void)
 	  tmp_ss = MachineTime.Senconds;
 	  tmp_ww = MachineTime.WeekDay;
 	  RTC_TimeRegulate();
-
+*/
 	 // printf("\n当前设备时钟为:%2x%2x-%x-%x %x:%x:%x",MachineTime.Year_H,MachineTime.Year_L,MachineTime.Month,MachineTime.Day,MachineTime.Hours,MachineTime.Minutes,MachineTime.Senconds);
 
-	 /*新加修改系统时间
+	 //新加修改系统时间
 	 tmp_yy = BCDtoDec(MachineTime.Year_L);
 	 tmp_m2 = BCDtoDec(MachineTime.Month);
 	 tmp_dd = BCDtoDec(MachineTime.Day);
@@ -1731,7 +1731,7 @@ uint8_t ManageSztTimeCheck(void)
 	 tmp_ss = BCDtoDec(MachineTime.Senconds);
 	 tmp_ww = BCDtoDec(MachineTime.WeekDay);
 	 //printf("\n   time:%d-%d-%d %d:%d:%d",tmp_yy,tmp_m2,tmp_dd,tmp_hh,tmp_mm,tmp_ss);
-	 RTC_TimeRegulate();  */
+	 RTC_TimeRegulate();  
   	}
   else if( PrintBuf2[27] == 0x88)	 //错误，需要判断返回数据域的前两字节错误代码
    {
