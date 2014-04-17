@@ -138,6 +138,7 @@
 
 #define erro_num    0x0053 //´íÎóÏÔÊ¾
 
+void ClearUserBuffer(void);
 void PageChange(char page);
 void ScreenControl(char cmd);
 void DispLeftMeal(void);

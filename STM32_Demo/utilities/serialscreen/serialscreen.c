@@ -849,8 +849,8 @@ loop1:	switch(MealID)
 					case 0x02:   /*不打印小票*/
 					{
 						UserAct.PrintTick= VariableData[1];
-							 /*判断是否打印小票*/ 			
-            PrintTickFun(&UserAct.PrintTick); 
+//							 /*判断是否打印小票*/ 			
+//            PrintTickFun(&UserAct.PrintTick); 
 						PageChange(Mealout_interface);
 						delay_ms(1000);
 						PageChange(Menu_interface);
@@ -963,6 +963,8 @@ loop1:	switch(MealID)
 				//VariableData[1]; 需要对当前餐号进行记录,然后再处理
 				InitSetting();
 			  CurFloor.MealID= VariableData[1];	
+				CurFloor.FloorNum= 1;
+				VariableChage(floor_num,CurFloor.FloorNum);
 			}break;
       case floor_num:
 			{
@@ -1055,9 +1057,15 @@ loop1:	switch(MealID)
 						//禁止屏幕点击*/
              ScreenControl(ScreenDisable);
 						//数据同步子程序
+						 if(MealDataCompareFun())
+						 {
+							 PageChange(Data_synchronization-1);
+						 }
+             else
+             {
+							 PageChange(Data_synchronization);
+						 }
 						//超时时退出，错误退出
-						PageChange(Data_synchronization);
-						//使能屏幕点击*/
 						ScreenControl(ScreenEnable);
 						DispLeftMeal();//改变剩余餐品数量显示
 					}break;

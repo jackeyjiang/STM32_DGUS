@@ -538,7 +538,7 @@ unsigned char  SignInFun(void)
 	   ParaFileVersion[i] = rx1Buf[i+0x2c];//得到批次号
 //	 printf("%x ",ParaFileVersion[i]);
 	 }
-	 printf("\r\nBDataFileVersion: ");
+	 //printf("\r\nBDataFileVersion: ");
 	 for(i=0;i<11;i++)
 	 {
 	   BDataFileVersion[i] = rx1Buf[i+0x37];//得到批次号
@@ -955,7 +955,7 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	 for(i=0;i<2;i++)
 	 {
 	  RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
-    printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
+    //printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
 	 }
 	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/			  
 	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
@@ -965,11 +965,7 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
  //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/	 
 	 
 	 Send_Buf[CmdLenght] = 0x03  ;
-	 CmdLenght+=0x03;
-	 for(i=0;i<CmdLenght;i++)
-	 {	 
-	   printf("%02X",Send_Buf[CmdLenght]);
-	 }		 
+	 CmdLenght+=0x03;	 
    i = MealComparefunDemo(0x0800,Send_Buf,CmdLenght); //发送数据(取餐交易)
    mem_copy00(SendBuffer, Send_Buf,CmdLenght);	//把发送的参数传入数组写入SD卡
  /***************************************************************************/	 
@@ -1548,20 +1544,80 @@ void WriteToSD_data(void)
  *******************************************************************************/ 
 void DataUpload(void)
 {
-	MealArr(UserAct.MealID);
-	/*发送取餐数据给服务器*/
-	memset(Record_buffer,0,1024);    
-	Record_buffer[1012] = 'L' ;
-	Record_buffer[1013] = 'e' ; 
-	Record_buffer[1014] = 'n' ;
-	Record_buffer[1015] = 'g' ;  
-	Record_buffer[1016] = 'h' ;
-	Record_buffer[1017] = 't' ;
-	Record_buffer[1018] = ':' ; 
-	if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+	if(UserAct.MealCnt_1st>0)
 	{
-		//改变当前最后两位为N0
+    UserAct.MealID = 0x01;	
+		MealArr(UserAct.MealID);
+		/*发送取餐数据给服务器*/
+		memset(Record_buffer,0,1024);    
+		Record_buffer[1012] = 'L' ;
+		Record_buffer[1013] = 'e' ; 
+		Record_buffer[1014] = 'n' ;
+		Record_buffer[1015] = 'g' ;  
+		Record_buffer[1016] = 'h' ;
+		Record_buffer[1017] = 't' ;
+		Record_buffer[1018] = ':' ; 
+		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+		{
+			//改变当前最后两位为N0
+		}
+	  WriteToSD_data();
 	}
-
-	WriteToSD_data();
+	if(UserAct.MealCnt_2nd>0)
+	{
+    UserAct.MealID = 0x02;	
+		MealArr(UserAct.MealID);
+		/*发送取餐数据给服务器*/
+		memset(Record_buffer,0,1024);    
+		Record_buffer[1012] = 'L' ;
+		Record_buffer[1013] = 'e' ; 
+		Record_buffer[1014] = 'n' ;
+		Record_buffer[1015] = 'g' ;  
+		Record_buffer[1016] = 'h' ;
+		Record_buffer[1017] = 't' ;
+		Record_buffer[1018] = ':' ; 
+		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+		{
+			//改变当前最后两位为N0
+		}
+	  WriteToSD_data();
+	}
+	if(UserAct.MealCnt_3rd>0)
+	{
+    UserAct.MealID = 0x03;	
+		MealArr(UserAct.MealID);
+		/*发送取餐数据给服务器*/
+		memset(Record_buffer,0,1024);    
+		Record_buffer[1012] = 'L' ;
+		Record_buffer[1013] = 'e' ; 
+		Record_buffer[1014] = 'n' ;
+		Record_buffer[1015] = 'g' ;  
+		Record_buffer[1016] = 'h' ;
+		Record_buffer[1017] = 't' ;
+		Record_buffer[1018] = ':' ; 
+		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+		{
+			//改变当前最后两位为N0
+		}
+	  WriteToSD_data();
+	}
+	if(UserAct.MealCnt_4th>0)
+	{
+    UserAct.MealID = 0x04;	
+		MealArr(UserAct.MealID);
+		/*发送取餐数据给服务器*/
+		memset(Record_buffer,0,1024);    
+		Record_buffer[1012] = 'L' ;
+		Record_buffer[1013] = 'e' ; 
+		Record_buffer[1014] = 'n' ;
+		Record_buffer[1015] = 'g' ;  
+		Record_buffer[1016] = 'h' ;
+		Record_buffer[1017] = 't' ;
+		Record_buffer[1018] = ':' ; 
+		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+		{
+			//改变当前最后两位为N0
+		}
+	  WriteToSD_data();
+	}
 }

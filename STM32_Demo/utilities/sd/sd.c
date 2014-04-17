@@ -259,48 +259,41 @@ FIL fsrc;
  
 void Fwriter(unsigned char *p)
 {
-		uint8_t sd_time;   
-	  uint32_t rd; 
-	  res = f_mount(0, &fs); 
-		if(res!=FR_OK)
-		{
-		  return ;
-		}
-		else
-		{
-		}
-		for(sd_time=0;sd_time<20;sd_time++)
-		{
+	uint8_t sd_time;   
+	uint32_t rd; 
+	res = f_mount(0, &fs); 
+	if(res!=FR_OK)
+	{
+		return ;
+	}
+	for(sd_time=0;sd_time<20;sd_time++)
+	{
     res = f_open(&fsrc,f_name,FA_OPEN_ALWAYS|FA_WRITE );
 	//	res = f_open(&fsrc,"0:2013011209408.txt", FA_OPEN_ALWAYS|FA_WRITE);  //文件不存在则创建新文件
 		if(res==FR_OK) break;
-	   }
-		if(res!=FR_OK)
-		{
-
+	}
+	if(res!=FR_OK)
+	{
 		return ;
-		}
-		else
-		{ 
-		
-
+	}
+	else
+	{ 
 		res = f_lseek(&fsrc,fsrc.fsize); 
    	res = f_write(&fsrc,p,2, &rd);
 	//	res = f_write(&fsrc,"小王童鞋你好！！！\r\n",512, &rd);
 		f_sync(&fsrc)	;	
 	  if(res!=FR_OK)
-	{
-	  f_close(&fsrc);
-	  f_mount(0, NULL);
-	  return;
-	}
-	else
-	{
-	   f_close(&fsrc);
-	   f_mount(0, NULL);
-	}  
-
-}
+	  {
+	    f_close(&fsrc);
+	    f_mount(0, NULL);
+	    return;
+	  }
+	  else
+	  {
+	    f_close(&fsrc);
+	    f_mount(0, NULL);
+	  }  
+  }
 }
 
 

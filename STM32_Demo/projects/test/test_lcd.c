@@ -21,8 +21,8 @@ int main(void)
 {
  	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
-  SendtoServce();  //上传前七天的数据
-  ReadDatatoBuffer(); //上一个程序有这个函数
+ // SendtoServce();  //上传前七天的数据
+  //ReadDatatoBuffer(); //上一个程序有这个函数
    /*从网络获得时间，更新本地时钟*/
   EchoFuntion(RTC_TimeRegulate);
 	/*网络签到*/
@@ -40,21 +40,21 @@ int main(void)
 	  {  
 	    case current_temperature: /*温度处理函数*/
 			{
-				if(LinkTime >=5)
-				{
-				  LinkTime =0;
-					SendLink();
-					temp = 0;
-					temp = manageretry1(SendLink);
-					if(temp ==1)
-					{
-					  LinkMachineFlag =0;
-					}
-					else
-					{
-					  LinkMachineFlag =1;
-					}
-				}
+//				if(LinkTime >=5)
+//				{
+//				  LinkTime =0;
+//					SendLink();
+//					temp = 0;
+//					temp = manageretry1(SendLink);
+//					if(temp ==1)
+//					{
+//					  LinkMachineFlag =0;
+//					}
+//					else
+//					{
+//					  LinkMachineFlag =1;
+//					}
+//				}
 				StateSend();
 				VariableChage(current_temprature,Temperature);
 			}break;
@@ -64,8 +64,10 @@ int main(void)
 				{
 					UserAct.Meal_totoal=UserAct.MealCnt_1st + UserAct.MealCnt_2nd  + UserAct.MealCnt_3rd+ UserAct.MealCnt_4th;
 					PageChange(TicketPrint_interface);
+					delay_ms(200);
+					if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 					//改变用户所选餐的总数
-					Current= data_record;
+					Current= data_upload;
 			  }
 				}break;
 			case data_record:  /*数据记录*/
@@ -102,30 +104,23 @@ int main(void)
 			}break;				
 	    case meal_out:	 /*出餐状态*/
 			{
-			  if( WaitMeal()==Status_OK) //出一次餐发一次数据
-			    Current = data_upload;
-//				else
-//				{
-//				  UserAct.MoneyBack   = 0;
-//				  UserAct.PayAlready  = 0;
-//		    	UserAct.PayForBills = 0;
-//		    	UserAct.PayForCoins = 0;
-//		    	UserAct.PayForCards = 0;
-//					Current = current_temperature;
-//				}
+			  if( WaitMeal()==Status_OK) //出餐完毕
+				{ 
+					PrintTickFun(&UserAct.PrintTick); /*判断是否打印小票*/
+					ClearUserBuffer();  //清楚购物车
+			    Current = current_temperature;
+				}
 			}break;
 	    case data_upload:	 /*数据上传*/
 	    {
-        DataUpload();//根据UserAct.ID 判断需要上传的数据	
-				
-				  UserAct.MoneyBack   = 0;
-				  UserAct.PayAlready  = 0;
-		    	UserAct.PayForBills = 0;
-		    	UserAct.PayForCoins = 0;
-		    	UserAct.PayForCards = 0;
-					Current = current_temperature;		
-				
-			  Current = current_temperature ; 		
+        DataUpload();//根据UserAct.ID 判断需要上传的数据				           
+				 				
+				UserAct.MoneyBack   = 0;
+				UserAct.PayAlready  = 0;
+		    UserAct.PayForBills = 0;
+		    UserAct.PayForCoins = 0;
+        UserAct.PayForCards = 0;
+			  Current = hpper_out ; 		
 	    }break ;
       case status_upload: /*状态上传*/
       {

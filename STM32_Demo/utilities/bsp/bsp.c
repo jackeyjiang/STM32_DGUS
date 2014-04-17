@@ -181,7 +181,6 @@ unsigned char  WaitPayMoney(void)
 		}break;
 	  case 9 :  //付款成功关闭所有的收银系统
 		{
-			if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 			UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
       OldCoinsCnt= UserAct.MoneyBack ; //在这里程序只执行一次
 			VariableChage(mealout_totle,UserAct.Meal_totoal);	
