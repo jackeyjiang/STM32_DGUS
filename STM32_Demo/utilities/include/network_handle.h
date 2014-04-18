@@ -8,6 +8,36 @@ extern   uint8_t		  F_RX1_VAILD ;
 extern   long  		    CrcValue ;
 extern   uint8_t		  F_RX1_SYNC ;
 
+extern unsigned char  TID[7];
+extern unsigned char  BRWN[7+3];
+extern unsigned char  BNO[6];
+extern unsigned char  DeviceArea[3+3];
+extern unsigned char  DeviceAreaNO[4+3];
+extern unsigned char  DeviceStatus[2+3];
+extern unsigned char  DealData[7];
+extern unsigned char  DealTime[6];
+extern unsigned char  MAC[8+3];
+extern unsigned char  DealBalance[6+3];
+extern unsigned char  MealID[4+3];
+extern unsigned char  MealNO[1+3];
+extern unsigned char  MealName[20+3];
+extern unsigned char  MealPrice[6+3];
+extern unsigned char  PayType[1+3];
+extern unsigned char  Change[6+3];
+extern unsigned char  RemainMealNum[2+3];
+extern unsigned char  MName[20+3];
+extern unsigned char  APPVersion[8+3];
+extern unsigned char  ParaFileVersion[8+3];
+extern unsigned char  BDataFileVersion[8+3];
+extern unsigned char  ChechStatus[2+3];
+extern unsigned char  MID[3+3];
+extern unsigned char  TTCount[3+2];
+extern unsigned char  TNCT[6+3];
+extern unsigned char  TNtype[3+2];
+extern unsigned char  TotalChange[3+6];
+
+extern unsigned char  UpdataFlag[4];
+extern unsigned char  WordKeyCipher[11];
 
 /*******************************************
 这个结构体是定义9种餐品的定义
@@ -16,13 +46,13 @@ extern   uint8_t		  F_RX1_SYNC ;
 ********************************/
 typedef struct
 {
-	
+
 	unsigned char MealID[4];
 	unsigned char MaelName[20];
 	unsigned char MealNum[2];
 	unsigned char MealPreace[4];
 	unsigned char MealType[4];
-	
+
 }Meal_struction;
 extern	Meal_struction  	Meal[4];
 
@@ -39,7 +69,7 @@ typedef struct
  unsigned char   MealPrice[6];       /*餐品的价格*/
  unsigned char   Change[6] ;        /*应该找回多少钱*/
  unsigned char   RemainMealNum[2] ; /*剩余餐品数*/
- unsigned char   MealName; 
+ unsigned char   MealName;
 
 }CustomerSel__struction ;
 extern CustomerSel__struction CustomerSel;
@@ -48,7 +78,7 @@ extern CustomerSel__struction CustomerSel;
 extern unsigned char  F_RX1_Right;
 extern unsigned char  rx1Buf[512];	  //发送数据给服务器，服务器返回数据存在这个buffer
 
-
+uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len);
 unsigned char SignInFun(void);
 unsigned char MealDataCompareFun(void);
 unsigned char SignOutFun(void);/*退签*/
@@ -63,6 +93,7 @@ void WriteToSD_data(void);
 void DataUpload(void);
 void StateSend(void);
 void SignInFunction(void);
+void GetBRWN(void);
 
 
 

@@ -190,238 +190,238 @@ void SetTemper(uint8_t temper)
 
 Urart6RecFlagInf machinerec;
 /*处理接收数据*/
-void ManageUsart6(void)
-{
-  if(Usart6DataFlag ==1)
-  	{
-  	  switch (Usart6Buff[0])
-	  	{
-	  	  case 0x06 :  //ACK
-		    Usart6Buff[0] =0;
-		  	Usart6Index =0;
-			machinerec.reack =1;
-			machinerec.renack = 0;
-		 	break;
-		  case 0x15 :  //NACK
-		  	//最多重发三次原命令
-			Usart6Buff[0] =0;
-			Usart6Index =0;
-			machinerec.reack =0;
-			machinerec.renack = 1;
-			break;
-		  case 'E':  //错误标志
-		  	if(Usart6Index >= 6)
-			{
-			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
-			  	{
-			  	  SendAck();
+//void ManageUsart6(void)
+//{
+//  if(Usart6DataFlag ==1)
+//  	{
+//  	  switch (Usart6Buff[0])
+//	  	{
+//	  	  case 0x06 :  //ACK
+//		    Usart6Buff[0] =0;
+//		  	Usart6Index =0;
+//			machinerec.reack =1;
+//			machinerec.renack = 0;
+//		 	break;
+//		  case 0x15 :  //NACK
+//		  	//最多重发三次原命令
+//			Usart6Buff[0] =0;
+//			Usart6Index =0;
+//			machinerec.reack =0;
+//			machinerec.renack = 1;
+//			break;
+//		  case 'E':  //错误标志
+//		  	if(Usart6Index >= 6)
+//			{
+//			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
+//			  	{
+//			  	  SendAck();
 
-			  	}
-			  else
-			  	{
-			  	  SendNack();
-			  	}
-			  //mem_set_00(Usart6Buff,6);
-			  memset(Usart6Buff,0,6);
-			  Usart6Index =0;
-			}
-			else
-			{
-			}
-			break;
-		  case 'D': //门状态
-		    if(Usart6Index >= 6)
-			{
-			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
-			  	{
-			  	  SendAck();
-				  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0'))
-			  		{
-			  		  //开门
-			  		  machinerec.redoor = 0;
-	
-			  		}
-				  else  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '1'))
-					{
-					  //关门
-					  machinerec.redoor = 1;
-					}
-				  else
-				  {
-				  }
-			  	}
-			  else
-			  	{
-			  	  SendNack();
-			  	}
-			  memset(Usart6Buff,0,6);
-			  Usart6Index =0;
-			  
-			}
-			else
-			{
-			}
-					
-		 	break;
-		  case 'N': 
-		    if(Usart6Index >= 6)
-			{
-			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
-			  	{
-			  	  SendAck();
-				  if((Usart6Buff[1]== 'O')&&(Usart6Buff[2]== 'R')&&(Usart6Buff[3]== '0'))
-				  		{
-				  		  //到达相对原点，即待机位置
-						  machinerec.rerelative = 1;
-				  		 
-				  		}
-				  else
-						{
-						
-						}
-				}
-			  else
-			  	{
-			  	  SendNack();
-			  	}
-			  memset(Usart6Buff,0,6);
-			  Usart6Index =0;
-			  
-			}
-			else
-			{
-			}
-			break;
-		  case 'S': 
-		    if(Usart6Index >= 6)
-			{
-			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
-			  	{
-			  	  SendAck();
-				  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0'))
-			  		{
-			  		  //到达取餐点
-					  machinerec.regoal = 1;
-			  		}
-				  else
-					{
-					
-					}
-				}
-			  else
-			  	{
-			  	  SendNack();
-			  	}
-			  memset(Usart6Buff,0,6);
-			  Usart6Index =0;
-			  
-			}
-			else
-			{
-			}
-		  	
-			break;
-		  case 'O': 
-		    if(Usart6Index >= 6)
-			{
-			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
-			  	{
-			  	  SendAck();
-				  if((Usart6Buff[1]== 'U')&&(Usart6Buff[2]== 'T')&&(Usart6Buff[3]== '0'))
-			  		{
-			  		  //餐已到达出餐口
-					  machinerec.retodoor = 1;
-			  		}
-				  else
-					{
-					
-					}
-				}
-			  else
-			  	{
-			  	  SendNack();
-			  	}
-			  memset(Usart6Buff,0,6);
-			  Usart6Index =0;
-			  
-			}
-			else
-			{
-			}
-		    
-		 	break;
-		  case 'F': 
-		    if(Usart6Index >= 6)
-			{
-			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
-			  	{
-			  	  SendAck();
-				  if((Usart6Buff[1]== 'I')&&(Usart6Buff[2]== 'N')&&(Usart6Buff[3]== '0'))
-			  		{
-			  		  //餐已被取餐
-					  machinerec.remealaway = 1;
-			  		}
-				  else
-					{
-					
-					}
-				}
-			  else
-			  	{
-			  	  SendNack();
-			  	}
-			  memset(Usart6Buff,0,6);
-			  Usart6Index =0;
-			  
-			}
-			else
-			{
-			}
-		    
-			break;
-		  case 'T': //餐在取餐口未被取走，或餐架上的餐取不到
-		    if(Usart6Index >= 6)
-			{
-			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
-			  	{
-			  	  SendAck();
-				  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
-			  		{
-			  		  //餐在取餐口过了20秒还未被取走
-					  machinerec.remealnoaway = 1;
-			  		}
-				  else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
-			  		{
-			  		  //取餐5秒了还未取到餐
-					  machinerec.reenablegetmeal = 1;
-			  		}
-				  else
-					{
-					
-					}
-				}
-			  else
-			  	{
-			  	  SendNack();
-			  	}
-			  memset(Usart6Buff,0,6);
-			  Usart6Index =0;
-			}
-			else
-			{
-			}
-		    
-			break;
-		  default : 
-		  	break;
-	  	
-	  	}
-  	}
-}
+//			  	}
+//			  else
+//			  	{
+//			  	  SendNack();
+//			  	}
+//			  //mem_set_00(Usart6Buff,6);
+//			  memset(Usart6Buff,0,6);
+//			  Usart6Index =0;
+//			}
+//			else
+//			{
+//			}
+//			break;
+//		  case 'D': //门状态
+//		    if(Usart6Index >= 6)
+//			{
+//			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
+//			  	{
+//			  	  SendAck();
+//				  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0'))
+//			  		{
+//			  		  //开门
+//			  		  machinerec.redoor = 0;
+//	
+//			  		}
+//				  else  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '1'))
+//					{
+//					  //关门
+//					  machinerec.redoor = 1;
+//					}
+//				  else
+//				  {
+//				  }
+//			  	}
+//			  else
+//			  	{
+//			  	  SendNack();
+//			  	}
+//			  memset(Usart6Buff,0,6);
+//			  Usart6Index =0;
+//			  
+//			}
+//			else
+//			{
+//			}
+//					
+//		 	break;
+//		  case 'N': 
+//		    if(Usart6Index >= 6)
+//			{
+//			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
+//			  	{
+//			  	  SendAck();
+//				  if((Usart6Buff[1]== 'O')&&(Usart6Buff[2]== 'R')&&(Usart6Buff[3]== '0'))
+//				  		{
+//				  		  //到达相对原点，即待机位置
+//						  machinerec.rerelative = 1;
+//				  		 
+//				  		}
+//				  else
+//						{
+//						
+//						}
+//				}
+//			  else
+//			  	{
+//			  	  SendNack();
+//			  	}
+//			  memset(Usart6Buff,0,6);
+//			  Usart6Index =0;
+//			  
+//			}
+//			else
+//			{
+//			}
+//			break;
+//		  case 'S': 
+//		    if(Usart6Index >= 6)
+//			{
+//			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
+//			  	{
+//			  	  SendAck();
+//				  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0'))
+//			  		{
+//			  		  //到达取餐点
+//					  machinerec.regoal = 1;
+//			  		}
+//				  else
+//					{
+//					
+//					}
+//				}
+//			  else
+//			  	{
+//			  	  SendNack();
+//			  	}
+//			  memset(Usart6Buff,0,6);
+//			  Usart6Index =0;
+//			  
+//			}
+//			else
+//			{
+//			}
+//		  	
+//			break;
+//		  case 'O': 
+//		    if(Usart6Index >= 6)
+//			{
+//			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
+//			  	{
+//			  	  SendAck();
+//				  if((Usart6Buff[1]== 'U')&&(Usart6Buff[2]== 'T')&&(Usart6Buff[3]== '0'))
+//			  		{
+//			  		  //餐已到达出餐口
+//					  machinerec.retodoor = 1;
+//			  		}
+//				  else
+//					{
+//					
+//					}
+//				}
+//			  else
+//			  	{
+//			  	  SendNack();
+//			  	}
+//			  memset(Usart6Buff,0,6);
+//			  Usart6Index =0;
+//			  
+//			}
+//			else
+//			{
+//			}
+//		    
+//		 	break;
+//		  case 'F': 
+//		    if(Usart6Index >= 6)
+//			{
+//			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
+//			  	{
+//			  	  SendAck();
+//				  if((Usart6Buff[1]== 'I')&&(Usart6Buff[2]== 'N')&&(Usart6Buff[3]== '0'))
+//			  		{
+//			  		  //餐已被取餐
+//					  machinerec.remealaway = 1;
+//			  		}
+//				  else
+//					{
+//					
+//					}
+//				}
+//			  else
+//			  	{
+//			  	  SendNack();
+//			  	}
+//			  memset(Usart6Buff,0,6);
+//			  Usart6Index =0;
+//			  
+//			}
+//			else
+//			{
+//			}
+//		    
+//			break;
+//		  case 'T': //餐在取餐口未被取走，或餐架上的餐取不到
+//		    if(Usart6Index >= 6)
+//			{
+//			  if((Usart6Buff[4]==0x0d) &&(Usart6Buff[5] == 0x0a))
+//			  	{
+//			  	  SendAck();
+//				  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+//			  		{
+//			  		  //餐在取餐口过了20秒还未被取走
+//					  machinerec.remealnoaway = 1;
+//			  		}
+//				  else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+//			  		{
+//			  		  //取餐5秒了还未取到餐
+//					  machinerec.reenablegetmeal = 1;
+//			  		}
+//				  else
+//					{
+//					
+//					}
+//				}
+//			  else
+//			  	{
+//			  	  SendNack();
+//			  	}
+//			  memset(Usart6Buff,0,6);
+//			  Usart6Index =0;
+//			}
+//			else
+//			{
+//			}
+//		    
+//			break;
+//		  default : 
+//		  	break;
+//	  	
+//	  	}
+//  	}
+//}
 
 
 
-/*返回0表示发送成功，返回1表示发送失败*/
+///*返回0表示发送成功，返回1表示发送失败*/
 uint8_t manageretry1(void (*fun) (void) )
 {
   RetryFre =0;
@@ -431,6 +431,7 @@ uint8_t manageretry1(void (*fun) (void) )
   while(1)
   {
     delay_ms(5);
+		if(UART6_GetCharsInRxBuf()>=0)
 	if( machinerec.reack ==1)	  //ack
 	  {
 	    LinkTime =0;
@@ -453,7 +454,7 @@ uint8_t manageretry1(void (*fun) (void) )
 	  RetryFre =0;
 	  machinerec.reack = 0;
 //	  CloseTIM5();
-	  return 0;
+	  return 1;
 	}
 
 	if(machinerec.renack ==1)

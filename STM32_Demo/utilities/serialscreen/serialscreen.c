@@ -849,11 +849,10 @@ loop1:	switch(MealID)
 					case 0x02:   /*不打印小票*/
 					{
 						UserAct.PrintTick= VariableData[1];
-//							 /*判断是否打印小票*/ 			
-//            PrintTickFun(&UserAct.PrintTick); 
-						PageChange(Mealout_interface);
-						delay_ms(1000);
+							 /*判断是否打印小票*/ 			
+            PrintTickFun(&UserAct.PrintTick); 
 						PageChange(Menu_interface);
+						ClearUserBuffer();  //清楚购物车
 					}break;  
 					default:break;
 				}

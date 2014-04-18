@@ -89,34 +89,6 @@ void MealArr(unsigned char index)
  		    CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x21;
-				/*购买餐品的价格*/
-				CustomerSel.MealPrice[0]      =    0x00 ;
-				CustomerSel.MealPrice[1]      =	   0x00 ;
-				CustomerSel.MealPrice[2]      =	   0x00	;
-				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x15 ;
-				CustomerSel.MealPrice[5]      =	   0x00 ;
-			}break ;
-      case 3 :	/*购买餐品的ID*/
-			{
- 		  	CustomerSel.MealID[0]		   =   0x10;
-				CustomerSel.MealID[1]		   =   0x00;
-				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x22;
-				/*购买餐品的价格*/
-				CustomerSel.MealPrice[0]      =    0x00 ;
-				CustomerSel.MealPrice[1]      =	   0x00 ;
-				CustomerSel.MealPrice[2]      =	   0x00	;
-				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x15 ;
-				CustomerSel.MealPrice[5]      =	   0x00 ;
-			}break ;
-      case 4 :	/*购买餐品的ID*/
-			{
- 		  	CustomerSel.MealID[0]		   =   0x10;
-				CustomerSel.MealID[1]		   =   0x00;
-				CustomerSel.MealID[2]		   =   0x00;
 				CustomerSel.MealID[3]		   =   0x23;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
@@ -124,6 +96,34 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[2]      =	   0x00	;
 				CustomerSel.MealPrice[3]      =	   0x00 ;
 				CustomerSel.MealPrice[4]      =	   0x20 ;
+				CustomerSel.MealPrice[5]      =	   0x00 ;
+			}break ;
+      case 3 :	/*购买餐品的ID*/
+			{
+ 		  	CustomerSel.MealID[0]		   =   0x10;
+				CustomerSel.MealID[1]		   =   0x00;
+				CustomerSel.MealID[2]		   =   0x00;
+				CustomerSel.MealID[3]		   =   0x26;
+				/*购买餐品的价格*/
+				CustomerSel.MealPrice[0]      =    0x00 ;
+				CustomerSel.MealPrice[1]      =	   0x00 ;
+				CustomerSel.MealPrice[2]      =	   0x00	;
+				CustomerSel.MealPrice[3]      =	   0x00 ;
+				CustomerSel.MealPrice[4]      =	   0x25 ;
+				CustomerSel.MealPrice[5]      =	   0x00 ;
+			}break ;
+      case 4 :	/*购买餐品的ID*/
+			{
+ 		  	CustomerSel.MealID[0]		   =   0x10;
+				CustomerSel.MealID[1]		   =   0x00;
+				CustomerSel.MealID[2]		   =   0x00;
+				CustomerSel.MealID[3]		   =   0x24;
+				/*购买餐品的价格*/
+				CustomerSel.MealPrice[0]      =    0x00 ;
+				CustomerSel.MealPrice[1]      =	   0x00 ;
+				CustomerSel.MealPrice[2]      =	   0x00	;
+				CustomerSel.MealPrice[3]      =	   0x00 ;
+				CustomerSel.MealPrice[4]      =	   0x30 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;	 
 	    default : break ;

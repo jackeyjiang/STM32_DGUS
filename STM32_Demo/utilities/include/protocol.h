@@ -39,7 +39,7 @@ bool E050;
 }ErrorFlagInf;
 
 
-extern uint8_t Usart6Buff[6];	//用于接收机械手发过来的数据
+//extern uint8_t Usart6Buff[6];	//用于接收机械手发过来的数据
 extern uint8_t Usart6Index;
 extern uint8_t Usart6DataFlag;   //此标志作为是否有数据接收，0无，1有数据，平时清0
 extern Urart6RecFlagInf machinerec;

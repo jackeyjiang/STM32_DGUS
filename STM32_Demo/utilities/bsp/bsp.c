@@ -390,6 +390,7 @@ void ClearingFuntion(void)
 void hardfawreInit(void)
 {
   uint8_t i, j, k;
+  Uart6_Configuration();
 //初始化存放位置数据结构体
   for(i = 0; i < 4; i++)
 	{
@@ -414,11 +415,11 @@ void hardfawreInit(void)
 	 Uart3_Configuration();	    // 串口屏初始化
 	 Uart2_Configuration();	    //深圳通、银联卡串口
 	 Uart5_Configuration();		//网络串口初始化
-//	 Uart6_Configuration();
+	 Uart6_Configuration();
 //	 TIM2_Init();		        //电机
 //	 TIM3_Init();		        //用于定时，倒计时
 //	 TIM4_Init();		        //待定
-//	 TIM5_Init();		        //倒计时退币
+	 TIM5_Init();		        //倒计时退币
 //	 TIM7_Init();				  //用于定时采集温度
    InitCoins();		        //投币机初始化
    InitMiniGPIO() ;		   //退币器始化

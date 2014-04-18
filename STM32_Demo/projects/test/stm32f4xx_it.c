@@ -214,6 +214,25 @@ void EXTI15_10_IRQHandler(void)
 	  EXTI_ClearITPendingBit(EXTI_Line10);	
 	}
 }
+
+ /*******************************************************************************
+ * 函数名称:TIM5_IRQHandler                                                                     
+ * 描    述:中断程序  ,用于与机械手通迅计时                                                              
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:                                                                   
+ *******************************************************************************/
+//  uint8_t LinkTime; 
+void TIM5_IRQHandler(void)
+{
+  if(TIM_GetITStatus(TIM5,TIM_IT_Update)!=RESET)
+	{	 
+	  TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
+		LinkTime++;   
+  }
+}
 /**
   * @}
   */ 

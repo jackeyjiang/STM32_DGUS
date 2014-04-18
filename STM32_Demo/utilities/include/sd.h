@@ -3,7 +3,7 @@
 #include "rtc.h"
 
 extern unsigned char is_init;
-						   
+
 #define SetSCLK 	 	      GPIOA->BSRRL = GPIO_Pin_5;//GPIO_SetBits(GPIOC,GPIO_Pin_12)
 #define ResetSCLK 	 	    GPIOA->BSRRH = GPIO_Pin_5;// GPIO_ResetBits(GPIOC,GPIO_Pin_12)
 
@@ -16,7 +16,9 @@ void WriteDatatoSD(unsigned char *);
 void ReadDatatoBuffer(void);
 void File_delete(void);
 void SendtoServce(void);
-#endif	
-				  
+void DataRecord(void);
+void Sd_Write(void);
+#endif
+
 
 
