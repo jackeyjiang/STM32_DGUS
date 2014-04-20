@@ -22,26 +22,29 @@ int main(void)
  	uint16_t temp = 0;
 	uint8_t initflag ;
 	hardfawreInit(); //硬件初始化
+	printf("hardfawreInit IS ok\r\n");  //关闭现金接受
   //SendtoServce();  //上传前七天的数据
   //ReadDatatoBuffer(); //上一个程序有这个函数
    /*从网络  获得时间，更新本地时钟*/
-//  EchoFuntion(RTC_TimeRegulate);
-//	/*网络签到*/
-//	SignInFunction();
-// 	/*餐品对比数据*/
-//	MealDataCompareFun();
+  EchoFuntion(RTC_TimeRegulate);
+	printf("EchoFuntion is ok\r\n");  //关闭现金接受
+	/*网络签到*/
+	SignInFunction();
+	printf("SignInFunction is ok\r\n");  //关闭现金接受
+ 	/*餐品对比数据*/
+	MealDataCompareFun();
+	printf("MealDataCompareFun is ok\r\n");  //关闭现金接受
 	Szt_GpbocAutoCheckIn();
+	printf("Szt_GpbocAutoCheckIn is ok\r\n");  //关闭现金接受
 	PageChange(Menu_interface); //显示选餐界面
 	DispLeftMeal();             //显示餐品数据
-	if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
-	LinkTime =0;
-	OpenTIM5();
-	initflag =0;
+	if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
 	while(1)
   {
 		//delay_ms(200);
 		DealSeriAceptData();
 		//ManipulatorHandler();
+		//Current =data_record;
     switch(Current)
 	  {
 	    case current_temperature: /*温度处理函数*/
@@ -98,7 +101,7 @@ int main(void)
 			  if( WaitMeal()==Status_OK) //出餐完毕
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
-			    Current = current_temperature;
+			    Current = data_upload;
 				}
 			}break;
 	    case data_upload:	 /*数据上传*/
@@ -110,7 +113,7 @@ int main(void)
 		    UserAct.PayForBills = 0;
 		    UserAct.PayForCoins = 0;
         UserAct.PayForCards = 0;
-			  Current = hpper_out ;
+			  Current = current_temperature ;
 	    }break ;
       case status_upload: /*状态上传*/
       {

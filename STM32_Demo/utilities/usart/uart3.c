@@ -44,7 +44,7 @@ void Uart3_Send(const uint8_t *p,uint8_t length)
 	    USART3->DR = (u8) p[i];       
     	while((USART3->SR&0X40)==0);//循环发送,直到发送完毕   
     	    
-	}
+	 }
 }
 void Uart3_Sent(const char *p,uint8_t length)
 {
@@ -54,7 +54,7 @@ void Uart3_Sent(const char *p,uint8_t length)
 	    USART3->DR = (u8) p[i];       
     	while((USART3->SR&0X40)==0);//循环发送,直到发送完毕   
     	    
-	}
+	 }
 }
   /*******************************************************************************
  * 函数名称:_LCD_Disable_RxInit                                                                     

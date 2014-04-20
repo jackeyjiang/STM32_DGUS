@@ -307,26 +307,19 @@ void Fwriter(unsigned char *p)
  * 修改日期:2013年4月20日
  *******************************************************************************/
 static uint32_t  Index = 0;
-unsigned char    Buffer[1024] = {0};
+char    Buffer[256] = {0};
 unsigned char    Fread(unsigned char *p)
 {
 		uint8_t   sd_time;
     uint32_t  rd;
 	  uint16_t  Lenght = 0 ;
 	  uint32_t  indexflag = 0;
-
 	  res = f_mount(0, &fs);
 		if(res!=FR_OK)
 		{
 			return 0;
 		}
-		for(sd_time=0;sd_time<20;sd_time++) //重复打开20次
-		{
-      res = f_open(&fsrc,f_name,FA_OPEN_EXISTING|FA_READ |FA_WRITE);  //默认打开一个文件
-		//res = f_open(&fsrc,"0:123456789.txt", FA_OPEN_EXISTING|FA_READ );  //文件不存在则创建新文件
-		  if(res==FR_OK)
-		     break;
-	  }
+    res = f_open(&fsrc,f_name,FA_OPEN_EXISTING|FA_READ |FA_WRITE);  //默认打开一个文件    
 		if(res!=FR_OK)
 		{
 		  return  1; //返回错误
@@ -336,38 +329,25 @@ unsigned char    Fread(unsigned char *p)
 		  // res = f_lseek(&fsrc,fsrc.fsize);
 		  res = f_lseek(&fsrc,Index); //指针指向第Index个字节
 			//	printf("Index = %d \r\n",res);
-		  res = f_read(&fsrc,Buffer,512, &rd);//读取512字节的数据到Buffer,rd 存储的是读到的字节数
+		  res = f_read(&fsrc,p,256, &rd);//读取256字节的数据到Buffer,rd 存储的是读到的字节数
 			//	printf("Index = %d \r\n",res);
-		  res = f_lseek(&fsrc,Index+512); //指针偏移Index+512个字节
-			//	printf("Index = %d \r\n",res);
-			res = f_read(&fsrc,&Buffer[512],512, &rd);//传递的是Buffer[512]的地址，读取了512字节的数据
-//				printf("Index = %d \r\n",res);
-//			  printf("Buffer = %c \r\n",Buffer[1021]);
-//			  printf("Buffer = %c \r\n",Buffer[1022]);
-//				printf("Buffer = %c \r\n",Buffer[1023]);
-			if(Buffer[1022]== 'N' && Buffer[1023]== 'O') //表示没有发送成功
-			{
-//				  printf("Buffer = %c \r\n",Buffer[1021]);
-//				  printf("Buffer = %c \r\n",Buffer[1022]);
-//				  printf("Buffer = %c \r\n",Buffer[1023]);
-				Lenght = Buffer[1019] << 8 | Buffer[1020];
-				if(1)
-				//if(Resend(Buffer,Lenght) == 0x00)
-				{
-					indexflag = Index+1021 ;
-					res = f_lseek(&fsrc,indexflag);//偏移Index+1021
-          res = f_write(&fsrc,"Yes",3, &rd); //写"Yes"
-				  f_close(&fsrc);
-        }
-				else
-				{
-					*p =  0x01 ;
-					res = f_lseek(&fsrc,1000);
-					res = f_write(&fsrc,"Uncomplete",10, &rd);
-					f_close(&fsrc);
-        }
+//				if(1)
+//				//if(Resend(Buffer,Lenght) == 0x00)
+//				{
+//					indexflag = Index+1021 ;
+//					res = f_lseek(&fsrc,indexflag);//偏移Index+1021
+//          res = f_write(&fsrc,"Yes",3, &rd); //写"Yes"
+//				  f_close(&fsrc);
+//        }
+//				else
+//				{
+//					*p =  0x01 ;
+//					res = f_lseek(&fsrc,1000);
+//					res = f_write(&fsrc,"Uncomplete",10, &rd);
+//					f_close(&fsrc);
+//        }
       }
-		  Index += 1024 ; //偏移1024
+		  Index += 256 ; //偏移256
 		  // printf("Index = %d \r\n",Index);
 	    if(res!=FR_OK ||fsrc.fsize <= Index ) //fsrc.fsize是文件大小，这里判断文件大小
 	    {
@@ -381,8 +361,8 @@ unsigned char    Fread(unsigned char *p)
 //	    f_mount(0, NULL);
 		    return 0 ;
 	    }
-   }
-}
+ }
+
   /*******************************************************************************
  * 函数名称:WriteDatatoSD
  * 描    述:把信息写进sd卡
@@ -508,34 +488,33 @@ void DataRecord(void)
 {
    char sd_time=0;
 	 RTC_TimeShow();
-	 itoa(f_name,TimeDate);	  //把时间转换成字符
 	 if(UserAct.MealCnt_1st>0)
 	 {
      UserAct.MealID = 0x01;
 		 MealArr(UserAct.MealID);
+		 itoa(f_name,TimeDate);	  //把时间转换成字符
      Sd_Write();
-		 delay_ms(500);
 	 }
 	 if(UserAct.MealCnt_2nd>0)
 	 {
      UserAct.MealID = 0x02;
 		 MealArr(UserAct.MealID);
+		 itoa(f_name,TimeDate);	  //把时间转换成字符
      Sd_Write();
-		 delay_ms(500);
 	 }
 	 if(UserAct.MealCnt_3rd>0)
 	 {
      UserAct.MealID = 0x03;
 		 MealArr(UserAct.MealID);
+		 itoa(f_name,TimeDate);	  //把时间转换成字符
      Sd_Write();
-		 delay_ms(500);
 	 }
 	 if(UserAct.MealCnt_4th>0)
 	 {
      UserAct.MealID = 0x04;
 		 MealArr(UserAct.MealID);
+		 itoa(f_name,TimeDate);	  //把时间转换成字符
      Sd_Write();
-		 delay_ms(500);
 	 }
 }
 
@@ -543,106 +522,123 @@ void DataRecord(void)
 void HextoChar(char *destbuff,char *buffer)
 {
   char index[]="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  int i=0,j=0;
+  int i=0,j=0,k=0;
   char temp=0;
   while(1)
   {
-   if(buffer[i]==',') 
+   if((buffer[i]==',')||(buffer[i]=='N')||(buffer[i]=='Y')||(buffer[i]=='E')) 
    {
-      destbuff[j++]=',';
+      destbuff[j++]=buffer[i];
+		  temp++;
    }
    else if(buffer[i]=='\r')
    {
+		 if(temp!=9)
+		 {
 		  destbuff[j++]='\r';
 		  destbuff[j]='\n';
-      break;
+			break;
+		 }
    }   
    else
    {
-     destbuff[j++] = index[(buffer[i]&0xf0)>>4];
-     destbuff[j++] = index[(buffer[i]&0x0f)];
+		 if(temp!=9)
+		 {
+			 destbuff[j++] = index[(buffer[i]&0xf0)>>4];
+			 destbuff[j++] = index[(buffer[i]&0x0f)];
+		 }
+		 else
+		   destbuff[j++]=buffer[i];
    }
    i++;
-  }		
+  }
+//  destbuff[j++]='\r'; //用来对结尾进行换行
+//  destbuff[j]='\n';	
 }
+
 
 char Send_Buf[128] ={0};
 char Rec_Buf[256]={0};
 void Sd_Write(void)
 {
    uint16_t CmdLenght =0,i=0,j=0;
-
+   unsigned int CRCValue=0;
   	 /*水流号++*/
 	 Send_Buf[0] =	0x02 ;
-	 Send_Buf[1] =	0x00 ;
+	 Send_Buf[1] =	0x80 ;
 	 Send_Buf[2] =	0x00 ;
 	 Send_Buf[3] =	0x00 ;
 	 Send_Buf[4] =	0x00 ;
 	 Send_Buf[5] =  ','  ;
 	 CmdLenght = 6 ;
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&TID[3],sizeof(TID)-3);	/*终端的TID*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&TID[3],sizeof(TID)-3);	/*终端的TID*/
 	 GetBRWN();
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&BRWN[3],sizeof(BRWN)-3);  /*流水号*/
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&BNO[3],sizeof(BNO)-3);	/*批次号*/
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&DeviceArea[3],sizeof(DeviceArea)-3);  /*终端所在区域编号*/
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&DeviceAreaNO[3],sizeof(DeviceAreaNO)-3); /*终端所在地域编号*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&BRWN[3],sizeof(BRWN)-3);  /*流水号*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&BNO[3],sizeof(BNO)-3);	/*批次号*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&DeviceArea[3],sizeof(DeviceArea)-3);  /*终端所在区域编号*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&DeviceAreaNO[3],sizeof(DeviceAreaNO)-3); /*终端所在地域编号*/
 	 for(i=0;i<6;i++)
 	 {
 	   DealBalance[3+i] = CustomerSel.DealBalance[i] ;
 	 }
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&DealBalance[3],sizeof(DealBalance)-3); /*交易金额(支付金额) */
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&DealBalance[3],sizeof(DealBalance)-3); /*交易金额(支付金额) */
 
 	 for(i=0;i<4;i++)
 	 {
 	  //这里赋值餐品的ID
 	   MealID[3+i] = CustomerSel.MealID[i] ; //(10000020)
 	 }
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&MealID[3],sizeof(MealID)-3); /*餐品ID*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MealID[3],sizeof(MealID)-3); /*餐品ID*/
 
 	 /*这里赋值餐品的ID*/
 	 MealNO[3] = CustomerSel.MealNo;
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&MealNO[3],sizeof(MealNO)-3); /*餐品购买数量*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MealNO[3],sizeof(MealNO)-3); /*餐品购买数量*/
 
 	  //这里赋值餐品的名字
 	 for(j=0;j<20;j++)
 	  MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
-
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&MealName[3],sizeof(MealName)-3);			  /*餐品名字*/
-
+    /*餐品名字无法好好处理*/
+	  
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MealName[3],sizeof(MealName)-3);			  /*餐品名字*/
+	 
 	 /*这里赋值餐品的价格*/
 	 for(i=0;i<6;i++)
 	 MealPrice[3+i] = CustomerSel.MealPrice[i] ;
 
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&MealPrice[3],sizeof(MealPrice)-3);			/*餐品价格*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MealPrice[3],sizeof(MealPrice)-3);			/*餐品价格*/
 	/*付钱的方式*/
 	 PayType[3] = CustomerSel.PayType ;
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&PayType[3],sizeof(PayType)-3);				/*支付方式*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PayType[3],sizeof(PayType)-3);				/*支付方式*/
 	 /*找零金额*/
 	 for(i=0;i<6;i++)
 	 Change[3+i] = CustomerSel.Change[i] ;
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&Change[3],sizeof(Change)-3); 			   /*找零金额*/
+	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&Change[3],sizeof(Change)-3); 			   /*找零金额*/
 	 /*剩余餐品数量*/
 	 for(i=0;i<2;i++)
 	 {
 	   RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
     //printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
 	 }
-	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&RemainMealNum[3],sizeof(RemainMealNum)-3);  /*剩余餐品数量*/
-	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],&MAC[3],sizeof(MAC)-3);					  /*MAC*/
+	   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&RemainMealNum[3],sizeof(RemainMealNum)-3);  /*剩余餐品数量*/
+	   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MAC[3],sizeof(MAC)-3);					  /*MAC*/
  //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
  //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
  //  if(UserAct.PayType == '3')
  //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
-
 	 Send_Buf[CmdLenght] = 0x03  ;
 	 CmdLenght+=0x03;
-   Send_Buf[CmdLenght++]= '\r';
-   Send_Buf[CmdLenght]= '\n';
+   /*对应 --> 高位*/
+	 HL_IntToBuffer(CmdLenght-8,&Send_Buf[3]);
+	 CRCValue=GetCrc16(&Send_Buf[1],CmdLenght-4);
+	 HL_IntToBuffer(CRCValue,&Send_Buf[CmdLenght-2]); 
+	 Send_Buf[CmdLenght++]=',';
+	 Send_Buf[CmdLenght++]='N';
+	 Send_Buf[CmdLenght++]='\r';
+	 Send_Buf[CmdLenght]='\n';
 	 HextoChar(Rec_Buf,Send_Buf);
 	 Fwriter(Rec_Buf);
-	 memset(Send_Buf,0,512);
+	 memset(Send_Buf,0,128);
    memset(Rec_Buf,0,256);
-
 }
 
 
@@ -677,4 +673,51 @@ char *myitoa(int num,char *str,int radix)
     }
     return str;
 }
+  /*******************************************************************************
+ * 函数名称:SearchSeparator                                                                     
+ * 描    述:获取第n 个后的数据                                                      
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年4月19日                                                                    
+ *******************************************************************************/ 
+void SearchSeparator(char *dest,char *souce,int Separator)
+{
+	char temp=0;
+	int SeparatorCnt=0;
+	int i=0,j=0;
+	while(1)
+	{
+		temp= souce[i];
+		if(temp==',')//&&SeparatorCnt==Separator)
+		{
+			SeparatorCnt++;
+		}
+		else if(SeparatorCnt== Separator-1)
+		{
+			dest[j++]=temp;
+			if(Separator==17)
+				break;
+		}
+		if(SeparatorCnt==Separator)
+		{
+			break;
+		}		
+		i++;
+	}
+}
 
+  /*******************************************************************************
+ * 函数名称:SendDataToHost                                                                    
+ * 描    述:读取SD卡中的数据                                                     
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年4月19日                                                                    
+ *******************************************************************************/ 
+void SendDataToHost(void)
+{
+	
+}

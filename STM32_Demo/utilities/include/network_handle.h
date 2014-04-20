@@ -2,6 +2,25 @@
 #define __network_handle__h
 #include "stdint.h"
 
+//#define FH        0
+//#define TID       1
+//#define BRWN      2
+//#define BNO       3
+//#define DevArea   4
+//#define DevAreaNo 5
+//#define DealBalance 6
+//#define MealID    7
+//#define MealNO    8
+//#define MealName  9
+//#define MealPrice 10
+//#define PayType   11
+//#define PayBack   12
+//#define LeftMeal  13
+//#define MAC       14
+//#define CardInfo  15
+//#define FL        16
+//#define SendFlag  17
+
 extern   unsigned char   F_RX1_Right ;
 extern   uint16_t		  rx1BufIndex ;
 extern   uint8_t		  F_RX1_VAILD ;
@@ -78,7 +97,10 @@ extern CustomerSel__struction CustomerSel;
 extern unsigned char  F_RX1_Right;
 extern unsigned char  rx1Buf[512];	  //发送数据给服务器，服务器返回数据存在这个buffer
 
+uint16_t mem_copy01(unsigned char *dest, const unsigned char *source, const long s_len);
 uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len);
+unsigned char TakeMealsFun1(unsigned char *SendBuffer);
+void memcpy_02(char *dest,char *source,char type);
 unsigned char SignInFun(void);
 unsigned char MealDataCompareFun(void);
 unsigned char SignOutFun(void);/*退签*/
@@ -95,6 +117,9 @@ void StateSend(void);
 void SignInFunction(void);
 void GetBRWN(void);
 
+unsigned int GetCrc16(unsigned char *bufData,unsigned int sizeData);
+void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf);
+bool StringToHexGroup1(unsigned char *OutHexBuffer, char *InStrBuffer, unsigned int strLength);
 
 
 #endif

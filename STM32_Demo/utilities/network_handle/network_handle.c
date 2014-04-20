@@ -7,6 +7,7 @@
 #include "stdio.h"
 #include "string.h"
 #include "MsgHandle.h"
+#include "sd.h"
 
 
 
@@ -61,10 +62,10 @@ unsigned char  WordKeyCipher[11];
 
  Meal_struction Meal[4]={
 							 /*餐品ID*/ 			 /*餐品名字*/			/*餐品数量*/	  /*餐品价格*/			   /*餐品类型*/
-								   0x10,0x00,0x00,0x20,  {"红萝卜炒蛋		   "}, 0x00,0xc8,	   0x00,0x00,0x15,0x00, 	{"C005"},
-								   0x10,0x00,0x00,0x23,  {"香菇滑鸡 		   "}, 0x00,0x00,	   0x00,0x00,0x20,0x00, 	{"C005"},
-								   0x10,0x00,0x00,0x26,  {"脆皮烧鸭 		   "}, 0x00,0x00,	   0x00,0x00,0x25,0x00, 	{"C005"},
-								   0x10,0x00,0x00,0x24,  {"红烧鱼块 		   "}, 0x00,0x00,	   0x00,0x00,0x20,0x00, 	{"C005"},
+								   0x10,0x00,0x00,0x20,  {"红萝卜炒蛋      "}, 0x00,0xc8,	   0x00,0x00,0x15,0x00, 	{"C005"},
+								   0x10,0x00,0x00,0x23,  {"香菇滑鸡        "}, 0x00,0x00,	   0x00,0x00,0x20,0x00, 	{"C005"},
+								   0x10,0x00,0x00,0x26,  {"脆皮烧鸭        "}, 0x00,0x00,	   0x00,0x00,0x25,0x00, 	{"C005"},
+								   0x10,0x00,0x00,0x24,  {"红烧鱼块        "}, 0x00,0x00,	   0x00,0x00,0x20,0x00, 	{"C005"},
 						   };
 
 
@@ -162,7 +163,7 @@ void GetBRWN(void)
 * Output         : 数组以及大小
 * Return         : CRC
 *******************************************************************************/
-static unsigned int GetCrc16(unsigned char *bufData,unsigned int sizeData)
+unsigned int GetCrc16(unsigned char *bufData,unsigned int sizeData)
 {
   unsigned int Crc ,i = 0;
 	unsigned char j = 0;
@@ -191,7 +192,7 @@ void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf);
 功能: 将一个 16bit 的整数转换成 Buffer 数据, 高位在前
 高位在前
 */
-static void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf)
+void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf)
 {
     ret_buf[0] = (unsigned char)(int_v >> 8);  // [0] 对应 --> 高位
     ret_buf[1] = (unsigned char)(int_v & 0xff);
@@ -271,13 +272,20 @@ static void mem_set_00(unsigned char *dest, const long s_len)
 * Output         : 数组以及大小
 * Return         : CRC
 *******************************************************************************/
-uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len)
+uint16_t mem_copy01(unsigned char *dest, const unsigned char *source, const long s_len)
 {
   long j0;
   for(j0 = 0; j0 < s_len; j0++)  dest[j0] = source[j0];
   dest[j0++]=',';
   return (s_len+1);
 }
+uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len)
+{
+  long j0;
+  for(j0 = 0; j0 < s_len; j0++)  dest[j0] = source[j0];
+  return (s_len);
+}
+
 /*********************/
 typedef struct
 {
@@ -966,7 +974,7 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
  //  if(UserAct.PayType == '3')
  //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
 
-	 Send_Buf[CmdLenght] = 0x03  ;
+	 Send_Buf[CmdLenght] = 0x03  ;  //包含数据包包尾标识和CRC校验码
 	 CmdLenght+=0x03;
    i = MealComparefunDemo(0x0800,Send_Buf,CmdLenght); //发送数据(取餐交易)
    mem_copy00(SendBuffer, Send_Buf,CmdLenght);	//把发送的参数传入数组写入SD卡
@@ -1544,82 +1552,392 @@ void WriteToSD_data(void)
  * 返    回:void
  * 修改日期:2014年4月4日        ok
  *******************************************************************************/
+//void DataUpload(void)
+//{
+//	if(UserAct.MealCnt_1st>0)
+//	{
+//    UserAct.MealID = 0x01;
+//		MealArr(UserAct.MealID);
+//		/*发送取餐数据给服务器*/
+//		memset(Record_buffer,0,254);
+//		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+//		{
+//			//改变当前最后两位为N0
+//		}
+//	  WriteToSD_data();
+//	}
+//	if(UserAct.MealCnt_2nd>0)
+//	{
+//    UserAct.MealID = 0x02;
+//		MealArr(UserAct.MealID);
+//		/*发送取餐数据给服务器*/
+//		memset(Record_buffer,0,1024);
+//		Record_buffer[1012] = 'L' ;
+//		Record_buffer[1013] = 'e' ;
+//		Record_buffer[1014] = 'n' ;
+//		Record_buffer[1015] = 'g' ;
+//		Record_buffer[1016] = 'h' ;
+//		Record_buffer[1017] = 't' ;
+//		Record_buffer[1018] = ':' ;
+//		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+//		{
+//			//改变当前最后两位为N0
+//		}
+//	  WriteToSD_data();
+//	}
+//	if(UserAct.MealCnt_3rd>0)
+//	{
+//    UserAct.MealID = 0x03;
+//		MealArr(UserAct.MealID);
+//		/*发送取餐数据给服务器*/
+//		memset(Record_buffer,0,1024);
+//		Record_buffer[1012] = 'L' ;
+//		Record_buffer[1013] = 'e' ;
+//		Record_buffer[1014] = 'n' ;
+//		Record_buffer[1015] = 'g' ;
+//		Record_buffer[1016] = 'h' ;
+//		Record_buffer[1017] = 't' ;
+//		Record_buffer[1018] = ':' ;
+//		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+//		{
+//			//改变当前最后两位为N0
+//		}
+//	  WriteToSD_data();
+//	}
+//	if(UserAct.MealCnt_4th>0)
+//	{
+//    UserAct.MealID = 0x04;
+//		MealArr(UserAct.MealID);
+//		/*发送取餐数据给服务器*/
+//		memset(Record_buffer,0,1024);
+//		Record_buffer[1012] = 'L' ;
+//		Record_buffer[1013] = 'e' ;
+//		Record_buffer[1014] = 'n' ;
+//		Record_buffer[1015] = 'g' ;
+//		Record_buffer[1016] = 'h' ;
+//		Record_buffer[1017] = 't' ;
+//		Record_buffer[1018] = ':' ;
+//		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
+//		{
+//			//改变当前最后两位为N0
+//		}
+//	  WriteToSD_data();
+//	}
+//}
+
+ /*******************************************************************************
+* Function Name  : 取餐发送数据  OK
+* Description    : 取餐发送数据
+* Input          : void
+* Output         : void
+* Return         : void
+    08 10 00 0f c0 00 01 24 c9 00 08 00 00 00 00 00 00 00 00 03 e8 47
+   //应答码 2位          MAC 8位
+*******************************************************************************/
+
+CustomerSel__struction CustomerSel;
+
+char ReadBuf[20]={0};
+unsigned char TakeMealsFun1(unsigned char *SendBuffer)
+ {
+	 char temp[10]={0};
+	 
+	 unsigned char i = 0 ;
+	 long  Lenght = 0 ,j=0;
+	 long  CmdLenght = 0 ;
+   unsigned char	   Send_Buf[256]={0};	//要发送的数据啦
+	 mem_set_00(rx1Buf,sizeof(rx1Buf));
+	 SearchSeparator(ReadBuf,SendBuffer,1); //读取包头
+	 StringToHexGroup1(temp,ReadBuf,10);	 
+	 /*水流号++*/
+	 for(i=0;i<5;i++)
+	 {
+	  Send_Buf[i] =	temp[i] ;
+	 }
+	 CmdLenght = 5 ;
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));	/*终端的TID*/
+	 //GetBRWN();
+	 SearchSeparator(ReadBuf,SendBuffer,3); //读取流水号
+	 StringToHexGroup1(temp,ReadBuf,14);
+	 for(i=0;i<7;i++)
+	 {
+		 BRWN[3+i]=temp[i];
+	 }
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));	/*批次号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*终端所在区域编号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO)); /*终端所在地域编号*/
+//	 for(i=0;i<6;i++)
+//	 {
+//	   DealBalance[3+i] = CustomerSel.DealBalance[i] ;
+//	 }
+	 SearchSeparator(ReadBuf,SendBuffer,7); /*交易金额*/
+	 StringToHexGroup1(temp,ReadBuf,12); 
+   for(i=0;i<6;i++)
+   {
+		 DealBalance[3+i]=temp[i];
+	 } 	 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DealBalance,sizeof(DealBalance)); /*交易金额(支付金额) */
+
+//	 for(i=0;i<4;i++)
+//	 {
+//	  //这里赋值餐品的ID
+//	   MealID[3+i] = CustomerSel.MealID[i] ; //(10000020)
+//	 }
+	 SearchSeparator(ReadBuf,SendBuffer,8); //餐品ID
+	 StringToHexGroup1(temp,ReadBuf,8); 
+   for(i=0;i<4;i++)
+   {
+		 MealID[3+i]=temp[i];
+	 }	 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealID,sizeof(MealID)); /*餐品ID*/
+
+	 /*这里赋值餐品的ID*/
+//	 MealNO[3] = CustomerSel.MealNo;
+	 SearchSeparator(ReadBuf,SendBuffer,9); //餐品数量
+	 StringToHexGroup1(temp,ReadBuf,2);
+ 	 MealNO[3]=temp[0];
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealNO,sizeof(MealNO)); /*餐品购买数量*/
+
+	  //这里赋值餐品的名字
+//	  for(j=0;j<20;j++)
+//	  MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
+	 SearchSeparator(ReadBuf,SendBuffer,10); //餐品名字
+   for(i=0;i<20;i++)
+   {
+		 MealName[3+i]=ReadBuf[i];
+	 }	
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));			  /*餐品名字*/
+
+	 /*这里赋值餐品的价格*/
+	 
+//	 for(i=0;i<6;i++)
+//	 MealPrice[3+i] = CustomerSel.MealPrice[i] ;
+	 SearchSeparator(ReadBuf,SendBuffer,11); //餐品价格
+	 StringToHexGroup1(temp,ReadBuf,12); 
+   for(i=0;i<6;i++)
+   {
+		 MealPrice[3+i]=temp[i];
+	 }	 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealPrice,sizeof(MealPrice));			/*餐品价格*/
+	/*付钱的方式*/
+	 //PayType[3] = CustomerSel.PayType ;
+	 SearchSeparator(ReadBuf,SendBuffer,12); //付款方式
+	 StringToHexGroup1(temp,ReadBuf,2);
+ 	 PayType[3]=temp[0];	 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PayType,sizeof(PayType));				/*支付方式*/
+	 /*找零金额*/
+//	 for(i=0;i<6;i++)
+//	 Change[3+i] = CustomerSel.Change[i] ;
+	 SearchSeparator(ReadBuf,SendBuffer,13); //找零金额
+	 StringToHexGroup1(temp,ReadBuf,12); 
+   for(i=0;i<6;i++)
+   {
+		 Change[3+i]=temp[i];
+	 }		 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change)); 			   /*找零金额*/
+	 /*剩余餐品数量*/
+//	 for(i=0;i<2;i++)
+//	 {
+//	  RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
+//    //printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
+//	 }
+	 SearchSeparator(ReadBuf,SendBuffer,14); //剩余餐品数量
+	 StringToHexGroup1(temp,ReadBuf,4); 
+   for(i=0;i<4;i++)
+   {
+		 RemainMealNum[3+i]=temp[i];
+	 }	 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
+ //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
+ //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
+ //  if(UserAct.PayType == '3')
+ //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
+	 SearchSeparator(ReadBuf,SendBuffer,15); //剩余餐品数量
+	 StringToHexGroup1(temp,ReadBuf,4); 
+   for(i=0;i<2;i++)
+   {
+		 Change[3+i]=temp[i];
+	 }
+	 
+	 Send_Buf[CmdLenght] = 0x03  ;  //包含数据包包尾标识和CRC校验码
+	 CmdLenght+=0x03;
+   i = MealComparefunDemo(0x0800,Send_Buf,CmdLenght); //发送数据(取餐交易)
+   mem_copy00(SendBuffer, Send_Buf,CmdLenght);	//把发送的参数传入数组写入SD卡
+ /***************************************************************************/
+	 HL_IntToBuffer(CmdLenght,&SendBuffer[1019]);	/*保存数据的长度*/
+
+	 if(i == 0x01) /*判断是否超时*/
+	 return 1 ;
+	 Lenght = HL_BufferToInit(&rx1Buf[2]) ;
+	 if(Lenght == 0x00)/*判断数据长度*/
+	 return 1 ;
+	 for(j=0;j<Lenght+7;j++)
+	 {
+
+ //   printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+
+	  }
+	  if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)  //表示正确
+	  {
+
+		 if(rx1Buf[7]==0x00)/*是否应答命令*/
+		 {
+			return 0 ;
+		 }
+		 if(rx1Buf[7]==0x24)/*交易流水号（终端流水）重复*/
+		 {
+		  //   Batch ++ ;	/*流水号自加*/
+			return 1 ;
+		 }
+
+	  }
+   return 0 ;
+
+ }
+
+char ReadSdBuff[256]={0};
+char SendHostBuff[128]={0};
 void DataUpload(void)
 {
-	if(UserAct.MealCnt_1st>0)
+	//读取SD卡中当天的数据
+	//读取第16个','后面的内容
+	//判断是否为'N',是则发送数据
+	//读取第16个','后面的内容
+  unsigned char DelteFlag = 0 ;//用来标记是否全部上传了数据的函数
+	unsigned char Times  = 0  ;
+	RTC_TimeShow();
+	itoa(f_name,TimeDate);	  //把时间转换成字符
+
+	  do
+	  {
+	     if(Fread(ReadSdBuff)== 0x00)					      //出错记录，然后跳出显示错误
+		   break ;
+    }while(1);
+	SearchSeparator(ReadBuf,ReadSdBuff,17);
+  if(ReadBuf[0]=='N')
 	{
-    UserAct.MealID = 0x01;
-		MealArr(UserAct.MealID);
-		/*发送取餐数据给服务器*/
-		memset(Record_buffer,0,1024);
-		Record_buffer[1012] = 'L' ;
-		Record_buffer[1013] = 'e' ;
-		Record_buffer[1014] = 'n' ;
-		Record_buffer[1015] = 'g' ;
-		Record_buffer[1016] = 'h' ;
-		Record_buffer[1017] = 't' ;
-		Record_buffer[1018] = ':' ;
-		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-		{
-			//改变当前最后两位为N0
-		}
-	  WriteToSD_data();
+		 TakeMealsFun1(ReadSdBuff);
+		 
+//		SearchSeparator(ReadBuf,ReadSdBuff,FH); //读取包头
+//		memcpy_02(SendHostBuff,ReadBuf,6);
+//		SearchSeparator(SendHostBuff,ReadSdBuff,TID); //读取TID
+//		//读取Buffer
+//		SendDataToHost();
 	}
-	if(UserAct.MealCnt_2nd>0)
+	if(ReadBuf[0]=='Y')
 	{
-    UserAct.MealID = 0x02;
-		MealArr(UserAct.MealID);
-		/*发送取餐数据给服务器*/
-		memset(Record_buffer,0,1024);
-		Record_buffer[1012] = 'L' ;
-		Record_buffer[1013] = 'e' ;
-		Record_buffer[1014] = 'n' ;
-		Record_buffer[1015] = 'g' ;
-		Record_buffer[1016] = 'h' ;
-		Record_buffer[1017] = 't' ;
-		Record_buffer[1018] = ':' ;
-		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-		{
-			//改变当前最后两位为N0
-		}
-	  WriteToSD_data();
+				
 	}
-	if(UserAct.MealCnt_3rd>0)
-	{
-    UserAct.MealID = 0x03;
-		MealArr(UserAct.MealID);
-		/*发送取餐数据给服务器*/
-		memset(Record_buffer,0,1024);
-		Record_buffer[1012] = 'L' ;
-		Record_buffer[1013] = 'e' ;
-		Record_buffer[1014] = 'n' ;
-		Record_buffer[1015] = 'g' ;
-		Record_buffer[1016] = 'h' ;
-		Record_buffer[1017] = 't' ;
-		Record_buffer[1018] = ':' ;
-		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-		{
-			//改变当前最后两位为N0
-		}
-	  WriteToSD_data();
-	}
-	if(UserAct.MealCnt_4th>0)
-	{
-    UserAct.MealID = 0x04;
-		MealArr(UserAct.MealID);
-		/*发送取餐数据给服务器*/
-		memset(Record_buffer,0,1024);
-		Record_buffer[1012] = 'L' ;
-		Record_buffer[1013] = 'e' ;
-		Record_buffer[1014] = 'n' ;
-		Record_buffer[1015] = 'g' ;
-		Record_buffer[1016] = 'h' ;
-		Record_buffer[1017] = 't' ;
-		Record_buffer[1018] = ':' ;
-		if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-		{
-			//改变当前最后两位为N0
-		}
-	  WriteToSD_data();
-	}
+}
+
+//void memcpy_02(char *dest,char *source,char type)
+//{
+//	char temp[14]={0};
+//	switch(type)
+//	{
+//		case FH:
+//		 {
+//			 //转换数组
+//			 StringToHexGroup1(temp,source,10);
+//			 
+//			 memcpy(dest,temp,5);
+//		 }break;			
+//		case TID: 
+//     {
+//			 StringToHexGroup1(temp,source,8);
+//			 memcpy(dest,temp,4);		 
+//		 }break;      
+//		case BRWN:
+//     {
+//			 StringToHexGroup1(temp,source,14);
+//			 memcpy(dest,temp,7);			 
+//		 }break;			
+//		case BNO:
+//     {
+//			 StringToHexGroup1(temp,source,6);
+//			 memcpy(dest,temp,3);			 
+//		 }break;			
+//		case DevArea: 
+//			{
+//				
+//			}break;
+//		case DevAreaNo: 
+//			{}break;
+//		case DealBalance: 
+//			{}break;
+//		case MealID: 
+//      {}break;			
+//		case MealNO:  
+//			{}break;
+//		case MealName: 
+//			{}break;
+//		case MealPrice: 
+//			{}break;
+//		case PayType:  
+//			{}break;
+//		case PayBack:   
+//			{}break;
+//		case LeftMeal: 
+//			{}break;
+//		case MAC:     
+//			{}break;
+//		case CardInfo: 
+//			{}break;
+//		case FL:   
+//     {}break;			
+//		case SendFlag: 
+//		{}break;
+//	}
+//}
+
+  /*******************************************************************************
+ * 函数名称:StringToHexGroup1                                                                    
+ * 描    述:将字符数组转换为hex数组,功能有所修改                                                                  
+ *                                                                               
+ * 输    入:                                                                   
+ * 输    出:bool                                                                      
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日  
+ *******************************************************************************/
+bool StringToHexGroup1(unsigned char *OutHexBuffer, char *InStrBuffer, unsigned int strLength)
+{
+  unsigned int i, k=0;
+  unsigned char HByte,LByte;
+//	if(InStrBuffer[strLength-1]!=0x0A)
+//		return false;
+  for(i=0; i<strLength; i=i+2)
+  {
+    if(InStrBuffer[i]>='0' && InStrBuffer[i]<='9')
+    {
+      HByte=InStrBuffer[i]-'0';
+    }
+    else if(InStrBuffer[i]>='A' && InStrBuffer[i]<='F')
+    {
+      HByte=InStrBuffer[i]-'A' +10;
+    }
+    else
+    {
+      HByte=InStrBuffer[i];
+      return false;
+    }
+    HByte=HByte <<4;
+    HByte = HByte & 0xF0;
+    if(InStrBuffer[i+1]>='0' && InStrBuffer[i+1]<='9')
+    {
+       LByte=InStrBuffer[i+1]-'0';
+    }
+    else if(InStrBuffer[i+1]>='A' && InStrBuffer[i+1]<='F')
+    {
+       LByte=InStrBuffer[i+1]-'A' +10;
+    }
+    else
+    {
+       LByte=InStrBuffer[i];
+       return false;
+    }
+		OutHexBuffer[k++]=HByte |LByte;		
+ }
+ return true;
 }
