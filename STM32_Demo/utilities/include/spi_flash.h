@@ -23,7 +23,7 @@
 
 
 #define SPI_FLASH_Sector0            0		  /*这个地址用来保存*/
-#define SPI_FLASH_Sector1            1*4096
+#define SPI_FLASH_Sector1            1*4096 /*存储硬币数据*/
 
 
 /**

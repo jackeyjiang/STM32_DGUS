@@ -33,7 +33,7 @@ ErrorFlagInf ErFlag;
 	 
   	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);//外设时钟使能  
   	NVIC_InitStructure.NVIC_IRQChannel = TIM5_IRQn;					
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;//抢占优先级最高
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 9;//抢占优先级最高
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;//子优先级
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   	NVIC_Init(&NVIC_InitStructure);					

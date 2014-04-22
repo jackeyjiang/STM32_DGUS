@@ -17,7 +17,7 @@ void ReadDatatoBuffer(void);
 void File_delete(void);
 void SendtoServce(void);
 void DataRecord(void);
-void Sd_Write(void);
+void Sd_Write(char erro_flag);
 void SearchSeparator(char *dest,char *souce,int Separator);
 #endif
 

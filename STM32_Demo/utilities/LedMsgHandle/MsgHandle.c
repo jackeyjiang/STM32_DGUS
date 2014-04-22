@@ -7,6 +7,7 @@ MealAttribute DefineMeal[4];	//定义4个菜系
 FloorAttribute FloorMeal[FloorMealNum], CurFloor;
 UserSelection UserAct;
 FloorMealMessage FloorMealMessageWriteToFlash;
+CoinsTotoalMessage CoinsTotoalMessageWriteToFlash;
 uint8_t  WaitTime=0;
 
  /*******************************************************************************

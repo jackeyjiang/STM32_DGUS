@@ -523,6 +523,31 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\vioce\voice.c</FilePath>
             </File>
+            <File>
+              <FileName>timer2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\tim_pwm\timer2.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\tim_pwm\timer3.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\tim_pwm\timer4.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer6.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\tim_pwm\timer6.c</FilePath>
+            </File>
+            <File>
+              <FileName>pvd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\PVD\pvd.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -899,6 +924,31 @@
               <FileName>vioce.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\utilities\include\vioce.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\timer2.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\timer3.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\timer4.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer6.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\timer6.h</FilePath>
+            </File>
+            <File>
+              <FileName>PVD.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\PVD.h</FilePath>
             </File>
           </Files>
         </Group>

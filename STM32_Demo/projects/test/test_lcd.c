@@ -32,7 +32,7 @@ int main(void)
 	SignInFunction();
 	printf("SignInFunction is ok\r\n");  //关闭现金接受
  	/*餐品对比数据*/
-	MealDataCompareFun();
+	//MealDataCompareFun();
 	printf("MealDataCompareFun is ok\r\n");  //关闭现金接受
 	Szt_GpbocAutoCheckIn();
 	printf("Szt_GpbocAutoCheckIn is ok\r\n");  //关闭现金接受
@@ -50,7 +50,7 @@ int main(void)
 	    case current_temperature: /*温度处理函数*/
 			{
 			  StateSend();
-				VariableChage(current_temprature,Temperature);
+				//VariableChage(current_temprature,Temperature);
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
 			{
@@ -67,7 +67,7 @@ int main(void)
 			case data_record:  /*数据记录*/
 			{
 				//将售餐的数据全部写入SD卡
-         DataRecord();
+         //DataRecord();
 				 //Current= hpper_out;
 				 Current= meal_out;
 			}break;
@@ -82,9 +82,18 @@ int main(void)
 	           delay_ms(200); //延时得好好控制
           }
 				}
-				else  //无需找币的时候直接进入出餐状态
+				else  //无需找币的时候直接进入出餐状态,
 				{
-					Current= meal_out;break;
+					if(UserAct.Cancle== 0x00) //判断是不是取消购买
+					{
+					  Current= meal_out; 
+						break;
+					}
+					else
+					{
+						UserAct.Cancle= 0x00;
+						Current= current_temperature;
+					}
 				}
 			  if(OldCoinsCnt>NewCoinsCnt)
 		    {
@@ -96,13 +105,18 @@ int main(void)
 			    UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
 		    }
 			}break;
-	    case meal_out:	 /*出餐状态*/
+	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{
 			  if( WaitMeal()==Status_OK) //出餐完毕
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
+					//WaitTimeInit(&WaitTime);
+					WaitTime=5;//5S计时
+	        OpenTIM4();
 			    Current = data_upload;
 				}
+				//出餐完毕，跳到回温度处理
+				//已出一种餐品，数据上传记录
 			}break;
 	    case data_upload:	 /*数据上传*/
 	    {

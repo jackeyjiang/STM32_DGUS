@@ -488,33 +488,33 @@ void DataRecord(void)
 {
    char sd_time=0;
 	 RTC_TimeShow();
-	 if(UserAct.MealCnt_1st>0)
+	 if(UserAct.MealCnt_1st_t>0)
 	 {
      UserAct.MealID = 0x01;
 		 MealArr(UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
-     Sd_Write();
+     Sd_Write('N');
 	 }
-	 if(UserAct.MealCnt_2nd>0)
+	 if(UserAct.MealCnt_2nd_t>0)
 	 {
      UserAct.MealID = 0x02;
 		 MealArr(UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
-     Sd_Write();
+     Sd_Write('N');
 	 }
-	 if(UserAct.MealCnt_3rd>0)
+	 if(UserAct.MealCnt_3rd_t>0)
 	 {
      UserAct.MealID = 0x03;
 		 MealArr(UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
-     Sd_Write();
+     Sd_Write('N');
 	 }
-	 if(UserAct.MealCnt_4th>0)
+	 if(UserAct.MealCnt_4th_t>0)
 	 {
      UserAct.MealID = 0x04;
 		 MealArr(UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
-     Sd_Write();
+     Sd_Write('N');
 	 }
 }
 
@@ -559,7 +559,7 @@ void HextoChar(char *destbuff,char *buffer)
 
 char Send_Buf[128] ={0};
 char Rec_Buf[256]={0};
-void Sd_Write(void)
+void Sd_Write(char erro_flag)
 {
    uint16_t CmdLenght =0,i=0,j=0;
    unsigned int CRCValue=0;
@@ -632,9 +632,9 @@ void Sd_Write(void)
 	 CRCValue=GetCrc16(&Send_Buf[1],CmdLenght-4);
 	 HL_IntToBuffer(CRCValue,&Send_Buf[CmdLenght-2]); 
 	 Send_Buf[CmdLenght++]=',';
-	 Send_Buf[CmdLenght++]='N';
-	 Send_Buf[CmdLenght++]='\r';
-	 Send_Buf[CmdLenght]='\n';
+	 Send_Buf[CmdLenght]=erro_flag;
+	 Send_Buf[126]='\r';
+	 Send_Buf[127]='\n';
 	 HextoChar(Rec_Buf,Send_Buf);
 	 Fwriter(Rec_Buf);
 	 memset(Send_Buf,0,128);

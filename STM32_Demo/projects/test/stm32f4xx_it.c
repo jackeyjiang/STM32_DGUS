@@ -143,6 +143,35 @@ void SysTick_Handler(void)
 	ntime--;	
 }
 
+
+void RCC_IRQHandler(void)
+{
+  if(RCC_GetITStatus(RCC_IT_HSERDY) != RESET)
+  { 
+    /* Clear HSERDY interrupt pending bit */
+    RCC_ClearITPendingBit(RCC_IT_HSERDY);
+
+    /* Check if the HSE clock is still available */
+    if (RCC_GetFlagStatus(RCC_FLAG_HSERDY) != RESET)
+    { 
+      /* Enable PLL: once the PLL is ready the PLLRDY interrupt is generated */ 
+      RCC_PLLCmd(ENABLE);     
+    }
+  }
+
+  if(RCC_GetITStatus(RCC_IT_PLLRDY) != RESET)
+  { 
+    /* Clear PLLRDY interrupt pending bit */
+    RCC_ClearITPendingBit(RCC_IT_PLLRDY);
+
+    /* Check if the PLL is still locked */
+    if (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) != RESET)
+    { 
+      /* Select PLL as system clock source */
+      RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+    }
+  }
+}
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */
 /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
@@ -202,6 +231,7 @@ void EXTI15_10_IRQHandler(void)
 				CoinsCount = 0;
 				UserAct.PayForCoins++;
 				UserAct.PayAlready++;
+				CoinsTotoalMessageWriteToFlash.CoinTotoal--;
 			}
 		}
     EXTI_ClearITPendingBit(EXTI_Line12);
@@ -211,10 +241,66 @@ void EXTI15_10_IRQHandler(void)
 	{
 		NewCoinsCnt++; //新的硬币机接收个数
 		Coins_cnt++; 
+		CoinsTotoalMessageWriteToFlash.CoinTotoal++;
 	  EXTI_ClearITPendingBit(EXTI_Line10);	
 	}
+	WriteCoins();
 }
 
+  /*******************************************************************************
+ * 函数名称:TIM3_IRQHandler                                                                     
+ * 描    述:中断程序  用于倒计时60秒。时间到返回主界面                                                                  
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+void TIM3_IRQHandler(void)
+{
+  if(TIM_GetITStatus(TIM3,TIM_IT_Update)!=RESET)
+	{	 
+	  TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+		if(WaitTime > 0)
+		{
+		  VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
+			WaitTime--;
+		}  
+		else 
+		{
+			CloseTIM3();
+      WaitTimeInit(&WaitTime);
+			PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+			ClearUserBuffer();//清空用户数据
+	  }	     
+  }
+}
+
+  /*******************************************************************************
+ * 函数名称:TIM4_IRQHandler                                                                     
+ * 描    述:打印倒计时5S                                                                 
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+void TIM4_IRQHandler(void)
+{
+  if(TIM_GetITStatus(TIM4,TIM_IT_Update)!=RESET)
+	{	 
+	  TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+		if(WaitTime > 0)
+		{
+			WaitTime--;
+		}  
+		else 
+		{
+			CloseTIM4();
+			PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+	  }	     
+  }
+}
  /*******************************************************************************
  * 函数名称:TIM5_IRQHandler                                                                     
  * 描    述:中断程序  ,用于与机械手通迅计时                                                              
@@ -232,6 +318,51 @@ void TIM5_IRQHandler(void)
 	  TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
 		LinkTime++;   
   }
+}
+
+   /*******************************************************************************
+ * 函数名称:TIM7_IRQHandler                                                                     
+ * 描    述:购物车倒计时                                                                
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+void TIM7_IRQHandler(void)
+{			
+  if(TIM_GetITStatus(TIM7,TIM_IT_Update)!=RESET)
+	{	 
+	  TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
+		if(WaitTime > 0)
+		{
+			WaitTime--;
+		}  
+		else 
+		{
+			CloseTIM7();
+	  }	     
+  }
+}
+   /*******************************************************************************
+ * 函数名称:PVD_IRQHandler                                                                    
+ * 描    述:掉电检测                                                        
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+extern  FIL fsrc;
+void PVD_IRQHandler(void) 
+{
+  EXTI_ClearITPendingBit(EXTI_Line16); 
+  if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
+ {
+     PWR_ClearFlag(PWR_FLAG_PVDO);
+     f_close(&fsrc);	   //低电压检测    
+ }	
+
 }
 /**
   * @}

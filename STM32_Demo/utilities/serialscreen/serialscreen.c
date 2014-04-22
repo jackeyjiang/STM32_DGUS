@@ -492,6 +492,7 @@ void SettleAccounts(void)
 	VariableChage(payment_card,UserAct.PayForCards);
   //显示等待时间
 	VariableChage(wait_payfor,60);
+	OpenTIM7();
 	//程序显示部分
 	Floor= 0; //每次进一次结账界面就需要从新写入数据
 	
@@ -609,9 +610,11 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						if(DefineMeal[0].MealCount > 0)	   //判断餐品是否大于0
 						{
 							UserAct.MealID= VariableData[1]; //当前用户选餐的ID
-							UserAct.MealCnt_1st_t= 1;//设置默认分数为 1
+							UserAct.MealCnt_1st_t= 1;//设置默认分数为 1							
+							WaitTimeInit(&WaitTime);
+							
+							OpenTIM3();
 							PageChange(Meal1st_interface);//显示相应界面
-							CutDownDisp(60);//显示倒计时时间
               VariableChage(meat_cnt,0x01);
  							MealCostDisp(UserAct.MealID,UserAct.MealCnt_1st_t);//根据用户所选餐品ID号显示合计钱数
 						}break;						
@@ -620,8 +623,10 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						{
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_2nd_t= 1;//设置默认分数为 1
+							WaitTimeInit(&WaitTime);
+							
+							OpenTIM3();							
 							PageChange(Meal2rd_interface);//显示相应界面	
-							CutDownDisp(60);//显示倒计时时间
 							VariableChage(chicken_cnt,0x01);
 							MealCostDisp(UserAct.MealID,UserAct.MealCnt_2nd_t);//根据用户所选餐品ID号显示合计钱数
 						}break;							
@@ -630,8 +635,10 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						{
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_3rd_t= 1;//设置默认分数为 1
+							WaitTimeInit(&WaitTime);
+							
+							OpenTIM3();							
 							PageChange(Meal3ns_interface);//显示相应界面	
-							CutDownDisp(60);//显示倒计时时间
 							VariableChage(duck_cnt,0x01);
 							MealCostDisp(UserAct.MealID,UserAct.MealCnt_3rd_t);//根据用户所选餐品ID号显示合计钱数
 						}break;						
@@ -641,8 +648,10 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						{
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_4th_t= 1;//设置默认分数为 1
+							WaitTimeInit(&WaitTime);
+							
+							OpenTIM3();							
 							PageChange(Meal4th_interface);//显示相应界面	
-							CutDownDisp(60);//显示倒计时时间
 							VariableChage(fish_cnt,0x01);
 							MealCostDisp(UserAct.MealID,UserAct.MealCnt_4th_t);//根据用户所选餐品ID号显示合计钱数
 						}			
@@ -727,10 +736,14 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					case 0x02:  /*继续选餐*/
 					{
 						PageChange(Menu_interface);
+						WaitTimeInit(&WaitTime);
 					}break;
  					case 0x03:  /*进入购物车*/
 					{
 						SettleAccounts();
+						CloseTIM3();
+						WaitTimeInit(&WaitTime);
+						OpenTIM7();
 						Current= waitfor_money;//进入读钱界面
 					}break;
 					case 0x04:  /*取消*/
@@ -738,6 +751,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						//清空所有的用户数据???
 						ClearUserBuffer();
 						PageChange(Menu_interface);
+						CloseTIM3();
 					}break;
 					default:break;
 				}
@@ -831,12 +845,16 @@ loop1:	switch(MealID)
 					{
 						CurrentPoint =8;
 						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
+						
 					}break;
 					case 0x04:   /*取消*/
 					{
 						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 						ClearUserBuffer();
+						UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+						UserAct.Cancle= 0x01;
 						PageChange(Menu_interface);
+						Current= hpper_out;
 					}break;
 					default:break;		
 				}					
@@ -910,6 +928,7 @@ loop1:	switch(MealID)
 		        {
 		           /*进入管理员界面*/
 		           PageChange(Coinset_interface);
+							 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);
 							 DisplayPassWord(0);//清楚密码显示
 			         PassWordLen = 0;break;
 		        }

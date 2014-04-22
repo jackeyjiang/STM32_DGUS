@@ -39,6 +39,7 @@ typedef struct UserAction
 	uint8_t  MoneyBack;              //用户找零数
 	uint8_t  PrintTick;              //是否打印小票标志
 	uint8_t  PayType ;              //支付方式
+	uint8_t  Cancle;                //用户取消购买
 }UserSelection;
 
 extern UserSelection UserAct;
@@ -64,6 +65,13 @@ typedef union _FloorMealMessage
 extern 	FloorMealMessage FloorMealMessageWriteToFlash;/*将数据写入flash的结构*/
 extern  FloorAttribute FloorMeal[FloorMealNum], CurFloor;
 extern uint8_t WaitTime ;
+
+typedef union _CoinsTotoalMessage
+{
+  uint16_t CoinTotoal;
+	uint8_t  CoinsCnt[2];
+}CoinsTotoalMessage;
+extern CoinsTotoalMessage CoinsTotoalMessageWriteToFlash;/*硬币数结构体*/ 
 
 void StatisticsTotal(void);
 void MealArr(unsigned char index);

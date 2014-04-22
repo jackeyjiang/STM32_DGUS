@@ -61,6 +61,9 @@ typedef enum
 *******************************************************************************/
 void SPI_FLASH_Init(void)
 {
+	
+	//SPI初始值；
+	
   SPI_InitTypeDef  SPI_InitStructure;
   GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -590,6 +593,10 @@ void SPI_Flash_WAKEUP(void)
 #define  FLASH_ReadAddress      FLASH_WriteAddress
 #define  FLASH_SectorToErase    FLASH_WriteAddress
 
+#define  FLASH_ReadAddress1     1*4096
+#define  FLASH_SectorToErase1   1*4096
+
+
 #define countof(a) (sizeof(a) / sizeof(*(a)))
 #define  BufferSize (countof(Tx_Buffer)-1)
 uint8_t Tx_Buffer[] = "\r\n www.armjishu.com STM32F407ZGT SPI Flash Test Example:\r\n communication with an Winbond W25X16 W25Q16 SPI FLASH.";
@@ -753,8 +760,8 @@ void  WriteMeal(void) //在初始化时，flash的数据易丢失
    __IO uint32_t DeviceID = 0;
 	unsigned char TempBuffer[FloorMealNum*6]={0};
   /* Initialize the SPI FLASH driver */
-    SPI_FLASH_Init();
-	  SPI_FLASH_Init();
+    //SPI_FLASH_Init();
+	  //SPI_FLASH_Init();
 	  //SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
     /* Perform a write in the Flash followed by a read of the written data */
     /* Erase SPI FLASH Sector to write on */
@@ -792,18 +799,42 @@ void ClearMealInfo(void)
 }
 void WriteCoins(void)
 {
-	uint8_t TempBuffer[1]={0};
-	SPI_FLASH_Init();
-	SPI_FLASH_SectorErase(FLASH_SectorToErase);	
-	TempBuffer[0]= Coins_totoal;
-	SPI_FLASH_BufferWrite(TempBuffer, SPI_FLASH_Sector1, 1); 
+   __IO uint32_t FlashID = 0;
+   __IO uint32_t DeviceID = 0;
+	unsigned char TempBuffer[2]={0};
+  /* Initialize the SPI FLASH driver */
+    //SPI_FLASH_Init();
+	  //SPI_FLASH_Init();
+	  //SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+    /* Perform a write in the Flash followed by a read of the written data */
+    /* Erase SPI FLASH Sector to write on */
+	  DeviceID = SPI_FLASH_ReadDeviceID();
+    /* Get SPI Flash ID */
+    FlashID = SPI_FLASH_ReadID(); 
+    /* Write Tx_Buffer data to SPI FLASH memory */
+	  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 2);/*参看原始数据*/
+	
+	  SPI_FLASH_SectorErase(FLASH_SectorToErase1);
+    SPI_FLASH_BufferWrite(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1 , 2);
+    /* Read data from SPI FLASH memory */
+	  delay_ms(10); //延时测试
+    SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 2);
+
+    /* Check the corectness of written dada */
+    TransferStatus1 = Buffercmp(CoinsTotoalMessageWriteToFlash.CoinsCnt, TempBuffer, 2);
+		if(TransferStatus1 == FAILED )/*加入可以排错*/
+    {
+	    SPI_FLASH_BufferWrite(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, FloorMealNum*6);
+      /* Read data from SPI FLASH memory */
+      SPI_FLASH_BufferRead(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, FloorMealNum*6);
+      /* Check the corectness of written dada */
+      TransferStatus1 = Buffercmp(CoinsTotoalMessageWriteToFlash.CoinsCnt, TempBuffer, FloorMealNum*6);
+    }	
+	
 }
 void ReadCoins(void)
 {
-	unsigned char TempBuffer[1]={0};
-	SPI_FLASH_Init();
-	SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 1);/*参看原始数据*/
-	Coins_totoal= TempBuffer[0];	
+	SPI_FLASH_BufferRead(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, 2);
 }
 
 /******************* (C) COPYRIGHT 2010 www.armjishu.com *****END OF FILE****/

@@ -86,6 +86,7 @@ unsigned char  WaitPayMoney(void)
 {
 	uint8_t temp = 0;
 	uint8_t temp1;
+	VariableChage(wait_payfor,WaitTime);
   switch(CurrentPoint)
 	{
 	  case 1 : 
@@ -114,7 +115,6 @@ unsigned char  WaitPayMoney(void)
 			  UserAct.PayForBills += UserPayMoney;	
 				VariableChage(payment_bill,UserAct.PayForBills);
 			  UserPayMoney = 0 ;
-			  WaitTimeInit(&WaitTime); 
 		  }
 			CurrentPoint = 4 ;
 		}break;    					
@@ -134,11 +134,11 @@ unsigned char  WaitPayMoney(void)
 	  case 5 ://显示接收了多少硬币	
 	  {
 		  VariableChage(payment_coin,UserAct.PayForCoins);	
-		  VariableChage(payment_card,UserAct.PayForCards);
+		  VariableChage(payment_card,UserAct.PayForCards); 
 			CurrentPoint = 6;
 		}break;		    
 	  case 6 : //统计钱数
-    {			
+    {
 	    if(UserAct.PayAlready +UserAct.PayForCards>=UserAct.PayShould)		//投的钱大于等于要付的钱
 		  {     
 		    CurrentPoint = 9;	            
@@ -197,13 +197,19 @@ unsigned char  WaitPayMoney(void)
 			Print_Struct.P_paymoney  = UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
 			Print_Struct.P_PayShould = UserAct.PayShould ;
 			Print_Struct.P_MoneyBack = UserAct.MoneyBack ;
-			WaitTime  = 0;
-			TIM_Cmd(TIM4, ENABLE);
 			CurrentPoint = 0 ;
 	       return  Status_OK;
 		}
 	  default :break;
   }
+	if(WaitTime==0) 
+	{
+		PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+		UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+		ClearUserBuffer();//清空用户数据
+		if(UserAct.MoneyBack>0)
+		Current= hpper_out;
+	}
   return  Status_Action;
 }												
 
@@ -363,6 +369,56 @@ void ClearingFuntion(void)
 	}		 		 
 }
 
+void AbnormalHandle(uint16_t erro)
+{
+	PageChange(Err_interface);
+	switch(erro)
+	{
+		case outage_erro:      //断电
+			{}break;
+		case sdcard_erro:     //SD卡存储异常
+			{}break;
+		case billset_erro:    //纸币机异常
+			{}break;
+		case coinset_erro:      //投币机
+			{}break;
+		case coinhooperset_erro:    //退币机
+			{}break;
+		case coinhooperset_empty:   //找零用光
+			{}break;
+		case printer_erro:      //打印机异常
+			{}break;
+		case cardread_erro:     //读卡器异常
+			{}break;
+		case network_erro:     //网络异常
+			{}break;
+		case X_timeout:        //x轴传感器超时
+			{}break;
+		case X_leftlimit:      //马达左动作极限输出
+			{}break;
+		case X_rightlimit:     //马达右动作极限输出
+			{}break;
+		case mealtake_timeout: //取餐口传感器超时
+			{}break;
+		case Y_timeout:        //y轴传感器超时
+			{}break;
+		case link_timeout:     //链接超时
+			{}break;
+		case Z_timeout:        //z轴传感器超时
+			{}break;
+		case Z_uplimit:        //z轴马达上动作超出
+			{}break;
+		case Z_downlimit:      //z马达下动作超出
+			{}break;
+		case solenoid_timeout: //电磁阀超时
+			{}break;
+		case Eeprom_erro:      //eeprom 异常
+			{}break;
+		default:break;
+	}
+	VariableChage(erro_num,erro);
+}
+
  /*
   PVD ---- 低电压检测                抢占优先级  0      亚优先级 0 		用于保护sd卡
   硬币机               外部中断5                 0                1
@@ -410,17 +466,18 @@ void hardfawreInit(void)
 	 UserAct.PayAlready      = 0;
    SystemInit();
 //	 delay_ms(30000); //上电等待路由器启动
+//	 PVD_Configuration();        //掉电检测初始化
 	 Uart4_Configuration();     //纸币机串口初始化 
 	 Uart1_Configuration();	    //打印机串口初始化
 	 Uart3_Configuration();	    // 串口屏初始化
 	 Uart2_Configuration();	    //深圳通、银联卡串口
 	 Uart5_Configuration();		//网络串口初始化
 	 Uart6_Configuration();
-//	 TIM2_Init();		        //电机
-//	 TIM3_Init();		        //用于定时，倒计时
-//	 TIM4_Init();		        //待定
-	 TIM5_Init();		        //倒计时退币
-//	 TIM7_Init();				  //用于定时采集温度
+	 //TIM2_Init();		        //电机
+	 TIM3_Init();		        //餐品数量选择倒计时
+	 TIM4_Init();		        //打印倒计时5S
+	 TIM5_Init();		        //机械手倒计时
+	 TIM7_Init();				    //购物车界面倒计时
    InitCoins();		        //投币机初始化
    InitMiniGPIO() ;		   //退币器始化
 	 PageChange(Logo_interface); //显示logo
@@ -428,9 +485,10 @@ void hardfawreInit(void)
 	 InitVoice()  ;             //语音初始化
 	 MyRTC_Init();              //RTC初始化
 	 SPI_FLASH_Init();          //Flash初始化
-	 SPI_FLASH_Init();          //重复初始化才行
+	 //SPI_FLASH_Init();          //重复初始化才行
    SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品
-   //ReadCoins();//读取有多少硬币	 
+	 //WriteCoins();
+   ReadCoins();//读取有多少硬币	 
 	 VariableChage(coins_in,Coins_totoal);//显示机内硬币数
 	 for(i=0;i<90;i++)
 	 {
