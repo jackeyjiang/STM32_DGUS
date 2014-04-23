@@ -307,8 +307,8 @@ void Fwriter(unsigned char *p)
  * ĞŞ¸ÄÈÕÆÚ:2013Äê4ÔÂ20ÈÕ
  *******************************************************************************/
 static uint32_t  Index = 0;
-char    Buffer[256] = {0};
-unsigned char    Fread(unsigned char *p)
+char  Buffer[256] = {0};
+char  Fread(unsigned char *p)
 {
 		uint8_t   sd_time;
     uint32_t  rd;
@@ -351,13 +351,13 @@ unsigned char    Fread(unsigned char *p)
 		  // printf("Index = %d \r\n",Index);
 	    if(res!=FR_OK ||fsrc.fsize <= Index ) //fsrc.fsizeÊÇÎÄ¼ş´óĞ¡£¬ÕâÀïÅĞ¶ÏÎÄ¼ş´óĞ¡
 	    {
-	      f_close(&fsrc);
+//	      f_close(&fsrc);????
 //      f_mount(0, NULL);
 	      return 1;
 	    }
 	    else
 	    {
-	      f_close(&fsrc);
+//	      f_close(&fsrc); ?????
 //	    f_mount(0, NULL);
 		    return 0 ;
 	    }
@@ -389,19 +389,37 @@ void WriteDatatoSD(unsigned char *data)
  * ·µ    »Ø:ÎŞ
  * ĞŞ¸ÄÈÕÆÚ:2013Äê4ÔÂ20ÈÕ
  *******************************************************************************/
-void ReadDatatoBuffer(void)
+bool ReadDatatoBuffer(void)
 {
   unsigned char DelteFlag = 0 ;//ÓÃÀ´±ê¼ÇÊÇ·ñÈ«²¿ÉÏ´«ÁËÊı¾İµÄº¯Êı
-	unsigned char Times  = 0  ;
-	Index = 0 ;
-	for(Times = 0 ;Times <10 ;Times--)
+	unsigned int  Times  = 0  ;
+	uint32_t  indexflag = 0;
+	for(Times = 0 ;Times <1000 ;Times--)
 	{
-	  do
-	  {
-	     if(Fread(&DelteFlag)== 0x01)					      //¼ÙÈç³ö´íÁË¡???
-		   break ;
-    }while(1);
+	  if(Fread(ReadSdBuff)== 0x01)					      //¼ÙÈç³ö´íÁË¡??
+       break;
+		else 
+		{
+			SearchSeparator(ReadBuf,ReadSdBuff,17);
+			if(ReadBuf[0]=='E')
+			{
+				if(TakeMealsFun1(ReadSdBuff)==0) //ÔÚµÚÊ®Áù¸ö¶ººÅºóĞ´Y
+				{
+					indexflag = Index -120; //³¤¶ÈÒª¼ÆËã
+					res = f_lseek(&fsrc,indexflag);//Æ«ÒÆIndex+1021
+					res = f_write(&fsrc,"Y",1, &bw); //Ğ´"Y"
+				  f_close(&fsrc);
+        }				 
+				else
+				{
+					f_close(&fsrc);
+					printf("send to host is erro");	
+					return false;
+				}					
+			}
+		}				 
   }
+	return true;
 }
 
 

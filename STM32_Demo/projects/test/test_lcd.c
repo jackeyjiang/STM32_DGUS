@@ -22,27 +22,26 @@ int main(void)
 {
  	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
-	
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
-	
-	//OnlymachieInit();  //机械手初始化
+	if(!CloseCashSystem()) 
+	printf("cash system is erro\r\n");  //关闭现金接受
+	OnlymachieInit();  //机械手初始化
 	
   //SendtoServce();  //上传前七天的数据
   //ReadDatatoBuffer(); //上一个程序有这个函数
    /*从网络  获得时间，更新本地时钟*/
-//  EchoFuntion(RTC_TimeRegulate);
-//	printf("EchoFuntion is ok\r\n");  //关闭现金接受
-//	/*网络签到*/
-//	SignInFunction();
-//	printf("SignInFunction is ok\r\n");  //关闭现金接受
-// 	/*餐品对比数据*/
-//	//MealDataCompareFun();
-//	printf("MealDataCompareFun is ok\r\n");  //关闭现金接受
-//	Szt_GpbocAutoCheckIn();
+  EchoFuntion(RTC_TimeRegulate);
+	printf("EchoFuntion is ok\r\n");  //关闭现金接受
+	/*网络签到*/
+	SignInFunction();
+	printf("SignInFunction is ok\r\n");  //关闭现金接受
+ 	/*餐品对比数据*/
+	//MealDataCompareFun();
+	printf("MealDataCompareFun is ok\r\n");  //关闭现金接受
+	Szt_GpbocAutoCheckIn();
 	printf("Szt_GpbocAutoCheckIn is ok\r\n");  //关闭现金接受
 	PageChange(Menu_interface); //显示选餐界面
 	DispLeftMeal();             //显示餐品数据
-	if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
 	while(1)
   {
 		//delay_ms(200);
@@ -58,6 +57,7 @@ int main(void)
 					temp =0;
 					temp = OrderSendLink();  //为1成功，为0失败
 					VariableChage(current_temprature,Temperature); //5S一次
+					if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
 					printf("temp = %d",temp);
 				}
 				//显示倒计时

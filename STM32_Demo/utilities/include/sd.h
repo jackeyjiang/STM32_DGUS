@@ -13,7 +13,7 @@ void SD_spi_write(unsigned char x);
 void SD_GPIO_Configuration(void);
 unsigned char MessageWriteToSD(unsigned char Cuttern);
 void WriteDatatoSD(unsigned char *);
-void ReadDatatoBuffer(void);
+bool ReadDatatoBuffer(void);
 void File_delete(void);
 void SendtoServce(void);
 void DataRecord(void);

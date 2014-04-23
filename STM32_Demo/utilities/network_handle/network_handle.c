@@ -681,8 +681,8 @@ unsigned char  MealDataCompareFun(void)
 
 /***************************************************************************/
     /*单片是否成功*/
-	if(i==0x01)
-	return 1;
+	if(i==0x01) //超时
+	return 1; 
 
 	Lenght = HL_BufferToInit(&rx1Buf[2]);		//得到数据长度
 	GetData(&ReturnData.Lenght[0],rx1Buf,Lenght,0xc0);	  /*返回状态*/
@@ -1228,7 +1228,7 @@ unsigned char    ClearingFun(void)
 * Output         : void
 * Return         : void
 *******************************************************************************/
-void  SignInFunction(void)
+bool SignInFunction(void)
 {
    
   unsigned char i = 50 ;
@@ -1240,7 +1240,10 @@ void  SignInFunction(void)
 	}while(--i);
 
 	if(i == 0x00)
-	return ;
+	  return false;
+	else
+		return true;
+}	
     
 /*
    while(1)  //LAO
@@ -1252,8 +1255,6 @@ void  SignInFunction(void)
 	    }
     }
 */
-}
-
 
 /*******************************************************************************
    * 函数名称:StateSend
@@ -1296,7 +1297,7 @@ void  SignInFunction(void)
 * Output         : void
 * Return         : void
 *******************************************************************************/
- void  EchoFuntion(void (*fptr)(void))
+bool EchoFuntion(void (*fptr)(void))
  {
    unsigned char i = 100 ;
    do
@@ -1306,8 +1307,9 @@ void  SignInFunction(void)
 	   delay_ms(100);
 	 }while(--i);
 	 if(i == 0x00)
-	 return ;
+	 return false;
 	 (*fptr)() ;
+	 return true;
 
  }
    /*******************************************************************************

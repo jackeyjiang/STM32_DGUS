@@ -93,6 +93,9 @@ typedef struct
 }CustomerSel__struction ;
 extern CustomerSel__struction CustomerSel;
 
+extern char ReadSdBuff[256];
+extern char SendHostBuff[128];
+extern char ReadBuf[20];
 
 extern unsigned char  F_RX1_Right;
 extern unsigned char  rx1Buf[512];	  //发送数据给服务器，服务器返回数据存在这个buffer
@@ -109,18 +112,19 @@ unsigned char EchoFun(void);/*回响测试*/
 unsigned char TakeMealsFun(unsigned char *SendBuffer);/*取餐设置*/
 unsigned char MealUploadingFun(void);/*上送餐品数据*/
 unsigned char ClearingFun(void);/*结算命令*/
-void  EchoFuntion(void (*fptr)(void)) ;
+//void  EchoFuntion(void (*fptr)(void)) ;
 unsigned char 	Resend(unsigned char *p,long lenght);
 void WriteToSD_data(void);
 void DataUpload(void);
 void StateSend(void);
-void SignInFunction(void);
+//void SignInFunction(void);
 void GetBRWN(void);
 
 unsigned int GetCrc16(unsigned char *bufData,unsigned int sizeData);
 void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf);
 bool StringToHexGroup1(unsigned char *OutHexBuffer, char *InStrBuffer, unsigned int strLength);
 
-
+bool EchoFuntion(void (*fptr)(void));
+bool SignInFunction(void);
 #endif
 
