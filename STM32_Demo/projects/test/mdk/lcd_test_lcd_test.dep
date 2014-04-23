@@ -1,5 +1,5 @@
 Dependencies for Project 'lcd_test', Target 'lcd_test': (DO NOT MODIFY !)
-F (..\test_lcd.c)(0x53561F7D)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\test_lcd.o --omf_browse .\debug\test_lcd.crf --depend .\debug\test_lcd.d)
+F (..\test_lcd.c)(0x535663CC)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\test_lcd.o --omf_browse .\debug\test_lcd.crf --depend .\debug\test_lcd.d)
 I (..\..\..\utilities\include\bsp.h)(0x5354C122)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -51,7 +51,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -67,7 +67,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x535486BE)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x534B97F2)
 I (..\..\..\utilities\include\network_handle.h)(0x53534582)
 I (..\..\..\utilities\include\uart5.h)(0x53423276)
-F (..\stm32f4xx_it.c)(0x5355D0D1)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\stm32f4xx_it.o --omf_browse .\debug\stm32f4xx_it.crf --depend .\debug\stm32f4xx_it.d)
+F (..\stm32f4xx_it.c)(0x53566038)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\stm32f4xx_it.o --omf_browse .\debug\stm32f4xx_it.crf --depend .\debug\stm32f4xx_it.d)
 I (..\stm32f4xx_it.h)(0x5354A78F)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -120,7 +120,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -451,7 +451,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -467,7 +467,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x535486BE)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x534B97F2)
 I (..\..\..\utilities\include\network_handle.h)(0x53534582)
 I (..\..\..\utilities\include\uart5.h)(0x53423276)
-F (..\..\..\utilities\spi_flash\spi_flash.c)(0x53549EDF)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\spi_flash.o --omf_browse .\debug\spi_flash.crf --depend .\debug\spi_flash.d)
+F (..\..\..\utilities\spi_flash\spi_flash.c)(0x535657E3)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\spi_flash.o --omf_browse .\debug\spi_flash.crf --depend .\debug\spi_flash.d)
 I (..\..\..\utilities\include\spi_flash.h)(0x535486BE)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -508,9 +508,9 @@ I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\printer.h)(0x534E9F74)
 I (..\..\..\utilities\include\rtc.h)(0x522FFA4E)
 I (..\..\..\utilities\include\delay.h)(0x525F4176)
-I (..\..\..\utilities\include\Mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\Mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x52846614)
-F (..\..\..\utilities\serialscreen\serialscreen.c)(0x53563757)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\serialscreen.o --omf_browse .\debug\serialscreen.crf --depend .\debug\serialscreen.d)
+F (..\..\..\utilities\serialscreen\serialscreen.c)(0x53566C3B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\serialscreen.o --omf_browse .\debug\serialscreen.crf --depend .\debug\serialscreen.d)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x5284661A)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -563,7 +563,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -579,7 +579,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x535486BE)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x534B97F2)
 I (..\..\..\utilities\include\network_handle.h)(0x53534582)
 I (..\..\..\utilities\include\uart5.h)(0x53423276)
-F (..\..\..\utilities\szt_Gpboc\szt_gpboc.c)(0x534E2AB6)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\szt_gpboc.o --omf_browse .\debug\szt_gpboc.crf --depend .\debug\szt_gpboc.d)
+F (..\..\..\utilities\szt_Gpboc\szt_gpboc.c)(0x53565BAB)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\szt_gpboc.o --omf_browse .\debug\szt_gpboc.crf --depend .\debug\szt_gpboc.d)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x5284661A)
@@ -632,7 +632,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -699,7 +699,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -767,7 +767,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -911,7 +911,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -927,7 +927,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x535486BE)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x534B97F2)
 I (..\..\..\utilities\include\network_handle.h)(0x53534582)
 I (..\..\..\utilities\include\uart5.h)(0x53423276)
-F (..\..\..\utilities\mini_hopper\Mini_hopper.c)(0x534D0A48)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\mini_hopper.o --omf_browse .\debug\mini_hopper.crf --depend .\debug\mini_hopper.d)
+F (..\..\..\utilities\mini_hopper\Mini_hopper.c)(0x53565F90)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\mini_hopper.o --omf_browse .\debug\mini_hopper.crf --depend .\debug\mini_hopper.d)
 I (..\..\..\utilities\include\bsp.h)(0x5354C122)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -979,7 +979,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -1047,7 +1047,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -1160,7 +1160,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -1176,7 +1176,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x535486BE)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x534B97F2)
 I (..\..\..\utilities\include\network_handle.h)(0x53534582)
 I (..\..\..\utilities\include\uart5.h)(0x53423276)
-F (..\..\..\utilities\bsp\bsp.c)(0x53562243)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\bsp.o --omf_browse .\debug\bsp.crf --depend .\debug\bsp.d)
+F (..\..\..\utilities\bsp\bsp.c)(0x53566C3B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\bsp.o --omf_browse .\debug\bsp.crf --depend .\debug\bsp.d)
 I (..\..\..\utilities\include\bsp.h)(0x5354C122)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53421150)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -1228,7 +1228,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -1369,7 +1369,7 @@ I (..\..\..\utilities\include\uart4.h)(0x534C864D)
 I (..\..\..\utilities\include\uart6.h)(0x534F9A47)
 I (..\..\..\utilities\include\pvd.h)(0x525EBAAA)
 I (..\..\..\utilities\include\coin.h)(0x53355578)
-I (..\..\..\utilities\include\mini_hopper.h)(0x534D086E)
+I (..\..\..\utilities\include\mini_hopper.h)(0x53565F90)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
 I (..\..\..\utilities\include\bill.h)(0x534C8636)
@@ -2641,7 +2641,7 @@ F (..\..\..\utilities\include\bill.h)(0x534C8636)()
 F (..\..\..\utilities\include\bsp.h)(0x5354C122)()
 F (..\..\..\utilities\include\coin.h)(0x53355578)()
 F (..\..\..\utilities\include\delay.h)(0x525F4176)()
-F (..\..\..\utilities\include\Mini_hopper.h)(0x534D086E)()
+F (..\..\..\utilities\include\Mini_hopper.h)(0x53565F90)()
 F (..\..\..\utilities\include\MMC_SD.H)(0x52DF587C)()
 F (..\..\..\utilities\include\MsgHandle.h)(0x5355CD2E)()
 F (..\..\..\utilities\include\network_handle.h)(0x53534582)()

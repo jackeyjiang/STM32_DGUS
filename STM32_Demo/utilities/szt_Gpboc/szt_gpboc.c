@@ -2898,7 +2898,7 @@ uint8_t OnlyReadGpbocCard(void)
 }
 
 
- 
+
 /*ÒøÁª¿¨Ïû·Ñ,·µ»Ø0±íÊ¾¿Û¿îÊ§°Ü£»·µ»Ø1±íÊ¾¿Û¿îÕýÈ·*/
 uint8_t GpbocDeduct(uint32_t money_deduct)
 {
@@ -2951,58 +2951,75 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
 		  if( result2 == 1)
 		  	{
 		  	  //±£´æ½»Ò×¼ÇÂ¼
-		  	  //saveDeductIfn = UpDeductData;°Ñ½»Ò×¼ÇÂ¼±£´æ
+		  	  /veDeductIfn = UpDeductData;°Ñ½»Ò×¼ÇÂ¼±£´æ
 			   
 		  	   freq_toSendGpboc ++;  //½»Ò××Ü´ÎÊý+1
 		  	}
 			*/
 	  	}
+			
+			if( result2 == 1)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
 
-	  //printf("result2= %x",result2);
-	  //delay_us(15);
-	  //ÔÙ´ÎÑé¿¨
-	  if( UpDeductData.lTransAmount ==0)
-	  {
-		  orderFlag1 =0;
-		  Order_Gpboc_ReadCard();
-		  orderFlag1 = ManageReOrderType();
-		  if( orderFlag1 == R_GpbocReadCard)
-		  	{
-		  	  result1 = ManageGpbocReadCard();
-		  	}
-	
-		  if( result1 == 0x01)
-		  	{
-		  	  EndMoney = UpReadCardData.GpbocMoney;		  
-		  	}
-		}
-  	}
+			//printf("result2= %x",result2);
+			//delay_us(15);
+//			if( result2 == 1)
+//			{
+//				//ÔÙ´ÎÑé¿¨
+//					if( UpDeductData.lTransAmount ==0)
+//					{
+//						orderFlag1 =0;
+//						Order_Gpboc_ReadCard();
+//						orderFlag1 = ManageReOrderType();
+//						if( orderFlag1 == R_GpbocReadCard)
+//							{
+//								result1 = ManageGpbocReadCard();
+//							}
+//				
+//						if( result1 == 0x01)
+//							{
+//								EndMoney = UpReadCardData.GpbocMoney;		  
+//							}
+//					}
+//					
 
-	if( UpDeductData.lTransAmount == money_deduct)
-	{
-	  //printf("\nÏû·Ñ:%ld\n",money_deduct);
-	  freq_toSendGpboc ++;  //½»Ò××Ü´ÎÊý+1
-  	  return 1;
+//	// 				if( UpDeductData.lTransAmount == money_deduct)
+//	// 				{
+//	// 					//printf("\nÏû·Ñ:%ld\n",money_deduct);
+//	// 					freq_toSendGpboc ++;  //½»Ò××Ü´ÎÊý+1
+//	// 						return 1;
+//	// 				}
+//	// 				
+//					//¿Û¿îÇ°ºó¿¨ÄÚ½ð¶îÖ²îÎªÕæÊµ¿Û¿îÖµ
+//					FactMoney = FristMoney - EndMoney;
+//					//printf("\nÇ°Îª %ld ºóÎª%ld",FristMoney,EndMoney);
+
+//					if(FactMoney == money_deduct )
+//						{
+//							//printf("\nÏû·Ñ:%ld\n",money_deduct);
+//						freq_toSendGpboc ++;  //½»Ò××Ü´ÎÊý+1
+//							return 1;
+//						}
+//					else
+//						{
+//							//printf("\n½»Ò×Ê§°Ü\n");
+//							return 0;
+//						}
+//			}
+//			else
+//			{
+//				 return 0;
+//			}
 	}
- 	
-  //¿Û¿îÇ°ºó¿¨ÄÚ½ð¶îÖ®²îÎªÕæÊµ¿Û¿îÖµ
-  FactMoney = FristMoney - EndMoney;
-  //printf("\nÇ°Îª %ld ºóÎª%ld",FristMoney,EndMoney);
-
-  if(FactMoney == money_deduct )
-  	{
-  	  //printf("\nÏû·Ñ:%ld\n",money_deduct);
-	  freq_toSendGpboc ++;  //½»Ò××Ü´ÎÊý+1
-  	  return 1;
-  	}
-  else
-  	{
-  	  //printf("\n½»Ò×Ê§°Ü\n");
-  	  return 0;
-  	}
+	  
 
 }
-
 
 
 

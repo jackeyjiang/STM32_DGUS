@@ -125,13 +125,24 @@ uint8_t SendOutN_Coin(int num)
 void RefundButton(void)
 {
 	uint16_t i;
-	for(i=0;i<500;i++)
+	for(i=0;i<20;i++)
 	{
 		GPIO_ResetBits(GPIOE,GPIO_Pin_11);
 		delay_ms(15);
 		GPIO_SetBits(GPIOE,GPIO_Pin_11);
 		delay_ms(15);
 		GPIO_ResetBits(GPIOE,GPIO_Pin_11);
-		delay_ms(70);
+		delay_ms(50);
 	}	
+}
+ /*******************************************************************************
+* Function Name  : StopRefond
+* Description    : 全部退币
+* Input          : 要退的币数
+* Output         : 未退的币数，修改
+* Return         : 
+*******************************************************************************/
+void StopRefond(void)
+{
+	GPIO_ResetBits(GPIOE,GPIO_Pin_11);
 }

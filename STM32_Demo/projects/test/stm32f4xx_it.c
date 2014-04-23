@@ -263,14 +263,12 @@ void TIM3_IRQHandler(void)
 	  TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 		if(WaitTime > 0)
 		{
-		  VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
 			WaitTime--;
 		}  
 		else 
 		{
 			CloseTIM3();
       WaitTimeInit(&WaitTime);
-			PageChange(Menu_interface);//超时退出用户餐品数量选择界面
 			ClearUserBuffer();//清空用户数据
 	  }	     
   }

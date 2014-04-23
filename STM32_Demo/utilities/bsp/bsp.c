@@ -92,12 +92,12 @@ unsigned char  WaitPayMoney(void)
 	  case 1 : 
 	  {
 	    /*显示付款方式，现金，银行卡，深圳通*/
-			if(WaitTime<56)
-			{
-			  CurrentPoint = 3;
-			  /*支付方式*/			 
-			  UserAct.PayType = '1';/* 现金支付*/
-			}
+//			if(WaitTime<56)
+//			{
+//			  CurrentPoint = 3;
+//			  /*支付方式*/			 
+//			  UserAct.PayType = '1';/* 现金支付*/
+//			}
 		}break;    		
 	  case 2:  //由屏幕控制跳转
 	  {
@@ -185,6 +185,8 @@ unsigned char  WaitPayMoney(void)
       OldCoinsCnt= UserAct.MoneyBack ; //在这里程序只执行一次
 			VariableChage(mealout_totle,UserAct.Meal_totoal);	
       NewCoinsCnt= 0; 
+			CloseTIM7();
+			CloseTIM3();
       //将需要打印的数据赋值到相关结构体	
      	Print_Struct.P_Number1st = UserAct.MealCnt_1st;
 			Print_Struct.P_Number2nd = UserAct.MealCnt_2nd;
@@ -333,7 +335,7 @@ bool OpenCashSystem(void)
   {
 		cnt_t--;
 		ReadBill();
-		delay_ms(10);	
+		delay_us(10);	
 	}
 	while((cnt_t>=0)&&(EnableBillFlag== NACK));//
 	if(EnableBillFlag== ACK) 
@@ -489,7 +491,7 @@ void hardfawreInit(void)
    SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品
 	 //WriteCoins();
    ReadCoins();//读取有多少硬币	 
-	 VariableChage(coins_in,Coins_totoal);//显示机内硬币数
+	 //VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
 	 for(i=0;i<90;i++)
 	 {
 	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)

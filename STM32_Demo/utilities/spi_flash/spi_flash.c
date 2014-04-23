@@ -817,7 +817,6 @@ void WriteCoins(void)
 	  SPI_FLASH_SectorErase(FLASH_SectorToErase1);
     SPI_FLASH_BufferWrite(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1 , 2);
     /* Read data from SPI FLASH memory */
-	  delay_ms(10); //—” ±≤‚ ‘
     SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 2);
 
     /* Check the corectness of written dada */

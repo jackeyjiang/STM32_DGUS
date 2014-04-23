@@ -460,6 +460,7 @@ void PutIntoShopCart(void)
 		default:break;	
 	}
 	PageChange((UserAct.MealID-1)*3+6); //不知道这个是否出问题???
+	UserAct.Meal_totoal= UserAct.MealCnt_4th+UserAct.MealCnt_3rd+UserAct.MealCnt_2nd+UserAct.MealCnt_1st;
 }	
 
  /*******************************************************************************
@@ -740,11 +741,14 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
  					case 0x03:  /*进入购物车*/
 					{
-						SettleAccounts();
-						CloseTIM3();
-						WaitTimeInit(&WaitTime);
-						OpenTIM7();
-						Current= waitfor_money;//进入读钱界面
+						if(UserAct.Meal_totoal>0)
+						{
+							SettleAccounts();
+							CloseTIM3();
+							WaitTimeInit(&WaitTime);
+							OpenTIM7();
+							Current= waitfor_money;//进入读钱界面
+						}
 					}break;
 					case 0x04:  /*取消*/
 					{
@@ -850,6 +854,8 @@ loop1:	switch(MealID)
 					case 0x04:   /*取消*/
 					{
 						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
+						CloseTIM3();
+						CloseTIM7();
 						ClearUserBuffer();
 						UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 						UserAct.Cancle= 0x01;
@@ -868,7 +874,8 @@ loop1:	switch(MealID)
 					{
 						UserAct.PrintTick= VariableData[1];
 							 /*判断是否打印小票*/ 			
-            PrintTickFun(&UserAct.PrintTick); 
+            PrintTickFun(&UserAct.PrintTick);
+            CloseTIM4();						
 						PageChange(Menu_interface);
 						ClearUserBuffer();  //清楚购物车
 					}break;  
@@ -1116,15 +1123,19 @@ loop1:	switch(MealID)
             VariableChage(coins_back,Coins_cnt);
 				  }		    
 				}
-				else if((VariableData[1] == 0x02))
+				else if(VariableData[1] == 0x02)
 				{
+					StopRefond();
 					PageChange(Menu_interface);
 				}
 			}break;	
       case 	coins_in:
       {	
-				Coins_totoal= VariableData[1];
-				//WriteCoins();
+				CoinsTotoalMessageWriteToFlash.CoinsCnt[0]= VariableData[1];
+				CoinsTotoalMessageWriteToFlash.CoinsCnt[1]= VariableData[0];
+				WriteCoins();
+				VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
+				
 			}break;			
 			  default:break;		
 		}

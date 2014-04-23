@@ -10,6 +10,7 @@ uint8_t StatisticalCoin(void);
 void CloseCoins(void);
 void OpenCoins(void);
 void RefundButton(void);
+void StopRefond(void);
 
 #endif
 

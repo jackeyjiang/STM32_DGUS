@@ -51,12 +51,15 @@ int main(void)
 			{
 			  StateSend();
 				//VariableChage(current_temprature,Temperature);
+				//显示倒计时
+				 VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
+				 if(WaitTime==0) PageChange(Menu_interface);//超时退出用户餐品数量选择界面
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
 			{
         if( WaitPayMoney()==Status_OK)
 				{
-					UserAct.Meal_totoal=UserAct.MealCnt_1st + UserAct.MealCnt_2nd  + UserAct.MealCnt_3rd+ UserAct.MealCnt_4th;
+					//UserAct.Meal_totoal=UserAct.MealCnt_1st + UserAct.MealCnt_2nd  + UserAct.MealCnt_3rd+ UserAct.MealCnt_4th;
 					PageChange(Mealout_interface);
 					delay_ms(200);
 					if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
