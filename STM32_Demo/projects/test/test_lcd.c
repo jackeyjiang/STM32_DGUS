@@ -17,24 +17,28 @@
 #include "bsp.h"
 uint8_t Current= 0x01;        //状态机变量
 uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
+uint8_t waitmeal_status=0;    //等待取餐状态
 int main(void)
 {
  	uint16_t temp = 0;
-	uint8_t initflag ;
 	hardfawreInit(); //硬件初始化
-	printf("hardfawreInit IS ok\r\n");  //关闭现金接受
+	
+	printf("hardfawreInit is ok\r\n");  //关闭现金接受
+	
+	//OnlymachieInit();  //机械手初始化
+	
   //SendtoServce();  //上传前七天的数据
   //ReadDatatoBuffer(); //上一个程序有这个函数
    /*从网络  获得时间，更新本地时钟*/
-  EchoFuntion(RTC_TimeRegulate);
-	printf("EchoFuntion is ok\r\n");  //关闭现金接受
-	/*网络签到*/
-	SignInFunction();
-	printf("SignInFunction is ok\r\n");  //关闭现金接受
- 	/*餐品对比数据*/
-	//MealDataCompareFun();
-	printf("MealDataCompareFun is ok\r\n");  //关闭现金接受
-	Szt_GpbocAutoCheckIn();
+//  EchoFuntion(RTC_TimeRegulate);
+//	printf("EchoFuntion is ok\r\n");  //关闭现金接受
+//	/*网络签到*/
+//	SignInFunction();
+//	printf("SignInFunction is ok\r\n");  //关闭现金接受
+// 	/*餐品对比数据*/
+//	//MealDataCompareFun();
+//	printf("MealDataCompareFun is ok\r\n");  //关闭现金接受
+//	Szt_GpbocAutoCheckIn();
 	printf("Szt_GpbocAutoCheckIn is ok\r\n");  //关闭现金接受
 	PageChange(Menu_interface); //显示选餐界面
 	DispLeftMeal();             //显示餐品数据
@@ -43,24 +47,38 @@ int main(void)
   {
 		//delay_ms(200);
 		DealSeriAceptData();
-		//ManipulatorHandler();
-		//Current =data_record;
+		manageusart6data();
     switch(Current)
 	  {
 	    case current_temperature: /*温度处理函数*/
 			{
-			  StateSend();
-				//VariableChage(current_temprature,Temperature);
+				StateSend();
+				if(LinkTime >=5)
+				{
+					temp =0;
+					temp = OrderSendLink();  //为1成功，为0失败
+					VariableChage(current_temprature,Temperature); //5S一次
+					printf("temp = %d",temp);
+				}
 				//显示倒计时
-				 VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
-				 if(WaitTime==0) PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+				if(WaitTime==0)
+				{					 
+					PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+					WaitTimeInit(&WaitTime);
+				}
+				else if(WaitTime!=60)
+				{
+					VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
+				}
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
 			{
+				SaveUserData();
         if( WaitPayMoney()==Status_OK)
 				{
-					//UserAct.Meal_totoal=UserAct.MealCnt_1st + UserAct.MealCnt_2nd  + UserAct.MealCnt_3rd+ UserAct.MealCnt_4th;
-					PageChange(Mealout_interface);
+          PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
+					WaitTime=5;//5S计时
+	        OpenTIM4();    
 					delay_ms(200);
 					if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 					//改变用户所选餐的总数
@@ -110,16 +128,23 @@ int main(void)
 			}break;
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{
-			  if( WaitMeal()==Status_OK) //出餐完毕
+				SaveUserData();
+				waitmeal_status= WaitMeal();
+			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{
-          PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
-					//WaitTimeInit(&WaitTime);
-					WaitTime=5;//5S计时
-	        OpenTIM4();
-			    Current = data_upload;
+					PageChange(Menu_interface);
+           Current = current_temperature; 
+					//出餐完毕，跳到回温度处理
 				}
-				//出餐完毕，跳到回温度处理
-				//已出一种餐品，数据上传记录
+				else if(waitmeal_status == tookkind_meal) //取完一种餐品
+				{
+					Current = data_upload;
+				}
+				else if(waitmeal_status == tookone_meal)  //取完一个餐品
+				{
+					PageChange(Mealout_interface);//不知道需要加些什么
+				}
+				
 			}break;
 	    case data_upload:	 /*数据上传*/
 	    {
@@ -130,6 +155,8 @@ int main(void)
 		    UserAct.PayForBills = 0;
 		    UserAct.PayForCoins = 0;
         UserAct.PayForCards = 0;
+				UserAct.Meal_takeout= 0;
+				UserAct.Meal_totoal = 0;
 			  Current = current_temperature ;
 	    }break ;
       case status_upload: /*状态上传*/

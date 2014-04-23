@@ -268,7 +268,6 @@ void TIM3_IRQHandler(void)
 		else 
 		{
 			CloseTIM3();
-      WaitTimeInit(&WaitTime);
 			ClearUserBuffer();//清空用户数据
 	  }	     
   }
@@ -295,7 +294,7 @@ void TIM4_IRQHandler(void)
 		else 
 		{
 			CloseTIM4();
-			PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+			PageChange(Mealout_interface);//超时退出进入餐品数量选择界面
 	  }	     
   }
 }
@@ -362,6 +361,9 @@ void PVD_IRQHandler(void)
  }	
 
 }
+
+
+
 /**
   * @}
   */ 

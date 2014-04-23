@@ -28,7 +28,7 @@ typedef struct UserAction
 	uint16_t MealCost_2nd;    //用户选择第二份餐品的总价
 	uint16_t MealCost_3rd;    //用户选择第三份餐品的总价
 	uint16_t MealCost_4th;    //用户选择第四份餐品的总价
-	uint8_t  PayShould;        //用户应付款总额
+	uint16_t PayShould;        //用户应付款总额
 	uint8_t  MealID;           //用户当前选择的餐品ID
 	uint8_t  Meal_totoal;      //用户选餐的总数
 	uint8_t  Meal_takeout;     //用户已取出的餐品数
@@ -36,7 +36,7 @@ typedef struct UserAction
 	uint16_t PayForBills;           //用户投入的纸币数
 	uint16_t PayForCards;           //用户应经刷卡的数
 	uint16_t PayAlready;            //用户已经付款总额
-	uint8_t  MoneyBack;              //用户找零数
+	uint16_t MoneyBack;              //用户找零数
 	uint8_t  PrintTick;              //是否打印小票标志
 	uint8_t  PayType ;              //支付方式
 	uint8_t  Cancle;                //用户取消购买

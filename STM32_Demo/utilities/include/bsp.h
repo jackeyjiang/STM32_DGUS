@@ -1,6 +1,7 @@
 #ifndef _bsp_H
 #define _bsp_H
 
+/*******主状态***********/
 #define current_temperature  0x01
 #define waitfor_money        0x02
 #define payment_success      0x03
@@ -11,6 +12,14 @@
 #define data_record          0x08
 #define status_upload        0x09
 
+/**********等待餐品状态************/
+#define takeing_meal   0x01 //正在取餐
+#define tookone_meal   0x02 //已取一份餐
+#define tookkind_meal  0x03 //已取一种餐
+#define takeafter_meal 0x04 //取餐完毕
+
+
+/**********异常******************/
 #define outage_erro      0x01 //断电
 #define sdcard_erro      0x02 //SD卡存储异常
 #define billset_erro     0x03 //纸币机异常
@@ -32,6 +41,9 @@
 #define Z_downlimit      0x12 //z马达下动作超出
 #define solenoid_timeout 0x13 //电磁阀超时
 #define Eeprom_erro      0x14 //eeprom 异常
+#define SendUR6Erro      0x15  //发送数据异常或超时
+#define GetMealError     0x16  //机械手5秒取不到餐
+#define MealNoAway       0x17   //餐在出餐口20秒还未被取走
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_conf.h"
@@ -83,6 +95,7 @@ typedef enum
 
 
 
+
 typedef struct 
 {
   uint8_t   F_RX_Length ;   //接受数据长度标志
@@ -100,7 +113,7 @@ typedef struct
 extern  USART_StatusTypeDef  STATUS ;
 
 
-
+extern uint8_t   exitflag;
 extern uint8_t   CoinCountFlag;
 extern uint8_t   TemperatureFlag  ;
 extern uint8_t   BillActionFlag;      //表示纸币机在收钱中。这个时候不能关闭纸币机
@@ -121,6 +134,9 @@ void  WaitTimeInit(uint8_t *Time);
 void StateSend(void);
 void DataUpload(void);
 void PrintTickFun(unsigned char *PrintTickFlag);
+void AbnormalHandle(uint16_t erro);
+void SaveUserData(void);
+void ReadUserData(void);
 // void LcdHandler(void);
 // void  TempHandler(void);
 // void ClearingFuntion(void) ;//退签上送

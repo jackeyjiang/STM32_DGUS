@@ -1,4 +1,4 @@
-
+#include "stdint.h"
 #include "bsp.h"
  /*******************************************************************************
  * 函数名称:WaitTimeInit                                                                     
@@ -92,12 +92,12 @@ unsigned char  WaitPayMoney(void)
 	  case 1 : 
 	  {
 	    /*显示付款方式，现金，银行卡，深圳通*/
-//			if(WaitTime<56)
-//			{
-//			  CurrentPoint = 3;
-//			  /*支付方式*/			 
-//			  UserAct.PayType = '1';/* 现金支付*/
-//			}
+			if(WaitTime<56)
+			{
+			  CurrentPoint = 3;
+			  /*支付方式*/			 
+			  UserAct.PayType = '1';/* 现金支付*/
+			}
 		}break;    		
 	  case 2:  //由屏幕控制跳转
 	  {
@@ -217,10 +217,10 @@ unsigned char  WaitPayMoney(void)
 
 
 uint8_t  CurrentPointer = 0 ;
-
 uint8_t WaitMeal(void)
 {
   //static unsigned char Cmd[20]={0x05, 0x31, 0x30, 0x30, 0x31, 0x30 ,0x30, 0x36, 0x34, 0x30, 0x30, 0x30, 0x34, 0x4D, 0x31, 0x35, 0x43, 0x03, 0x0D ,0x0A};
+	uint8_t temp;
 	switch(CurrentPointer)
 	{
 		case 0 : /*查找用户所选餐品的位置*/
@@ -237,9 +237,9 @@ uint8_t WaitMeal(void)
 			else
 			{	
          //如果餐品全部出完，退出到主界面				
-				 printf("UserAct.MealCnt is none");
+				 return takeafter_meal;
 			}
-			if(FindMeal(DefineMeal)) /**/
+			if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
 			   CurrentPointer= 1;break;	
 		}break;
 	  case 1 : /* 发送餐的数目减一*/
@@ -259,39 +259,169 @@ uint8_t WaitMeal(void)
     case 2 : /*发送行和列的位置，等待响应*/
 		{
        //根据[Line][Column]的值发送坐标 等待ACK	 
-			CurrentPointer = 3 ;
+			temp =0;
+			temp = OrderSendCoord(Line,Column);
+			
+			if( temp ==1)//发送成功
+			{
+        LinkTime =0;
+				CurrentPointer = 3 ;
+			}
+			else				//发送失败
+			{
+				printf("send coord error\n");
+        AbnormalHandle(SendUR6Erro);
+			}
 	  }break;  
 		case 3 :    /*发送取餐命令*/
 		{
 			//查询机械手是否准备好，如果准备好发送取餐命令
 			//如果超时则 返回错误，
 		  //如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
-			CurrentPointer=4;
+			while(1)  //查询机械手是否准备好，
+      {
+        if(LinkTime > 10)    //超时
+        {
+          LinkTime =0;
+          printf("move to coord timeout!\n");
+          AbnormalHandle(SendUR6Erro);
+          break;
+        }
+
+        if(Usart6DataFlag ==1)        //若机械手有数据，处理机械手返回数据
+		    {
+			    manageusart6data();
+		    }
+
+        if(machinerec.regoal ==1)   //到达取餐点
+        {
+          break;
+        }
+
+      }
+
+      if(machinerec.regoal ==1)   //到达取餐点
+      {
+         machinerec.regoal =0 ;
+         temp =0;
+         temp = OrderGetMeal();   //发送取餐命令
+         if(temp ==1)       // 取餐命令发送成功
+         {
+           LinkTime =0;
+           CurrentPointer=4;  
+         }
+         else          //发送失败     
+         {
+           printf(" send getmeal order error");
+           AbnormalHandle(SendUR6Erro);
+         }
+      }
 		}break;
 	  case 4 :  	/*播放语音，请取餐*/
 		{ 	
       //如果餐品到达取餐口播放语音
 			//如果餐品取出则 跳出子程序进行数据上传  
-			CurrentPointer=5;
+			while(1)
+      {
+        if( LinkTime >60)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
+        {
+          printf("from send getmeal order to sell door timeout!\n");
+          AbnormalHandle(SendUR6Erro);
+          break;
+        }
+
+        if(Usart6DataFlag ==1)        //若机械手有数据，处理机械手返回数据
+		    {
+			    manageusart6data();
+		    }
+
+        if( machinerec.retodoor == 1)   //到达出餐口
+        {
+          break;
+        }
+
+        if( machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
+        {
+          printf("取餐5秒了还未取到餐\n");
+          AbnormalHandle(SendUR6Erro);
+          break;
+        }
+      }
+
+      if( machinerec.retodoor == 1) //到达出餐口
+      {
+        machinerec.retodoor = 0;
+        //播放请取餐语音
+      }
+
+      LinkTime =0;
+
+      while(1)//等待客户取走餐之后，才跳到Case 5
+      {
+        if( LinkTime >180) //餐在出餐口未被取走，最多等待3分，超过了报错
+        {
+          printf("餐未超过了三分钟还未被取走");
+          AbnormalHandle(SendUR6Erro);
+          break;
+        }
+
+        if(Usart6DataFlag ==1)        //若机械手有数据，处理机械手返回数据
+		    {
+			    manageusart6data();
+		    }
+
+        if( machinerec.remealaway == 1) //餐已被取走
+        {
+          break;
+        }
+
+        if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
+        {
+          machinerec.remealnoaway = 0;
+          //语音提示“请取走出餐口的餐 "
+        } 
+      }
+
+      if( machinerec.remealaway == 1) //餐已被取走
+      {
+        LinkTime =0;
+        machinerec.remealaway = 0;
+        CurrentPointer=5;
+      }
 	  }break;			    
     case 5:     /*对用户数据进行减一*/
 		{
-	    if(UserAct.MealID == 0x01)
-			  UserAct.MealCnt_1st--;
-      else if(UserAct.MealID == 0x02)
-				UserAct.MealCnt_2nd--;
-      else if(UserAct.MealID == 0x03)
-				UserAct.MealCnt_3rd--; 	
-      else if(UserAct.MealID == 0x04)
-				UserAct.MealCnt_4th--; 	
       UserAct.Meal_takeout++;//取餐数据加一
       VariableChage(mealout_already,UserAct.Meal_takeout++);	//UI显示减一	
 			CurrentPointer= 0;
-			return 0;
+			if(UserAct.MealID == 0x01)
+			{
+			  UserAct.MealCnt_1st--;
+				if(UserAct.MealCnt_1st==0)
+					return tookkind_meal;
+			}
+      else if(UserAct.MealID == 0x02)
+			{
+				UserAct.MealCnt_2nd--;
+				if(UserAct.MealCnt_2nd==0)
+					return tookkind_meal;				
+			}
+      else if(UserAct.MealID == 0x03)
+			{
+				UserAct.MealCnt_3rd--;
+				if(UserAct.MealCnt_3rd==0)
+					return tookkind_meal;				
+			}				
+      else if(UserAct.MealID == 0x04)
+			{
+				UserAct.MealCnt_4th--; 	
+				if(UserAct.MealCnt_4th==0)
+					return tookkind_meal;				
+			}
+			return tookone_meal;
 		}
 		default:break;
 	}
-	return Status_Action;
 }   
 
   /*******************************************************************************
@@ -370,7 +500,32 @@ void ClearingFuntion(void)
 		 // BankFlashCard_Upload(); //数据上送	 不是退签
 	}		 		 
 }
+  /*******************************************************************************
+ * 函数名称:AcountCopy                                                                   
+ * 描    述:异常处理                                                                 
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+void AcountCopy(void)
+{
+	UserAct.MealCnt_1st_t= UserAct.MealCnt_1st;
+	UserAct.MealCnt_2nd_t= UserAct.MealCnt_2nd;
+	UserAct.MealCnt_3rd_t= UserAct.MealCnt_3rd;
+	UserAct.MealCnt_4th_t= UserAct.MealCnt_4th;
 
+}
+  /*******************************************************************************
+ * 函数名称:AbnormalHandle                                                                    
+ * 描    述:异常处理                                                                 
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
 void AbnormalHandle(uint16_t erro)
 {
 	PageChange(Err_interface);
@@ -416,10 +571,67 @@ void AbnormalHandle(uint16_t erro)
 			{}break;
 		case Eeprom_erro:      //eeprom 异常
 			{}break;
+		case SendUR6Erro:      //发送数据异常或超时
+			{
+        printf("发送数据异常或超时");
+      }break;
+    case GetMealError:     //机械手5秒取不到餐
+			{
+        printf("机械手5秒取不到餐");
+      }break;
+    case MealNoAway:       //餐在出餐口20秒还未被取走
+			{
+        printf("餐在出餐口20秒还未被取走");
+      }break;
 		default:break;
 	}
 	VariableChage(erro_num,erro);
 }
+  /*******************************************************************************
+ * 函数名称:SaveUserData                                                                    
+ * 描    述:掉电保存                                                               
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年4月23日    
+ *******************************************************************************/ 
+void SaveUserData(void)
+{
+	RTC_WriteBackupRegister(RTC_BKP_DR4,  UserAct.MealCnt_1st);
+	RTC_WriteBackupRegister(RTC_BKP_DR5,  UserAct.MealCnt_2nd);
+	RTC_WriteBackupRegister(RTC_BKP_DR6,  UserAct.MealCnt_3rd);
+	RTC_WriteBackupRegister(RTC_BKP_DR7,  UserAct.MealCnt_4th);
+	RTC_WriteBackupRegister(RTC_BKP_DR8,  UserAct.Meal_totoal);
+	RTC_WriteBackupRegister(RTC_BKP_DR9,  UserAct.Meal_takeout);
+	RTC_WriteBackupRegister(RTC_BKP_DR11, UserAct.PayShould);	
+	RTC_WriteBackupRegister(RTC_BKP_DR10, UserAct.PayAlready);
+	RTC_WriteBackupRegister(RTC_BKP_DR12, UserAct.MoneyBack);
+}
+
+  /*******************************************************************************
+ * 函数名称:ReadUserData                                                                    
+ * 描    述:掉电保存                                                               
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年4月23日    
+ *******************************************************************************/ 
+void ReadUserData(void)
+{
+	UserAct.MealCnt_1st= RTC_ReadBackupRegister(RTC_BKP_DR4);
+	UserAct.MealCnt_2nd= RTC_ReadBackupRegister(RTC_BKP_DR5);
+	UserAct.MealCnt_3rd= RTC_ReadBackupRegister(RTC_BKP_DR6);
+	UserAct.MealCnt_4th= RTC_ReadBackupRegister(RTC_BKP_DR7);
+	UserAct.Meal_totoal= RTC_ReadBackupRegister(RTC_BKP_DR8);
+	UserAct.Meal_takeout=RTC_ReadBackupRegister(RTC_BKP_DR9);
+	UserAct.PayShould  = RTC_ReadBackupRegister(RTC_BKP_DR11);	
+	UserAct.PayAlready = RTC_ReadBackupRegister(RTC_BKP_DR10);
+	UserAct.MoneyBack  = RTC_ReadBackupRegister(RTC_BKP_DR12);
+}
+
+
 
  /*
   PVD ---- 低电压检测                抢占优先级  0      亚优先级 0 		用于保护sd卡
@@ -499,5 +711,7 @@ void hardfawreInit(void)
 	 }
 	 WriteMeal();  //写入餐品数据
 	 StatisticsTotal(); //后面的程序需要使用  	
+	 ReadUserData();  //需要进行数据处理，判断
+	 ClearUserBuffer(); //清除之前读取的数据
 }														 
 

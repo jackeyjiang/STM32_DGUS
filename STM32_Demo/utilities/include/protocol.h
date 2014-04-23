@@ -39,7 +39,7 @@ bool E050;
 }ErrorFlagInf;
 
 
-//extern uint8_t Usart6Buff[6];	//用于接收机械手发过来的数据
+extern uint8_t Usart6Buff[6];	//用于接收机械手发过来的数据
 extern uint8_t Usart6Index;
 extern uint8_t Usart6DataFlag;   //此标志作为是否有数据接收，0无，1有数据，平时清0
 extern Urart6RecFlagInf machinerec;
@@ -64,9 +64,15 @@ void StopSell(void);
 void GetMeal(void);
 void SetTemper(uint8_t temper);
 
-void ManageUsart6(void);
-uint8_t manageretry1(void (*fun) (void) );
-uint8_t manageretry2(void );
+void manageusart6data(void);
+
+uint8_t OrderSendLink(void);
+uint8_t OrderMachineInit(void);
+uint8_t OrderSendCoord(uint8_t floor,uint8_t row);
+uint8_t OrderStopSell(void);
+uint8_t OrderGetMeal(void);
+uint8_t OrderSetTemper(uint8_t inputtemper);
+void OnlymachieInit(void);
 
 
 #endif

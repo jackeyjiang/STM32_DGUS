@@ -25,9 +25,9 @@ typedef struct DispMeal
 DispMealStuct DispMeal[4]={0};
 
 const char price_1st= 15;
-const char price_2nd= 20;
-const char price_3rd= 25;
-const char price_4th= 30;
+const char price_2nd= 15;
+const char price_3rd= 15;
+const char price_4th= 15;
 
 const char meat_name[12]={"红萝卜炒肉"};
 const char chicken_name[10]={"香菇滑鸡"};
@@ -423,6 +423,9 @@ void ClearUserBuffer(void)
 	UserAct.MealCost_3rd=0;
 	UserAct.MealCost_4th=0;
 	UserAct.MealID=0;
+	UserAct.Meal_totoal=0;
+	UserAct.PayShould=0;
+	UserAct.PayType=0;
 }
  /*******************************************************************************
  * 函数名称:PutIntoShopCart                                                                     
@@ -613,7 +616,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							UserAct.MealID= VariableData[1]; //当前用户选餐的ID
 							UserAct.MealCnt_1st_t= 1;//设置默认分数为 1							
 							WaitTimeInit(&WaitTime);
-							
+							VariableChage(count_dowm,WaitTime);
 							OpenTIM3();
 							PageChange(Meal1st_interface);//显示相应界面
               VariableChage(meat_cnt,0x01);
@@ -625,7 +628,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_2nd_t= 1;//设置默认分数为 1
 							WaitTimeInit(&WaitTime);
-							
+							VariableChage(count_dowm,WaitTime);
 							OpenTIM3();							
 							PageChange(Meal2rd_interface);//显示相应界面	
 							VariableChage(chicken_cnt,0x01);
@@ -637,7 +640,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_3rd_t= 1;//设置默认分数为 1
 							WaitTimeInit(&WaitTime);
-							
+							VariableChage(count_dowm,WaitTime);
 							OpenTIM3();							
 							PageChange(Meal3ns_interface);//显示相应界面	
 							VariableChage(duck_cnt,0x01);
@@ -649,9 +652,9 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						{
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_4th_t= 1;//设置默认分数为 1
-							WaitTimeInit(&WaitTime);
-							
-							OpenTIM3();							
+							WaitTimeInit(&WaitTime);							
+							OpenTIM3();	
+						  VariableChage(count_dowm,WaitTime);
 							PageChange(Meal4th_interface);//显示相应界面	
 							VariableChage(fish_cnt,0x01);
 							MealCostDisp(UserAct.MealID,UserAct.MealCnt_4th_t);//根据用户所选餐品ID号显示合计钱数
@@ -769,6 +772,10 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 			{
 loop1:	switch(MealID)
 				{
+					case 0x00:
+					{
+						VariableChage(VariableAdress,0); //维持原来所选的数量
+					}break;
 					case 0x01:
 					{
 					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//当用户选择数量小于或等于存货时
@@ -832,6 +839,7 @@ loop1:	switch(MealID)
 			}break;
 			case payment_method: /*付款方式*/
 			{
+				AcountCopy();
 				PageChange(Acount_interface+2); //当按下付款后，跳转到另一个页面禁止分数加减
 				switch(VariableData[1])
 				{
@@ -876,8 +884,7 @@ loop1:	switch(MealID)
 							 /*判断是否打印小票*/ 			
             PrintTickFun(&UserAct.PrintTick);
             CloseTIM4();						
-						PageChange(Menu_interface);
-						ClearUserBuffer();  //清楚购物车
+						PageChange(Mealout_interface);
 					}break;  
 					default:break;
 				}
