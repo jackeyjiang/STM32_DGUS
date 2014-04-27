@@ -18,6 +18,7 @@
 uint8_t Current= 0x01;        //状态机变量
 uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
 uint8_t waitmeal_status=0;    //等待取餐状态
+int32_t erro_record=0x00000000; //错误标记位
 int main(void)
 {
  	uint16_t temp = 0;
@@ -74,7 +75,7 @@ int main(void)
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
 			{
-				//SaveUserData();
+				SaveUserData();
         if( WaitPayMoney()==Status_OK)
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/

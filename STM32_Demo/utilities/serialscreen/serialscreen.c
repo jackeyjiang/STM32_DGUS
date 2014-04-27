@@ -448,8 +448,8 @@ void ClearUserBuffer(void)
 	UserAct.Meal_totoal=0;
 	UserAct.PayShould=0;
 	UserAct.PayType=0;
-    UserAct.PayForCoins=0;
-    UserAct.PayForCoins=0;           //用户投入的硬币数	
+  UserAct.PayForCoins=0;
+  UserAct.PayForCoins=0;           //用户投入的硬币数	
 	UserAct.PayForBills=0;           //用户投入的纸币数
 	UserAct.PayForCards=0;           //用户应经刷卡的数
   UserAct.PayAlready=0;
@@ -965,10 +965,15 @@ loop1:	switch(MealID)
 	          GetPassWord(PassWord);
     	      if(VerifyPassword(PassWord, InputPassWord,6) == 1) //放餐密码正确
 		        {
+							PassWordLen = 0;		
+							DisplayPassWord(0);//清楚密码显示
+						  if(erro_flag!=0) 
+						  {
+							  break;
+						  }							
 							//如果有错误标记则break;
 		           /*进入餐品放置界面*/
-		           PageChange(MealSet_interface);
-							 DisplayPassWord(0);//清楚密码显示
+		           PageChange(MealSet_interface);					 
 							 InitSetting();//清空第一二三列的数据 //对放餐的数据进行初始化
 			         PassWordLen = 0;break;
 		        }
@@ -979,13 +984,19 @@ loop1:	switch(MealID)
 		           /*进入管理员界面*/
 							 if(erro_flag!=0) 
 							 {
+								 PageChange(Logo_interface);
+							   DisplayPassWord(0);//清楚密码显示
+			           PassWordLen = 0;							 
 								 erro_flag=0;
 								 break;
 							 }
-		           PageChange(Coinset_interface);
-							 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);
-							 DisplayPassWord(0);//清楚密码显示
-			         PassWordLen = 0;break;
+							 else
+							 {
+								 PageChange(Coinset_interface);
+								 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);
+								 DisplayPassWord(0);//清楚密码显示
+								 PassWordLen = 0;break;
+							 }
 		        }
 		        else
 		        {
@@ -997,6 +1008,10 @@ loop1:	switch(MealID)
 	        }break;						
 					case 0x12:/*返回*/
 					{
+						if(erro_flag!=0) 
+						{
+							 break;
+						}								
 		        PageChange(Menu_interface);
 						DisplayPassWord(0);//清楚密码显示
 		        PassWordLen = 0;	

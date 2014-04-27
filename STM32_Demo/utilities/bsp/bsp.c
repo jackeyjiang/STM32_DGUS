@@ -531,6 +531,26 @@ void AcountCopy(void)
 	UserAct.MealCnt_4th_t= UserAct.MealCnt_4th;
 
 }
+
+  /*******************************************************************************
+ * 函数名称:PowerupAbnormalHandle                                                                    
+ * 描    述:异常处理                                                                 
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2013年8月28日                                                                    
+ *******************************************************************************/ 
+void PowerupAbnormalHandle(int32_t erro_record)
+{
+	uint16_t i=0;
+	for(i=0;i<32;i++)
+	{
+		if(erro_record&(1<<i))
+		AbnormalHandle(i);	
+	}
+}
+
   /*******************************************************************************
  * 函数名称:AbnormalHandle                                                                    
  * 描    述:异常处理                                                                 
@@ -545,6 +565,7 @@ void AbnormalHandle(uint16_t erro)
 {
 	PageChange(Err_interface);
 	erro_flag = erro;
+	erro_record |= (1<<erro);
 	switch(erro)
 	{
 		case outage_erro:      //断电
@@ -629,15 +650,17 @@ void AbnormalHandle(uint16_t erro)
  *******************************************************************************/ 
 void SaveUserData(void)
 {
+	RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
 	RTC_WriteBackupRegister(RTC_BKP_DR4,  UserAct.MealCnt_1st);
 	RTC_WriteBackupRegister(RTC_BKP_DR5,  UserAct.MealCnt_2nd);
 	RTC_WriteBackupRegister(RTC_BKP_DR6,  UserAct.MealCnt_3rd);
 	RTC_WriteBackupRegister(RTC_BKP_DR7,  UserAct.MealCnt_4th);
 	RTC_WriteBackupRegister(RTC_BKP_DR8,  UserAct.Meal_totoal);
 	RTC_WriteBackupRegister(RTC_BKP_DR9,  UserAct.Meal_takeout);
-	RTC_WriteBackupRegister(RTC_BKP_DR11, UserAct.PayShould);	
-	RTC_WriteBackupRegister(RTC_BKP_DR10, UserAct.PayAlready);
+	RTC_WriteBackupRegister(RTC_BKP_DR10, UserAct.PayShould);	
+	RTC_WriteBackupRegister(RTC_BKP_DR11, UserAct.PayAlready);
 	RTC_WriteBackupRegister(RTC_BKP_DR12, UserAct.MoneyBack);
+	
 }
 
   /*******************************************************************************
@@ -657,9 +680,10 @@ void ReadUserData(void)
 	UserAct.MealCnt_4th= RTC_ReadBackupRegister(RTC_BKP_DR7);
 	UserAct.Meal_totoal= RTC_ReadBackupRegister(RTC_BKP_DR8);
 	UserAct.Meal_takeout=RTC_ReadBackupRegister(RTC_BKP_DR9);
-	UserAct.PayShould  = RTC_ReadBackupRegister(RTC_BKP_DR11);	
-	UserAct.PayAlready = RTC_ReadBackupRegister(RTC_BKP_DR10);
+	UserAct.PayShould  = RTC_ReadBackupRegister(RTC_BKP_DR10);	
+	UserAct.PayAlready = RTC_ReadBackupRegister(RTC_BKP_DR11);
 	UserAct.MoneyBack  = RTC_ReadBackupRegister(RTC_BKP_DR12);
+	erro_record        = RTC_ReadBackupRegister(RTC_BKP_DR13);
 }
 
 
@@ -711,7 +735,7 @@ void hardfawreInit(void)
 	 UserAct.PayAlready      = 0;
    SystemInit();
 //	 delay_ms(30000); //上电等待路由器启动
-//	 PVD_Configuration();        //掉电检测初始化
+	 PVD_Configuration();        //掉电检测初始化
 	 Uart4_Configuration();     //纸币机串口初始化 
 	 Uart1_Configuration();	    //打印机串口初始化
 	 Uart3_Configuration();	    // 串口屏初始化
@@ -742,8 +766,16 @@ void hardfawreInit(void)
 	 }
 	 WriteMeal();  //写入餐品数据
 	 StatisticsTotal(); //后面的程序需要使用  	
-	 //ReadUserData();  //需要进行数据处理，判断
-	 ClearUserBuffer(); //清除之前读取的数据
+	 ReadUserData();  //需要进行数据处理，判断
+	 if(erro_record!=0) //当有错误记录，需要进行处理
+	 {
+		 PowerupAbnormalHandle(erro_record);
+	 }
+	 else
+	 {
+		 ClearUserBuffer(); //清除之前读取的数据
+	 }
+	 
 }														 
 
 

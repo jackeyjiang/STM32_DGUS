@@ -30,24 +30,24 @@
 #define cardread_erro    0x08 //读卡器异常
 #define network_erro     0x09 //网络异常
 #define signin_erro      0x0a //签到异常
-#define cardchck_erro   0x0b //深圳通银行卡签到异常
+#define cardchck_erro    0x0b //深圳通银行卡签到异常
 
 
 
-#define X_timeout        0x20 //x轴传感器超时
-#define X_leftlimit      0x21 //马达左动作极限输出
-#define X_rightlimit     0x22 //马达右动作极限输出
-#define mealtake_timeout 0x23 //取餐口传感器超时
-#define Y_timeout        0x24 //y轴传感器超时
-#define link_timeout     0x25 //链接超时
-#define Z_timeout        0x26 //z轴传感器超时
-#define Z_uplimit        0x27 //z轴马达上动作超出
-#define Z_downlimit      0x28 //z马达下动作超出
-#define solenoid_timeout 0x29 //电磁阀超时
-#define Eeprom_erro      0x2a //eeprom 异常
-#define SendUR6Erro      0x2b  //发送数据异常或超时
-#define GetMealError     0x2c  //机械手5秒取不到餐
-#define MealNoAway       0x2d   //餐在出餐口20秒还未被取走
+#define X_timeout        0x10 //x轴传感器超时
+#define X_leftlimit      0x11 //马达左动作极限输出
+#define X_rightlimit     0x12 //马达右动作极限输出
+#define mealtake_timeout 0x13 //取餐口传感器超时
+#define Y_timeout        0x14 //y轴传感器超时
+#define link_timeout     0x15 //链接超时
+#define Z_timeout        0x16 //z轴传感器超时
+#define Z_uplimit        0x17 //z轴马达上动作超出
+#define Z_downlimit      0x18 //z马达下动作超出
+#define solenoid_timeout 0x19 //电磁阀超时
+#define Eeprom_erro      0x1a //eeprom 异常
+#define SendUR6Erro      0x1b  //发送数据异常或超时
+#define GetMealError     0x1c  //机械手5秒取不到餐
+#define MealNoAway       0x1d   //餐在出餐口20秒还未被取走
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_conf.h"
@@ -127,6 +127,7 @@ extern uint8_t   TemperatureCur;
 extern uint8_t   Current ;    //主状态
 extern uint8_t   CurrentPointer; //餐品出餐状态
 extern uint16_t  erro_flag;  //错误状态
+extern int32_t   erro_record;  //错误标记位
 
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);	
@@ -139,6 +140,7 @@ void  WaitTimeInit(uint8_t *Time);
 void StateSend(void);
 void DataUpload(void);
 void PrintTickFun(unsigned char *PrintTickFlag);
+void PowerupAbnormalHandle(int32_t erro_record);
 void AbnormalHandle(uint16_t erro);
 void SaveUserData(void);
 void ReadUserData(void);
