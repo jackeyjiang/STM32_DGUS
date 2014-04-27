@@ -78,13 +78,14 @@ void PrintTickFun(unsigned char *PrintTickFlag)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
+
 uint8_t CurrentPoint = 1 ; 
 uint8_t UserPayMoney =0 ;
 unsigned char NewCoinsCnt=0;
 unsigned char OldCoinsCnt=0;
 unsigned char  WaitPayMoney(void)
 {
-	uint8_t temp = 0;
+//	uint8_t temp = 0;
 	uint8_t temp1;
 	VariableChage(wait_payfor,WaitTime);
   switch(CurrentPoint)
@@ -116,21 +117,8 @@ unsigned char  WaitPayMoney(void)
 				VariableChage(payment_bill,UserAct.PayForBills);
 			  UserPayMoney = 0 ;
 		  }
-			CurrentPoint = 4 ;
+			CurrentPoint = 5 ;
 		}break;    					
-	  case 4 :   //读刷卡机的钱
-	  {
-	    if( temp != 0)  //刷卡
-	    { 
-			  IsCard =1 ;	  //表示的是刷卡啦。
-			  UserAct.PayAlready  += temp;
-			  UserAct.PayForCards += temp ;
-			  temp = 0 ;      
-        CurrentPoint = 5 ;
- 	    }
-		  else
-		    CurrentPoint = 5;
-		}break;
 	  case 5 ://显示接收了多少硬币	
 	  {
 		  VariableChage(payment_coin,UserAct.PayForCoins);	
@@ -141,12 +129,7 @@ unsigned char  WaitPayMoney(void)
     {
 	    if(UserAct.PayAlready +UserAct.PayForCards>=UserAct.PayShould)		//投的钱大于等于要付的钱
 		  {     
-		    CurrentPoint = 9;	            
-			  if(UserAct.PayAlready <UserAct.PayShould)
-			  {
-			    CurrentPoint = 3;
-			    return Status_Error ;
-			  }  
+		    CurrentPoint = 9;	             
 	   	}
 	    else
 	    { 
@@ -157,7 +140,7 @@ unsigned char  WaitPayMoney(void)
 		{
 			UserAct.PayType = '2' ;/* 银行卡支付*/
 			temp1 = 0;
-			//temp1 = GpbocDeduct(UserAct.PayShould *100);
+			//temp1 = GpbocDeduct(UserAct.PayShould-UserAct.PayAlready) *100;
 			temp1 = GpbocDeduct(1);
 			if(temp1 == 1)
 			{
@@ -182,6 +165,7 @@ unsigned char  WaitPayMoney(void)
 	  case 9 :  //付款成功关闭所有的收银系统
 		{
 			UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
+			UserAct.Meal_totoal= UserAct.MealCnt_4th+UserAct.MealCnt_3rd+UserAct.MealCnt_2nd+UserAct.MealCnt_1st;
       OldCoinsCnt= UserAct.MoneyBack ; //在这里程序只执行一次
 			VariableChage(mealout_totle,UserAct.Meal_totoal);	
       NewCoinsCnt= 0; 
@@ -227,21 +211,34 @@ uint8_t WaitMeal(void)
 		{
 			//赋值当前UserAct.MealID
 	    if(UserAct.MealCnt_1st>0)
-         UserAct.MealID = 0x01;	
+			{
+				UserAct.MealID = 0x01; 
+				goto loop3;
+			}				
       else if(UserAct.MealCnt_2nd>0)
-				 UserAct.MealID = 0x02;	
+			{
+				 UserAct.MealID = 0x02;
+					goto loop3;
+			}				
       else if(UserAct.MealCnt_3rd>0)
+			{
 				 UserAct.MealID = 0x03;	
+					goto loop3;
+			}
       else if(UserAct.MealCnt_4th>0)
+			{
 				 UserAct.MealID = 0x04;	
+					goto loop3;
+			}
 			else
 			{	
-         //如果餐品全部出完，退出到主界面				
+         //如果餐品全部出完，退出到主界面		
+         printf("takeafter_meal\r\n");				
 				 return takeafter_meal;
 			}
-			if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
-			   CurrentPointer= 1;break;	
-		}break;
+loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
+			   CurrentPointer= 1;
+		}//break;
 	  case 1 : /* 发送餐的数目减一*/
 		{			 
 	    FloorMealMessageWriteToFlash.FloorMeal[Line].MealCount --; 
@@ -254,170 +251,200 @@ uint8_t WaitMeal(void)
 		  }
 			DefineMeal[UserAct.MealID - 1].Position[Line][Column]--;
 		  DefineMeal[UserAct.MealID - 1].MealCount--;
+			WriteMeal();
+			StatisticsTotal();
+			DispLeftMeal(); 
 			CurrentPointer = 2 ;
-		}break ;
-    case 2 : /*发送行和列的位置，等待响应*/
-		{
-       //根据[Line][Column]的值发送坐标 等待ACK	 
-			temp =0;
-			temp = OrderSendCoord(Line,Column);
-			
-			if( temp ==1)//发送成功
-			{
+		}//break ;
+//    case 2:
+//    {
+//      LinkTime =0;
+//      CurrentPointer = 3 ;
+//    }break;
+//    case 3:
+//    {
+//      if( LinkTime >= 10)
+//      {
+//        LinkTime =0;
+//        CurrentPointer = 4 ;
+//      }
+//      
+//    }break;
+//    case 4:
+//    {
+//      CurrentPointer = 5 ;
+//    }break;
+    
+     case 2 : /*发送行和列的位置，等待响应*/
+ 		{
+        //根据[Line][Column]的值发送坐标 等待ACK	
+			printf("发送行和列的位置，等待响应\r\n");
+ 			temp =0;
+ 			temp = OrderSendCoord(Line,Column);
+ 			
+ 			if( temp ==1)//发送成功
+ 			{
         LinkTime =0;
-				CurrentPointer = 3 ;
-			}
-			else				//发送失败
-			{
-				printf("send coord error\n");
-        AbnormalHandle(SendUR6Erro);
-			}
-	  }break;  
-		case 3 :    /*发送取餐命令*/
-		{
-			//查询机械手是否准备好，如果准备好发送取餐命令
-			//如果超时则 返回错误，
-		  //如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
-			while(1)  //查询机械手是否准备好，
+				machinerec.rerelative =0;   //不是待机位置
+ 				CurrentPointer = 3 ;
+ 			}
+ 			else				//发送失败
+ 			{
+ 				printf("send coord error\r\n");
+         AbnormalHandle(SendUR6Erro);
+ 			}
+ 	  }//break;  
+ 		case 3 :    /*发送取餐命令*/
+ 		{
+			printf("发送取餐命令\r\n");
+ 			//查询机械手是否准备好，如果准备好发送取餐命令
+ 			//如果超时则 返回错误，
+ 		  //如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
+ 			while(1)  //查询机械手是否准备好，
       {
         if(LinkTime > 10)    //超时
         {
           LinkTime =0;
-          printf("move to coord timeout!\n");
+          printf("move to coord timeout!\r\n");
           AbnormalHandle(SendUR6Erro);
           break;
-        }
-
-        if(Usart6DataFlag ==1)        //若机械手有数据，处理机械手返回数据
-		    {
-			    manageusart6data();
-		    }
-
+        }       
+ 			  manageusart6data();  //若机械手有数据，处理机械手返回数据
         if(machinerec.regoal ==1)   //到达取餐点
         {
-          break;
+           break;
         }
-
       }
-
       if(machinerec.regoal ==1)   //到达取餐点
       {
-         machinerec.regoal =0 ;
-         temp =0;
-         temp = OrderGetMeal();   //发送取餐命令
-         if(temp ==1)       // 取餐命令发送成功
+        machinerec.regoal =0 ;
+        temp =0;
+        temp = OrderGetMeal();   //发送取餐命令
+        LinkTime =0;
+        CurrentPointer=4;  				
+//        if(temp ==1)       // 取餐命令发送成功
+//        {
+//          LinkTime =0;
+//          CurrentPointer=4;  
+//        }
+//        else          //发送失败     
+//        {
+//          printf(" send getmeal order error\r\n");
+//          AbnormalHandle(SendUR6Erro);
+//        }
+      }
+ 		}//break;
+ 	  case 4 :  	/*播放语音，请取餐*/
+ 		{
+			CurrentPointer=5;                                                                                                                         
+      printf("播放语音，请取餐");			
+       //如果餐品到达取餐口播放语音
+ 			//如果餐品取出则 跳出子程序进行数据上传  
+ 			while(1)
+       {
+         if(LinkTime >120)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
          {
-           LinkTime =0;
-           CurrentPointer=4;  
-         }
-         else          //发送失败     
-         {
-           printf(" send getmeal order error");
+           printf("from send getmeal order to sell door timeout!\r\n");
            AbnormalHandle(SendUR6Erro);
+           break;
          }
-      }
-		}break;
-	  case 4 :  	/*播放语音，请取餐*/
-		{ 	
-      //如果餐品到达取餐口播放语音
-			//如果餐品取出则 跳出子程序进行数据上传  
-			while(1)
-      {
-        if( LinkTime >60)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
-        {
-          printf("from send getmeal order to sell door timeout!\n");
-          AbnormalHandle(SendUR6Erro);
-          break;
-        }
-
-        if(Usart6DataFlag ==1)        //若机械手有数据，处理机械手返回数据
-		    {
-			    manageusart6data();
-		    }
-
-        if( machinerec.retodoor == 1)   //到达出餐口
-        {
-          break;
-        }
-
-        if( machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
-        {
-          printf("取餐5秒了还未取到餐\n");
-          AbnormalHandle(SendUR6Erro);
-          break;
-        }
-      }
-
-      if( machinerec.retodoor == 1) //到达出餐口
-      {
-        machinerec.retodoor = 0;
-        //播放请取餐语音
-      }
-
-      LinkTime =0;
-
-      while(1)//等待客户取走餐之后，才跳到Case 5
-      {
-        if( LinkTime >180) //餐在出餐口未被取走，最多等待3分，超过了报错
-        {
-          printf("餐未超过了三分钟还未被取走");
-          AbnormalHandle(SendUR6Erro);
-          break;
-        }
-
-        if(Usart6DataFlag ==1)        //若机械手有数据，处理机械手返回数据
-		    {
-			    manageusart6data();
-		    }
-
-        if( machinerec.remealaway == 1) //餐已被取走
-        {
-          break;
-        }
-
-        if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
-        {
-          machinerec.remealnoaway = 0;
-          //语音提示“请取走出餐口的餐 "
+ 			   manageusart6data();   //若机械手有数据，处理机械手返回数据
+         if(machinerec.retodoor == 1)   //到达出餐口
+         {
+           break;
+         }
+         if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
+         {
+           printf("取餐5秒了还未取到餐\r\n");
+           AbnormalHandle(SendUR6Erro);
+           break;
+         }
+       }
+       if( machinerec.retodoor == 1) //到达出餐口
+       {
+         machinerec.retodoor = 0;
+         //播放请取餐语音
+       }
+       LinkTime =0;
+       while(1)//等待客户取走餐之后，才跳到Case 5
+       {
+         if( LinkTime >180) //餐在出餐口未被取走，最多等待3分，超过了报错
+         {
+           printf("餐未超过了三分钟还未被取走\r\n");
+           AbnormalHandle(SendUR6Erro);
+           break;
+         }
+ 			 manageusart6data();   //若机械手有数据，处理机械手返回数据
+ 		   if( machinerec.remealaway == 1) //餐已被取走
+       {
+					 printf("餐已被取走\r\n");
+					 //machinerec.remealaway = 0;
+           break;
+       }
+       if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
+       {
+					printf("餐在取餐口过了20秒还未被取走\r\n");
+           //machinerec.remealnoaway = 0;
+					break;
+           //语音提示“请取走出餐口的餐 "
         } 
       }
-
       if( machinerec.remealaway == 1) //餐已被取走
       {
-        LinkTime =0;
-        machinerec.remealaway = 0;
-        CurrentPointer=5;
+         LinkTime =0;
+         machinerec.remealaway = 0;
+         CurrentPointer=5;
       }
-	  }break;			    
+			if( machinerec.remealnoaway == 1) //餐在取餐口过了20秒还未被取走，暂时用此判断
+      {
+         LinkTime =0;
+         machinerec.remealnoaway = 0;
+         CurrentPointer=5;
+      }
+ 	  }//break;			    
     case 5:     /*对用户数据进行减一*/
 		{
-      UserAct.Meal_takeout++;//取餐数据加一
-      VariableChage(mealout_already,UserAct.Meal_takeout++);	//UI显示减一	
+			printf("对用户数据进行减一");
+      UserAct.Meal_takeout++;//取餐数据加
+      VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示
 			CurrentPointer= 0;
 			if(UserAct.MealID == 0x01)
 			{
 			  UserAct.MealCnt_1st--;
 				if(UserAct.MealCnt_1st==0)
+				{
+					printf("tookkind_meal\r\n");
 					return tookkind_meal;
+				}
 			}
       else if(UserAct.MealID == 0x02)
 			{
 				UserAct.MealCnt_2nd--;
 				if(UserAct.MealCnt_2nd==0)
-					return tookkind_meal;				
+				{
+					printf("tookkind_meal\r\n");
+					return tookkind_meal;
+				}					
 			}
       else if(UserAct.MealID == 0x03)
 			{
 				UserAct.MealCnt_3rd--;
 				if(UserAct.MealCnt_3rd==0)
-					return tookkind_meal;				
+				{
+					printf("tookkind_meal\r\n");
+					return tookkind_meal;
+				}			
 			}				
       else if(UserAct.MealID == 0x04)
 			{
 				UserAct.MealCnt_4th--; 	
 				if(UserAct.MealCnt_4th==0)
-					return tookkind_meal;				
+				{
+					printf("tookkind_meal\r\n");
+					return tookkind_meal;
+				}		
 			}
+			printf("tookone_meal\r\n");
 			return tookone_meal;
 		}
 		default:break;
@@ -438,46 +465,32 @@ bool CloseCashSystem(void)
 	uint8_t cnt_t=20,money=0;
   CloseCoinMachine();			    //关闭投币机	
 	DisableBills();             //设置并关闭纸币机
-	do
-  {
-		cnt_t--;
-		delay_ms(10);
-    ReadBill();		
-	}  // 超时
-	while((cnt_t>0)&&(DisableBillFlag== NACK)); //当超时或者接收到ACK后
-	if(DisableBillFlag== ACK) 
+	delay_us(100);
+  if(ACK==ReadBill())
 	{
-		DisableBillFlag= NACK;
-			return true;
+		return true;
 	}
-	else 
+	else if(NACK==ReadBill())
 	{
-		DisableBillFlag= NACK;
-			return false;
-	}
+    return false;  			
+	}  
 }
+
 bool OpenCashSystem(void)
 {
 	int cnt_t=20;	
 	OpenCoinMachine();    //打开投币机	
 	SetBills();           //设置并打开纸币机
-	do
-  {
-		cnt_t--;
-		ReadBill();
-		delay_us(10);	
-	}
-	while((cnt_t>=0)&&(EnableBillFlag== NACK));//
-	if(EnableBillFlag== ACK) 
+	delay_us(100);
+  if(ACK==ReadBill())
 	{
-		EnableBillFlag= NACK;
-			return true;
+		return true;
 	}
-	else 
+	else if(NACK==ReadBill())
 	{
-		EnableBillFlag= NACK;
-			return false;
-	}
+    return false;  			
+	}  
+
 }
 
   /*******************************************************************************
@@ -532,13 +545,19 @@ void AbnormalHandle(uint16_t erro)
 	switch(erro)
 	{
 		case outage_erro:      //断电
-			{}break;
+			{
+				DisplayAbnormal("E070");
+			}break;
 		case sdcard_erro:     //SD卡存储异常
 			{}break;
 		case billset_erro:    //纸币机异常
-			{}break;
+			{
+				DisplayAbnormal("E010");
+			}break;
 		case coinset_erro:      //投币机
-			{}break;
+			{
+				
+			}break;
 		case coinhooperset_erro:    //退币机
 			{}break;
 		case coinhooperset_empty:   //找零用光
@@ -548,7 +567,9 @@ void AbnormalHandle(uint16_t erro)
 		case cardread_erro:     //读卡器异常
 			{}break;
 		case network_erro:     //网络异常
-			{}break;
+			{
+				DisplayAbnormal("E060");
+			}break;
 		case X_timeout:        //x轴传感器超时
 			{}break;
 		case X_leftlimit:      //马达左动作极限输出
@@ -711,7 +732,9 @@ void hardfawreInit(void)
 	 }
 	 WriteMeal();  //写入餐品数据
 	 StatisticsTotal(); //后面的程序需要使用  	
-	 ReadUserData();  //需要进行数据处理，判断
+	 //ReadUserData();  //需要进行数据处理，判断
 	 ClearUserBuffer(); //清除之前读取的数据
 }														 
+
+
 

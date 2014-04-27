@@ -280,6 +280,28 @@ void DisplayPassWord(char PassWordLen)
 	for(i=0;i<PassWordLen;i++) temp[i+6]='*';
 	Uart3_Sent(temp,sizeof(temp)); 
 }	
+ /*******************************************************************************
+ * 函数名称:DisplayAbnormal                                                               
+ * 描    述:显示错误码                                                   
+ *                                                                               
+ * 输    入:abnomal_code 字符串                                                                  
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 
+void DisplayAbnormal(char *abnomal_code)
+{
+	char i=0;
+	char temp[20]={0};  //存放串口数据的临时数组
+	memcpy(temp,VariableWrite,sizeof(VariableWrite));
+	temp[2]= 7; //  数据长度为4位
+	myunion.adress= erro_num; 
+  temp[4]= myunion.adr[1];
+  temp[5]= myunion.adr[0];
+	for(i=0;i<4;i++) temp[i+6]=abnomal_code[i];
+	Uart3_Sent(temp,sizeof(temp)); 	
+}
+
 
  /*******************************************************************************
  * 函数名称:PageChange                                                                     
@@ -426,6 +448,11 @@ void ClearUserBuffer(void)
 	UserAct.Meal_totoal=0;
 	UserAct.PayShould=0;
 	UserAct.PayType=0;
+    UserAct.PayForCoins=0;
+    UserAct.PayForCoins=0;           //用户投入的硬币数	
+	UserAct.PayForBills=0;           //用户投入的纸币数
+	UserAct.PayForCards=0;           //用户应经刷卡的数
+  UserAct.PayAlready=0;
 }
  /*******************************************************************************
  * 函数名称:PutIntoShopCart                                                                     
@@ -462,7 +489,7 @@ void PutIntoShopCart(void)
 		}break;
 		default:break;	
 	}
-	PageChange((UserAct.MealID-1)*3+6); //不知道这个是否出问题???
+	//PageChange((UserAct.MealID-1)*3+6); //不知道这个是否出问题???
 	UserAct.Meal_totoal= UserAct.MealCnt_4th+UserAct.MealCnt_3rd+UserAct.MealCnt_2nd+UserAct.MealCnt_1st;
 }	
 
@@ -603,11 +630,13 @@ uint8_t  InputPassWord[6]={0};
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 {
 	char MealID =0;
+	uint16_t coins_time=0;
 	uint8_t i= 0,j=0;
 	  switch (VariableAdress)
 		{
 			case meal_choose: /*主角面用户选择*/
 			{
+        CloseTIM4();
 				switch(VariableData[1])
 				{
 					case 0x01:
@@ -735,15 +764,17 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				{
 					case 0x01:  /*放入购物车*/
 					{
-						PutIntoShopCart();		
+								
 					}break;
 					case 0x02:  /*继续选餐*/
 					{
+            PutIntoShopCart();
 						PageChange(Menu_interface);
 						WaitTimeInit(&WaitTime);
 					}break;
  					case 0x03:  /*进入购物车*/
 					{
+            PutIntoShopCart();
 						if(UserAct.Meal_totoal>0)
 						{
 							SettleAccounts();
@@ -759,6 +790,8 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						ClearUserBuffer();
 						PageChange(Menu_interface);
 						CloseTIM3();
+						Current= current_temperature;//取消进入空闲程序
+						
 					}break;
 					default:break;
 				}
@@ -864,8 +897,9 @@ loop1:	switch(MealID)
 						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 						CloseTIM3();
 						CloseTIM7();
-						ClearUserBuffer();
+						
 						UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+            ClearUserBuffer();
 						UserAct.Cancle= 0x01;
 						PageChange(Menu_interface);
 						Current= hpper_out;
@@ -1123,12 +1157,13 @@ loop1:	switch(MealID)
       {
 				if(VariableData[1]==0x01)
 				{
-					RefundButton();
-				  if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)
-				  {
-				    delay_ms(500);//延时500ms显示后显示最终值
-            VariableChage(coins_back,Coins_cnt);
-				  }		    
+					Coins_cnt=0;
+					coins_time= (CoinsTotoalMessageWriteToFlash.CoinTotoal/10);
+					VariableChage(coins_back,Coins_cnt);
+					VariableChage(coins_back,CoinsTotoalMessageWriteToFlash.CoinTotoal-SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal));	
+          delay_ms(1000*coins_time);					
+				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
+					VariableChage(coins_back,Coins_cnt);
 				}
 				else if(VariableData[1] == 0x02)
 				{

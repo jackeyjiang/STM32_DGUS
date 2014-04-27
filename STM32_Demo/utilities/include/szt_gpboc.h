@@ -347,7 +347,7 @@ uint8_t Szt_CheckIn(void);
 uint8_t SztDeduct(int32_t money);
 uint8_t SztAutoSend(void);
 
-void Szt_GpbocAutoCheckIn(void);
+bool Szt_GpbocAutoCheckIn(void);
 
 uint8_t  BCDtoDec(uint8_t bcd);
 uint8_t DectoBCD(uint8_t Dec); 

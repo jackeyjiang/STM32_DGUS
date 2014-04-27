@@ -434,7 +434,7 @@ void Order_Ifn_QueryStatus(void)
   SztSamNum[2] = 0;
   SztSamNum[3] = 0;
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -486,7 +486,7 @@ void Order_SztUserLogin(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -543,7 +543,7 @@ void Order_SztTimeCheck(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -614,7 +614,7 @@ void Order_SztDeductOnce(int32_t money)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -689,7 +689,7 @@ void Order_SztDeductAgain(int32_t money)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -763,7 +763,7 @@ void Order_SztReadCardOnce(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -816,7 +816,7 @@ void Order_SztReadCardAgain(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -870,7 +870,7 @@ void Order_SztUnlink(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -919,7 +919,7 @@ void Order_SztAutoCheckIn(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -971,7 +971,7 @@ void Order_SztAutoDownload(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -1022,7 +1022,7 @@ void Order_SztAutoSendData(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -1076,7 +1076,7 @@ void Order_SztRechargeOnce(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -1130,7 +1130,7 @@ void Order_SztRechargeAgain(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -1189,7 +1189,7 @@ void Order_Gpboc_Init(void)
 
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -1246,7 +1246,7 @@ void Order_Gpboc_ReadCard (void)
 
  
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -1296,7 +1296,7 @@ void Order_Gpboc_Deduct(uint32_t submoney)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -1356,7 +1356,7 @@ void Order_Gpboc_SendData(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -1410,7 +1410,7 @@ void Order_Gpboc_Check_Out(void)
   uint8_t temp=0;
 
   PrintIndex2 = 0;
-  PrintBuf2[0] = 0xff;
+  memset(PrintBuf2,0xff,640);
   Usart2Flag = NormalFlag;
   DataOver = RxNo;
   AckOver = RxNo;
@@ -2906,8 +2906,8 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
   uint8_t result1 =0;
   uint8_t result2 =0;
   int32_t FristMoney=0;
-  int32_t EndMoney=0;
-  int32_t FactMoney;
+//   int32_t EndMoney=0;
+//   int32_t FactMoney;
   //TRANSLOG_TO_HOST saveDeductIfn;
 
 
@@ -2921,103 +2921,45 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
   	  result1 = ManageGpbocReadCard();
   	}
 
-  if( result1 == 0x01)
+  if( result1 == 0x01)          //Ñé¿¨³É¹¦
   	{
   	  FristMoney = UpReadCardData.GpbocMoney;
-	  EndMoney = FristMoney;
-  	}
-
-
-  if( FristMoney < money_deduct )
-  	{
-  	  //printf("\n¿¨ÄÚÓà¶îÎª%ld",FristMoney);
-  	  //printf("\n¿¨ÄÚÓà¶î²»×ã£¬ÇëÏÈ³äÖµ");
-	  return 0;
-  	
-  	}
-  else
-  	{
-  	  if(result1 == 0x01)  //Ñé¿¨³É¹¦ºó¿Û¿î
-	  	{
-	  	  orderFlag1 =0;
+// 	    EndMoney = FristMoney;
+      
+      if( FristMoney < money_deduct )
+      {
+        //printf("\n¿¨ÄÚÓà¶îÎª%ld",FristMoney);
+        printf("¿¨ÄÚÓà¶î²»×ã£¬ÇëÏÈ³äÖµ\r\n");
+        return 0;
+      }
+      else
+      {
+        orderFlag1 =0;
 	  	  Order_Gpboc_Deduct(money_deduct);
-		  orderFlag1 = ManageReOrderType();
+        orderFlag1 = ManageReOrderType();
 
-		  if(orderFlag1 == R_GpbocDeduct)
-		  	{
-		  	  result2 = ManageGpbocDeduct();
-		  	}
-		  /*
-		  if( result2 == 1)
-		  	{
-		  	  //±£´æ½»Ò×¼ÇÂ¼
-		  	  /veDeductIfn = UpDeductData;°Ñ½»Ò×¼ÇÂ¼±£´æ
-			   
-		  	   freq_toSendGpboc ++;  //½»Ò××Ü´ÎÊý+1
-		  	}
-			*/
-	  	}
-			
-			if( result2 == 1)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
-
-			//printf("result2= %x",result2);
-			//delay_us(15);
-//			if( result2 == 1)
-//			{
-//				//ÔÙ´ÎÑé¿¨
-//					if( UpDeductData.lTransAmount ==0)
-//					{
-//						orderFlag1 =0;
-//						Order_Gpboc_ReadCard();
-//						orderFlag1 = ManageReOrderType();
-//						if( orderFlag1 == R_GpbocReadCard)
-//							{
-//								result1 = ManageGpbocReadCard();
-//							}
-//				
-//						if( result1 == 0x01)
-//							{
-//								EndMoney = UpReadCardData.GpbocMoney;		  
-//							}
-//					}
-//					
-
-//	// 				if( UpDeductData.lTransAmount == money_deduct)
-//	// 				{
-//	// 					//printf("\nÏû·Ñ:%ld\n",money_deduct);
-//	// 					freq_toSendGpboc ++;  //½»Ò××Ü´ÎÊý+1
-//	// 						return 1;
-//	// 				}
-//	// 				
-//					//¿Û¿îÇ°ºó¿¨ÄÚ½ð¶îÖ²îÎªÕæÊµ¿Û¿îÖµ
-//					FactMoney = FristMoney - EndMoney;
-//					//printf("\nÇ°Îª %ld ºóÎª%ld",FristMoney,EndMoney);
-
-//					if(FactMoney == money_deduct )
-//						{
-//							//printf("\nÏû·Ñ:%ld\n",money_deduct);
-//						freq_toSendGpboc ++;  //½»Ò××Ü´ÎÊý+1
-//							return 1;
-//						}
-//					else
-//						{
-//							//printf("\n½»Ò×Ê§°Ü\n");
-//							return 0;
-//						}
-//			}
-//			else
-//			{
-//				 return 0;
-//			}
-	}
-	  
+        if(orderFlag1 == R_GpbocDeduct)
+          {
+            result2 = ManageGpbocDeduct();
+          }
+          
+        if( result2 == 1)   //¸¶¿î³É¹¦
+        {
+          printf("¸¶¿î³É¹¦\r\n");
+          return 1;
+        }
+        else
+        {
+          printf("¸¶¿îÊ§°Ü\r\n");
+          return 0;
+        }
+      }
+  	}
+    else
+    {
+      printf("¶Á¿¨Ê§°Ü\r\n");
+      return 0;
+    }
 
 }
 
@@ -3051,7 +2993,6 @@ uint8_t UpperGpboc(void)
   else
   	{
   	  //printf("\nÉÏËÍÒøÁªÊý¾ÝÊ§°Ü\n");
-  	  
   	  endresult =0;
   	}
 
@@ -3418,11 +3359,11 @@ uint8_t SztAutoSend(void)
 
 
 /*ÉîÛÚÍ¨Ç©µ½*/
-void Szt_GpbocAutoCheckIn(void)
+bool Szt_GpbocAutoCheckIn(void)
 {
   uint8_t Szt_DiverInitFlag =0;
   uint8_t Gpboc_DiverInitFlag =0;
-
+  uint16_t check_cont=0;
   while(1)	 
   {
     if( Gpboc_DiverInitFlag ==0)
@@ -3432,8 +3373,15 @@ void Szt_GpbocAutoCheckIn(void)
  	  }
 	  if( Gpboc_DiverInitFlag == 1)
 	  {
+			check_cont=0;
 	    break;
 	  }
+		else 
+		{
+			check_cont++;
+			if(check_cont>1000)
+				return false;
+		}
   }  
   while(1)	 
   {
@@ -3446,7 +3394,14 @@ void Szt_GpbocAutoCheckIn(void)
 	  {
 		  break;
 	  }
+		else 
+		{
+			check_cont++;
+			if(check_cont>1000)
+				return false;
+		}
   }
+	return true;
 }
 
 /*Ò»¸ö2Î»µÄBCDÂë×ª»»³ÉÒ»¸öÊ®½øÖÆÂë*/

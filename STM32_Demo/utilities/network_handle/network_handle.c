@@ -62,7 +62,7 @@ unsigned char  WordKeyCipher[11];
 
  Meal_struction Meal[4]={
 							 /*餐品ID*/ 			 /*餐品名字*/			/*餐品数量*/	  /*餐品价格*/			   /*餐品类型*/
-								   0x10,0x00,0x00,0x20,  {"红萝卜炒蛋      "}, 0x00,0xc8,	   0x00,0x00,0x15,0x00, 	{"C001"},
+								   0x10,0x00,0x00,0x20,  {"红萝卜炒蛋      "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
 								   0x10,0x00,0x00,0x23,  {"香菇滑鸡        "}, 0x00,0x00,	   0x00,0x00,0x20,0x00, 	{"C001"},
 								   0x10,0x00,0x00,0x26,  {"脆皮烧鸭        "}, 0x00,0x00,	   0x00,0x00,0x25,0x00, 	{"C001"},
 								   0x10,0x00,0x00,0x24,  {"红烧鱼块        "}, 0x00,0x00,	   0x00,0x00,0x20,0x00, 	{"C001"},
@@ -1299,12 +1299,12 @@ bool SignInFunction(void)
 *******************************************************************************/
 bool EchoFuntion(void (*fptr)(void))
  {
-   unsigned char i = 100 ;
+   unsigned char i = 200 ;
    do
 	 {
 	   if(EchoFun()==0x00)
 	   break;
-	   delay_ms(100);
+	   delay_ms(200);
 	 }while(--i);
 	 if(i == 0x00)
 	 return false;
@@ -1554,6 +1554,8 @@ void WriteToSD_data(void)
  * 返    回:void
  * 修改日期:2014年4月4日        ok
  *******************************************************************************/
+extern uint8_t Current;
+char mealvariety=0;
 void DataUpload(void)
 {
 	char mealvariety=0;
@@ -1618,6 +1620,7 @@ void DataUpload(void)
 		}
 		case 3:
 		{
+			mealvariety= 0;
 			if(UserAct.MealCnt_4th_t>0)
 			{
 				UserAct.MealID = 0x04;
@@ -1633,10 +1636,10 @@ void DataUpload(void)
 					 Sd_Write('Y');//改变当前最后两位为N0
 				break;
 			}
-		}
-		default:break;
+    }
+	  default:break;
 		//DataRecord();
- }
+  }
 }
 
  /*******************************************************************************

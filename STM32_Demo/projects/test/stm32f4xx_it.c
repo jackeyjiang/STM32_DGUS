@@ -231,7 +231,7 @@ void EXTI15_10_IRQHandler(void)
 				CoinsCount = 0;
 				UserAct.PayForCoins++;
 				UserAct.PayAlready++;
-				CoinsTotoalMessageWriteToFlash.CoinTotoal--;
+				CoinsTotoalMessageWriteToFlash.CoinTotoal++;
 			}
 		}
     EXTI_ClearITPendingBit(EXTI_Line12);
@@ -241,7 +241,7 @@ void EXTI15_10_IRQHandler(void)
 	{
 		NewCoinsCnt++; //新的硬币机接收个数
 		Coins_cnt++; 
-		CoinsTotoalMessageWriteToFlash.CoinTotoal++;
+		CoinsTotoalMessageWriteToFlash.CoinTotoal--;
 	  EXTI_ClearITPendingBit(EXTI_Line10);	
 	}
 	WriteCoins();

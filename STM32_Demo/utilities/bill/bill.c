@@ -1,8 +1,6 @@
 #include "stm32f4xx.h"										 
 #include "bsp.h"
 
-
-FLAG_ENUM EnableBillFlag, DisableBillFlag;
  /*******************************************************************************
  * 函数名称:SetBills                                                                     
  * 描    述:设置接受10  20 5  的钱                                                                  
@@ -21,7 +19,6 @@ void SetBills(void)
 	    while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET);//等待发送完成
 	    USART_SendData(UART4, bufCmd[i]);//串口1发送一个字符	
 	}
-	EnableBillFlag= NACK;
 }
  /*******************************************************************************
  * 函数名称:DisableBills                                                                     
@@ -41,7 +38,6 @@ void DisableBills(void)
 	    while (USART_GetFlagStatus(UART4, USART_FLAG_TC) == RESET);//等待发送完成
 	    USART_SendData(UART4, bufCmd[i]);//串口1发送一个字符	
 	}
-  DisableBillFlag= NACK;
 }
 
 /*******************************************************************************/
@@ -114,14 +110,11 @@ uint8_t  ReadBill(void)
 	}
 	else if(BillDataBuffer[0]==0xFF)
 	{ 
-		EnableBillFlag=NACK;
-		DisableBillFlag=NACK;
-    delay_ms(100);	
+		return NACK;
   }
   else if(BillDataBuffer[0]==0x00)
 	{
-		EnableBillFlag=ACK;
-		DisableBillFlag=ACK;	
+		return ACK;
 	}
 	 memset(BillDataBuffer,0,sizeof(BillDataBuffer));
    return 0 ;	
@@ -181,8 +174,8 @@ void  BackPolls(void)
 unsigned char  Rev_Money_Flag ; 
 uint8_t  ReadBills(void)
 {
-  uint8_t CurrentPoint = 0;
- 	CurrentPoint=ReadBill();
+  uint8_t temp = 0;
+ 	temp=ReadBill();
 /*如果能锁存最好，因为是公共数据，但是如果只在中断进行改变，不影响数
   据的完整性，中断会打断程序的运行，不会同时操作 */	                          
 	switch(CurrentPoint)
@@ -196,7 +189,7 @@ uint8_t  ReadBills(void)
 	   case 20 :      //20元		
 	              //Polls(); //进钱箱
 		  Rev_Money_Flag = 1 ;
-	    return(CurrentPoint);
+	    return(temp);
   	  default : break;
 	}
    return 0 ;

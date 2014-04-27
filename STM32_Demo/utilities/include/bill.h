@@ -2,12 +2,11 @@
 #define __bill__
 #include "stdint.h"
 #include "stm32f4xx.h"
-typedef enum {NACK = 0, ACK = !RESET}FLAG_ENUM; 
-extern FLAG_ENUM EnableBillFlag, DisableBillFlag;
+#define ACK    '1'
+#define NACK   '0'
 extern unsigned char NewCoinsCnt;
 extern unsigned char OldCoinsCnt;
 void SetBills(void);
-uint8_t  ReadBills(void);
 void DisableBills(void);
 void Uart4_Bill(uint8_t *p,uint8_t sizeData);
 unsigned char  ReadMoneyFun(uint8_t BillActionStep);
@@ -16,6 +15,7 @@ unsigned char   SetReceUsersMoney(void);
 unsigned char   SetReceChangeMoney(void);
 unsigned char   NoAcceptMoneyFun(void);
 bool StringToHexGroup(unsigned char *OutHexBuffer, char *InStrBuffer, unsigned int strLength);
+uint8_t  ReadBill(void);
 
 #endif
 

@@ -21,7 +21,7 @@
 #define MealSet_interface     0x18 /*放餐设置界面*/
 #define MealInput_interface   0x1A /*放餐数量选择*/
 #define TemperatureSet_interface 0x1C  /*温度设置界面*/
-#define Data_synchronization  0x20  /*数据同步*/
+#define Data_synchronization  0x1F  /*数据同步*/
 #define Coinset_interface     0x22  /*硬币设置*/
 
 /*寄存器空间定义*/
@@ -54,6 +54,9 @@
 
 /*密码长度文本显示*/
 #define password_show 0x0005 
+
+/*错误显剩*/
+#define erro_num    0x0053 
 
 /*密码输入变量地址*/
 #define password 0x0004 
@@ -136,7 +139,6 @@
 #define coins_in    0x0051 //退币机内的硬币总量
 #define coins_key   0x0052 //退币的按键
 
-#define erro_num    0x0053 //错误显示
 
 void ClearUserBuffer(void);
 void PageChange(char page);
@@ -144,5 +146,6 @@ void ScreenControl(char cmd);
 void DispLeftMeal(void);
 void DealSeriAceptData(void);
 void VariableChage(uint16_t Variable,uint16_t Value);	
+void DisplayAbnormal(char *abnomal_code);
 
 #endif

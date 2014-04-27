@@ -10,8 +10,8 @@
 #define COIN_GPIO_INT_PORT                   GPIOB
 #define COIN_GPIO_INT_CLK                    RCC_AHB1Periph_GPIOB
 
-uint16_t Coins_cnt =0; //一键退币计数
-uint16_t Coins_totoal=0; //硬币总数统计
+uint32_t Coins_cnt =0; //一键退币计数
+uint32_t Coins_totoal=0; //硬币总数统计
 
 /*
 PE11为出币控制信号
@@ -44,6 +44,7 @@ void InitMiniGPIO(void)
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
+		EXTI_ClearITPendingBit(EXTI_Line10);
 
    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
@@ -104,7 +105,8 @@ uint8_t SendOutN_Coin(int num)
 		  GPIO_SetBits(GPIOE,GPIO_Pin_11);
 		  delay_ms(15);
 		  GPIO_ResetBits(GPIOE,GPIO_Pin_11);
-		  delay_ms(70);
+		  delay_ms(50);
+			
 	  }
 	  else
 	  {

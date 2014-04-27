@@ -23,23 +23,24 @@ int main(void)
  	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
-	if(!CloseCashSystem()) 
+//	if(!CloseCashSystem())  
 	printf("cash system is erro\r\n");  //关闭现金接受
-	OnlymachieInit();  //机械手初始化
-	
+  OnlymachieInit();  //机械手初始化
+	printf("OnlymachieInit ok\r\n");  //
+	//delay_ms(30000);
   //SendtoServce();  //上传前七天的数据
   //ReadDatatoBuffer(); //上一个程序有这个函数
    /*从网络  获得时间，更新本地时钟*/
-  EchoFuntion(RTC_TimeRegulate);
-	printf("EchoFuntion is ok\r\n");  //关闭现金接受
+  if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
+	printf("EchoFuntion ok\r\n");  //	
 	/*网络签到*/
-	SignInFunction();
-	printf("SignInFunction is ok\r\n");  //关闭现金接受
- 	/*餐品对比数据*/
-	//MealDataCompareFun();
-	printf("MealDataCompareFun is ok\r\n");  //关闭现金接受
-	Szt_GpbocAutoCheckIn();
-	printf("Szt_GpbocAutoCheckIn is ok\r\n");  //关闭现金接受
+	if(!SignInFunction())       AbnormalHandle(signin_erro);
+	printf("SignInFunction ok\r\n");  //
+	/*深圳通签到*/
+	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
+	printf("Szt_GpbocAutoCheckIn ok\r\n");
+	
+	if(!CloseCashSystem())  AbnormalHandle(billset_erro);
 	PageChange(Menu_interface); //显示选餐界面
 	DispLeftMeal();             //显示餐品数据
 	while(1)
@@ -73,14 +74,16 @@ int main(void)
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
 			{
-				SaveUserData();
+				//SaveUserData();
         if( WaitPayMoney()==Status_OK)
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
 					WaitTime=5;//5S计时
-	        OpenTIM4();    
+					CloseTIM3();
+					CloseTIM7();
+	       	OpenTIM4();    
 					delay_ms(200);
-					if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
+					if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
 					//改变用户所选餐的总数
 					Current= data_record;
 			  }
@@ -89,8 +92,8 @@ int main(void)
 			{
 				//将售餐的数据全部写入SD卡
          //DataRecord();
-				 //Current= hpper_out;
-				 Current= meal_out;
+				 Current= hpper_out;
+				 //Current= meal_out;
 			}break;
       case hpper_out:	 /*退币状态*/
 			{
@@ -129,12 +132,23 @@ int main(void)
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{
 				SaveUserData();
-				waitmeal_status= WaitMeal();
+				waitmeal_status= WaitMeal();       
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{
 					PageChange(Menu_interface);
-           Current = current_temperature; 
+				  UserAct.Meal_takeout=0;
+          VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示
 					//出餐完毕，跳到回温度处理
+          UserAct.MoneyBack   = 0;
+          UserAct.PayAlready  = 0;
+          UserAct.PayForBills = 0;
+          UserAct.PayForCoins = 0;
+          UserAct.PayForCards = 0;
+          UserAct.Meal_takeout= 0;
+          UserAct.Meal_totoal = 0;
+					//清楚购物车
+					ClearUserBuffer();
+					Current = current_temperature;
 				}
 				else if(waitmeal_status == tookkind_meal) //取完一种餐品
 				{
@@ -148,16 +162,9 @@ int main(void)
 			}break;
 	    case data_upload:	 /*数据上传*/
 	    {
+        Current = meal_out;				
         DataUpload();//根据UserAct.ID 判断需要上传的数据
-
-				UserAct.MoneyBack   = 0;
-				UserAct.PayAlready  = 0;
-		    UserAct.PayForBills = 0;
-		    UserAct.PayForCoins = 0;
-        UserAct.PayForCards = 0;
-				UserAct.Meal_takeout= 0;
-				UserAct.Meal_totoal = 0;
-			  Current = current_temperature ;
+			  
 	    }break ;
       case status_upload: /*状态上传*/
       {

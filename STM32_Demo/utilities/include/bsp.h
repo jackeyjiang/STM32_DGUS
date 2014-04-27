@@ -29,21 +29,25 @@
 #define printer_erro     0x07 //打印机异常
 #define cardread_erro    0x08 //读卡器异常
 #define network_erro     0x09 //网络异常
+#define signin_erro      0x0a //签到异常
+#define cardchck_erro   0x0b //深圳通银行卡签到异常
 
-#define X_timeout        0x0a //x轴传感器超时
-#define X_leftlimit      0x0b //马达左动作极限输出
-#define X_rightlimit     0x0c //马达右动作极限输出
-#define mealtake_timeout 0x0d //取餐口传感器超时
-#define Y_timeout        0x0e //y轴传感器超时
-#define link_timeout     0x0f //链接超时
-#define Z_timeout        0x10 //z轴传感器超时
-#define Z_uplimit        0x11 //z轴马达上动作超出
-#define Z_downlimit      0x12 //z马达下动作超出
-#define solenoid_timeout 0x13 //电磁阀超时
-#define Eeprom_erro      0x14 //eeprom 异常
-#define SendUR6Erro      0x15  //发送数据异常或超时
-#define GetMealError     0x16  //机械手5秒取不到餐
-#define MealNoAway       0x17   //餐在出餐口20秒还未被取走
+
+
+#define X_timeout        0x20 //x轴传感器超时
+#define X_leftlimit      0x21 //马达左动作极限输出
+#define X_rightlimit     0x22 //马达右动作极限输出
+#define mealtake_timeout 0x23 //取餐口传感器超时
+#define Y_timeout        0x24 //y轴传感器超时
+#define link_timeout     0x25 //链接超时
+#define Z_timeout        0x26 //z轴传感器超时
+#define Z_uplimit        0x27 //z轴马达上动作超出
+#define Z_downlimit      0x28 //z马达下动作超出
+#define solenoid_timeout 0x29 //电磁阀超时
+#define Eeprom_erro      0x2a //eeprom 异常
+#define SendUR6Erro      0x2b  //发送数据异常或超时
+#define GetMealError     0x2c  //机械手5秒取不到餐
+#define MealNoAway       0x2d   //餐在出餐口20秒还未被取走
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_conf.h"
@@ -137,6 +141,7 @@ void PrintTickFun(unsigned char *PrintTickFlag);
 void AbnormalHandle(uint16_t erro);
 void SaveUserData(void);
 void ReadUserData(void);
+void AcountCopy(void);
 // void LcdHandler(void);
 // void  TempHandler(void);
 // void ClearingFuntion(void) ;//退签上送

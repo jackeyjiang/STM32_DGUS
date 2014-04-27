@@ -139,7 +139,7 @@ void MealArr(unsigned char index)
 	  }
 		/*购买餐品的类型*/
     CustomerSel.PayType =  UserAct.PayType;  //	UserAct.PayType  ;
-	 if(CustomerSel.PayType == '1')	/*如果是现金购买*/
+	 if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
 	 { 
 		 MoneyBack  =Print_Struct.P_MoneyBack *100 ;  /*扩大10倍*/
 		//	printf("UserAct.MoneyBack=%d\r\n",UserAct.MoneyBack);
@@ -165,7 +165,7 @@ void MealArr(unsigned char index)
 		CustomerSel.MealName	   =  	   index ;
 		/*付了多少现金*/
 		//PayBill  =UserAct.PayForBills +*100 ;  /*扩大10倍*/
-		PayBill  =	UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
+		PayBill  =	(UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards)*100 ;
 	 	/*支付了多少钱*/
 		CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
 		CustomerSel.DealBalance[0]      =       CustomerSel.DealBalance[0]/10 *16 +CustomerSel.DealBalance[0]%10 ;   

@@ -774,7 +774,7 @@ void  WriteMeal(void) //在初始化时，flash的数据易丢失
 	  SPI_FLASH_SectorErase(FLASH_SectorToErase);
     SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
     /* Read data from SPI FLASH memory */
-	  delay_ms(10); //延时测试
+	  //delay_ms(10); //延时测试
     SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
 
     /* Check the corectness of written dada */
@@ -799,41 +799,13 @@ void ClearMealInfo(void)
 }
 void WriteCoins(void)
 {
-   __IO uint32_t FlashID = 0;
-   __IO uint32_t DeviceID = 0;
-	unsigned char TempBuffer[2]={0};
-  /* Initialize the SPI FLASH driver */
-    //SPI_FLASH_Init();
-	  //SPI_FLASH_Init();
-	  //SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
-    /* Perform a write in the Flash followed by a read of the written data */
-    /* Erase SPI FLASH Sector to write on */
-	  DeviceID = SPI_FLASH_ReadDeviceID();
-    /* Get SPI Flash ID */
-    FlashID = SPI_FLASH_ReadID(); 
-    /* Write Tx_Buffer data to SPI FLASH memory */
-	  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 2);/*参看原始数据*/
-	
-	  SPI_FLASH_SectorErase(FLASH_SectorToErase1);
-    SPI_FLASH_BufferWrite(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1 , 2);
-    /* Read data from SPI FLASH memory */
-    SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 2);
-
-    /* Check the corectness of written dada */
-    TransferStatus1 = Buffercmp(CoinsTotoalMessageWriteToFlash.CoinsCnt, TempBuffer, 2);
-		if(TransferStatus1 == FAILED )/*加入可以排错*/
-    {
-	    SPI_FLASH_BufferWrite(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, FloorMealNum*6);
-      /* Read data from SPI FLASH memory */
-      SPI_FLASH_BufferRead(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, FloorMealNum*6);
-      /* Check the corectness of written dada */
-      TransferStatus1 = Buffercmp(CoinsTotoalMessageWriteToFlash.CoinsCnt, TempBuffer, FloorMealNum*6);
-    }	
+  RTC_WriteBackupRegister(RTC_BKP_DR13,CoinsTotoalMessageWriteToFlash.CoinTotoal);
 	
 }
 void ReadCoins(void)
 {
-	SPI_FLASH_BufferRead(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, 2);
+	//SPI_FLASH_BufferRead(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, 2);
+	CoinsTotoalMessageWriteToFlash.CoinTotoal  = RTC_ReadBackupRegister(RTC_BKP_DR13);
 }
 
 /******************* (C) COPYRIGHT 2010 www.armjishu.com *****END OF FILE****/

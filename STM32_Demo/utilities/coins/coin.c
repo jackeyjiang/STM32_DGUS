@@ -43,6 +43,7 @@ void InitCoins(void)
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
+    EXTI_ClearITPendingBit(EXTI_Line12);
 }
 /*******************************************************************************
 * Function Name  : OpenCoinMachine
@@ -51,9 +52,11 @@ void InitCoins(void)
 * Output         : void
 * Return         : void
 *******************************************************************************/
+extern unsigned int   CoinsCount;
 void OpenCoinMachine(void)		 
 {
   GPIO_SetBits(GPIOE, GPIO_Pin_13);
+  CoinsCount=0;
 }
 
 /*******************************************************************************
@@ -66,4 +69,5 @@ void OpenCoinMachine(void)
 void CloseCoinMachine(void)	
 {
   GPIO_ResetBits(GPIOE, GPIO_Pin_13);
+  CoinsCount=0;
 }
