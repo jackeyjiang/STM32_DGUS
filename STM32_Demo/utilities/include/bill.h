@@ -2,8 +2,8 @@
 #define __bill__
 #include "stdint.h"
 #include "stm32f4xx.h"
-#define ACK    '1'
-#define NACK   '0'
+#define ack    '1'
+#define nack   '0'
 extern unsigned char NewCoinsCnt;
 extern unsigned char OldCoinsCnt;
 void SetBills(void);

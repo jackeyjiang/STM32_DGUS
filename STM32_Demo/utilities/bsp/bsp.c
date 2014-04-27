@@ -234,7 +234,8 @@ uint8_t WaitMeal(void)
 			else
 			{	
          //如果餐品全部出完，退出到主界面		
-         printf("takeafter_meal\r\n");				
+         printf("takeafter_meal\r\n");		
+         PlayMusic(VOICE_12);				
 				 return takeafter_meal;
 			}
 loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
@@ -279,6 +280,7 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
      case 2 : /*发送行和列的位置，等待响应*/
  		{
         //根据[Line][Column]的值发送坐标 等待ACK	
+			PlayMusic(VOICE_8);
 			printf("发送行和列的位置，等待响应\r\n");
  			temp =0;
  			temp = OrderSendCoord(Line,Column);
@@ -337,7 +339,8 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
  		}//break;
  	  case 4 :  	/*播放语音，请取餐*/
  		{
-			CurrentPointer=5;                                                                                                                         
+			//CurrentPointer=5; 
+      PlayMusic(VOICE_9);			
       printf("播放语音，请取餐");			
        //如果餐品到达取餐口播放语音
  			//如果餐品取出则 跳出子程序进行数据上传  
@@ -385,6 +388,7 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
        if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
        {
 					printf("餐在取餐口过了20秒还未被取走\r\n");
+				  PlayMusic(VOICE_10);
            //machinerec.remealnoaway = 0;
 					break;
            //语音提示“请取走出餐口的餐 "
@@ -463,15 +467,16 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
  *******************************************************************************/ 
 bool CloseCashSystem(void)
 {
-	uint8_t cnt_t=20,money=0;
+	uint8_t cnt_t=20,money=0,temp=0;
   CloseCoinMachine();			    //关闭投币机	
 	DisableBills();             //设置并关闭纸币机
 	delay_us(100);
-  if(ACK==ReadBill())
+	temp =ReadBill();
+  if(ack==temp)
 	{
 		return true;
 	}
-	else if(NACK==ReadBill())
+	else if(nack==temp)
 	{
     return false;  			
 	}  
@@ -479,19 +484,25 @@ bool CloseCashSystem(void)
 
 bool OpenCashSystem(void)
 {
-	int cnt_t=20;	
+	int cnt_t=20,temp;	
 	OpenCoinMachine();    //打开投币机	
 	SetBills();           //设置并打开纸币机
 	delay_us(100);
-  if(ACK==ReadBill())
+	temp=ReadBill();
+  if(ack==temp)
 	{
 		return true;
 	}
-	else if(NACK==ReadBill())
+	else if(nack==temp)
 	{
     return false;  			
-	}  
-
+	}
+  else if((temp==1)||(temp==5)||(temp==10)||(temp==20))
+	{
+		temp = UserAct.PayForBills;		  
+		UserAct.PayAlready  += UserPayMoney;
+		UserAct.PayForBills += UserPayMoney;	
+	}		
 }
 
   /*******************************************************************************
@@ -564,6 +575,7 @@ uint16_t erro_flag=0;
 void AbnormalHandle(uint16_t erro)
 {
 	PageChange(Err_interface);
+	PlayMusic(VOICE_11);	
 	erro_flag = erro;
 	erro_record |= (1<<erro);
 	switch(erro)
@@ -668,6 +680,8 @@ void AbnormalHandle(uint16_t erro)
 		DealSeriAceptData();
 		if(erro_flag==0)
 		{
+			erro_record=0;
+			RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
 			break;
 		}
 	}

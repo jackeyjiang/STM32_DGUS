@@ -79,6 +79,7 @@ int main(void)
         if( WaitPayMoney()==Status_OK)
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
+					PlayMusic(VOICE_7);
 					WaitTime=5;//5S计时
 					CloseTIM3();
 					CloseTIM7();

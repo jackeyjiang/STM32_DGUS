@@ -133,7 +133,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>
+          <Name>/</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -193,10 +193,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>13</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>13</TopLine>
-      <CurrentLine>24</CurrentLine>
+      <CurrentLine>28</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\test_lcd.c</PathWithFileName>
       <FilenameWithoutPath>test_lcd.c</FilenameWithoutPath>
@@ -267,8 +267,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>44</TopLine>
+      <CurrentLine>55</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\usart\uart3.c</PathWithFileName>
       <FilenameWithoutPath>uart3.c</FilenameWithoutPath>
@@ -297,9 +297,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>52</ColumnNumber>
+      <ColumnNumber>54</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>74</TopLine>
+      <TopLine>92</TopLine>
       <CurrentLine>104</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\usart\uart5.c</PathWithFileName>
@@ -315,7 +315,7 @@
       <Focus>0</Focus>
       <ColumnNumber>26</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>37</TopLine>
+      <TopLine>38</TopLine>
       <CurrentLine>45</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\usart\uart6.c</PathWithFileName>
@@ -377,10 +377,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>3</ColumnNumber>
+      <ColumnNumber>32</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>976</TopLine>
-      <CurrentLine>981</CurrentLine>
+      <TopLine>471</TopLine>
+      <CurrentLine>488</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\serialscreen\serialscreen.c</PathWithFileName>
       <FilenameWithoutPath>serialscreen.c</FilenameWithoutPath>
@@ -409,10 +409,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>34</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>108</TopLine>
-      <CurrentLine>119</CurrentLine>
+      <TopLine>56</TopLine>
+      <CurrentLine>57</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\bill\bill.c</PathWithFileName>
       <FilenameWithoutPath>bill.c</FilenameWithoutPath>
@@ -427,7 +427,7 @@
       <Focus>0</Focus>
       <ColumnNumber>43</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>745</TopLine>
+      <TopLine>755</TopLine>
       <CurrentLine>770</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\protocol\protocol.c</PathWithFileName>
@@ -489,9 +489,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>7</ColumnNumber>
+      <ColumnNumber>8</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>98</TopLine>
+      <TopLine>101</TopLine>
       <CurrentLine>113</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\mini_hopper\Mini_hopper.c</PathWithFileName>
@@ -523,8 +523,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>908</TopLine>
-      <CurrentLine>909</CurrentLine>
+      <TopLine>41</TopLine>
+      <CurrentLine>45</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\network_handle\network_handle.c</PathWithFileName>
       <FilenameWithoutPath>network_handle.c</FilenameWithoutPath>
@@ -553,10 +553,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>9</ColumnNumber>
+      <ColumnNumber>24</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>470</TopLine>
-      <CurrentLine>443</CurrentLine>
+      <TopLine>569</TopLine>
+      <CurrentLine>578</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\bsp\bsp.c</PathWithFileName>
       <FilenameWithoutPath>bsp.c</FilenameWithoutPath>
@@ -809,10 +809,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>3</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>879</TopLine>
+      <CurrentLine>894</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f4xx_rtc.c</FilenameWithoutPath>
@@ -1387,8 +1387,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>5</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\bill.h</PathWithFileName>
       <FilenameWithoutPath>bill.h</FilenameWithoutPath>
@@ -1401,10 +1401,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>28</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>35</TopLine>
-      <CurrentLine>49</CurrentLine>
+      <TopLine>115</TopLine>
+      <CurrentLine>143</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\bsp.h</PathWithFileName>
       <FilenameWithoutPath>bsp.h</FilenameWithoutPath>
@@ -1595,7 +1595,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>17</TopLine>
+      <TopLine>18</TopLine>
       <CurrentLine>26</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\protocol.h</PathWithFileName>
@@ -1625,10 +1625,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>7</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>15</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\vioce.h</PathWithFileName>
       <FilenameWithoutPath>vioce.h</FilenameWithoutPath>

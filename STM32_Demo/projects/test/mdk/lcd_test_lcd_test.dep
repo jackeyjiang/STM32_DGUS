@@ -1,5 +1,5 @@
 Dependencies for Project 'lcd_test', Target 'lcd_test': (DO NOT MODIFY !)
-F (..\test_lcd.c)(0x535CBE12)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\test_lcd.o --omf_browse .\debug\test_lcd.crf --depend .\debug\test_lcd.d)
+F (..\test_lcd.c)(0x535CE0C6)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\test_lcd.o --omf_browse .\debug\test_lcd.crf --depend .\debug\test_lcd.d)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53563E88)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -37,7 +37,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x53563E8
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -54,7 +54,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -106,7 +106,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -123,7 +123,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -284,7 +284,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x53563E
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x53563E88)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 F (..\..\..\utilities\usart\uart5.c)(0x53563E88)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\uart5.o --omf_browse .\debug\uart5.crf --depend .\debug\uart5.d)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53563E88)
@@ -437,7 +437,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x53563E8
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -454,7 +454,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -510,7 +510,7 @@ I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\delay.h)(0x53563E88)
 I (..\..\..\utilities\include\Mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x52846614)
-F (..\..\..\utilities\serialscreen\serialscreen.c)(0x535CA94D)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\serialscreen.o --omf_browse .\debug\serialscreen.crf --depend .\debug\serialscreen.d)
+F (..\..\..\utilities\serialscreen\serialscreen.c)(0x535CE0C6)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\serialscreen.o --omf_browse .\debug\serialscreen.crf --depend .\debug\serialscreen.d)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x5284661A)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53563E88)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -551,7 +551,7 @@ I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\uart3.h)(0x53563E88)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
 I (..\..\..\utilities\include\timer4.h)(0x5353AEEA)
@@ -566,7 +566,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -618,7 +618,7 @@ I (..\..\..\utilities\include\szt_gpboc.h)(0x535B3860)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -635,7 +635,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -647,7 +647,7 @@ I (..\..\..\utilities\include\sd.h)(0x5357E8CB)
 I (..\..\..\utilities\include\spi_flash.h)(0x53563E88)
 I (..\..\..\utilities\include\network_handle.h)(0x5357E8CB)
 I (..\..\..\utilities\include\uart5.h)(0x53563E88)
-F (..\..\..\utilities\bill\bill.c)(0x535CB030)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\bill.o --omf_browse .\debug\bill.crf --depend .\debug\bill.d)
+F (..\..\..\utilities\bill\bill.c)(0x535CC667)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\bill.o --omf_browse .\debug\bill.crf --depend .\debug\bill.d)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53563E88)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x5284661A)
@@ -685,7 +685,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -702,7 +702,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -753,7 +753,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -770,7 +770,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -897,7 +897,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x53563E8
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -914,7 +914,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -965,7 +965,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x53563E8
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -982,7 +982,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -1034,7 +1034,7 @@ I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
 I (..\..\..\utilities\include\timer4.h)(0x5353AEEA)
@@ -1050,7 +1050,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -1146,7 +1146,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x53563E8
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -1163,7 +1163,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -1176,7 +1176,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53563E88)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x535B3860)
 I (..\..\..\utilities\include\network_handle.h)(0x5357E8CB)
 I (..\..\..\utilities\include\uart5.h)(0x53563E88)
-F (..\..\..\utilities\bsp\bsp.c)(0x535CBC32)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\bsp.o --omf_browse .\debug\bsp.crf --depend .\debug\bsp.d)
+F (..\..\..\utilities\bsp\bsp.c)(0x535CE0FE)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\bsp.o --omf_browse .\debug\bsp.crf --depend .\debug\bsp.d)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53563E88)
@@ -1214,7 +1214,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x53563E
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x53563E88)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x53563E88)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -1231,7 +1231,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -1245,7 +1245,7 @@ I (..\..\..\utilities\include\szt_gpboc.h)(0x535B3860)
 I (..\..\..\utilities\include\network_handle.h)(0x5357E8CB)
 I (..\..\..\utilities\include\uart5.h)(0x53563E88)
 F (..\..\..\utilities\vioce\voice.c)(0x53563E88)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\voice.o --omf_browse .\debug\voice.crf --depend .\debug\voice.d)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53563E88)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x5284661A)
@@ -1356,7 +1356,7 @@ I (..\..\..\utilities\include\timer3.h)(0x521C0A40)
 I (..\..\..\utilities\include\bsp.h)(0x535CA94D)
 I (..\..\..\utilities\include\MsgHandle.h)(0x535766EF)
 I (C:\Keil\ARM\RV31\INC\stdint.h)(0x4D461914)
-I (..\..\..\utilities\include\vioce.h)(0x53563E88)
+I (..\..\..\utilities\include\vioce.h)(0x535CE0C6)
 I (..\..\..\utilities\include\serialscreen.h)(0x535C791C)
 I (..\..\..\utilities\include\protocol.h)(0x53578452)
 I (..\..\..\utilities\include\timer2.h)(0x52AFD332)
@@ -1372,7 +1372,7 @@ I (..\..\..\utilities\include\coin.h)(0x53563E88)
 I (..\..\..\utilities\include\mini_hopper.h)(0x535B57BA)
 I (C:\Keil\ARM\RV31\INC\stdio.h)(0x4D461916)
 I (C:\Keil\ARM\RV31\INC\string.h)(0x4D461916)
-I (..\..\..\utilities\include\bill.h)(0x535B4DF2)
+I (..\..\..\utilities\include\bill.h)(0x535CC565)
 I (..\..\..\utilities\include\printer.h)(0x53563E88)
 I (..\..\..\utilities\include\rtc.h)(0x53563E88)
 I (..\..\..\utilities\include\uart1.h)(0x53563E88)
@@ -2637,7 +2637,7 @@ F (..\..\..\utilities\include\uart3.h)(0x53563E88)()
 F (..\..\..\utilities\include\uart4.h)(0x53563E88)()
 F (..\..\..\utilities\include\uart5.h)(0x53563E88)()
 F (..\..\..\utilities\include\uart6.h)(0x53578475)()
-F (..\..\..\utilities\include\bill.h)(0x535B4DF2)()
+F (..\..\..\utilities\include\bill.h)(0x535CC565)()
 F (..\..\..\utilities\include\bsp.h)(0x535CA94D)()
 F (..\..\..\utilities\include\coin.h)(0x53563E88)()
 F (..\..\..\utilities\include\delay.h)(0x53563E88)()
@@ -2652,7 +2652,7 @@ F (..\..\..\utilities\include\serialscreen.h)(0x535C791C)()
 F (..\..\..\utilities\include\spi_flash.h)(0x53563E88)()
 F (..\..\..\utilities\include\protocol.h)(0x53578452)()
 F (..\..\..\utilities\include\szt_gpboc.h)(0x535B3860)()
-F (..\..\..\utilities\include\vioce.h)(0x53563E88)()
+F (..\..\..\utilities\include\vioce.h)(0x535CE0C6)()
 F (..\..\..\utilities\include\timer2.h)(0x52AFD332)()
 F (..\..\..\utilities\include\timer3.h)(0x521C0A40)()
 F (..\..\..\utilities\include\timer4.h)(0x5353AEEA)()

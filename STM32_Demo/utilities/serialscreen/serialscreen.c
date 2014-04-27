@@ -642,6 +642,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					case 0x01:
 						if(DefineMeal[0].MealCount > 0)	   //判断餐品是否大于0
 						{
+							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1]; //当前用户选餐的ID
 							UserAct.MealCnt_1st_t= 1;//设置默认分数为 1							
 							WaitTimeInit(&WaitTime);
@@ -654,6 +655,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					case 0x02:
 						if(DefineMeal[1].MealCount > 0)	   //判断餐品是否大于0
 						{
+							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_2nd_t= 1;//设置默认分数为 1
 							WaitTimeInit(&WaitTime);
@@ -666,6 +668,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					case 0x03:
 						if(DefineMeal[2].MealCount > 0)	   //判断餐品是否大于0
 						{
+							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_3rd_t= 1;//设置默认分数为 1
 							WaitTimeInit(&WaitTime);
@@ -677,6 +680,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						}break;						
 					case 0x04:
 					{
+						PlayMusic(VOICE_1);
 						if(DefineMeal[3].MealCount > 0)	   //判断餐品是否大于0
 						{
 							UserAct.MealID= VariableData[1];
@@ -782,6 +786,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							WaitTimeInit(&WaitTime);
 							OpenTIM7();
 							Current= waitfor_money;//进入读钱界面
+							PlayMusic(VOICE_2);
 						}
 					}break;
 					case 0x04:  /*取消*/
@@ -879,16 +884,19 @@ loop1:	switch(MealID)
 					case 0x01:   /*现金支付*/
 					{
 						CurrentPoint =2;
+						PlayMusic(VOICE_3);
 						if(!OpenCashSystem()) printf("cash system is erro");  //关闭现金接受
 					}break;
 					case 0x02:   /*银行预付卡*/
 					{
 						CurrentPoint =7;
+						PlayMusic(VOICE_4);
 						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 					}break;
 					case 0x03:   /*深圳通支付*/
 					{
 						CurrentPoint =8;
+						PlayMusic(VOICE_4);
 						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 						
 					}break;
@@ -1183,7 +1191,7 @@ loop1:	switch(MealID)
 					coins_time= (CoinsTotoalMessageWriteToFlash.CoinTotoal/10);
 					VariableChage(coins_back,Coins_cnt);
 					VariableChage(coins_back,CoinsTotoalMessageWriteToFlash.CoinTotoal-SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal));	
-          delay_ms(1000*coins_time);					
+          delay_ms(1000*(coins_time+1));					
 				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
 					VariableChage(coins_back,Coins_cnt);
 				}

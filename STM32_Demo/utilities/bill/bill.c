@@ -114,11 +114,11 @@ uint8_t  ReadBill(void)
 	}
 	else if(BillDataBuffer[0]==0xFF)
 	{ 
-		return NACK;
+		return nack;
   }
   else if(BillDataBuffer[0]==0x00)
 	{
-		return ACK;
+		return ack;
 	}
 	 memset(BillDataBuffer,0,sizeof(BillDataBuffer));
    return 0 ;	
