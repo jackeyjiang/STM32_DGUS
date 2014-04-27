@@ -905,7 +905,7 @@ loop1:	switch(MealID)
 						if(!CloseCashSystem()) printf("cash system is erro");  //关闭现金接受
 						CloseTIM3();
 						CloseTIM7();
-						
+						CurrentPoint = 0 ;
 						UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
             ClearUserBuffer();
 						UserAct.Cancle= 0x01;

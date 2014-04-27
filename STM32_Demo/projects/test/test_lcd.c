@@ -80,10 +80,11 @@ int main(void)
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
 					PlayMusic(VOICE_7);
-					WaitTime=5;//5S计时
+					
 					CloseTIM3();
-					CloseTIM7();
-	       	OpenTIM4();    
+					CloseTIM7();					
+					WaitTime=5;//5S计时   
+	       	OpenTIM4(); 
 					delay_ms(1000);
 					if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
 					//改变用户所选餐的总数
@@ -158,6 +159,7 @@ int main(void)
 				}
 				else if(waitmeal_status == tookkind_meal) //取完一种餐品
 				{
+					PageChange(Mealout_interface);
 					Current = data_upload;
 				}
 				else if(waitmeal_status == tookone_meal)  //取完一个餐品

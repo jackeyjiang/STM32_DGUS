@@ -191,7 +191,9 @@ unsigned char  WaitPayMoney(void)
   }
 	if(WaitTime==0) 
 	{
+    WaitTimeInit(&WaitTime);
 		PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+		CurrentPoint = 0 ;
 		UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 		ClearUserBuffer();//清空用户数据
 		if(UserAct.MoneyBack>0)
@@ -280,7 +282,6 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
      case 2 : /*发送行和列的位置，等待响应*/
  		{
         //根据[Line][Column]的值发送坐标 等待ACK	
-			PlayMusic(VOICE_8);
 			printf("发送行和列的位置，等待响应\r\n");
  			temp =0;
  			temp = OrderSendCoord(Line,Column);
@@ -355,20 +356,24 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
  			   manageusart6data();   //若机械手有数据，处理机械手返回数据
          if(machinerec.retodoor == 1)   //到达出餐口
          {
+					 machinerec.retodoor = 0;
+					 //播放请取餐语音
+					  PlayMusic(VOICE_9);
            break;
          }
          if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
          {
            printf("取餐5秒了还未取到餐\r\n");
+					 
            AbnormalHandle(GetMealError);
            break;
          }
        }
-       if( machinerec.retodoor == 1) //到达出餐口
-       {
-         machinerec.retodoor = 0;
-         //播放请取餐语音
-       }
+//       if( machinerec.retodoor == 1) //到达出餐口
+//       {
+//         machinerec.retodoor = 0;
+//         
+//       }
        LinkTime =0;
        while(1)//等待客户取走餐之后，才跳到Case 5
        {
@@ -383,6 +388,9 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
        {
 					 printf("餐已被取走\r\n");
 					 //machinerec.remealaway = 0;
+					 LinkTime =0;
+					 machinerec.remealaway = 0;
+					 CurrentPointer=5;
            break;
        }
        if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
@@ -390,22 +398,25 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
 					printf("餐在取餐口过了20秒还未被取走\r\n");
 				  PlayMusic(VOICE_10);
            //machinerec.remealnoaway = 0;
+					 LinkTime =0;
+					 machinerec.remealnoaway = 0;
+					 CurrentPointer=5;
 					break;
            //语音提示“请取走出餐口的餐 "
         } 
       }
-      if( machinerec.remealaway == 1) //餐已被取走
-      {
-         LinkTime =0;
-         machinerec.remealaway = 0;
-         CurrentPointer=5;
-      }
-			if( machinerec.remealnoaway == 1) //餐在取餐口过了20秒还未被取走，暂时用此判断
-      {
-         LinkTime =0;
-         machinerec.remealnoaway = 0;
-         CurrentPointer=5;
-      }
+//      if( machinerec.remealaway == 1) //餐已被取走
+//      {
+//         LinkTime =0;
+//         machinerec.remealaway = 0;
+//         CurrentPointer=5;
+//      }
+//			if( machinerec.remealnoaway == 1) //餐在取餐口过了20秒还未被取走，暂时用此判断
+//      {
+//         LinkTime =0;
+//         machinerec.remealnoaway = 0;
+//         CurrentPointer=5;
+//      }
  	  }//break;			    
     case 5:     /*对用户数据进行减一*/
 		{
@@ -470,7 +481,7 @@ bool CloseCashSystem(void)
 	uint8_t cnt_t=20,money=0,temp=0;
   CloseCoinMachine();			    //关闭投币机	
 	DisableBills();             //设置并关闭纸币机
-	delay_us(100);
+	delay_ms(100);
 	temp =ReadBill();
   if(ack==temp)
 	{

@@ -2941,18 +2941,19 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
         if(orderFlag1 == R_GpbocDeduct)
           {
             result2 = ManageGpbocDeduct();
+						if( result2 == 1)   //付款成功
+						{
+							printf("付款成功\r\n");
+							return 1;
+						}
+						else
+						{
+							printf("付款失败\r\n");
+							return 0;
+						}
           }
           
-        if( result2 == 1)   //付款成功
-        {
-          printf("付款成功\r\n");
-          return 1;
-        }
-        else
-        {
-          printf("付款失败\r\n");
-          return 0;
-        }
+        
       }
   	}
     else
