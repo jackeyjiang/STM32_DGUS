@@ -573,60 +573,93 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E070");
 			}break;
 		case sdcard_erro:     //SD卡存储异常
-			{}break;
+			{
+				DisplayAbnormal("E000");
+			}break;
 		case billset_erro:    //纸币机异常
 			{
 				DisplayAbnormal("E010");
 			}break;
 		case coinset_erro:      //投币机
 			{
-				
+				DisplayAbnormal("E020");
 			}break;
 		case coinhooperset_erro:    //退币机
-			{}break;
+			{
+				DisplayAbnormal("E030");
+			}break;
 		case coinhooperset_empty:   //找零用光
-			{}break;
+			{
+				DisplayAbnormal("E032");
+				//UserAct.MoneyBack
+			}break;
 		case printer_erro:      //打印机异常
-			{}break;
+			{
+				DisplayAbnormal("E040");
+			}break;
 		case cardread_erro:     //读卡器异常
-			{}break;
+			{
+				DisplayAbnormal("E050");
+			}break;
 		case network_erro:     //网络异常
 			{
 				DisplayAbnormal("E060");
 			}break;
 		case X_timeout:        //x轴传感器超时
-			{}break;
+			{
+				DisplayAbnormal("E101");
+			}break;
 		case X_leftlimit:      //马达左动作极限输出
-			{}break;
+			{
+				DisplayAbnormal("E102");
+			}break;
 		case X_rightlimit:     //马达右动作极限输出
-			{}break;
+			{
+				DisplayAbnormal("E103");
+			}break;
 		case mealtake_timeout: //取餐口传感器超时
-			{}break;
+			{
+				DisplayAbnormal("E201");
+			}break;
 		case Y_timeout:        //y轴传感器超时
-			{}break;
+			{
+				DisplayAbnormal("E301");
+			}break;
 		case link_timeout:     //链接超时
-			{}break;
+			{
+				DisplayAbnormal("E401");
+			}break;
 		case Z_timeout:        //z轴传感器超时
-			{}break;
+			{
+				DisplayAbnormal("E501");
+			}break;
 		case Z_uplimit:        //z轴马达上动作超出
-			{}break;
+			{
+				DisplayAbnormal("E502");
+			}break;
 		case Z_downlimit:      //z马达下动作超出
-			{}break;
+			{
+				DisplayAbnormal("E503");
+			}break;
 		case solenoid_timeout: //电磁阀超时
-			{}break;
+			{
+				DisplayAbnormal("E601");
+			}break;
 		case Eeprom_erro:      //eeprom 异常
-			{}break;
+			{
+				DisplayAbnormal("E711");
+			}break;
 		case SendUR6Erro:      //发送数据异常或超时
 			{
-        printf("发送数据异常或超时");
+        DisplayAbnormal("E801");
       }break;
     case GetMealError:     //机械手5秒取不到餐
 			{
-        printf("机械手5秒取不到餐");
+        DisplayAbnormal("E802");
       }break;
     case MealNoAway:       //餐在出餐口20秒还未被取走
 			{
-        printf("餐在出餐口20秒还未被取走");
+        DisplayAbnormal("E803");
       }break;
 		default:break;
 	}

@@ -105,6 +105,10 @@ int main(void)
 	           --UserAct.MoneyBack;
 	           delay_ms(200); //延时得好好控制
           }
+					if(ErrorType ==1)
+					{
+						AbnormalHandle(coinhooperset_empty);
+					}
 				}
 				else  //无需找币的时候直接进入出餐状态,
 				{
@@ -121,7 +125,7 @@ int main(void)
 				}
 			  if(OldCoinsCnt>NewCoinsCnt)
 		    {
-		      delay_ms(2000); //延时得好好控制
+		      delay_ms((OldCoinsCnt-NewCoinsCnt)/10*1000+1000); //延时得好好控制
           UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
 		    }
 		    else if(OldCoinsCnt==NewCoinsCnt)

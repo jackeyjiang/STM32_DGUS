@@ -59,7 +59,7 @@ uint8_t  ReadBill(void)
   uint8_t	BillValue=0;
   if(BillDataBuffer[0]==0x30) //money form cash macthin 
 	{
-	   if(BillDataBuffer[1]&0x80)	//cash was valuable
+	  if(BillDataBuffer[1]&0x80)	//cash was valuable
 		{
 			switch(BillDataBuffer[1]&0x70)    //cash matchine status
 			{
@@ -83,7 +83,7 @@ uint8_t  ReadBill(void)
 				memset(BillDataBuffer,0,sizeof(BillDataBuffer));
 			  return BillValue;
 		  }
-			if(BillStatus ==EscrowRequest)
+			else if(BillStatus ==EscrowRequest)
 			{
  			   switch(BillDataBuffer[1]&0x0F)
 				{
@@ -96,6 +96,10 @@ uint8_t  ReadBill(void)
 			/*ÔÚÔÝ´æÆ÷ÖÐµÄÇ®±Ò*/
 			BillRunStatus =BillInEscrow;            
       }
+			else if(BillStatus ==DisabledBillRejected)
+			{
+				AbnormalHandle(billset_erro);
+			}
 	  }
 	  else if(BillDataBuffer[1]==0x06)
 	  {			
