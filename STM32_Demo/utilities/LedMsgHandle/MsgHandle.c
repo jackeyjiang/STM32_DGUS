@@ -96,7 +96,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[1]      =	   0x00 ;
 				CustomerSel.MealPrice[2]      =	   0x00	;
 				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x20 ;
+				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;
       case 3 :	/*购买餐品的ID*/
@@ -110,7 +110,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[1]      =	   0x00 ;
 				CustomerSel.MealPrice[2]      =	   0x00	;
 				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x25 ;
+				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;
       case 4 :	/*购买餐品的ID*/
@@ -124,7 +124,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[1]      =	   0x00 ;
 				CustomerSel.MealPrice[2]      =	   0x00	;
 				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x30 ;
+				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;	 
 	    default : break ;

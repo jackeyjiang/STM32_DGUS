@@ -140,11 +140,12 @@ unsigned char  WaitPayMoney(void)
 		{
 			UserAct.PayType = '2' ;/* 银行卡支付*/
 			temp1 = 0;
-			//temp1 = GpbocDeduct(UserAct.PayShould-UserAct.PayAlready) *100;
-			temp1 = GpbocDeduct(1);
+			temp1 = GpbocDeduct(UserAct.PayShould-UserAct.PayAlready); //*100;
+			//temp1 = GpbocDeduct(1);
 			if(temp1 == 1)
 			{
-			  UserAct.PayForCards = UserAct.PayShould ;
+				UserAct.PayForCards = UserAct.PayShould - UserAct.PayAlready;
+			  //UserAct.PayForCards = UserAct.PayShould ;
 			  UserAct.PayAlready += UserAct.PayForCards ;
 			  CurrentPoint =6;
 			}
@@ -153,12 +154,12 @@ unsigned char  WaitPayMoney(void)
 	  {
 	    UserAct.PayType = '3' ;/* 深圳通支付*/
 			temp1 = 0;
-			//temp1 = SztDeduct(UserAct.PayShould * 100);
-			temp1 = SztDeduct(1);
+			temp1 = SztDeduct(UserAct.PayShould - UserAct.PayAlready); //*100;
 			if(temp1 == 1)
 			{
-			  UserAct.PayForCards = UserAct.PayShould ;
-        UserAct.PayAlready += UserAct.PayForCards ;
+				UserAct.PayForCards = UserAct.PayShould - UserAct.PayAlready;
+			  //UserAct.PayForCards = UserAct.PayShould ;
+			  UserAct.PayAlready += UserAct.PayForCards ;
 			  CurrentPoint =6;
 			}
 		}break;
@@ -539,9 +540,11 @@ void AcountCopy(void)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
+uint16_t erro_flag=0;
 void AbnormalHandle(uint16_t erro)
 {
 	PageChange(Err_interface);
+	erro_flag = erro;
 	switch(erro)
 	{
 		case outage_erro:      //断电
@@ -606,7 +609,14 @@ void AbnormalHandle(uint16_t erro)
       }break;
 		default:break;
 	}
-	VariableChage(erro_num,erro);
+	while(1)
+	{
+		DealSeriAceptData();
+		if(erro_flag==0)
+		{
+			break;
+		}
+	}
 }
   /*******************************************************************************
  * 函数名称:SaveUserData                                                                    

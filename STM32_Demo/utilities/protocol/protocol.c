@@ -541,7 +541,7 @@ uint8_t OrderSendCoord(uint8_t floor,uint8_t row)
 			return 1;
 		}
 		
-		if( LinkTime >1)  //³¬Ê±
+		if( LinkTime >1)  //³¬Ê± ??? 
 		{
 			LinkTime =0;
 			return 0;

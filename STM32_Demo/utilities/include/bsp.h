@@ -125,7 +125,8 @@ extern uint8_t   CurrentPoint ;
 extern uint8_t   CoinFlag;			 //用于退币机的标志
 extern uint8_t   TemperatureCur;
 extern uint8_t   Current ;    //主状态
-extern uint8_t  CurrentPointer; //餐品出餐状态
+extern uint8_t   CurrentPointer; //餐品出餐状态
+extern uint16_t  erro_flag;  //错误状态
 
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);	

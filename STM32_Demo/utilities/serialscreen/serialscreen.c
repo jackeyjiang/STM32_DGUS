@@ -965,6 +965,7 @@ loop1:	switch(MealID)
 	          GetPassWord(PassWord);
     	      if(VerifyPassword(PassWord, InputPassWord,6) == 1) //放餐密码正确
 		        {
+							//如果有错误标记则break;
 		           /*进入餐品放置界面*/
 		           PageChange(MealSet_interface);
 							 DisplayPassWord(0);//清楚密码显示
@@ -972,9 +973,15 @@ loop1:	switch(MealID)
 			         PassWordLen = 0;break;
 		        }
 						GetAdminPassWord(PassWord);
-    	      if(VerifyPassword(PassWord, InputPassWord,6) == 1) //退币密码正确
+    	      if(VerifyPassword(PassWord, InputPassWord,6) == 1) //管理员账户
 		        {
+							//进入管理员功能设置，需要加入特定的功能选择
 		           /*进入管理员界面*/
+							 if(erro_flag!=0) 
+							 {
+								 erro_flag=0;
+								 break;
+							 }
 		           PageChange(Coinset_interface);
 							 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);
 							 DisplayPassWord(0);//清楚密码显示

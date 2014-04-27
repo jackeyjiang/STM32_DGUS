@@ -56,7 +56,7 @@
 #define password_show 0x0005 
 
 /*错误显剩*/
-#define erro_num    0x0053 
+#define erro_num    0x4500 
 
 /*密码输入变量地址*/
 #define password 0x0004 
