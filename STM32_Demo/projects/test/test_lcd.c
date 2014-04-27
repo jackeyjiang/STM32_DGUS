@@ -24,8 +24,7 @@ int main(void)
 	hardfawreInit(); //硬件初始化
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
 //	if(!CloseCashSystem())  
-	printf("cash system is erro\r\n");  //关闭现金接受
-  //OnlymachieInit();  //机械手初始化
+  OnlymachieInit();  //机械手初始化
 	printf("OnlymachieInit ok\r\n");  //
 	//delay_ms(30000);
   //SendtoServce();  //上传前七天的数据
@@ -47,7 +46,7 @@ int main(void)
   {
 		//delay_ms(200);
 		DealSeriAceptData();
-		manageusart6data();
+		manageusart6data();   //
     switch(Current)
 	  {
 	    case current_temperature: /*温度处理函数*/
