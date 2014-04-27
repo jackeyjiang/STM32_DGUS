@@ -292,7 +292,7 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
  			else				//发送失败
  			{
  				printf("send coord error\r\n");
-         AbnormalHandle(SendUR6Erro);
+        AbnormalHandle(SendUR6Erro);
  			}
  	  }//break;  
  		case 3 :    /*发送取餐命令*/
@@ -357,7 +357,7 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
          if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
          {
            printf("取餐5秒了还未取到餐\r\n");
-           AbnormalHandle(SendUR6Erro);
+           AbnormalHandle(GetMealError);
            break;
          }
        }

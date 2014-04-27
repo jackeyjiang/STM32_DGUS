@@ -25,7 +25,7 @@ int main(void)
 	hardfawreInit(); //硬件初始化
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
 //	if(!CloseCashSystem())  
-  OnlymachieInit();  //机械手初始化
+//  OnlymachieInit();  //机械手初始化
 	printf("OnlymachieInit ok\r\n");  //
 	//delay_ms(30000);
   //SendtoServce();  //上传前七天的数据
@@ -38,8 +38,9 @@ int main(void)
 	printf("SignInFunction ok\r\n");  //
 	/*深圳通签到*/
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
-	printf("Szt_GpbocAutoCheckIn ok\r\n");
-	
+	printf("Szt_GpbocAutoCheckIn ok\r\n");	
+	if(!CloseCashSystem())  AbnormalHandle(billset_erro);
+	delay_ms(1000);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);
 	PageChange(Menu_interface); //显示选餐界面
 	DispLeftMeal();             //显示餐品数据
@@ -82,7 +83,7 @@ int main(void)
 					CloseTIM3();
 					CloseTIM7();
 	       	OpenTIM4();    
-					delay_ms(200);
+					delay_ms(1000);
 					if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
 					//改变用户所选餐的总数
 					Current= data_record;

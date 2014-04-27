@@ -207,14 +207,17 @@ void manageusart6data(void)
 							if( Usart6Buff[3] == 1 )
 							{
 								ErFlag.E101 = true;
+								AbnormalHandle(X_timeout);
 							}
 							else if( Usart6Buff[3] == 2 )
 							{
 								ErFlag.E102 = true;
+								AbnormalHandle(X_leftlimit);
 							}
 							else if( Usart6Buff[3] == 3 )
 							{
 								ErFlag.E103 = true;
+								AbnormalHandle(X_rightlimit);
 							}
 							else
 							{
@@ -231,6 +234,7 @@ void manageusart6data(void)
 						if( Usart6Buff[3] == 1 )
 						{
 							ErFlag.E201 = true;
+							AbnormalHandle(mealtake_timeout);
 						}
 						else
 						{
@@ -247,6 +251,7 @@ void manageusart6data(void)
 						if( Usart6Buff[3] == 1 )
 						{
 							ErFlag.E301 = true;
+							AbnormalHandle(Y_timeout);
 						}
 						else
 						{
@@ -263,6 +268,7 @@ void manageusart6data(void)
 						if( Usart6Buff[3] == 1 )
 						{
 							ErFlag.E401 = true;
+							AbnormalHandle(link_timeout);
 						}
 						else
 						{
@@ -279,6 +285,17 @@ void manageusart6data(void)
 						if( Usart6Buff[3] == 1 )
 						{
 							ErFlag.E501 = true;
+							AbnormalHandle(Z_timeout);
+						}
+						else if( Usart6Buff[3] == 2 )
+						{
+							ErFlag.E502 = true;
+							AbnormalHandle(Z_uplimit);
+						}
+						else if( Usart6Buff[3] == 3 )
+						{
+							ErFlag.E503 = true;
+							AbnormalHandle(Z_downlimit);
 						}
 						else
 						{
@@ -295,6 +312,7 @@ void manageusart6data(void)
 						if( Usart6Buff[3] == 1 )
 						{
 							ErFlag.E601 = true;
+							AbnormalHandle(solenoid_timeout);
 						}
 						else
 						{
@@ -315,6 +333,7 @@ void manageusart6data(void)
 						if( Usart6Buff[3] == 1 )
 						{
 							ErFlag.E711 = true;
+							AbnormalHandle(Eeprom_erro);
 						}
 						else
 						{
