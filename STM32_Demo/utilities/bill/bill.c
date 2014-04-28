@@ -120,7 +120,6 @@ uint8_t  ReadBill(void)
 	{
 		return ack;
 	}
-	 memset(BillDataBuffer,0,sizeof(BillDataBuffer));
    return 0 ;	
 }
 
@@ -180,9 +179,10 @@ uint8_t  ReadBills(void)
 {
   uint8_t temp = 0;
  	temp=ReadBill();
+	memset(BillDataBuffer,0,sizeof(BillDataBuffer));
 /*如果能锁存最好，因为是公共数据，但是如果只在中断进行改变，不影响数
   据的完整性，中断会打断程序的运行，不会同时操作 */	                          
-	switch(CurrentPoint)
+	switch(temp)
 	{
 	   case 0:
 	           return 0 ;

@@ -139,6 +139,10 @@
 #define coins_in    0x0051 //退币机内的硬币总量
 #define coins_key   0x0052 //退币的按键
 
+extern const char price_1st;
+extern const char price_2nd;
+extern const char price_3rd;
+extern const char price_4th;
 
 void ClearUserBuffer(void);
 void PageChange(char page);

@@ -145,6 +145,7 @@ void AbnormalHandle(uint16_t erro);
 void SaveUserData(void);
 void ReadUserData(void);
 void AcountCopy(void);
+void PayBackUserMoney(void);
 // void LcdHandler(void);
 // void  TempHandler(void);
 // void ClearingFuntion(void) ;//ÕÀ«©…œÀÕ

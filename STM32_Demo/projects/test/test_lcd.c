@@ -25,7 +25,7 @@ int main(void)
 	hardfawreInit(); //硬件初始化
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
 //	if(!CloseCashSystem())  
-//  OnlymachieInit();  //机械手初始化
+  OnlymachieInit();  //机械手初始化
 	printf("OnlymachieInit ok\r\n");  //
 	//delay_ms(30000);
   //SendtoServce();  //上传前七天的数据
@@ -39,7 +39,6 @@ int main(void)
 	/*深圳通签到*/
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	printf("Szt_GpbocAutoCheckIn ok\r\n");	
-	if(!CloseCashSystem())  AbnormalHandle(billset_erro);
 	delay_ms(1000);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);
 	PageChange(Menu_interface); //显示选餐界面
@@ -80,13 +79,13 @@ int main(void)
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
 					PlayMusic(VOICE_7);
-					
+					delay_ms(1000);
+					if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受					
 					CloseTIM3();
 					CloseTIM7();					
 					WaitTime=5;//5S计时   
 	       	OpenTIM4(); 
-					delay_ms(1000);
-					if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
+
 					//改变用户所选餐的总数
 					Current= data_record;
 			  }
@@ -139,6 +138,11 @@ int main(void)
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{
 				SaveUserData();
+				if(WaitTime==0)
+				{
+					WaitTimeInit(&WaitTime);
+		      PlayMusic(VOICE_8);			
+				}
 				waitmeal_status= WaitMeal();       
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{

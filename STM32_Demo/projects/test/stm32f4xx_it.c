@@ -294,7 +294,6 @@ void TIM4_IRQHandler(void)
 		else 
 		{
 			CloseTIM4();
-			PlayMusic(VOICE_8);
 			PageChange(Mealout_interface);//超时退出进入餐品数量选择界面
 	  }	     
   }

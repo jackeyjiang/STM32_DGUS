@@ -193,6 +193,8 @@ unsigned char  WaitPayMoney(void)
 	{
     WaitTimeInit(&WaitTime);
 		PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+		delay_ms(1000);
+		if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
 		CurrentPoint = 0 ;
 		UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 		ClearUserBuffer();//清空用户数据
@@ -418,7 +420,7 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
 //         CurrentPointer=5;
 //      }
  	  }//break;			    
-    case 5:     /*对用户数据进行减一*/
+    case 5:     /*对用户数据进行减一*/  //?? 如果需要进行错误退币，需要修该返回值所在范围
 		{
 			printf("对用户数据进行减一");
       UserAct.Meal_takeout++;//取餐数据加
@@ -476,44 +478,61 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
+#define bill_time  100  //500ms不会出错，100ms纸币机反应不过来
 bool CloseCashSystem(void)
 {
 	uint8_t cnt_t=20,money=0,temp=0;
   CloseCoinMachine();			    //关闭投币机	
+	delay_ms(bill_time);
 	DisableBills();             //设置并关闭纸币机
-	delay_ms(100);
-	temp =ReadBill();
-  if(ack==temp)
+	do
 	{
-		return true;
-	}
-	else if(nack==temp)
-	{
-    return false;  			
-	}  
+		cnt_t--;
+		delay_ms(1);
+	  temp=ReadBill();
+		if(ack==temp)
+		{
+			return true;
+		}
+		else if(nack==temp)
+		{
+			return false;  			
+		}
+		else if((temp==1)||(temp==5)||(temp==10)||(temp==20))
+		{
+			temp = UserAct.PayForBills;		  
+			UserAct.PayAlready  += UserPayMoney;
+			UserAct.PayForBills += UserPayMoney;	
+		}
+	}while(cnt_t);	 
 }
 
 bool OpenCashSystem(void)
 {
-	int cnt_t=20,temp;	
+	uint8_t cnt_t=20,temp;	
 	OpenCoinMachine();    //打开投币机	
+	delay_ms(bill_time);        //需要控制
 	SetBills();           //设置并打开纸币机
-	delay_us(100);
-	temp=ReadBill();
-  if(ack==temp)
+	do
 	{
-		return true;
-	}
-	else if(nack==temp)
-	{
-    return false;  			
-	}
-  else if((temp==1)||(temp==5)||(temp==10)||(temp==20))
-	{
-		temp = UserAct.PayForBills;		  
-		UserAct.PayAlready  += UserPayMoney;
-		UserAct.PayForBills += UserPayMoney;	
-	}		
+		cnt_t--;
+		delay_ms(1);
+	  temp=ReadBill();
+		if(ack==temp)
+		{
+			return true;
+		}
+		else if(nack==temp)
+		{
+			return false;  			
+		}
+		else if((temp==1)||(temp==5)||(temp==10)||(temp==20))
+		{
+			temp = UserAct.PayForBills;		  
+			UserAct.PayAlready  += UserPayMoney;
+			UserAct.PayForBills += UserPayMoney;	
+		}
+	}while(cnt_t);	
 }
 
   /*******************************************************************************
@@ -584,9 +603,9 @@ void PowerupAbnormalHandle(int32_t erro_record)
  *******************************************************************************/ 
 uint16_t erro_flag=0;
 void AbnormalHandle(uint16_t erro)
-{
-	PageChange(Err_interface);
+{	
 	PlayMusic(VOICE_11);	
+	PageChange(Err_interface);
 	erro_flag = erro;
 	erro_record |= (1<<erro);
 	switch(erro)
@@ -631,54 +650,67 @@ void AbnormalHandle(uint16_t erro)
 		case X_timeout:        //x轴传感器超时
 			{
 				DisplayAbnormal("E101");
+				PayBackUserMoney();
 			}break;
 		case X_leftlimit:      //马达左动作极限输出
 			{
 				DisplayAbnormal("E102");
+				PayBackUserMoney();
 			}break;
 		case X_rightlimit:     //马达右动作极限输出
 			{
 				DisplayAbnormal("E103");
+				PayBackUserMoney();
 			}break;
 		case mealtake_timeout: //取餐口传感器超时
 			{
 				DisplayAbnormal("E201");
+			  PayBackUserMoney();
 			}break;
 		case Y_timeout:        //y轴传感器超时
 			{
 				DisplayAbnormal("E301");
+				PayBackUserMoney();
 			}break;
 		case link_timeout:     //链接超时
 			{
 				DisplayAbnormal("E401");
+				PayBackUserMoney();
 			}break;
 		case Z_timeout:        //z轴传感器超时
 			{
 				DisplayAbnormal("E501");
+				PayBackUserMoney();
 			}break;
 		case Z_uplimit:        //z轴马达上动作超出
 			{
 				DisplayAbnormal("E502");
+				PayBackUserMoney();
 			}break;
 		case Z_downlimit:      //z马达下动作超出
 			{
 				DisplayAbnormal("E503");
+				PayBackUserMoney();
 			}break;
-		case solenoid_timeout: //电磁阀超时
+		case solenoid_timeout: //电磁阀超时  ???有时有异常
 			{
 				DisplayAbnormal("E601");
+				PayBackUserMoney();
 			}break;
 		case Eeprom_erro:      //eeprom 异常
 			{
 				DisplayAbnormal("E711");
+				PayBackUserMoney();
 			}break;
 		case SendUR6Erro:      //发送数据异常或超时
 			{
         DisplayAbnormal("E801");
+				PayBackUserMoney();
       }break;
     case GetMealError:     //机械手5秒取不到餐
 			{
         DisplayAbnormal("E802");
+				PayBackUserMoney();
       }break;
     case MealNoAway:       //餐在出餐口20秒还未被取走
 			{
@@ -697,6 +729,30 @@ void AbnormalHandle(uint16_t erro)
 		}
 	}
 }
+  /*******************************************************************************
+ * 函数名称:PayBackUserMoney                                                                    
+ * 描    述:出餐出错退币                                                              
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年4月23日    
+ *******************************************************************************/ 
+uint32_t UserMoneyBack=0;
+void PayBackUserMoney(void)
+{
+	UserMoneyBack =UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th; //计算单总价
+  if(CoinsTotoalMessageWriteToFlash.CoinTotoal>=UserMoneyBack)
+	{
+		SendOutN_Coin(UserMoneyBack);
+		ClearUserBuffer();
+	}
+	else
+	{
+		PlayMusic(VOICE_11);
+	}
+}
+
   /*******************************************************************************
  * 函数名称:SaveUserData                                                                    
  * 描    述:掉电保存                                                               
