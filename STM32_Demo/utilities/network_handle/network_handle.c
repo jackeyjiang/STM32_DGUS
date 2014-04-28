@@ -641,12 +641,12 @@ void BufferToStructCopy(unsigned char *dest,unsigned char Index)
 * Return         : char
 * Time          :2014-4-7  MrLao   数据域采用TVL格式
 *******************************************************************************/
-
+unsigned char k = 0 ;
 unsigned char  MealDataCompareFun(void)
 {
 
  	unsigned char i = 0 ;
-	unsigned char k = 0 ;
+	
   long  Lenght = 0 ,j;
 //	unsigned char MealID = 0 ;
 	long  CmdLenght = 0 ;
@@ -706,16 +706,12 @@ unsigned char  MealDataCompareFun(void)
 	   {
 	      status  = CmdLenght / 35  ;
 		  	printf("Statusstatus=%x\r\n",status);
-				for(i=0;i<status;i++)
+				//for(i=0;i<status;i++)
+			  for(i=0;i<4;i++)
 				{
-					if(rx1Buf[45+i*35] ==0x03)
-				  {
-						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[45+i*35]);
-						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[14+i*35]);
-						
-		      }
-					else if(rx1Buf[45+i*35]==0x01)   //餐品对比标志
+					if(rx1Buf[45+i*35]==0x01)   //餐品对比标志
 					{
+						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[45+i*35]);
 						k++;
 						if(k>=4)
 						{
@@ -723,7 +719,13 @@ unsigned char  MealDataCompareFun(void)
 						//判断是哪个餐品对比OK
 					     return 0x04;
 						}
-					}
+					}					
+					else if(rx1Buf[45+i*35] ==0x03)
+				  {
+						k=0;
+						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[14+i*35]);
+						
+		      }
 						
 		    }
 		    return 1 ;/*餐品对比错误*/
