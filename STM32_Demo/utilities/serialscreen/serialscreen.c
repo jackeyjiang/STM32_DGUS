@@ -1153,13 +1153,13 @@ loop1:	switch(MealID)
 						//禁止屏幕点击*/
              ScreenControl(ScreenDisable);
 						//数据同步子程序
-						 if(MealDataCompareFun())
+						 if(MealDataCompareFun()==0x04)
 						 {
-							 PageChange(Data_synchronization-1);
+							 PageChange(Data_synchronization);
 						 }
              else
              {
-							 PageChange(Data_synchronization);
+							 PageChange(Data_synchronization+2);
 						 }
 						//超时时退出，错误退出
 						ScreenControl(ScreenEnable);

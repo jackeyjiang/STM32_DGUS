@@ -21,7 +21,7 @@
 #define MealSet_interface     0x18 /*放餐设置界面*/
 #define MealInput_interface   0x1A /*放餐数量选择*/
 #define TemperatureSet_interface 0x1C  /*温度设置界面*/
-#define Data_synchronization  0x1F  /*数据同步*/
+#define Data_synchronization  0x1E  /*数据同步*/
 #define Coinset_interface     0x22  /*硬币设置*/
 
 /*寄存器空间定义*/

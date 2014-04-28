@@ -646,6 +646,7 @@ unsigned char  MealDataCompareFun(void)
 {
 
  	unsigned char i = 0 ;
+	unsigned char k = 0 ;
   long  Lenght = 0 ,j;
 //	unsigned char MealID = 0 ;
 	long  CmdLenght = 0 ;
@@ -713,9 +714,15 @@ unsigned char  MealDataCompareFun(void)
 						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[14+i*35]);
 						
 		      }
-					else if(rx1Buf[45+i*35]==0x04)   //餐品对比标志
+					else if(rx1Buf[45+i*35]==0x01)   //餐品对比标志
 					{
+						k++;
+						if(k>=4)
+						{
+							 k=0;
 						//判断是哪个餐品对比OK
+					     return 0x04;
+						}
 					}
 						
 		    }
