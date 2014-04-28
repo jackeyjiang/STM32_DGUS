@@ -600,6 +600,8 @@ void StructCopyToBuffer(unsigned char *dest)
 	  for(i=0;i<20;i++)
 	  dest[k++]=Meal[j0].MaelName[i];
 
+		Meal[j0].MealNum[1]= DefineMeal[j0].MealCount;
+		
 	  for(i=0;i<2;i++)
 	  dest[k++]=Meal[j0].MealNum[i];
 
@@ -686,41 +688,43 @@ unsigned char  MealDataCompareFun(void)
 
 	Lenght = HL_BufferToInit(&rx1Buf[2]);		//得到数据长度
 	GetData(&ReturnData.Lenght[0],rx1Buf,Lenght,0xc0);	  /*返回状态*/
-// 	printf("Status=%x\r\n",ReturnData.Lenght[0]);
+	
+ 	printf("Status=%x\r\n",ReturnData.Lenght[0]);
 
 	if(ReturnData.Lenght[0] == 0x00 )
     return 0;	 /*数据正确*/
 
 	if(ReturnData.Lenght[0] == 0x24 )
 	{
-	 Batch ++ ;
+	   Batch ++ ;
      return 1;	 /*数据正确*/
 	}
 	   CmdLenght = GetData(TempBuffer,rx1Buf,Lenght,0xBC);/*餐品对比*/
-//	   	printf("StatusCmdLenght=%x\r\n",CmdLenght);
+     printf("StatusCmdLenght=%x\r\n",CmdLenght);
 	   if(CmdLenght>34)
 	   {
 	      status  = CmdLenght / 35  ;
-//		  	printf("Statusstatus=%x\r\n",status);
-		  for(i=0;i<status;i++)
-		  {
-	       if(rx1Buf[45+i*35] ==0x03)
-		   {
-//		      printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[45+i*35]);
-//			  printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[14+i*35]);
-	          for(j=0;j<34;j++)
-		     {
-		      BufferToStructCopy(&TempBuffer[i*35],rx1Buf[14+35*i]-0x20);
-		     }
-		   }
-		  }
-		   return 1 ;/*餐品对比错误*/
-	   }
-
+		  	printf("Statusstatus=%x\r\n",status);
+				for(i=0;i<status;i++)
+				{
+					if(rx1Buf[45+i*35] ==0x03)
+				  {
+						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[45+i*35]);
+						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[14+i*35]);
+						
+		      }
+					else if(rx1Buf[45+i*35]==0x04)   //餐品对比标志
+					{
+						//判断是哪个餐品对比OK
+					}
+						
+		    }
+		    return 1 ;/*餐品对比错误*/
+	    }
     for(j=0;j<Lenght;j++)
     {
 //	  CheckInitReturnUnion.CheckInitReturnBuffer[j]= rx1Buf[j];
-//	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+	    printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
     }
 
   return 0;

@@ -25,7 +25,7 @@ int main(void)
 	hardfawreInit(); //硬件初始化
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
 //	if(!CloseCashSystem())  
-  OnlymachieInit();  //机械手初始化
+//  OnlymachieInit();  //机械手初始化
 	printf("OnlymachieInit ok\r\n");  //
 	//delay_ms(30000);
   //SendtoServce();  //上传前七天的数据
