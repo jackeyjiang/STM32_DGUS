@@ -1153,7 +1153,7 @@ loop1:	switch(MealID)
 						//禁止屏幕点击*/
              ScreenControl(ScreenDisable);
 						//数据同步子程序
-						 if(MealDataCompareFun()==0x04)
+						 if(MealDataCompareFun()==0x10)
 						 {
 							 PageChange(Data_synchronization);
 						 }

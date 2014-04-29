@@ -864,7 +864,7 @@ void hardfawreInit(void)
    InitMiniGPIO() ;		   //退币器始化
 	 PageChange(Logo_interface); //显示logo
 	 PageChange(Logo_interface); //重复一次就可以成功
-	 InitVoice()  ;             //语音初始化
+	 InitVoice();             //语音初始化
 	 MyRTC_Init();              //RTC初始化
 	 SPI_FLASH_Init();          //Flash初始化
 	 //SPI_FLASH_Init();          //重复初始化才行

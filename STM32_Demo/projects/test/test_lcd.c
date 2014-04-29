@@ -32,12 +32,13 @@ int main(void)
   //ReadDatatoBuffer(); //上一个程序有这个函数
    /*从网络  获得时间，更新本地时钟*/
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
+	EchoFuntion(RTC_TimeRegulate);
 	printf("EchoFuntion ok\r\n");  //	
 	/*网络签到*/
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
 	printf("SignInFunction ok\r\n");  //
 	/*深圳通签到*/
-	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
+//	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	printf("Szt_GpbocAutoCheckIn ok\r\n");	
 	delay_ms(1000);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);
