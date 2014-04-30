@@ -222,8 +222,8 @@ uint8_t WaitMeal(void)
 			}				
       else if(UserAct.MealCnt_2nd>0)
 			{
-				 UserAct.MealID = 0x02;
-					goto loop3;
+				UserAct.MealID = 0x02;
+				goto loop3;
 			}				
       else if(UserAct.MealCnt_3rd>0)
 			{
@@ -260,7 +260,7 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
 			WriteMeal();
 			StatisticsTotal();
 			DispLeftMeal(); 
-			CurrentPointer = 2 ;
+			CurrentPointer = 5 ;
 		}//break ;
 //    case 2:
 //    {
@@ -281,147 +281,148 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
 //      CurrentPointer = 5 ;
 //    }break;
     
-     case 2 : /*发送行和列的位置，等待响应*/
- 		{
-        //根据[Line][Column]的值发送坐标 等待ACK	
-			printf("发送行和列的位置，等待响应\r\n");
- 			temp =0;
- 			temp = OrderSendCoord(Line,Column);
- 			
- 			if( temp ==1)//发送成功
- 			{
-        LinkTime =0;
-				machinerec.rerelative =0;   //不是待机位置
- 				CurrentPointer = 3 ;
- 			}
- 			else				//发送失败
- 			{
- 				printf("send coord error\r\n");
-        AbnormalHandle(SendUR6Erro);
- 			}
- 	  }//break;  
- 		case 3 :    /*发送取餐命令*/
- 		{
-			printf("发送取餐命令\r\n");
- 			//查询机械手是否准备好，如果准备好发送取餐命令
- 			//如果超时则 返回错误，
- 		  //如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
- 			while(1)  //查询机械手是否准备好，
-      {
-        if(LinkTime > 10)    //超时
-        {
-          LinkTime =0;
-          printf("move to coord timeout!\r\n");
-          AbnormalHandle(SendUR6Erro);
-          break;
-        }       
- 			  manageusart6data();  //若机械手有数据，处理机械手返回数据
-        if(machinerec.regoal ==1)   //到达取餐点
-        {
-           break;
-        }
-      }
-      if(machinerec.regoal ==1)   //到达取餐点
-      {
-        machinerec.regoal =0 ;
-        temp =0;
-        temp = OrderGetMeal();   //发送取餐命令
-        LinkTime =0;
-        CurrentPointer=4;  				
-//        if(temp ==1)       // 取餐命令发送成功
+//     case 2 : /*发送行和列的位置，等待响应*/
+// 		{
+//        //根据[Line][Column]的值发送坐标 等待ACK	
+//			printf("发送行和列的位置，等待响应\r\n");
+// 			temp =0;
+// 			temp = OrderSendCoord(Line,Column);
+// 			
+// 			if( temp ==1)//发送成功
+// 			{
+//        LinkTime =0;
+//				machinerec.rerelative =0;   //不是待机位置
+// 				CurrentPointer = 3 ;
+// 			}
+// 			else				//发送失败
+// 			{
+// 				printf("send coord error\r\n");
+//        AbnormalHandle(SendUR6Erro);
+// 			}
+// 	  }//break;  
+// 		case 3 :    /*发送取餐命令*/
+// 		{
+//			printf("发送取餐命令\r\n");
+// 			//查询机械手是否准备好，如果准备好发送取餐命令
+// 			//如果超时则 返回错误，
+// 		  //如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
+// 			while(1)  //查询机械手是否准备好，
+//      {
+//        if(LinkTime > 10)    //超时
 //        {
 //          LinkTime =0;
-//          CurrentPointer=4;  
-//        }
-//        else          //发送失败     
-//        {
-//          printf(" send getmeal order error\r\n");
+//          printf("move to coord timeout!\r\n");
 //          AbnormalHandle(SendUR6Erro);
+//          break;
+//        }       
+// 			  manageusart6data();  //若机械手有数据，处理机械手返回数据
+//        if(machinerec.regoal ==1)   //到达取餐点
+//        {
+//           break;
 //        }
-      }
- 		}//break;
- 	  case 4 :  	/*播放语音，请取餐*/
- 		{
-			//CurrentPointer=5; 
-      PlayMusic(VOICE_9);			
-      printf("播放语音，请取餐");			
-       //如果餐品到达取餐口播放语音
- 			//如果餐品取出则 跳出子程序进行数据上传  
- 			while(1)
-       {
-         if(LinkTime >120)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
-         {
-           printf("from send getmeal order to sell door timeout!\r\n");
-           AbnormalHandle(SendUR6Erro);
-           break;
-         }
- 			   manageusart6data();   //若机械手有数据，处理机械手返回数据
-         if(machinerec.retodoor == 1)   //到达出餐口
-         {
-					 machinerec.retodoor = 0;
-					 //播放请取餐语音
-					  PlayMusic(VOICE_9);
-           break;
-         }
-         if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
-         {
-           printf("取餐5秒了还未取到餐\r\n");
-					 
-           AbnormalHandle(GetMealError);
-           break;
-         }
-       }
-//       if( machinerec.retodoor == 1) //到达出餐口
+//      }
+//      if(machinerec.regoal ==1)   //到达取餐点
+//      {
+//        machinerec.regoal =0 ;
+//        temp =0;
+//        temp = OrderGetMeal();   //发送取餐命令
+//        LinkTime =0;
+//        CurrentPointer=4;  				
+////        if(temp ==1)       // 取餐命令发送成功
+////        {
+////          LinkTime =0;
+////          CurrentPointer=4;  
+////        }
+////        else          //发送失败     
+////        {
+////          printf(" send getmeal order error\r\n");
+////          AbnormalHandle(SendUR6Erro);
+////        }
+//      }
+// 		}//break;
+// 	  case 4 :  	/*播放语音，请取餐*/
+// 		{
+//			//CurrentPointer=5; 
+//      PlayMusic(VOICE_9);			
+//      printf("播放语音，请取餐");			
+//       //如果餐品到达取餐口播放语音
+// 			//如果餐品取出则 跳出子程序进行数据上传  
+// 			while(1)
 //       {
-//         machinerec.retodoor = 0;
-//         
+//         if(LinkTime >120)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
+//         {
+//           printf("from send getmeal order to sell door timeout!\r\n");
+//           AbnormalHandle(SendUR6Erro);
+//           break;
+//         }
+// 			   manageusart6data();   //若机械手有数据，处理机械手返回数据
+//         if(machinerec.retodoor == 1)   //到达出餐口
+//         {
+//					 machinerec.retodoor = 0;
+//					 //播放请取餐语音
+//					  PlayMusic(VOICE_9);
+//           break;
+//         }
+//         if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
+//         {
+//           printf("取餐5秒了还未取到餐\r\n");
+//					 
+//           AbnormalHandle(GetMealError);
+//           break;
+//         }
 //       }
-       LinkTime =0;
-       while(1)//等待客户取走餐之后，才跳到Case 5
-       {
-         if( LinkTime >180) //餐在出餐口未被取走，最多等待3分，超过了报错
-         {
-           printf("餐未超过了三分钟还未被取走\r\n");
-           AbnormalHandle(SendUR6Erro);
-           break;
-         }
- 			 manageusart6data();   //若机械手有数据，处理机械手返回数据
- 		   if( machinerec.remealaway == 1) //餐已被取走
-       {
-					 printf("餐已被取走\r\n");
-					 //machinerec.remealaway = 0;
-					 LinkTime =0;
-					 machinerec.remealaway = 0;
-					 CurrentPointer=5;
-           break;
-       }
-       if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
-       {
-					printf("餐在取餐口过了20秒还未被取走\r\n");
-				  PlayMusic(VOICE_10);
-           //machinerec.remealnoaway = 0;
-					 LinkTime =0;
-					 machinerec.remealnoaway = 0;
-					 CurrentPointer=5;
-					break;
-           //语音提示“请取走出餐口的餐 "
-        } 
-      }
-//      if( machinerec.remealaway == 1) //餐已被取走
-//      {
-//         LinkTime =0;
-//         machinerec.remealaway = 0;
-//         CurrentPointer=5;
+////       if( machinerec.retodoor == 1) //到达出餐口
+////       {
+////         machinerec.retodoor = 0;
+////         
+////       }
+//       LinkTime =0;
+//       while(1)//等待客户取走餐之后，才跳到Case 5
+//       {
+//         if( LinkTime >180) //餐在出餐口未被取走，最多等待3分，超过了报错
+//         {
+//           printf("餐未超过了三分钟还未被取走\r\n");
+//           AbnormalHandle(SendUR6Erro);
+//           break;
+//         }
+// 			 manageusart6data();   //若机械手有数据，处理机械手返回数据
+// 		   if( machinerec.remealaway == 1) //餐已被取走
+//       {
+//					 printf("餐已被取走\r\n");
+//					 //machinerec.remealaway = 0;
+//					 LinkTime =0;
+//					 machinerec.remealaway = 0;
+//					 CurrentPointer=5;
+//           break;
+//       }
+//       if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
+//       {
+//					printf("餐在取餐口过了20秒还未被取走\r\n");
+//				  PlayMusic(VOICE_10);
+//           //machinerec.remealnoaway = 0;
+//					 LinkTime =0;
+//					 machinerec.remealnoaway = 0;
+//					 CurrentPointer=5;
+//					break;
+//           //语音提示“请取走出餐口的餐 "
+//        } 
 //      }
-//			if( machinerec.remealnoaway == 1) //餐在取餐口过了20秒还未被取走，暂时用此判断
-//      {
-//         LinkTime =0;
-//         machinerec.remealnoaway = 0;
-//         CurrentPointer=5;
-//      }
- 	  }//break;			    
+////      if( machinerec.remealaway == 1) //餐已被取走
+////      {
+////         LinkTime =0;
+////         machinerec.remealaway = 0;
+////         CurrentPointer=5;
+////      }
+////			if( machinerec.remealnoaway == 1) //餐在取餐口过了20秒还未被取走，暂时用此判断
+////      {
+////         LinkTime =0;
+////         machinerec.remealnoaway = 0;
+////         CurrentPointer=5;
+////      }
+// 	  }//break;			    
     case 5:     /*对用户数据进行减一*/  //?? 如果需要进行错误退币，需要修该返回值所在范围
 		{
+			delay_ms(1000);
 			printf("对用户数据进行减一");
       UserAct.Meal_takeout++;//取餐数据加
       VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示

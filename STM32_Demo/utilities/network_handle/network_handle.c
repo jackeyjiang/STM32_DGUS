@@ -1571,7 +1571,6 @@ extern uint8_t Current;
 char mealvariety=0;
 void DataUpload(void)
 {
-	char mealvariety=0;
 	switch(mealvariety)
 	{
 		case 0:

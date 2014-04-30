@@ -66,9 +66,10 @@ void InitSetting(void)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
+int MoneyBack = 0;
 void MealArr(unsigned char index)
 {
-    int MoneyBack = 0 ,PayBill = 0;
+    int PayBill = 0;
 	  switch(index)
 	  {
       case 1 :	/*购买餐品的ID*/
@@ -132,16 +133,15 @@ void MealArr(unsigned char index)
 /*------购买餐品的数量-----------------*/
 	  switch(index)
 	  {
-			case 1:CustomerSel.MealNo  =  Print_Struct.P_Number1st;break;
-			case 2:CustomerSel.MealNo  =  Print_Struct.P_Number2nd;break;
-			case 3:CustomerSel.MealNo  =  Print_Struct.P_Number3rd;break;
-			case 4:CustomerSel.MealNo  =  Print_Struct.P_Number4th;break;
+			case 1:CustomerSel.MealNo  =  UserAct.MealCnt_1st_t;break;
+			case 2:CustomerSel.MealNo  =  UserAct.MealCnt_2nd_t;break;
+			case 3:CustomerSel.MealNo  =  UserAct.MealCnt_3rd_t;break;
+			case 4:CustomerSel.MealNo  =  UserAct.MealCnt_4th_t;break;
 	  }
 		/*购买餐品的类型*/
     CustomerSel.PayType =  UserAct.PayType;  //	UserAct.PayType  ;
 	 if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
 	 { 
-		 MoneyBack  =Print_Struct.P_MoneyBack *100 ;  /*扩大10倍*/
 		//	printf("UserAct.MoneyBack=%d\r\n",UserAct.MoneyBack);
 		 /*十进制转换成16*/
 		 CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
@@ -165,7 +165,15 @@ void MealArr(unsigned char index)
 		CustomerSel.MealName	   =  	   index ;
 		/*付了多少现金*/
 		//PayBill  =UserAct.PayForBills +*100 ;  /*扩大10倍*/
-		PayBill  =	(UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards)*100 ;
+		//PayBill  =	(UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards)*100 ;
+	  switch(index)
+		{
+			case 1: PayBill= UserAct.MealCost_1st*100;break;
+			case 2: PayBill= UserAct.MealCost_2nd*100;break;
+			case 3: PayBill= UserAct.MealCost_3rd*100;break;
+			case 4: PayBill= UserAct.MealCost_4th*100;break;
+			default:break;
+		}
 	 	/*支付了多少钱*/
 		CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
 		CustomerSel.DealBalance[0]      =       CustomerSel.DealBalance[0]/10 *16 +CustomerSel.DealBalance[0]%10 ;   

@@ -86,8 +86,9 @@ int main(void)
 					CloseTIM7();					
 					WaitTime=5;//5S计时   
 	       	OpenTIM4(); 
-
 					//改变用户所选餐的总数
+					MoneyBack =UserAct.MoneyBack *100 ;  /*扩大10倍*/
+			
 					Current= data_record;
 			  }
 			}break;
