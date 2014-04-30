@@ -38,7 +38,7 @@ int main(void)
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
 	printf("SignInFunction ok\r\n");  //
 	/*…Ó€⁄Õ®«©µΩ*/
-//	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
+	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	printf("Szt_GpbocAutoCheckIn ok\r\n");	
 	delay_ms(1000);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);
