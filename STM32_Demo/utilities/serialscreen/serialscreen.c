@@ -1055,16 +1055,15 @@ loop1:	switch(MealID)
 				}					
 			}break;
 			case meal_num:
-			{
-				//VariableData[1]; 需要对当前餐号进行记录,然后再处理
-				InitSetting();
+			{			
 			  CurFloor.MealID= VariableData[1];	
-				CurFloor.FloorNum= 1;
 				VariableChage(floor_num,CurFloor.FloorNum);
+				InitSetting();
 			}break;
       case floor_num:
 			{
 			  CurFloor.FloorNum= VariableData[1];
+				InitSetting();
 			}break;
       case row_1st:
       {
@@ -1153,7 +1152,7 @@ loop1:	switch(MealID)
 						//禁止屏幕点击*/
              ScreenControl(ScreenDisable);
 						//数据同步子程序
-						 if(MealDataCompareFun()==0x10)
+						 if(MealDataCompareFun()==0x04)
 						 {
 							 PageChange(Data_synchronization);
 						 }

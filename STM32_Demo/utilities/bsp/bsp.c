@@ -147,6 +147,7 @@ unsigned char  WaitPayMoney(void)
 				UserAct.PayForCards = UserAct.PayShould - UserAct.PayAlready;
 			  //UserAct.PayForCards = UserAct.PayShould ;
 			  UserAct.PayAlready += UserAct.PayForCards ;
+				UART3_ClrRxBuf();
 			  CurrentPoint =6;
 			}
 	  }break;
@@ -160,6 +161,7 @@ unsigned char  WaitPayMoney(void)
 				UserAct.PayForCards = UserAct.PayShould - UserAct.PayAlready;
 			  //UserAct.PayForCards = UserAct.PayShould ;
 			  UserAct.PayAlready += UserAct.PayForCards ;
+				UART3_ClrRxBuf();
 			  CurrentPoint =6;
 			}
 		}break;

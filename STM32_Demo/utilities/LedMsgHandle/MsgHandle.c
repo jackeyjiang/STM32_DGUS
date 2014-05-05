@@ -48,14 +48,25 @@ uint8_t  WaitTime=0;
  *******************************************************************************/  
 void InitSetting(void)
 {
+  if(FloorMealMessageWriteToFlash.FloorMeal[CurFloor.FloorNum - 1].MealID == CurFloor.MealID)
+  {
+		CurFloor.MealCount = FloorMealMessageWriteToFlash.FloorMeal[CurFloor.FloorNum - 1].MealCount;
+		CurFloor.FCount    = FloorMealMessageWriteToFlash.FloorMeal[CurFloor.FloorNum - 1].FCount;
+		CurFloor.SCount    = FloorMealMessageWriteToFlash.FloorMeal[CurFloor.FloorNum - 1].SCount;
+		CurFloor.TCount    = FloorMealMessageWriteToFlash.FloorMeal[CurFloor.FloorNum - 1].TCount;
+	}
+	else
+	{
 		CurFloor.MealCount = 0;
 		CurFloor.FCount    = 0;
 		CurFloor.SCount    = 0;
-		CurFloor.TCount    = 0;			
-		VariableChage(row_1st,CurFloor.FCount);
-		VariableChage(row_2nd,CurFloor.SCount);
-		VariableChage(row_3rd,CurFloor.TCount);
-		//之后在加入放餐设置
+		CurFloor.TCount    = 0;
+	}
+
+	VariableChage(row_1st,CurFloor.FCount);
+	VariableChage(row_2nd,CurFloor.SCount);
+	VariableChage(row_3rd,CurFloor.TCount);
+	//之后在加入放餐设置
 }
  /*******************************************************************************
  * 函数名称:MealArr                                                                     

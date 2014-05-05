@@ -113,7 +113,8 @@ void COPY(Struct_TD  a,unsigned char *p0,unsigned char *p1)
 	p1[17] = a.Hours    % 10+'0';
 	p1[19] = a.Minutes  / 10+'0';
 	p1[20] = a.Minutes  % 10+'0';
-
+	p1[22] = a.Senconds / 10+'0';
+  p1[23] = a.Senconds % 10+'0';
 }
 
  /*******************************************************************************
@@ -144,7 +145,7 @@ void  SPRT(void)
   unsigned char   SendStc[3]={0x1d,0x56,0x01};		//«–÷Ω√¸¡Ó
 	unsigned char  huan3[]={0x1b,0x64,0x06};
 	unsigned char  p0[]={"”¶ ’:201“— ’:   ’“ªÿ:   \r\n"};
-	unsigned char  p1[]={" ±º‰:2013-12-15-12:30\r\n"};
+	unsigned char  p1[]={" ±º‰:2013-12-15-12:30:00\r\n"};
 	unsigned char  p2[]={"∫˙¬‹≤∑≥¥µ∞1\t15\t015\r\n"};
 	unsigned char  p3[]={"œ„πΩª¨º¶  1\t15\t015\r\n"};
 	unsigned char  p4[]={"¥‡∆§øæ—º  1\t15\t015\r\n"};

@@ -544,7 +544,7 @@ void HextoChar(char *destbuff,char *buffer)
   char temp=0;
   while(1)
   {
-   if((buffer[i]==',')||(buffer[i]=='N')||(buffer[i]=='Y')||(buffer[i]=='E')) 
+   if((buffer[i]==',')||(buffer[i]=='N')||(buffer[i]=='Y')) 
    {
       destbuff[j++]=buffer[i];
 		  temp++;

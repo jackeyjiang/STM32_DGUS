@@ -1,5 +1,4 @@
-#include "stm32f4xx.h"
-#include "uart3.h"
+#include "bsp.h"
  
 void Uart3_Configuration(void)
 {
@@ -138,8 +137,7 @@ unsigned int UART3_GetCharsInRxBuf(void)
 void UART3_ClrRxBuf(void)
 {
 	//_DINT();
-	UART_InpLen =0;
-	RX_IndexW =0;
+	memset(RX3_BUFF,0,sizeof(RX3_BUFF));
 	//_EINT();
 
 }

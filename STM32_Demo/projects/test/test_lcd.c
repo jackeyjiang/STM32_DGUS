@@ -25,8 +25,8 @@ int main(void)
 	hardfawreInit(); //硬件初始化
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
 //	if(!CloseCashSystem())  
-  OnlymachieInit();  //机械手初始化
-	printf("OnlymachieInit ok\r\n");  //
+//  OnlymachieInit();  //机械手初始化
+//	printf("OnlymachieInit ok\r\n");  //
 	//delay_ms(30000);
   //SendtoServce();  //上传前七天的数据
   //ReadDatatoBuffer(); //上一个程序有这个函数
@@ -40,9 +40,9 @@ int main(void)
 	/*深圳通签到*/
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	printf("Szt_GpbocAutoCheckIn ok\r\n");	
-	delay_ms(1000);
-	if(!CloseCashSystem())  AbnormalHandle(billset_erro);
 	PageChange(Menu_interface); //显示选餐界面
+	delay_ms(1000);
+	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
 	DispLeftMeal();             //显示餐品数据
 	while(1)
   {

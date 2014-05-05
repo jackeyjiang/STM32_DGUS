@@ -13,12 +13,12 @@
 
 static long Batch = 0x00 ;//交易流水号
 
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x10}; /*终端TID码 10000006*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
 unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/
-unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,'0','0'};	   /*终端状态*/
+unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,0xE0,0x10};	   /*终端状态*/
 unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/
 unsigned char  MAC[8+3]={0xc9,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   /*MAC*/
@@ -809,7 +809,7 @@ unsigned char StatusUploadingFun()
 	 GetBRWN(); /*得到水流号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));	/*批次号*/
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(DeviceStatus));  /*终端的状态*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceStatus,sizeof(DeviceStatus));  /*终端的状态*/
 	 Send_Buf[CmdLenght] = 0x03  ;
 	 CmdLenght+=0x03;
 	 i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);//0x0400 状态上送
@@ -1001,30 +1001,22 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	 return 1 ;
 	 for(j=0;j<Lenght+7;j++)
 	 {
-
- //   printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-
-	  }
-	  if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)  //表示正确
-	  {
-
+     printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+	 }
+	 if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)  //表示正确
+	 {
 		 if(rx1Buf[7]==0x00)/*是否应答命令*/
 		 {
-			return 0 ;
+			  return 0 ;
 		 }
 		 if(rx1Buf[7]==0x24)/*交易流水号（终端流水）重复*/
 		 {
-		  //   Batch ++ ;	/*流水号自加*/
-			return 1 ;
+		 //   Batch ++ ;	/*流水号自加*/
+			 return 1 ;
 		 }
-
-	  }
+	 }
    return 0 ;
-
- }
-
-
-
+}
 
  /*******************************************************************************
 * Function Name  : MealUploadingFun		 0X0300
@@ -1312,7 +1304,7 @@ bool SignInFunction(void)
 *******************************************************************************/
 bool EchoFuntion(void (*fptr)(void))
  {
-   unsigned char i = 200 ;
+   unsigned char i = 100 ;
    do
 	 {
 	   if(EchoFun()==0x00)
@@ -1585,7 +1577,7 @@ void DataUpload(void)
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
-           Sd_Write('E');//发送失败
+           Sd_Write('N');//发送失败
 				}
 				else 
 					Sd_Write('Y');//改变当前最后两位为N0
@@ -1604,7 +1596,7 @@ void DataUpload(void)
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
-           Sd_Write('E');
+           Sd_Write('N');
 				}
 				else 
 					 Sd_Write('Y');//改变当前最后两位为N0
@@ -1623,7 +1615,7 @@ void DataUpload(void)
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
-           Sd_Write('E');
+           Sd_Write('N');
 				}
 				else 
 					 Sd_Write('Y');//改变当前最后两位为N0
@@ -1642,7 +1634,7 @@ void DataUpload(void)
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
-           Sd_Write('E');
+           Sd_Write('N');
 				}
 				else 
 					 Sd_Write('Y');//改变当前最后两位为N0
