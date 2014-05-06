@@ -47,7 +47,7 @@ char         RX4Buffer[40]={0};	  /*串口4接受数据缓冲区 */
 uint8_t 	   rx4DataLen =0 ;  /*串口4接受数据个数*/
 uint8_t      rx4ack;		      /*接受数据应答*/
 uint8_t      rx4Check ;		    /*接受数据校验位*/
-unsigned char  BillDataBuffer[8]={0}; //作为转换完成的数组
+unsigned char  BillDataBuffer[20]={0}; //作为转换完成的数组
 void UART4_IRQHandler(void)
 {
 	if(USART_GetITStatus(UART4,USART_IT_RXNE)!=RESET)//数据接收扫描

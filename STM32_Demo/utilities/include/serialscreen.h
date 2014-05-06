@@ -23,6 +23,7 @@
 #define TemperatureSet_interface 0x1C  /*温度设置界面*/
 #define Data_synchronization  0x1E  /*数据同步*/
 #define Coinset_interface     0x22  /*硬币设置*/
+#define Cardbalence_interface 0x25  /*刷卡界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -139,6 +140,14 @@
 #define coins_in    0x0051 //退币机内的硬币总量
 #define coins_key   0x0052 //退币的按键
 
+//刷卡金额变量
+#define cardbalence_before    0x0060  //刷卡钱余额
+#define amountof_consumption  0x0065 //本次消费金额
+#define cardbalence_after     0x006A  //刷卡后余额
+
+#define caedbalence_cancel    0x0053  //刷卡取消按键
+
+
 extern const char price_1st;
 extern const char price_2nd;
 extern const char price_3rd;
@@ -151,5 +160,6 @@ void DispLeftMeal(void);
 void DealSeriAceptData(void);
 void VariableChage(uint16_t Variable,uint16_t Value);	
 void DisplayAbnormal(char *abnomal_code);
+void VariableChagelong (uint16_t Variable,uint32_t Value);		
 
 #endif

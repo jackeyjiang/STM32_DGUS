@@ -303,16 +303,16 @@ uint8_t ManageReOrderType(void)
   while(1) //等待有Ack信号或超时
   {
     if(( Usart2Flag == AckFlag ) || ( AckOver == RxOk ))
-	{
-	  break;
-	}
-	temp ++;
-	delay_us(50);
-	if( temp >= 0x0fff0 )
-	{
-	  //printf("\n等待有ack信号超时\n");
-	  break;
-	}
+  	{
+  	  break;
+  	}
+  	temp ++;
+  	delay_us(50);
+  	if( temp >= 0x0fff0 )
+  	{
+  	  //printf("\n等待有ack信号超时\n");
+  	  break;
+  	}
   }
 
   //printf("\n等待进入Ack接收时间:%d \n",temp );
@@ -321,16 +321,16 @@ uint8_t ManageReOrderType(void)
   while(1)	// 等待ACK接收结束或超时
   {
     if( AckOver == RxOk )
-	{
-	  break;
-	}
-	temp ++;
-	delay_us(50);
-	if( temp >= 0x0fff0 )
-	{
-	  //printf("\n接收完Ack超时\n");
-	  break;
-	}
+  	{
+  	  break;
+  	}
+  	temp ++;
+  	delay_us(50);
+  	if( temp >= 0x0fff0 )
+  	{
+  	  //printf("\n接收完Ack超时\n");
+  	  break;
+  	}
   }
   //printf("\n接收完Ack时间:%d\n",temp);
 
@@ -355,62 +355,64 @@ uint8_t ManageReOrderType(void)
   if( ackflagbuff == IsAck )
   	{
   	  
-	  temp =0;
-		while(1) //等待接收的为返回的数据或超时
-		{
-		  if( Usart2Flag == DataFlag )
-		  {
-			break;
-		  }
-		  temp ++;
-		  delay_us(50);
-		  if( temp >= 0x0fff0 )
-		  {
-			//printf("\n进入数据接收状态超时\n");
-			break;
-		  }
-		}
-		//printf("\n进入数据接收状态时间:%d\n",temp);
-	  
-	  
-		temp =0;
-		while(1) //等待接收完所有的数据或超时
-		{
-		  if( DataOver == RxOk )
-		  {
-			break;
-		  }
-		  temp ++;
-		  delay_us(50);
-		  if( temp >= 0x0fff0 )
-		  {
-			//printf("\n接收完所有数据超时\n");
-			break;
-		  }
-		}
-		//printf("\n接收完数据时间:%d\n",temp);
-	  
-		dataflagbuff = ManageRxData();//判断接收到的数据是否完整
-	  
-		/*判断返回的数据并处理*/
-		if( dataflagbuff == DataNc)
-		{
-		  //printf("\n接收不到返回数据\n");
-		}
-		else if( dataflagbuff == DataReOk)
-		{
-		   //printf("\n返回数据完整\n");
-		   
-		   orderType = PrintBuf2[22];  
-		}
-		else if( dataflagbuff == DataReErr)
-		{
-		   //printf("\n返回数据不完整\n");
-		}
-		else 
-		{
-		   //printf("\n返回数据错误,数据处理的结果为%d\n",dataflagbuff);
-		}
+  	  temp =0;
+  		while(1) //等待接收的为返回的数据或超时
+  		{
+  		  if( Usart2Flag == DataFlag )
+  		  {
+  			break;
+  		  }
+  		  temp ++;
+  		  delay_us(50);
+  		  //if( temp >= 0x0fff0 )
+        if( temp >= 0x124F80 )     //最多等60秒
+  		  {
+  			//printf("\n进入数据接收状态超时\n");
+  			break;
+  		  }
+  		}
+  		//printf("\n进入数据接收状态时间:%d\n",temp);
+  	  
+  	  
+  		temp =0;
+  		while(1) //等待接收完所有的数据或超时
+  		{
+  		  if( DataOver == RxOk )
+  		  {
+    			break;
+  		  }
+  		  temp ++;
+  		  delay_us(50);
+  		  //if( temp >= 0x0fff0 )
+        if( temp >= 0x186A0 )     //最多等5秒
+  		  {
+    			//printf("\n接收完所有数据超时\n");
+    			break;
+  		  }
+  		}
+  		//printf("\n接收完数据时间:%d\n",temp);
+  	  
+  		dataflagbuff = ManageRxData();//判断接收到的数据是否完整
+  	  
+  		/*判断返回的数据并处理*/
+  		if( dataflagbuff == DataNc)
+  		{
+  		  //printf("\n接收不到返回数据\n");
+  		}
+  		else if( dataflagbuff == DataReOk)
+  		{
+  		   //printf("\n返回数据完整\n");
+  		   
+  		   orderType = PrintBuf2[22];  
+  		}
+  		else if( dataflagbuff == DataReErr)
+  		{
+  		   //printf("\n返回数据不完整\n");
+  		}
+  		else 
+  		{
+  		   //printf("\n返回数据错误,数据处理的结果为%d\n",dataflagbuff);
+  		}
   	}
   //printf("\nPrintIndex2= %d",PrintIndex2);
 	//printf("\n返回命令值为：%x",orderType);
@@ -463,7 +465,7 @@ void Order_Ifn_QueryStatus(void)
   {
     USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<23;i++)
@@ -501,9 +503,9 @@ void Order_SztUserLogin(void)
   }
 
   for(i=0;i<3;i++)
-  	{
-  	  data[21+i] = UserNo[i];
-  	}
+	{
+	  data[21+i] = UserNo[i];
+	}
   
   for(i=0;i<19;i++)			 //计算要校验的数据的和
   {
@@ -520,7 +522,7 @@ void Order_SztUserLogin(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<26;i++)
@@ -591,7 +593,7 @@ void Order_SztTimeCheck(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<32;i++)
@@ -641,7 +643,7 @@ void Order_SztDeductOnce(int32_t money)
   	}
   */
   //扣款时间
-  	RTC_TimeShow();
+  RTC_TimeShow();
   data[25] = Year_Frist;;
   data[26] = DectoBCD(TimeDate.Year);
   data[27] = DectoBCD(TimeDate.Month);
@@ -667,7 +669,7 @@ void Order_SztDeductOnce(int32_t money)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<34;i++)
@@ -715,7 +717,7 @@ void Order_SztDeductAgain(int32_t money)
   	}
   	*/
   //扣款时间
-  	RTC_TimeShow();
+  RTC_TimeShow();
   data[25] = Year_Frist;;
   data[26] = DectoBCD(TimeDate.Year);
   data[27] = DectoBCD(TimeDate.Month);
@@ -741,7 +743,7 @@ void Order_SztDeductAgain(int32_t money)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<34;i++)
@@ -790,13 +792,12 @@ void Order_SztReadCardOnce(void)
   data[23] = SztSendData.dataend;	   //结束码
   //printf(" %x ",data[21]);
   
-  
 
   for(i=0;i<24;i++)			 //发送深圳通操作员登录命令
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<24;i++)
@@ -849,7 +850,7 @@ void Order_SztReadCardAgain(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<24;i++)
@@ -899,7 +900,7 @@ void Order_SztUnlink(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<23;i++)
@@ -950,7 +951,7 @@ void Order_SztAutoCheckIn(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<24;i++)
@@ -1002,7 +1003,7 @@ void Order_SztAutoDownload(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<24;i++)
@@ -1053,7 +1054,7 @@ void Order_SztAutoSendData(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<24;i++)
@@ -1110,7 +1111,7 @@ void Order_SztRechargeOnce(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<30;i++)
@@ -1164,7 +1165,7 @@ void Order_SztRechargeAgain(void)
   {
     //USART_ClearFlag(USART2,USART_FLAG_TC);
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
   /*
   for(i=0;i<30;i++)
@@ -1229,7 +1230,7 @@ void Order_Gpboc_Init(void)
   for(i=0;i<55;i++)
   {
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
 } 
 
@@ -1280,7 +1281,7 @@ void Order_Gpboc_ReadCard (void)
   for(i=0;i<25;i++)
   {
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
 }
 
@@ -1340,7 +1341,7 @@ void Order_Gpboc_Deduct(uint32_t submoney)
   for(i=0;i<28;i++)
   {
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
 }
 
@@ -1392,7 +1393,7 @@ void Order_Gpboc_SendData(void)
   for(i=0;i<55;i++)
   {
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
 }
 
@@ -1446,7 +1447,7 @@ void Order_Gpboc_Check_Out(void)
   for(i=0;i<55;i++)
   {
     USART_SendData(USART2,data[i]);
-	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
+  	while( USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET);
   }
 }
 
@@ -1454,7 +1455,7 @@ void Order_Gpboc_Check_Out(void)
 
 
 
-/*处理设备状态查询*/
+/*处理设备状态查询,返回1成功，返回0失败*/
 uint8_t ManageQueryStatus(void)
 {
    uint8_t i;
@@ -1633,7 +1634,7 @@ uint8_t ManageQueryStatus(void)
 
 
 
-/*解析深圳通操作员登录*/
+/*解析深圳通操作员登录,返回1成功，返回0失败*/
 uint8_t ManageSztUserLogin(void)
 {
   uint8_t temp =0;
@@ -1642,21 +1643,21 @@ uint8_t ManageSztUserLogin(void)
 	  //printf("\n操作员登录成功");
 	}
   else if( PrintBuf2[27] == 0x88)	 //错误，需要判断返回数据域的前两字节错误代码
-   {
-	 printf("\n操作员登录失败1\n");
-   }
-   else if( PrintBuf2[27] == 0x51)	//重作交易
-   {
-	 //printf("\n操作员登录失败2\n");
-   }
-   else
-   {
-	 //printf("\n操作员登录失败3\n");
-   }
+  {
+	  printf("\n操作员登录失败1\n");
+  }
+  else if( PrintBuf2[27] == 0x51)	//重作交易
+  {
+  	//printf("\n操作员登录失败2\n");
+  }
+  else
+  {
+  	//printf("\n操作员登录失败3\n");
+  }
 
-   temp = PrintBuf2[27] +1;
+  temp = PrintBuf2[27] +1;
 
-   return temp;
+  return temp;
 
 }
 
@@ -1666,7 +1667,7 @@ uint8_t ManageSztUserLogin(void)
 
 
 
-/*解析深圳通时间同步,没有同步结果信息(2014.2.11)*/
+/*解析深圳通时间同步,没有同步结果信息(2014.2.11),返回1成功，返回0失败*/
 uint8_t ManageSztTimeCheck(void)
 {
   uint8_t temp =0;
@@ -1754,7 +1755,7 @@ uint8_t ManageSztTimeCheck(void)
 
 
 
-/*解析深圳通初次扣款*/
+/*解析深圳通初次扣款,返回1成功，返回0失败*/
 uint8_t ManageSztDeductOnce(void)
 {
   uint8_t temp =0;
@@ -1800,7 +1801,7 @@ uint8_t ManageSztDeductOnce(void)
 
 
 
-/*解析深圳通再次扣款*/
+/*解析深圳通再次扣款,返回1成功，返回0失败*/
 uint8_t ManageSztDeductAgain(void)
 {
   uint8_t temp =0;
@@ -1845,15 +1846,15 @@ uint8_t ManageSztDeductAgain(void)
 
 
 
-/*解析深圳通首次读卡*/
+/*解析深圳通首次读卡,返回1成功，返回0失败*/
 uint8_t ManageSztReadCardOnce(void)
 {
   uint8_t temp =0;
   uint8_t i;
   if(PrintBuf2[27] == 0x00)
-  	{
-  	  //printf("\n深圳通首次读卡成功\n");
-  	  SztCardInf.CardStatus = PrintBuf2[28];
+  {
+	  //printf("\n深圳通首次读卡成功\n");
+	  SztCardInf.CardStatus = PrintBuf2[28];
 	  //printf("\n卡状态为:%d",SztCardInf.CardStatus);
 	  SztCardInf.CardNum = PrintBuf2[29] + (PrintBuf2[30]<<8) + (PrintBuf2[31]<<16) + (PrintBuf2[32]<<24);
 	  //printf("\n卡号为:%d",SztCardInf.CardNum);
@@ -1866,9 +1867,9 @@ uint8_t ManageSztReadCardOnce(void)
 	  SztCardInf.SztDeposit = PrintBuf2[42] + (PrintBuf2[43]<<8) + (PrintBuf2[44]<<16) + (PrintBuf2[45]<<24);
 	  //printf("\n深圳通押金为:%d",SztCardInf.SztDeposit);
 	  for(i=0;i<4;i++)
-	  	{
+	  {
 		  SztCardInf.SellCardDay[i] = PrintBuf2[46+i];
-	  	}
+	  }
 	  //printf("\n深圳通出售日期为:%x%x-%x-%x",SztCardInf.SellCardDay[0],SztCardInf.SellCardDay[1],SztCardInf.SellCardDay[2],SztCardInf.SellCardDay[3]);
 	  SztCardInf.GetRentsMonth = PrintBuf2[50];
 	  //printf("\n卡收租月份为:%d",SztCardInf.GetRentsMonth);
@@ -1884,23 +1885,23 @@ uint8_t ManageSztReadCardOnce(void)
 	  SztCardInf.NoSellCardMoney = PrintBuf2[67] + (PrintBuf2[68]<<8) + (PrintBuf2[69]<<16) + (PrintBuf2[70]<<24);
 	  //printf("\n未售卡金额为:%ld",SztCardInf.NoSellCardMoney);
 	  
-  	}
+  }
   else if( PrintBuf2[27] == 0x88)	 //错误，需要判断返回数据域的前两字节错误代码
-   {
+  {
      //printf("\n深圳通首次读卡失败1\n");
-   }
-   else if( PrintBuf2[27] == 0x51)  //重作交易
-   {
+  }
+  else if( PrintBuf2[27] == 0x51)  //重作交易
+  {
      //printf("\n深圳通首次读卡失败2\n");
-   }
-   else
-   {
+  }
+  else
+  {
      //printf("\n深圳通首次读卡失败3\n");
-   }
+  }
 
-   temp = PrintBuf2[27] +1;
+  temp = PrintBuf2[27] +1;
 
-   return temp;
+  return temp;
 
 }
 
@@ -1908,7 +1909,7 @@ uint8_t ManageSztReadCardOnce(void)
 
 
 
-/*解析深圳通再次读卡*/
+/*解析深圳通再次读卡,返回1成功，返回0失败*/
 uint8_t ManageSztReadCardAgain(void)
 {
   uint8_t temp =0;
@@ -1917,60 +1918,60 @@ uint8_t ManageSztReadCardAgain(void)
   	{
   	  //printf("\n深圳通再次读卡成功\n");
   	  SztCardInf.CardStatus = PrintBuf2[28];
-	  //printf("\n卡状态为:%d",SztCardInf.CardStatus);
-	  SztCardInf.CardNum = PrintBuf2[29] + (PrintBuf2[30]<<8) + (PrintBuf2[31]<<16) + (PrintBuf2[32]<<24);
-	  //printf("\n卡号为:%d",SztCardInf.CardNum);
-	  SztCardInf.CardType = PrintBuf2[33];
-	  //printf("\n卡类型为:%d",SztCardInf.CardStatus);
-	  SztCardInf.SztMoney = PrintBuf2[34] + (PrintBuf2[35]<<8) + (PrintBuf2[36]<<16) + (PrintBuf2[37]<<24);
-	  //printf("\n深圳通当前余额为:%ld",SztCardInf.SztMoney);
-	  SztCardInf.MachinMoney = PrintBuf2[38] + (PrintBuf2[39]<<8) + (PrintBuf2[40]<<16) + (PrintBuf2[41]<<24);
-	  //printf("\n设备当前剩余额度为:%ld",SztCardInf.MachinMoney);
-	  SztCardInf.SztDeposit = PrintBuf2[42] + (PrintBuf2[43]<<8) + (PrintBuf2[44]<<16) + (PrintBuf2[45]<<24);
-	  //printf("\n深圳通押金为:%d",SztCardInf.SztDeposit);
-	  for(i=0;i<4;i++)
-	  	{
-		  SztCardInf.SellCardDay[i] = PrintBuf2[46+i];
-	  	}
-	  //printf("\n深圳通出售日期为:%x%x-%x-%x",SztCardInf.SellCardDay[0],SztCardInf.SellCardDay[1],SztCardInf.SellCardDay[2],SztCardInf.SellCardDay[3]);
-	  SztCardInf.GetRentsMonth = PrintBuf2[50];
-	  //printf("\n卡收租月份为:%d",SztCardInf.GetRentsMonth);
-	  SztCardInf.RentsNum = PrintBuf2[51] + (PrintBuf2[52]<<8) + (PrintBuf2[53]<<16) + (PrintBuf2[54]<<24);
-	  //printf("\n应收租金为:%d",SztCardInf.RentsNum);
-	  SztCardInf.ReturnableMoney = PrintBuf2[55] + (PrintBuf2[56]<<8) + (PrintBuf2[57]<<16) + (PrintBuf2[58]<<24);
-	  //printf("\n卡可退实际金额为:%ld",SztCardInf.ReturnableMoney);
-	  SztCardInf.Poundage = PrintBuf2[59] + (PrintBuf2[60]<<8) + (PrintBuf2[61]<<16) + (PrintBuf2[62]<<24);
-	  //printf("\n退卡手续费为:%ld",SztCardInf.Poundage);
-	  SztCardInf.NoSellCardDeposit = PrintBuf2[63] + (PrintBuf2[64]<<8) + (PrintBuf2[65]<<16) + (PrintBuf2[66]<<24);
-
-	  //printf("\n未售卡押金为:%ld",SztCardInf.NoSellCardDeposit);
-	  SztCardInf.NoSellCardMoney = PrintBuf2[67] + (PrintBuf2[68]<<8) + (PrintBuf2[69]<<16) + (PrintBuf2[70]<<24);
-	  //printf("\n未售卡金额为:%ld",SztCardInf.NoSellCardMoney);
-	  
+  	  //printf("\n卡状态为:%d",SztCardInf.CardStatus);
+  	  SztCardInf.CardNum = PrintBuf2[29] + (PrintBuf2[30]<<8) + (PrintBuf2[31]<<16) + (PrintBuf2[32]<<24);
+  	  //printf("\n卡号为:%d",SztCardInf.CardNum);
+  	  SztCardInf.CardType = PrintBuf2[33];
+  	  //printf("\n卡类型为:%d",SztCardInf.CardStatus);
+  	  SztCardInf.SztMoney = PrintBuf2[34] + (PrintBuf2[35]<<8) + (PrintBuf2[36]<<16) + (PrintBuf2[37]<<24);
+  	  //printf("\n深圳通当前余额为:%ld",SztCardInf.SztMoney);
+  	  SztCardInf.MachinMoney = PrintBuf2[38] + (PrintBuf2[39]<<8) + (PrintBuf2[40]<<16) + (PrintBuf2[41]<<24);
+  	  //printf("\n设备当前剩余额度为:%ld",SztCardInf.MachinMoney);
+  	  SztCardInf.SztDeposit = PrintBuf2[42] + (PrintBuf2[43]<<8) + (PrintBuf2[44]<<16) + (PrintBuf2[45]<<24);
+  	  //printf("\n深圳通押金为:%d",SztCardInf.SztDeposit);
+  	  for(i=0;i<4;i++)
+  	  	{
+  		  SztCardInf.SellCardDay[i] = PrintBuf2[46+i];
+  	  	}
+  	  //printf("\n深圳通出售日期为:%x%x-%x-%x",SztCardInf.SellCardDay[0],SztCardInf.SellCardDay[1],SztCardInf.SellCardDay[2],SztCardInf.SellCardDay[3]);
+  	  SztCardInf.GetRentsMonth = PrintBuf2[50];
+  	  //printf("\n卡收租月份为:%d",SztCardInf.GetRentsMonth);
+  	  SztCardInf.RentsNum = PrintBuf2[51] + (PrintBuf2[52]<<8) + (PrintBuf2[53]<<16) + (PrintBuf2[54]<<24);
+  	  //printf("\n应收租金为:%d",SztCardInf.RentsNum);
+  	  SztCardInf.ReturnableMoney = PrintBuf2[55] + (PrintBuf2[56]<<8) + (PrintBuf2[57]<<16) + (PrintBuf2[58]<<24);
+  	  //printf("\n卡可退实际金额为:%ld",SztCardInf.ReturnableMoney);
+  	  SztCardInf.Poundage = PrintBuf2[59] + (PrintBuf2[60]<<8) + (PrintBuf2[61]<<16) + (PrintBuf2[62]<<24);
+  	  //printf("\n退卡手续费为:%ld",SztCardInf.Poundage);
+  	  SztCardInf.NoSellCardDeposit = PrintBuf2[63] + (PrintBuf2[64]<<8) + (PrintBuf2[65]<<16) + (PrintBuf2[66]<<24);
+  
+  	  //printf("\n未售卡押金为:%ld",SztCardInf.NoSellCardDeposit);
+  	  SztCardInf.NoSellCardMoney = PrintBuf2[67] + (PrintBuf2[68]<<8) + (PrintBuf2[69]<<16) + (PrintBuf2[70]<<24);
+  	  //printf("\n未售卡金额为:%ld",SztCardInf.NoSellCardMoney);
+    
   	}
   else if( PrintBuf2[27] == 0x88)	 //错误，需要判断返回数据域的前两字节错误代码
-   {
+  {
      //printf("\n深圳通再次读卡失败1\n");
-   }
-   else if( PrintBuf2[27] == 0x51)  //重作交易
-   {
+  }
+  else if( PrintBuf2[27] == 0x51)  //重作交易
+  {
      //printf("\n深圳通再次读卡失败2\n");
-   }
-   else
-   {
+  }
+  else
+  {
      //printf("\n深圳通再次读卡失败3\n");
-   }
+  }
 
-   temp = PrintBuf2[27] +1;
+  temp = PrintBuf2[27] +1;
 
-   return temp;
+  return temp;
 
 }
 
 
 
 
-/*解析深圳通断开连接*/
+/*解析深圳通断开连接,返回1成功，返回0失败*/
 uint8_t ManageSztUnlink(void)
 {
   uint8_t temp =0;
@@ -2002,7 +2003,7 @@ uint8_t ManageSztUnlink(void)
 
 
 
-/*解析深圳通自主签到、参数下载、数据上传*/
+/*解析深圳通自主签到、参数下载、数据上传,返回1成功，返回0失败*/
 uint8_t ManageSztAutoManage(void)
 {
   uint8_t temp =0;
@@ -2034,7 +2035,7 @@ uint8_t ManageSztAutoManage(void)
 
 
 
-/*解析深圳通充值抵消*/
+/*解析深圳通充值抵消,返回1成功，返回0失败*/
 uint8_t ManageSztRechargeOnce(void)
 {
   uint8_t temp =0;
@@ -2079,7 +2080,7 @@ uint8_t ManageSztRechargeOnce(void)
 
 
 
-/*解析深圳通充值抵消*/
+/*解析深圳通充值抵消,返回1成功，返回0失败*/
 uint8_t ManageSztRechargeAgain(void)
 {
   uint8_t temp =0;
@@ -2123,7 +2124,7 @@ uint8_t ManageSztRechargeAgain(void)
 
 
 
-/*解析银联初始化签到*/
+/*解析银联初始化签到,返回1成功，返回0失败*/
 uint8_t ManageGpbocInit(void)
 {
   uint8_t i;
@@ -2211,7 +2212,7 @@ uint8_t ManageGpbocInit(void)
 
 
 
-/*解析查询银联卡余额*/
+/*解析查询银联卡余额,返回1成功，返回0失败*/
 uint8_t ManageGpbocReadCard(void)
 {
   uint8_t i;
@@ -2347,7 +2348,7 @@ uint8_t ManageGpbocReadCard(void)
 
 
 //uint32_t BackupsIndex;
-/*解析扣款返回数据*/
+/*解析扣款返回数据,返回1成功，返回0失败*/
 uint8_t ManageGpbocDeduct(void)
 {
   uint8_t i;
@@ -2356,150 +2357,150 @@ uint8_t ManageGpbocDeduct(void)
    {
      //printf("\n银联扣款成功");
 
-	 //以下为把接收到的数存到对应的数组中
-	 UpInitErrNum[0] = PrintBuf2[28];	 
-	 UpInitErrNum[1] = PrintBuf2[29];
-	 
-	 UpInitGpbocErrNum[0] = PrintBuf2[30];
-	 UpInitGpbocErrNum[1] = PrintBuf2[31];
-
-
-	 UpDeductData.ucLogVersion = PrintBuf2[32];
-	 //printf("\n银联扣款结构体版本号为:%d\n",UpDeductData.ucLogVersion);
-	 
-	 UpDeductData.ucAcqBankNum = PrintBuf2[33];
-	 //printf("\n银联扣款收单行号为:%d\n",UpDeductData.ucAcqBankNum);
-	 
-	 UpDeductData.iTransNo = PrintBuf2[34] + (PrintBuf2[35]<<8) + (PrintBuf2[36]<<16) + (PrintBuf2[37]<<24);
-	 //printf("\n银联扣款交易号为:%ld\n",UpDeductData.iTransNo);
-	  
-	 UpDeductData.ucBlklistFail = PrintBuf2[38];
-	 //printf("\n银联扣款黑名单卡标志为:%d\n",UpDeductData.ucBlklistFail);
-	 
-	 UpDeductData.ucqPBOCSaleFail = PrintBuf2[39];
-	 //printf("\n银联扣款交易失败标志为:%d\n",UpDeductData.ucqPBOCSaleFail);
-	 
-	 UpDeductData.ucqPBOCLastRd = PrintBuf2[40];
-	 //printf("\n银联扣款读最后一条记录失败标志为:%d\n",UpDeductData.ucqPBOCLastRd);
-	 
-	 UpDeductData.ucOfflineSaleFail = PrintBuf2[41];
-	 //printf("\n银联扣款脱机交易拒绝标志为:%d\n",UpDeductData.ucOfflineSaleFail);
-	 
-	 UpDeductData.lTransAmount = PrintBuf2[42] + (PrintBuf2[43]<<8) + (PrintBuf2[44]<<16) + (PrintBuf2[45]<<24);
-	 //printf("\n银联本次交易金额为:%ld\n",UpDeductData.lTransAmount);
-	 
-	 UpDeductData.lCardBalance = PrintBuf2[46] + (PrintBuf2[47]<<8) + (PrintBuf2[48]<<16) + (PrintBuf2[49]<<24);
-	 //printf("\n银联卡内EC余额为:%ld\n",UpDeductData.lCardBalance);
-	 
-	 UpDeductData.lTraceNo = PrintBuf2[50] + (PrintBuf2[51]<<8) + (PrintBuf2[52]<<16) + (PrintBuf2[53]<<24);
-	 //printf("\n银联扣款流水号为:%ld\n",UpDeductData.lTraceNo);
-	 
-	 UpDeductData.lBatchNumber = PrintBuf2[54] + (PrintBuf2[55]<<8) + (PrintBuf2[56]<<16) + (PrintBuf2[57]<<24);
-	 //printf("\n银联扣款批次号为:%ld\n",UpDeductData.lBatchNumber);
-	 
-	 for(i=0;i<9;i++)
-	 	{
-	 	  UpDeductData.szPosId[i] = PrintBuf2[58+i];
-	 	}
-		/*
-	 printf("\nPOS终端号为:");
-	 for(i=0;i<9;i++)
-	 	{
-	 	  printf("%c",UpDeductData.szPosId[i]);
-	 	}
-		  */
-	 
-	 for(i=0;i<21;i++)
-	 	{
-	 	  UpDeductData.szCardNo[i] = PrintBuf2[67+i];
-	 	}
-		/*
-	 printf("\n卡号为:");
-	 for(i=0;i<21;i++)
-	 	{
-	 	  printf("%c",UpDeductData.szCardNo[i]);
-	 	}
-		  */
-	 
-	 for(i=0;i<9;i++)
-	 	{
-	 	  UpDeductData.szDate[i] = PrintBuf2[88+i];
-	 	}
-		/*
-	 printf("\n\n银联扣款日期为:");
-	 for(i=0;i<9;i++)
-	 	{
-	 	  printf("%c",UpDeductData.szDate[i]);
-	 	}
-		  */
-	 
-	 for(i=0;i<7;i++)
-	 	{
-	 	  UpDeductData.szTime[i] = PrintBuf2[97+i];
-	 	}
-		/*
-	 printf("\n银联扣款时间为:");	 
-	 for(i=0;i<7;i++)
-	 	{
-	 	  printf("%c",UpDeductData.szTime[i]);
-	 	}
-		  */
-	 
-	 for(i=0;i<5;i++)
-	 	{
-	 	  UpDeductData.szExpDate[i] = PrintBuf2[104+i];
-	 	}
-		/*
-	 printf("\n\n银联扣款EXp日期为:");	 
-	 for(i=0;i<5;i++)
-	 	{
-	 	  printf("%c",UpDeductData.szExpDate[i]);
-	 	}
-		  */
-
-	 
-	 for(i=0;i<4;i++)
-	 	{
-	 	  UpDeductData.szTellerNo[i] = PrintBuf2[109+i];
-	 	}
-		/*
-	 printf("\n银联扣款操作员为:");
-	 
-	 for(i=0;i<4;i++)
-	 	{
-	 	  printf("%c",UpDeductData.szTellerNo[i]);
-	 	}
-		  */
-
-	 
-	 for(i=0;i<4;i++)
-	 	{
-	 	  UpDeductData.szCardUnit[i] = PrintBuf2[113+i];
-	 	}
-		/*
-	 printf("\n银联卡所属组织为:");
-	 
-	 for(i=0;i<4;i++)
-	 	{
-	 	  printf("%c",UpDeductData.szCardUnit[i]);
-	 	}
-		  */
-	 
-	 
-	 UpDeductData.BkDataLen = PrintBuf2[117] + (PrintBuf2[118]<<8) + (PrintBuf2[119]<<16) + (PrintBuf2[120]<<24);
-	 //UpDeductData.BkDataLen = PrintBuf2[104] + (PrintBuf2[105]<<8);
-	  //printf("\n备份交易数据的长度为:%ld",UpDeductData.BkDataLen);
-
-	 // 备份数据保存
-	 
-	 for(temp =0;temp<UpDeductData.BkDataLen;temp++)
-	 	{
-	 	 // UpDedectBackup[temp] = PrintBuf2[121 + temp];  //unit32
-		  // UpDedectBackup[temp] = PrintBuf2[121 + temp];   //uint16
-	 	}
-	   
-	   delay_us(100);
-	  //printf("\n备份交易数据完成");
+  	 //以下为把接收到的数存到对应的数组中
+  	 UpInitErrNum[0] = PrintBuf2[28];	 
+  	 UpInitErrNum[1] = PrintBuf2[29];
+  	 
+  	 UpInitGpbocErrNum[0] = PrintBuf2[30];
+  	 UpInitGpbocErrNum[1] = PrintBuf2[31];
+  
+  
+  	 UpDeductData.ucLogVersion = PrintBuf2[32];
+  	 //printf("\n银联扣款结构体版本号为:%d\n",UpDeductData.ucLogVersion);
+  	 
+  	 UpDeductData.ucAcqBankNum = PrintBuf2[33];
+  	 //printf("\n银联扣款收单行号为:%d\n",UpDeductData.ucAcqBankNum);
+  	 
+  	 UpDeductData.iTransNo = PrintBuf2[34] + (PrintBuf2[35]<<8) + (PrintBuf2[36]<<16) + (PrintBuf2[37]<<24);
+  	 //printf("\n银联扣款交易号为:%ld\n",UpDeductData.iTransNo);
+  	  
+  	 UpDeductData.ucBlklistFail = PrintBuf2[38];
+  	 //printf("\n银联扣款黑名单卡标志为:%d\n",UpDeductData.ucBlklistFail);
+  	 
+  	 UpDeductData.ucqPBOCSaleFail = PrintBuf2[39];
+  	 //printf("\n银联扣款交易失败标志为:%d\n",UpDeductData.ucqPBOCSaleFail);
+  	 
+  	 UpDeductData.ucqPBOCLastRd = PrintBuf2[40];
+  	 //printf("\n银联扣款读最后一条记录失败标志为:%d\n",UpDeductData.ucqPBOCLastRd);
+  	 
+  	 UpDeductData.ucOfflineSaleFail = PrintBuf2[41];
+  	 //printf("\n银联扣款脱机交易拒绝标志为:%d\n",UpDeductData.ucOfflineSaleFail);
+  	 
+  	 UpDeductData.lTransAmount = PrintBuf2[42] + (PrintBuf2[43]<<8) + (PrintBuf2[44]<<16) + (PrintBuf2[45]<<24);
+  	 //printf("\n银联本次交易金额为:%ld\n",UpDeductData.lTransAmount);
+  	 
+  	 UpDeductData.lCardBalance = PrintBuf2[46] + (PrintBuf2[47]<<8) + (PrintBuf2[48]<<16) + (PrintBuf2[49]<<24);
+  	 //printf("\n银联卡内EC余额为:%ld\n",UpDeductData.lCardBalance);
+  	 
+  	 UpDeductData.lTraceNo = PrintBuf2[50] + (PrintBuf2[51]<<8) + (PrintBuf2[52]<<16) + (PrintBuf2[53]<<24);
+  	 //printf("\n银联扣款流水号为:%ld\n",UpDeductData.lTraceNo);
+  	 
+  	 UpDeductData.lBatchNumber = PrintBuf2[54] + (PrintBuf2[55]<<8) + (PrintBuf2[56]<<16) + (PrintBuf2[57]<<24);
+  	 //printf("\n银联扣款批次号为:%ld\n",UpDeductData.lBatchNumber);
+  	 
+  	 for(i=0;i<9;i++)
+  	 	{
+  	 	  UpDeductData.szPosId[i] = PrintBuf2[58+i];
+  	 	}
+  		/*
+  	 printf("\nPOS终端号为:");
+  	 for(i=0;i<9;i++)
+  	 	{
+  	 	  printf("%c",UpDeductData.szPosId[i]);
+  	 	}
+  		  */
+  	 
+  	 for(i=0;i<21;i++)
+  	 	{
+  	 	  UpDeductData.szCardNo[i] = PrintBuf2[67+i];
+  	 	}
+  		/*
+  	 printf("\n卡号为:");
+  	 for(i=0;i<21;i++)
+  	 	{
+  	 	  printf("%c",UpDeductData.szCardNo[i]);
+  	 	}
+  		  */
+  	 
+  	 for(i=0;i<9;i++)
+  	 	{
+  	 	  UpDeductData.szDate[i] = PrintBuf2[88+i];
+  	 	}
+  		/*
+  	 printf("\n\n银联扣款日期为:");
+  	 for(i=0;i<9;i++)
+  	 	{
+  	 	  printf("%c",UpDeductData.szDate[i]);
+  	 	}
+  		  */
+  	 
+  	 for(i=0;i<7;i++)
+  	 	{
+  	 	  UpDeductData.szTime[i] = PrintBuf2[97+i];
+  	 	}
+  		/*
+  	 printf("\n银联扣款时间为:");	 
+  	 for(i=0;i<7;i++)
+  	 	{
+  	 	  printf("%c",UpDeductData.szTime[i]);
+  	 	}
+  		  */
+  	 
+  	 for(i=0;i<5;i++)
+  	 	{
+  	 	  UpDeductData.szExpDate[i] = PrintBuf2[104+i];
+  	 	}
+  		/*
+  	 printf("\n\n银联扣款EXp日期为:");	 
+  	 for(i=0;i<5;i++)
+  	 	{
+  	 	  printf("%c",UpDeductData.szExpDate[i]);
+  	 	}
+  		  */
+  
+  	 
+  	 for(i=0;i<4;i++)
+  	 	{
+  	 	  UpDeductData.szTellerNo[i] = PrintBuf2[109+i];
+  	 	}
+  		/*
+  	 printf("\n银联扣款操作员为:");
+  	 
+  	 for(i=0;i<4;i++)
+  	 	{
+  	 	  printf("%c",UpDeductData.szTellerNo[i]);
+  	 	}
+  		  */
+  
+  	 
+  	 for(i=0;i<4;i++)
+  	 	{
+  	 	  UpDeductData.szCardUnit[i] = PrintBuf2[113+i];
+  	 	}
+  		/*
+  	 printf("\n银联卡所属组织为:");
+  	 
+  	 for(i=0;i<4;i++)
+  	 	{
+  	 	  printf("%c",UpDeductData.szCardUnit[i]);
+  	 	}
+  		  */
+  	 
+  	 
+  	 UpDeductData.BkDataLen = PrintBuf2[117] + (PrintBuf2[118]<<8) + (PrintBuf2[119]<<16) + (PrintBuf2[120]<<24);
+  	 //UpDeductData.BkDataLen = PrintBuf2[104] + (PrintBuf2[105]<<8);
+  	  //printf("\n备份交易数据的长度为:%ld",UpDeductData.BkDataLen);
+  
+  	 // 备份数据保存
+  	 
+  	 for(temp =0;temp<UpDeductData.BkDataLen;temp++)
+  	 	{
+  	 	 // UpDedectBackup[temp] = PrintBuf2[121 + temp];  //unit32
+  		  // UpDedectBackup[temp] = PrintBuf2[121 + temp];   //uint16
+  	 	}
+  	   
+  	   delay_us(100);
+  	  //printf("\n备份交易数据完成");
 	 
    }
   else if( PrintBuf2[27] == 0x88)  //错误，需要判断返回数据域的前两字节错误代码
@@ -2528,7 +2529,7 @@ uint8_t ManageGpbocDeduct(void)
 
 
 
-/*解析银联上传数据*/
+/*解析银联上传数据,返回1成功，返回0失败*/
 uint8_t ManageGpbocSendData(void)
 {
   uint8_t i;
@@ -2638,54 +2639,54 @@ uint8_t ManageGpbocCheckOut(void)
    {
      //printf("\n银联批结签退成功\n");
 
-	 UpInitErrNum[0] = PrintBuf2[28];	 
-	 UpInitErrNum[1] = PrintBuf2[29];
-	 
-	 UpInitGpbocErrNum[0] = PrintBuf2[30];
-	 UpInitGpbocErrNum[1] = PrintBuf2[31];
-
-	 UpCheckOutData.ucLogInLogVersion = PrintBuf2[32];
-	 //printf("\n银联批结签退的结构体版本号为:%d\n",UpCheckOutData.ucLogInLogVersion);
-	 
-	 UpCheckOutData.ucAcqBankNum = PrintBuf2[33];
-	 //printf("\n银联批结签退的收单行号为:%d\n",UpCheckOutData.ucAcqBankNum);
-	 
-	 UpCheckOutData.ucLogInOK = PrintBuf2[34];
-	  //printf("\n银联批结签退的签到成功标志为:%d\n",UpCheckOutData.ucLogInOK);
-	  
-	 UpCheckOutData.ucOper = PrintBuf2[35];
-	  //printf("\n银联批结签退的操作员号为:%d\n",UpCheckOutData.ucOper);
-	  
-	 UpCheckOutData.ucKeyMode = PrintBuf2[36];
-	 //printf("\n银联批结签退所用的密钥类型为:%c\n",UpCheckOutData.ucKeyMode);
-	 
-	 UpCheckOutData.lBatchNumber = PrintBuf2[37] + (PrintBuf2[38]<<8) + (PrintBuf2[39]<<16) + (PrintBuf2[40]<<24);
-	 //printf("\n银联批结签退的批次号为:%d\n",UpCheckOutData.lBatchNumber);
-	 
-	 for(i=0;i<9;i++)
-	 {
-		UpCheckOutData.szPosId[i] = PrintBuf2[41+i];
-	 }
-	 /*
-	 printf("\nPOS终端号为:");
-	 for(i=0;i<9;i++)
-	 	{
-	 	  printf("%c",UpCheckOutData.szPosId[i]);
-	 	}
-	   */
-	 
-
+  	 UpInitErrNum[0] = PrintBuf2[28];	 
+  	 UpInitErrNum[1] = PrintBuf2[29];
+  	 
+  	 UpInitGpbocErrNum[0] = PrintBuf2[30];
+  	 UpInitGpbocErrNum[1] = PrintBuf2[31];
+  
+  	 UpCheckOutData.ucLogInLogVersion = PrintBuf2[32];
+  	 //printf("\n银联批结签退的结构体版本号为:%d\n",UpCheckOutData.ucLogInLogVersion);
+  	 
+  	 UpCheckOutData.ucAcqBankNum = PrintBuf2[33];
+  	 //printf("\n银联批结签退的收单行号为:%d\n",UpCheckOutData.ucAcqBankNum);
+  	 
+  	 UpCheckOutData.ucLogInOK = PrintBuf2[34];
+  	  //printf("\n银联批结签退的签到成功标志为:%d\n",UpCheckOutData.ucLogInOK);
+  	  
+  	 UpCheckOutData.ucOper = PrintBuf2[35];
+  	  //printf("\n银联批结签退的操作员号为:%d\n",UpCheckOutData.ucOper);
+  	  
+  	 UpCheckOutData.ucKeyMode = PrintBuf2[36];
+  	 //printf("\n银联批结签退所用的密钥类型为:%c\n",UpCheckOutData.ucKeyMode);
+  	 
+  	 UpCheckOutData.lBatchNumber = PrintBuf2[37] + (PrintBuf2[38]<<8) + (PrintBuf2[39]<<16) + (PrintBuf2[40]<<24);
+  	 //printf("\n银联批结签退的批次号为:%d\n",UpCheckOutData.lBatchNumber);
+  	 
+  	 for(i=0;i<9;i++)
+  	 {
+  		UpCheckOutData.szPosId[i] = PrintBuf2[41+i];
+  	 }
+  	 /*
+  	 printf("\nPOS终端号为:");
+  	 for(i=0;i<9;i++)
+  	 	{
+  	 	  printf("%c",UpCheckOutData.szPosId[i]);
+  	 	}
+  	   */
+  	 
+  
      for(i=0;i<16;i++)
-	 {
-		UpCheckOutData.szMerchantId[i] = PrintBuf2[50+i];
-	 }
-	 /*
-	 printf("\n\n商户号为:");
-	 for(i=0;i<16;i++)
-	 	{
-	 	  printf("%c",UpCheckOutData.szMerchantId[i]);
-	 	}
-	   */
+  	 {
+  		UpCheckOutData.szMerchantId[i] = PrintBuf2[50+i];
+  	 }
+  	 /*
+  	 printf("\n\n商户号为:");
+  	 for(i=0;i<16;i++)
+  	 	{
+  	 	  printf("%c",UpCheckOutData.szMerchantId[i]);
+  	 	}
+  	   */
 
    }
   else if( PrintBuf2[27] == 0x88)  //错误，需要判断返回数据域的前两字节错误代码
@@ -2809,58 +2810,58 @@ uint8_t Gpboc_CheckIn (void)
   temp = 0xff;
   temp = ManageReOrderType();
   if( temp == R_QueryStatus)
-  	{
-  	  flag1 = ManageQueryStatus();
-  	}
+	{
+	  flag1 = ManageQueryStatus();
+	}
   delay_us(50);
 
   if( flag1 == 0x01)
   	{
   	  Order_Gpboc_Init();
-	  temp = 0xff;
-	  temp = ManageReOrderType();
-	  if( temp == R_GpbocCheck_In)
+  	  temp = 0xff;
+  	  temp = ManageReOrderType();
+  	  if( temp == R_GpbocCheck_In)
 	  	{
 	  	  flag2 = ManageGpbocInit();
 	  	}
-
-		//printf("\n银联初始化标志=%x",flag2);
-		delay_ms(1000);
-
-	  if(flag2 == 0x01)
+  
+  		//printf("\n银联初始化标志=%x",flag2);
+  		delay_ms(1000);
+  
+  	  if(flag2 == 0x01)
 	  	{
 	  	  Order_Gpboc_SendData();
-		  delay_ms(1000);
-		  temp = 0xff;
-		  temp = ManageReOrderType();
-		  if( temp == R_GpbocSendData)
+  		  delay_ms(1000);
+  		  temp = 0xff;
+  		  temp = ManageReOrderType();
+  		  if( temp == R_GpbocSendData)
 		  	{
 		  	  flag3 = ManageGpbocSendData();
 			  
 		  	}
 		  //printf("\n银联上传标志=%x",flag3);
-		  delay_ms(1000);
-		  if( flag3 == 0x01)
+  		  delay_ms(1000);
+  		  if( flag3 == 0x01)
 		  	{
 		  	  Order_Gpboc_Check_Out();
-			  delay_ms(1000);
-			  temp = 0xff;
-			  temp = ManageReOrderType();
-			  if( temp == R_GpbocCheck_Out)
+  			  delay_ms(1000);
+  			  temp = 0xff;
+  			  temp = ManageReOrderType();
+  			  if( temp == R_GpbocCheck_Out)
 			  	{
 			  	  flag4 = ManageGpbocCheckOut();
 			  	}
 		  	}
 		   	//printf("\n银联签退标志=%x",flag4);
-		}
+  		}
 
-	  delay_ms(1000);
-	  if( flag4 == 0x01)
+  	  delay_ms(1000);
+  	  if( flag4 == 0x01)
 	  	{
 	  	  Order_Gpboc_Init();
-		  temp = 0xff;
-		  temp = ManageReOrderType();
-		  if( temp == R_GpbocCheck_In)
+  		  temp = 0xff;
+  		  temp = ManageReOrderType();
+  		  if( temp == R_GpbocCheck_In)
 		  	{
 		  	  result_End = ManageGpbocInit();
 		  	}
@@ -2881,6 +2882,9 @@ uint8_t OnlyReadGpbocCard(void)
   uint8_t orderFlag1;
   uint8_t result1 =0;
   uint8_t endreturn =0;
+  UpReadCardData.SztMoney =0;
+  UpReadCardData.GpbocMoney =0;
+
   Order_Gpboc_ReadCard();
   orderFlag1 = ManageReOrderType();
   if( orderFlag1 == R_GpbocReadCard)
@@ -2910,22 +2914,26 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
 //   int32_t FactMoney;
   //TRANSLOG_TO_HOST saveDeductIfn;
 
-
   //初次验卡
   UpDeductData.lTransAmount = 0;	  //设扣款初始为0
 
+	VariableChagelong(amountof_consumption,0);
+	VariableChagelong(cardbalence_before,0);
+	VariableChagelong(cardbalence_after,0);
   Order_Gpboc_ReadCard();
   orderFlag1 = ManageReOrderType();
   if( orderFlag1 == R_GpbocReadCard)
   	{
   	  result1 = ManageGpbocReadCard();
   	}
+		
 
   if( result1 == 0x01)          //验卡成功
   	{
   	  FristMoney = UpReadCardData.GpbocMoney;
 // 	    EndMoney = FristMoney;
-      
+       //在显示屏上显示刷卡前金额UpReadCardData.GpbocMoney
+      VariableChagelong(cardbalence_before,UpReadCardData.GpbocMoney);	
       if( FristMoney < money_deduct )
       {
         //printf("\n卡内余额为%ld",FristMoney);
@@ -2944,6 +2952,10 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
 						if( result2 == 1)   //付款成功
 						{
 							//printf("付款成功\r\n");
+              //在显示屏上显示扣款金额与余额，UpDeductData.lTransAmount（扣款），UpDeductData.lCardBalance（余额）
+							VariableChagelong(amountof_consumption,UpDeductData.lTransAmount);
+							VariableChagelong(cardbalence_after,UpDeductData.lCardBalance);	
+							delay_ms(1000);
 							return 1;
 						}
 						else
@@ -2953,7 +2965,6 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
 						}
           }
           
-        
       }
   	}
     else
@@ -3156,7 +3167,7 @@ uint8_t Szt_CheckIn(void)
   Order_Ifn_QueryStatus();
   delay_us(10);
   temp = ManageReOrderType();
-  if( temp == R_QueryStatus)
+  if( temp == R_QueryStatus)       //状态查询
   	{
   	  flag1 = ManageQueryStatus();	  
   	}
@@ -3164,55 +3175,55 @@ uint8_t Szt_CheckIn(void)
   if(flag1 == 1)
   	{
 	/**/
-  	Order_SztTimeCheck();
-	  delay_us(5);
-	  temp = 0xff;
-	  temp = ManageReOrderType();
-	  if( temp == R_TimeCheck )
-	  	{
-	  	  flag2 = ManageSztTimeCheck();
-	  	}
-	  
-	  Order_SztUserLogin();
-	  delay_us(5);
-	  temp = 0xff;
-	  temp = ManageReOrderType();
-	  if( temp == R_UserLogin )
-	  	{
-	  	  flag3 = ManageSztUserLogin();
-	  	}
+    	Order_SztTimeCheck();        //时间校验
+  	  delay_us(5);
+  	  temp = 0xff;
+  	  temp = ManageReOrderType();
+  	  if( temp == R_TimeCheck )
+  	  	{
+  	  	  flag2 = ManageSztTimeCheck();
+  	  	}
+  	  
+  	  Order_SztUserLogin();          //操作员登录
+  	  delay_us(5);
+  	  temp = 0xff;
+  	  temp = ManageReOrderType();
+  	  if( temp == R_UserLogin )
+  	  	{
+  	  	  flag3 = ManageSztUserLogin();
+  	  	}
 
   	}
   
   if((flag1 == 1) && ( flag2 == 1) && ( flag3 ==1))
   	{
-  	  Order_SztAutoCheckIn();
-	  temp = 0xff;
-	  temp = ManageReOrderType();
-	  if( temp == R_SztCheck_In)
-	  	{
-	  	  flag4 = ManageSztAutoManage();			  
-	  	}
-
-	  if( flag4 == 1)
-	  	{
-		  Order_SztAutoDownload();
-		  temp = 0xff;
-		  temp = ManageReOrderType();
-		  if( temp == R_SztCheck_In)
-		    {
-			  flag5 = ManageSztAutoManage();				
-		    }
-
-
-		  Order_SztAutoSendData();
-		  temp = 0xff;
-		  temp = ManageReOrderType();
-		  if( temp == R_SztCheck_In)
-		    {
-			  flag6 = ManageSztAutoManage();				
-		    }
-	  	}
+  	  Order_SztAutoCheckIn();              //深圳通自动签到
+  	  temp = 0xff;
+  	  temp = ManageReOrderType();
+  	  if( temp == R_SztCheck_In)
+  	  	{
+  	  	  flag4 = ManageSztAutoManage();			  
+  	  	}
+  
+  	  if( flag4 == 1)
+  	  	{
+  		  Order_SztAutoDownload();            //深圳通自动下载数据
+  		  temp = 0xff;
+  		  temp = ManageReOrderType();
+  		  if( temp == R_SztCheck_In)
+  		    {
+  			  flag5 = ManageSztAutoManage();				
+  		    }
+  
+  
+  		  Order_SztAutoSendData();            //深圳通自动上传数据
+  		  temp = 0xff;
+  		  temp = ManageReOrderType();
+  		  if( temp == R_SztCheck_In)
+  		    {
+  			  flag6 = ManageSztAutoManage();				
+  		    }
+  	  	}
   	}
 
   if( (flag1 ==1) && (flag2 ==1) && (flag3 ==1) && (flag4 ==1) && (flag5 ==1) && (flag6 ==1))
@@ -3243,6 +3254,10 @@ uint8_t SztDeduct(int32_t money)
   SztReductInf.BeginMoney =0;
   SztReductInf.EndMoney =0;
 
+	VariableChagelong(amountof_consumption,0);
+	VariableChagelong(cardbalence_before,0);
+	VariableChagelong(cardbalence_after,0);
+	
   //初次验卡
   Order_Gpboc_ReadCard();
   temp = 0xff;
@@ -3254,51 +3269,55 @@ uint8_t SztDeduct(int32_t money)
 
   if( flag0 == 0x01)
   	{
-  	  FristMoney = UpReadCardData.SztMoney;
-	  EndMoney = FristMoney;
+  	  FristMoney = UpReadCardData.SztMoney;			
+      //显示深圳通金额 UpReadCardData.SztMoney
+			VariableChagelong(cardbalence_before,UpReadCardData.SztMoney);
+	    EndMoney = FristMoney;
   	}
-
-  
   if( flag0 == 1) //验卡成功
   	{
   	  Order_SztDeductOnce(money); //扣款
-	  delay_us(15);
-	  temp = 0xff;
-	  temp = ManageReOrderType(); 
-	  if( temp == R_SztDeductOnce)
-	  	{
-	  	  flag1 = ManageSztDeductOnce();
-
-		  if( flag1 == 1)
-		  	{
-		  	  flag3 = 1;
-		  	}
-		  else if( flag1 == 0x52 )  //重操作扣款
-		  	{
-		  	  Order_SztDeductAgain(money);
-			  delay_us(15);
-			  temp = 0xff;
-			  temp = ManageSztDeductAgain();
-			  if( temp == R_SztDeductAgain )
-			  	{
-			  	  flag2 = ManageSztDeductAgain();
-
-				  if( flag2 == 1)
-				  	{
-				  	  flag3 = 1;
-				  	}
-			  	}
-		  	}
-		  else
-		  	{
-		  	  
-		  	}
+  	  delay_us(15);
+  	  temp = 0xff;
+  	  temp = ManageReOrderType(); 
+  	  if( temp == R_SztDeductOnce)
+  	  	{
+  	  	  flag1 = ManageSztDeductOnce();
+  
+  		  if( flag1 == 1)
+  		  	{
+  		  	  flag3 = 1;
+  		  	}
+  		  else if( flag1 == 0x52 )  //重操作扣款
+  		  	{
+  		  	  Order_SztDeductAgain(money);
+  			  delay_us(15);
+  			  temp = 0xff;
+  			  temp = ManageSztDeductAgain();
+  			  if( temp == R_SztDeductAgain )
+  			  	{
+  			  	  flag2 = ManageSztDeductAgain();
+  
+  				  if( flag2 == 1)
+  				  	{
+  				  	  flag3 = 1;
+  				  	}
+  			  	}
+  		  	}
+  		  else
+  		  	{
+  		  	  
+  		  	}
 	  	}
 
 	  if( flag3 == 1) 
 	  {
-	      if( (SztReductInf.BeginMoney - SztReductInf.EndMoney ) == money )
+	     if( (SztReductInf.BeginMoney - SztReductInf.EndMoney ) == money )
 		  {
+					VariableChagelong(amountof_consumption,money);
+					VariableChagelong(cardbalence_after,SztReductInf.EndMoney);	
+        //显示深圳通扣款金额与余额，SztReductInf.BeginMoney（扣款前余额），SztReductInf.EndMoney（扣款后余额）
+				delay_ms(1000);
 		    return 1;
 		  }
 		  else

@@ -138,6 +138,8 @@ unsigned char  WaitPayMoney(void)
 		}break;   				 
     case 7 :  /*银行卡支付由屏幕控制*/
 		{
+			WaitTimeInit(&WaitTime);
+			PageChange(Cardbalence_interface);
 			UserAct.PayType = '2' ;/* 银行卡支付*/
 			temp1 = 0;
 			temp1 = GpbocDeduct(UserAct.PayShould-UserAct.PayAlready); //*100;
@@ -150,9 +152,12 @@ unsigned char  WaitPayMoney(void)
 				UART3_ClrRxBuf();
 			  CurrentPoint =6;
 			}
+     UART3_ClrRxBuf();
 	  }break;
 	  case 8 :/*深圳通支付由屏幕控制*/
 	  {
+			WaitTimeInit(&WaitTime);
+			PageChange(Cardbalence_interface);
 	    UserAct.PayType = '3' ;/* 深圳通支付*/
 			temp1 = 0;
 			temp1 = SztDeduct(UserAct.PayShould - UserAct.PayAlready); //*100;
@@ -164,6 +169,7 @@ unsigned char  WaitPayMoney(void)
 				UART3_ClrRxBuf();
 			  CurrentPoint =6;
 			}
+			UART3_ClrRxBuf();
 		}break;
 	  case 9 :  //付款成功关闭所有的收银系统
 		{
@@ -425,7 +431,6 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
     case 5:     /*对用户数据进行减一*/  //?? 如果需要进行错误退币，需要修该返回值所在范围
 		{
 			delay_ms(1000);
-			printf("对用户数据进行减一");
       UserAct.Meal_takeout++;//取餐数据加
       VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示
 			CurrentPointer= 0;
@@ -487,27 +492,22 @@ bool CloseCashSystem(void)
 	uint8_t cnt_t=20,money=0,temp=0;
   CloseCoinMachine();			    //关闭投币机	
 	delay_ms(bill_time);
+	memset(BillDataBuffer,0xFE,sizeof(BillDataBuffer));
 	DisableBills();             //设置并关闭纸币机
 	do
 	{
 		cnt_t--;
-		delay_ms(1);
-	  temp=ReadBill();
-		if(ack==temp)
+		delay_us(100);
+		if((RX4Buffer[0]=='0')&&(RX4Buffer[1]=='0'))
 		{
 			return true;
 		}
-		else if(nack==temp)
+		else if((RX4Buffer[0]=='F')&&(RX4Buffer[1]=='F'))
 		{
 			return false;  			
 		}
-		else if((temp==1)||(temp==5)||(temp==10)||(temp==20))
-		{
-			temp = UserAct.PayForBills;		  
-			UserAct.PayAlready  += UserPayMoney;
-			UserAct.PayForBills += UserPayMoney;	
-		}
-	}while(cnt_t);	 
+	}while(cnt_t);			 
+	 return false; 
 }
 
 bool OpenCashSystem(void)
@@ -515,27 +515,22 @@ bool OpenCashSystem(void)
 	uint8_t cnt_t=20,temp;	
 	OpenCoinMachine();    //打开投币机	
 	delay_ms(bill_time);        //需要控制
+	memset(BillDataBuffer,0xFE,sizeof(BillDataBuffer));
 	SetBills();           //设置并打开纸币机
 	do
 	{
 		cnt_t--;
-		delay_ms(1);
-	  temp=ReadBill();
-		if(ack==temp)
+		delay_us(100);
+		if((RX4Buffer[0]=='0')&&(RX4Buffer[1]=='0'))
 		{
 			return true;
 		}
-		else if(nack==temp)
+		else if((RX4Buffer[0]=='F')&&(RX4Buffer[1]=='F'))
 		{
 			return false;  			
 		}
-		else if((temp==1)||(temp==5)||(temp==10)||(temp==20))
-		{
-			temp = UserAct.PayForBills;		  
-			UserAct.PayAlready  += UserPayMoney;
-			UserAct.PayForBills += UserPayMoney;	
-		}
 	}while(cnt_t);	
+	return false; 
 }
 
   /*******************************************************************************

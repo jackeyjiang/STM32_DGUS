@@ -67,6 +67,7 @@
 #include "uart4.h"           //纸币机接口
 #include "uart6.h"           //机械手接口
 #include "pvd.h"
+#include "eeprom.h"
 
 //#include "led.h"				   //led灯
 #include "coin.h"				     //硬币机

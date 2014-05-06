@@ -45,21 +45,6 @@ unsigned char  UpdataFlag[4];
 unsigned char  ACK[4];  //这个是什么?
 unsigned char  WordKeyCipher[11];
 
-//Meal_struction Meal[9]={
-//	                        /*餐品ID*/				/*餐品名字*/  	       /*餐品数量*/	     /*餐品价格*/			  /*餐品类型*/
-//							      0x10,0x00,0x00,0x20,  {"红萝卜炒蛋          "}, 0x00,0xc8,      0x00,0x00,0x15,0x00,	   {"C005"},
-//							      0x10,0x00,0x00,0x21,  {"菜脯煎蛋            "}, 0x00,0x00,      0x00,0x00,0x15,0x00,	   {"C005"},
-//							      0x10,0x00,0x00,0x22,  {"土豆牛腩            "}, 0x00,0x00,      0x00,0x00,0x15,0x00,	   {"C005"},
-//							      0x10,0x00,0x00,0x23,  {"香菇滑鸡            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
-//							      0x10,0x00,0x00,0x24,  {"红烧鱼块            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
-//							      0x10,0x00,0x00,0x25,  {"咖喱土鸡            "}, 0x00,0x00,      0x00,0x00,0x20,0x00,	   {"C005"},
-//							      0x10,0x00,0x00,0x26,  {"脆皮烧鸭            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},
-//							      0x10,0x00,0x00,0x27,  {"梅菜扣肉            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},
-//							      0x10,0x00,0x00,0x28,  {"秘制叉烧            "}, 0x00,0x00,      0x00,0x00,0x25,0x00,	   {"C005"},
-//	                      };
-
-
-
  Meal_struction Meal[4]={
 							 /*餐品ID*/ 			 /*餐品名字*/			/*餐品数量*/	  /*餐品价格*/			   /*餐品类型*/
 								   0x10,0x00,0x00,0x20,  {"红萝卜炒肉      "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
@@ -67,74 +52,7 @@ unsigned char  WordKeyCipher[11];
 								   0x10,0x00,0x00,0x26,  {"脆皮烧鸭        "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
 								   0x10,0x00,0x00,0x24,  {"红烧鱼块        "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
 						   };
-
-
- /******************************/
  unsigned char	Record_buffer[254] = {0} ;
- unsigned char	Temple_Data[20]={0};
- unsigned char data_null[]={"  "};
- unsigned char data_hche[]={"\r\n"};
- unsigned char tim1[]={"-"};
- unsigned char tim2[]={" "};
-
- /******************************/
- unsigned char data_LS1[]={"交"};
- unsigned char data_LS2[]={"易"};
- unsigned char data_LS3[]={"流"};
- unsigned char data_LS4[]={"水"};
- unsigned char data_LS5[]={"号"};
- unsigned char data_LS6[]={":"};
- /******************************/
- unsigned char data_ID1[]={"餐"};
- unsigned char data_ID2[]={"品"};
- unsigned char data_ID3[]={"编"};
- unsigned char data_ID4[]={"号"};
- /******************************/
- unsigned char data_NB1[]={"销"};
- unsigned char data_NB2[]={"售"};
- unsigned char data_NB3[]={"数"};
- unsigned char data_NB4[]={"量"};
- /******************************/
- unsigned char data_PR1[]={"餐"};
- unsigned char data_PR2[]={"品"};
- unsigned char data_PR3[]={"价"};
- unsigned char data_PR4[]={"格"};
- /******************************/
- unsigned char data_PS1[]={"支"};
- unsigned char data_PS2[]={"付"};
- unsigned char data_PS3[]={"方"};
- unsigned char data_PS4[]={"式"};
-
- unsigned char data_PS5[]={"现"};
- unsigned char data_PS6[]={"金"};
-
- unsigned char data_PS7[]={"银"};
- unsigned char data_PS8[]={"联"};
- unsigned char data_PS9[]={"卡"};
- unsigned char data_PS10[]={"深"};
- unsigned char data_PS11[]={"圳"};
- unsigned char data_PS12[]={"通"};
- unsigned char data_PS13[]={"IC"};
- unsigned char data_PS14[]={"卡"};
-
-
- /******************************/
- unsigned char data_ZL1[]={"找"};
- unsigned char data_ZL2[]={"零"};
- unsigned char data_ZL3[]={"金"};
- unsigned char data_ZL4[]={"额"};
- /******************************/
- unsigned char data_SY1[]={"剩"};
- unsigned char data_SY2[]={"余"};
- unsigned char data_SY3[]={"数"};
- unsigned char data_SY4[]={"量"};
- /******************************/
- unsigned char data_TM1[]={"交"};
- unsigned char data_TM2[]={"易"};
- unsigned char data_TM3[]={"时"};
- unsigned char data_TM4[]={"间"};
- /******************************/
-
 
  /*******************************************************************************
 * Function Name  : GetBRWN
@@ -1001,7 +919,7 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	 return 1 ;
 	 for(j=0;j<Lenght+7;j++)
 	 {
-     printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+     //printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
 	 }
 	 if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)  //表示正确
 	 {
@@ -1401,153 +1319,6 @@ unsigned char HexToChar(unsigned char byTemp)
    }
    return(byTemp);
 }
-void assert_hex_u8print(unsigned char byte)
-{
-    Temple_Data[0] = HexToChar((byte & 0xf0) >> 4);
-    Temple_Data[1] = HexToChar(byte & 0x0f);
-    Temple_Data[2] = 0;
-}
-
-/*******************************************************************************/
-void WriteToSD_data(void)
-{
-  uint8_t  i ;
-/**********交易流水号*********/
-  WriteDatatoSD(data_hche);
-  WriteDatatoSD(data_LS1);
-  WriteDatatoSD(data_LS2);
-  WriteDatatoSD(data_LS3);
-  WriteDatatoSD(data_LS4);
-  WriteDatatoSD(data_LS5);
-  WriteDatatoSD(data_LS6);
-  for(i=15;i<22;i++)
-  {
-   assert_hex_u8print(Record_buffer[i]);
-   WriteDatatoSD(Temple_Data);
-  }
-  /**********餐品编号*********/
-  WriteDatatoSD(data_null);
-  WriteDatatoSD(data_ID1);
-  WriteDatatoSD(data_ID2);
-  WriteDatatoSD(data_ID3);
-  WriteDatatoSD(data_ID4);
-  WriteDatatoSD(data_LS6);
-  for(i=53;i<57;i++)
-  {
-   assert_hex_u8print(Record_buffer[i]);
-   WriteDatatoSD(Temple_Data);
-  }
- /**********餐品数量*********/
-  WriteDatatoSD(data_null);
-  WriteDatatoSD(data_NB1);
-  WriteDatatoSD(data_NB2);
-  WriteDatatoSD(data_NB3);
-  WriteDatatoSD(data_NB4);
-  WriteDatatoSD(data_LS6);
-  assert_hex_u8print(Record_buffer[60]);
-  WriteDatatoSD(Temple_Data);
-   /**********餐品价格*********/
-  WriteDatatoSD(data_null);
-  WriteDatatoSD(data_PR1);
-  WriteDatatoSD(data_PR2);
-  WriteDatatoSD(data_PR3);
-  WriteDatatoSD(data_PR4);
-   WriteDatatoSD(data_LS6);
-  for(i=90;i<92;i++) //for(i=87;i<93;i++)
-  {
-   assert_hex_u8print(Record_buffer[i]);
-   WriteDatatoSD(Temple_Data);
-  }
- /**********支付方式*********/
-   WriteDatatoSD(data_null);
-   WriteDatatoSD(data_PS1);
-   WriteDatatoSD(data_PS2);
-   WriteDatatoSD(data_PS3);
-	WriteDatatoSD(data_PS4);
-	WriteDatatoSD(data_LS6);
-
-    if(Record_buffer[96]=='1')
-    {
-      WriteDatatoSD(data_PS5);
-	  WriteDatatoSD(data_PS6);
-	}
-	else if(Record_buffer[96]=='2')
-	{
-	  WriteDatatoSD(data_PS7);
-	  WriteDatatoSD(data_PS8);
-	  WriteDatatoSD(data_PS9);
-	}
-	else if(Record_buffer[96]=='3')
-	{
-	  WriteDatatoSD(data_PS10);
-	  WriteDatatoSD(data_PS11);
-	  WriteDatatoSD(data_PS12);
-	}
-	else if(Record_buffer[96]=='4')
-	{
-	  WriteDatatoSD(data_PS12);
-	  WriteDatatoSD(data_PS13);
-	}
-	else
-	{
-	}
-
-	WriteDatatoSD(data_null);
-/**********找零金额*********/
-  WriteDatatoSD(data_null);
-  WriteDatatoSD(data_ZL1);
-  WriteDatatoSD(data_ZL2);
-  WriteDatatoSD(data_ZL3);
-  WriteDatatoSD(data_ZL4);
-  WriteDatatoSD(data_LS6);
-  for(i=103;i<105;i++) //for(i=100;i<106;i++)
-  {
-   assert_hex_u8print(Record_buffer[i]);
-   WriteDatatoSD(Temple_Data);
-  }
-/**********剩余数量*********/
-  WriteDatatoSD(data_null);
-  WriteDatatoSD(data_SY1);
-  WriteDatatoSD(data_SY2);
-  WriteDatatoSD(data_SY3);
-  WriteDatatoSD(data_SY4);
-  WriteDatatoSD(data_LS6);
-  for(i=109;i<111;i++)
-  {
-   assert_hex_u8print(Record_buffer[i]);
-   WriteDatatoSD(Temple_Data);
-  }
- /**********交易时间*********/
-  WriteDatatoSD(data_null);
-  WriteDatatoSD(data_TM1);
-  WriteDatatoSD(data_TM2);
-  WriteDatatoSD(data_TM3);
-  WriteDatatoSD(data_TM4);
-  WriteDatatoSD(data_LS6);
-  for(i=15;i<17;i++)    //for(i=15;i<21;i++)
-  {
-   assert_hex_u8print(Record_buffer[i]);  //年
-   WriteDatatoSD(Temple_Data);
-  }
-   //WriteDatatoSD(tim1);
-   assert_hex_u8print(Record_buffer[17]);  //月
-   WriteDatatoSD(Temple_Data);
-   //WriteDatatoSD(tim1);
-   assert_hex_u8print(Record_buffer[18]);  //日
-   WriteDatatoSD(Temple_Data);
-   WriteDatatoSD(tim2);
-
-   assert_hex_u8print(Record_buffer[19]);  //时
-   WriteDatatoSD(Temple_Data);
-   WriteDatatoSD(data_LS6);
-   assert_hex_u8print(Record_buffer[20]);  //分
-   WriteDatatoSD(Temple_Data);
-   WriteDatatoSD(data_LS6);
-   assert_hex_u8print(Record_buffer[21]);  //秒
-   WriteDatatoSD(Temple_Data);
-
-
-}
 
 
    /*******************************************************************************
@@ -1574,13 +1345,14 @@ void DataUpload(void)
 				itoa(f_name,TimeDate);	  //把时间转换成字符
 				MealArr(UserAct.MealID);
 				/*发送取餐数据给服务器*/
+        printf("发送取餐数据给服务器1");
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
-           Sd_Write('N');//发送失败
+           Sd_Write('n');//发送失败
 				}
 				else 
-					Sd_Write('Y');//改变当前最后两位为N0
+					Sd_Write('y');//改变当前最后两位为N0
 				break;
 			}
 		}
@@ -1593,13 +1365,14 @@ void DataUpload(void)
 				itoa(f_name,TimeDate);	  //把时间转换成字符
 				MealArr(UserAct.MealID);
 				/*发送取餐数据给服务器*/
+				printf("发送取餐数据给服务器2");
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
-           Sd_Write('N');
+           Sd_Write('n');
 				}
 				else 
-					 Sd_Write('Y');//改变当前最后两位为N0
+					 Sd_Write('y');//改变当前最后两位为N0
 				break;
 			}
 		}
@@ -1612,13 +1385,14 @@ void DataUpload(void)
 				itoa(f_name,TimeDate);	  //把时间转换成字符
 				MealArr(UserAct.MealID);
 				/*发送取餐数据给服务器*/
+				printf("发送取餐数据给服务器3");
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
-           Sd_Write('N');
+           Sd_Write('n');
 				}
 				else 
-					 Sd_Write('Y');//改变当前最后两位为N0
+					 Sd_Write('y');//改变当前最后两位为N0
 				break;
 			}
 		}
@@ -1631,13 +1405,14 @@ void DataUpload(void)
 				itoa(f_name,TimeDate);	  //把时间转换成字符
 				MealArr(UserAct.MealID);
 				/*发送取餐数据给服务器*/
+				printf("发送取餐数据给服务器4");
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
-           Sd_Write('N');
+           Sd_Write('n');
 				}
 				else 
-					 Sd_Write('Y');//改变当前最后两位为N0
+					 Sd_Write('y');//改变当前最后两位为N0
 				break;
 			}
     }

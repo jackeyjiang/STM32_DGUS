@@ -53,7 +53,6 @@ void DisableBills(void)
 
 char BillStatus= 0; //Ö½±Ò»ú×´Ì¬
 char BillRunStatus;	  //Ö½±Ò»úÔËÐÐ×´Ì¬
-extern unsigned char BillDataBuffer[20];
 uint8_t  ReadBill(void)
 { 
   uint8_t	BillValue=0;
@@ -114,11 +113,11 @@ uint8_t  ReadBill(void)
 	}
 	else if(BillDataBuffer[0]==0xFF)
 	{ 
-		return nack;
+		return nack_flag;
   }
   else if(BillDataBuffer[0]==0x00)
 	{
-		return ack;
+		return ack_flag;
 	}
    return 0 ;	
 }

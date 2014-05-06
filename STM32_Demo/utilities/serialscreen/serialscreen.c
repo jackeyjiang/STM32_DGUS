@@ -41,6 +41,13 @@ union ScreenRam
 		int8_t  	adr[2] ;
 }myunion;
 
+/*将数据16位存储器地址分解为2个8位数据*/
+union ScreenRamLong
+{
+		uint32_t	 	adress ;
+		int8_t  	adr[4] ;
+}myunion_long;
+
 
 /*写指定寄存器帧*/
 const unsigned char RegisterWrite[7]={ 
@@ -125,6 +132,30 @@ void VariableChage(uint16_t Variable,uint16_t Value)
 		Uart3_Send(temp,sizeof(temp));	
 }							
 
+ /*******************************************************************************
+ * 函数名称:VariableChagelong                                                                    
+ * 描    述:改变指定变量的值                                                              
+ *                                                                               
+ * 输    入:page                                                                    
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void VariableChagelong (uint16_t Variable,uint32_t Value)							
+{
+	  unsigned char temp[10]={0};  //存放串口数据的临时指针
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 7;
+		myunion.adress= Variable; 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+		myunion_long.adress= Value;
+		temp[6]= myunion_long.adr[3];
+		temp[7]= myunion_long.adr[2];					
+		temp[8]= myunion_long.adr[1];
+		temp[9]= myunion_long.adr[0];		
+		Uart3_Send(temp,sizeof(temp));	
+}
  /*******************************************************************************
  * 函数名称:RegisterChage                                                                   
  * 描    述:改变指定变量的值                                                              
