@@ -98,13 +98,13 @@ int main(void)
 					UserAct.Meal_takeout= 0;
 			  }
 			}break;
-			case data_record:  /*数据记录*/
-			{
-				//将售餐的数据全部写入SD卡
-         //DataRecord();
-				 Current= hpper_out;
-				 //Current= meal_out;
-			}break;
+//			case data_record:  /*数据记录*/
+//			{
+//				//将售餐的数据全部写入SD卡
+//         //DataRecord();
+//				 Current= hpper_out;
+//				 //Current= meal_out;
+//			}break;
       case hpper_out:	 /*退币状态*/
 			{
 		    if(UserAct.MoneyBack > 0) //需要找币的时候进入

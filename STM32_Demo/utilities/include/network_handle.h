@@ -106,7 +106,7 @@ uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long
 unsigned char TakeMealsFun1(unsigned char *SendBuffer);
 void memcpy_02(char *dest,char *source,char type);
 unsigned char SignInFun(void);
-unsigned char MealDataCompareFun(void);
+uint32_t  MealDataCompareFun(void);/*餐品数据对比*/
 unsigned char SignOutFun(void);/*退签*/
 unsigned char StatusUploadingFun(void);/*状态上送*/
 unsigned char EchoFun(void);/*回响测试*/

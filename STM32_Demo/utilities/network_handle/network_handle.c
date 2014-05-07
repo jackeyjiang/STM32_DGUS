@@ -560,18 +560,18 @@ void BufferToStructCopy(unsigned char *dest,unsigned char Index)
 * Time          :2014-4-7  MrLao   数据域采用TVL格式
 *******************************************************************************/
 unsigned char k = 0 ;
-unsigned char  MealDataCompareFun(void)
+MealCompareDataStruct MealCompareData;
+uint32_t  MealDataCompareFun(void)
 {
-
- 	unsigned char i = 0 ;
-	
+  
+ 	unsigned char i= 0 ;
   long  Lenght = 0 ,j;
 //	unsigned char MealID = 0 ;
 	long  CmdLenght = 0 ;
 	unsigned char status = 0 ;
-	unsigned char 	  Send_Buf[400];
-	unsigned char     TempBuffer[35*4]={0};
-	unsigned char     Buffer[306]={0};
+	unsigned char Send_Buf[400];
+	unsigned char TempBuffer[35*4]={0};
+	unsigned char Buffer[306]={0};
 	mem_set_00(rx1Buf,sizeof(rx1Buf));
 
 	Send_Buf[0] =  0x02 ;
@@ -582,9 +582,9 @@ unsigned char  MealDataCompareFun(void)
 	CmdLenght = 5 ;
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));  /*终端的TID*/
 	GetBRWN(); /*得到水流号*/
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));                   /*交易流水线*/
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));                     /*批次号*/
-    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));       /*终端所在区域编号*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));                   /*交易流水线*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));                     /*批次号*/
+  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));       /*终端所在区域编号*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO));   /*终端所在地域编号*/
  	Send_Buf[CmdLenght] =  0xbc ;	 //T  餐品数据对比， 数据域采用TVL格式
 	Send_Buf[CmdLenght+1] =  0x01 ;	 //L 数据长度
@@ -597,65 +597,58 @@ unsigned char  MealDataCompareFun(void)
 	CmdLenght+=0x03;
 
 	/*发送命令*/
-    i = MealComparefunDemo(0x0200,Send_Buf,CmdLenght);
-
+  i = MealComparefunDemo(0x0200,Send_Buf,CmdLenght);
 
 /***************************************************************************/
+  MealCompareData.MealCompareTotoal= 0; 
     /*单片是否成功*/
 	if(i==0x01) //超时
-	return 1; 
-
+	{		
+		return MealCompareData.MealCompareTotoal; 
+	}
+	
 	Lenght = HL_BufferToInit(&rx1Buf[2]);		//得到数据长度
 	GetData(&ReturnData.Lenght[0],rx1Buf,Lenght,0xc0);	  /*返回状态*/
 	
  	printf("Status=%x\r\n",ReturnData.Lenght[0]);
 
 	if(ReturnData.Lenght[0] == 0x00 )
-    return 0;	 /*数据正确*/
-
+	{
+		MealCompareData.MealCompareTotoal= 0xFFFFFFFF;	
+	    return MealCompareData.MealCompareTotoal;	 /*数据正确*/
+	} 
 	if(ReturnData.Lenght[0] == 0x24 )
 	{
-	   Batch ++ ;
-     return 1;	 /*数据正确*/
+		MealCompareData.MealCompareTotoal= 0xFFFFFFFF;	
+	    return MealCompareData.MealCompareTotoal;	 /*数据正确*/
 	}
-	   CmdLenght = GetData(TempBuffer,rx1Buf,Lenght,0xBC);/*餐品对比*/
-     printf("StatusCmdLenght=%x\r\n",CmdLenght);
-	   if(CmdLenght>34)
-	   {
-	      status  = CmdLenght / 35  ;
-		  	printf("Statusstatus=%x\r\n",status);
-				//for(i=0;i<status;i++)
-			  for(i=0;i<4;i++)
-				{
-					if(rx1Buf[45+i*35]==0x04)   //餐品对比标志
-					{
-						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[45+i*35]);
-						k++;
-						if(k>=4)
-						{
-							 k=0;
-						//判断是哪个餐品对比OK
-					     return 0x04;
-						}
-					}					
-					else if(rx1Buf[45+i*35] ==0x03)
-				  {
-						k=0;
-						printf("rx1Buf[%d]=%x\r\n",i,rx1Buf[14+i*35]);
-						
-		      }
-						
-		    }
-		    return 1 ;/*餐品对比错误*/
-	    }
-    for(j=0;j<Lenght;j++)
-    {
-//	  CheckInitReturnUnion.CheckInitReturnBuffer[j]= rx1Buf[j];
-	    printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-    }
-
-  return 0;
-
+	CmdLenght = GetData(TempBuffer,rx1Buf,Lenght,0xBC);/*餐品对比*/
+  printf("StatusCmdLenght=%x\r\n",CmdLenght);
+	if(CmdLenght>34)
+	{
+	  status  = CmdLenght / 35  ;
+		printf("Statusstatus=%x\r\n",status);
+		//for(i=0;i<status;i++)
+		for(i=0;i<4;i++)
+		{
+			if(rx1Buf[45+i*35]==0x04)   //餐品对比标志
+			{
+				MealCompareData.MealComparePart[i]=0xFF;
+			}					
+			else
+			{
+				MealCompareData.MealComparePart[i]=rx1Buf[39+i*35];
+		  }				
+		}
+		return MealCompareData.MealCompareTotoal ;/*餐品对比信息*/
+	}
+  for(j=0;j<Lenght;j++)
+  {
+//	CheckInitReturnUnion.CheckInitReturnBuffer[j]= rx1Buf[j];
+	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+  }
+  MealCompareData.MealCompareTotoal=0;
+  return MealCompareData.MealCompareTotoal;
 }
 
 
@@ -1352,7 +1345,7 @@ void DataUpload(void)
            Sd_Write('n');//发送失败
 				}
 				else 
-					Sd_Write('y');//改变当前最后两位为N0
+					 Sd_Write('y');//改变当前最后两位为N0
 				break;
 			}
 		}

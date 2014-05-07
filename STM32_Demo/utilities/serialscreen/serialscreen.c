@@ -598,6 +598,59 @@ void SettleAccounts(void)
 }
 
  /*******************************************************************************
+ * 函数名称:SyncMealNameDisp                                                                  
+ * 描    述:数据同步时显示餐品名称                                                          
+ *           根据ID 显示名称 ，根据floor 改变现实变量的地址                                                                    
+ * 输    入:meal_id ,floor                                                               
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void SyncMealNameDisp(uint8_t meal_id,uint8_t floor)							
+{
+	  char temp[30]={0};  //存放串口数据的临时数组
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 15; //0x83 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+		myunion.adress= sync_column1st_name+ floor*(0x0100); 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+		switch(meal_id)
+		{
+			case 0x00:break;
+			case 0x01:mystrcat(temp,meat_name,10);break;	
+			case 0x02:mystrcat(temp,chicken_name,8);break;		
+			case 0x03:mystrcat(temp,duck_name,8);break;	
+			case 0x04:mystrcat(temp,fish_name,8);break;
+			default:break;			
+		}
+		Uart3_Sent(temp,sizeof(temp));	
+}
+ /*******************************************************************************
+ * 函数名称:SyncMealCntDisp                                                                 
+ * 描    述:数据同步时显示餐品数量  ，以文本方式显示                                                        
+ *           更具floor 改变变量 ，meal_cnt 是要现实的数量                                                                    
+ * 输    入:meal_id                                                                
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void SyncMealCntDisp(uint8_t meal_cnt,uint8_t floor)							
+{
+	  char temp[20]={0};  //存放串口数据的临时数组
+		char buffer[5]={0};
+		int cnt_t=0;
+		cnt_t= sprintf(buffer,"%d",meal_cnt);
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 4+cnt_t; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 
+		myunion.adress= sync_column1st_number+ floor*(0x0100); 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+    strcat(temp,buffer);
+		Uart3_Sent(temp,sizeof(temp));	
+}
+
+
+ /*******************************************************************************
  * 函数名称:GetPassWord                                                                     
  * 描    述:原始密码 可以加入修改密码函数                                                               
  *                                                                               
@@ -1180,15 +1233,39 @@ loop1:	switch(MealID)
 					}break;
 					case 0x04:  /*数据同步*/
 					{
+						 uint32_t mealcompare_data=0;
+						 uint8_t mealsample_data=0,cnt_t=0,floor=0;
 						//禁止屏幕点击*/
              ScreenControl(ScreenDisable);
 						//数据同步子程序
-						 if(MealDataCompareFun()==0x04)
+						 mealcompare_data= MealDataCompareFun();
+						 if(mealcompare_data==0xFFFFFFFF) //正确
 						 {
 							 PageChange(Data_synchronization);
+							 for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
+							 {
+									 /*显示餐品,数量*/									
+                  SyncMealNameDisp(cnt_t+1,floor);
+                  SyncMealCntDisp(DefineMeal[cnt_t].MealCount,floor); 
+                  floor++;									 
+							 }							 
 						 }
              else
              {
+							 for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
+							 {
+								 if(MealCompareData.MealComparePart[cnt_t]==0xff)
+								 {
+									//餐品同步成功不做任何事情 
+								 }
+								 else
+								 {
+									 /*显示餐品,数量*/									
+                  SyncMealNameDisp(cnt_t+1,floor);
+                  SyncMealCntDisp(MealCompareData.MealComparePart[cnt_t],floor); 
+                  floor++;									 
+								 }
+               }
 							 PageChange(Data_synchronization+2);
 						 }
 						//超时时退出，错误退出

@@ -57,7 +57,7 @@
 #define password_show 0x0005 
 
 /*错误显剩*/
-#define erro_num    0x4500 
+#define erro_num    0x4D00 
 
 /*密码输入变量地址*/
 #define password 0x0004 
@@ -147,6 +147,15 @@
 
 #define caedbalence_cancel    0x0053  //刷卡取消按键
 
+//同步界面
+#define sync_column1st_name   0x4500
+#define sync_column2nd_name   0x4600
+#define sync_column3rd_name   0x4700
+#define sync_column4th_name   0x4800
+#define sync_column1st_number 0x4900
+#define sync_column2nd_number 0x4A00
+#define sync_column3rd_number 0x4B00  
+#define sync_column4th_number 0X4C00
 
 extern const char price_1st;
 extern const char price_2nd;

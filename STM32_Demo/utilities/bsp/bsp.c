@@ -152,7 +152,15 @@ unsigned char  WaitPayMoney(void)
 				UART3_ClrRxBuf();
 			  CurrentPoint =6;
 			}
-     UART3_ClrRxBuf();
+			else
+			{
+				WaitTimeInit(&WaitTime);
+				PageChange(Acount_interface);
+				CurrentPoint = 1;
+			  /*支付方式*/			 
+			  UserAct.PayType = 0x00;/* 现金支付*/			
+        UART3_ClrRxBuf();
+			}
 	  }break;
 	  case 8 :/*深圳通支付由屏幕控制*/
 	  {
@@ -169,7 +177,15 @@ unsigned char  WaitPayMoney(void)
 				UART3_ClrRxBuf();
 			  CurrentPoint =6;
 			}
-			UART3_ClrRxBuf();
+			else
+			{
+				WaitTimeInit(&WaitTime);
+				PageChange(Acount_interface);
+				CurrentPoint = 1;
+			  /*支付方式*/			 
+			  UserAct.PayType = 0x00;/* 现金支付*/			
+        UART3_ClrRxBuf();
+			}
 		}break;
 	  case 9 :  //付款成功关闭所有的收银系统
 		{
@@ -486,7 +502,7 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
-#define bill_time  100  //500ms不会出错，100ms纸币机反应不过来
+#define bill_time  500  //500ms不会出错，100ms纸币机反应不过来
 bool CloseCashSystem(void)
 {
 	uint8_t cnt_t=20,money=0,temp=0;

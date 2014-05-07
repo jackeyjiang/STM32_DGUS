@@ -74,6 +74,14 @@ typedef union _CoinsTotoalMessage
 }CoinsTotoalMessage;
 extern CoinsTotoalMessage CoinsTotoalMessageWriteToFlash;/*硬币数结构体*/ 
 
+typedef union _MealCompareData
+{
+	uint32_t MealCompareTotoal;
+	uint8_t  MealComparePart[4];
+}MealCompareDataStruct;
+extern MealCompareDataStruct MealCompareData; /*餐品对比数据显示*/
+
+
 void StatisticsTotal(void);
 void MealArr(unsigned char index);
 void InitSetting(void);
