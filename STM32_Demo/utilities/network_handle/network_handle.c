@@ -629,6 +629,7 @@ uint32_t  MealDataCompareFun(void)
 	  status  = CmdLenght / 35  ;
 		printf("Statusstatus=%x\r\n",status);
 		//for(i=0;i<status;i++)
+
 		for(i=0;i<4;i++)
 		{
 			if(rx1Buf[45+i*35]==0x04)   //餐品对比标志
@@ -637,7 +638,7 @@ uint32_t  MealDataCompareFun(void)
 			}					
 			else
 			{
-				MealCompareData.MealComparePart[i]=rx1Buf[39+i*35];
+				MealCompareData.MealComparePart[i]=rx1Buf[36+i*35];
 		  }				
 		}
 		return MealCompareData.MealCompareTotoal ;/*餐品对比信息*/

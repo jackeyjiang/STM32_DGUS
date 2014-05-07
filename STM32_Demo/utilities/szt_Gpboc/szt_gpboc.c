@@ -282,12 +282,10 @@ uint8_t ManageRxData(void)
 	 return DataReErr;
    }
 }
+/*??????????,?????0,????????*/
 uint8_t ManageReOrderType(void)
 {
-  uint32_t temp0;  //???????
-  uint32_t temp1;  //???????
-  uint32_t temp2;  //???????
-  uint32_t temp3;  //???????
+  uint32_t temp;  //???????
   uint8_t  ackflagbuff = IsNc;
   uint8_t  dataflagbuff = DataNc;
   uint8_t  orderType = 0 ;
@@ -300,106 +298,120 @@ uint8_t ManageReOrderType(void)
 
   while(1) //???Ack?????
   {
-    if(( Usart2Flag == AckFlag ) || ( AckOver == RxOk ))  //ACK????
-  	{
-        temp1 =0;
-        while(1)	// ??ACK???????
-        {
-          if( AckOver == RxOk )    //ACK??????
-        	{
-            ackflagbuff = ManageACK();
-            if( ackflagbuff == IsNc)
-            {
-              //printf("\n?????\n");
-            }
-            else if(ackflagbuff == IsAck)
-            {
-              //printf("\n??????\n");
-              temp2 =0;
-          		while(1) //??????????????
-          		{
-          		  if( Usart2Flag == DataFlag )    //?????????
-          		  {
-                  temp3 =0;
-              		while(1) //?????????????
-              		{
-              		  if( DataOver == RxOk )
-              		  {
-                      dataflagbuff = ManageRxData();//????????????
-  	  
-                  		/*??????????*/
-                  		if( dataflagbuff == DataNc)
-                  		{
-                  		  //printf("\n????????\n");
-                  		}
-                  		else if( dataflagbuff == DataReOk)
-                  		{
-                  		   //printf("\n??????\n");
-                  		   
-                  		   orderType = PrintBuf2[22];  
-                  		}
-                  		else if( dataflagbuff == DataReErr)
-                  		{
-                  		   //printf("\n???????\n");
-                  		}
-                  		else 
-                  		{
-                  		   //printf("\n??????,????????%d\n",dataflagbuff);
-                  		}
-                			break;
-              		  }
-              		  temp3 ++;
-              		  delay_us(50);
-              		  //if( temp >= 0x0fff0 )
-                    if( temp3 >= 0x186A0 )     //???5?
-              		  {
-                			//printf("\n?????????\n");
-                			break;
-              		  }
-              		}
-            			break;
-          		  }
-          		  temp2 ++;
-          		  delay_us(50);
-          		  //if( temp >= 0x0fff0 )
-                if( temp2 >= 0x124F80 )     //???60?
-          		  {
-          			  //printf("\n??????????\n");
-          			  break;
-          		  }
-          		}
-  		//printf("\n??????????:%d\n",temp);
-            }
-            else if( ackflagbuff == IsNack)
-            {
-               //printf("\n???????\n");
-            }
-            else
-            {
-               //printf("\n??????,ack????:%d\n",ackflagbuff);
-            }
-
-
-        	  break;
-        	}
-        	temp1 ++;
-        	delay_us(50);
-        	if( temp1 >= 0x0fff0 )
-        	{
-        	  //printf("\n???Ack??\n");
-        	  break;
-        	}
-        }
-  	  break;
-  	}
-  	temp0 ++;
-  	delay_us(50);
-  	if( temp0 >= 0x0fff0 )
-  	{
-  	  //printf("\n???ack????\n");
-  	  break;
-  	}
+    if(( Usart2Flag == AckFlag ) || ( AckOver == RxOk ))
+	{
+	  break;
+	}
+	temp ++;
+	delay_us(50);
+	if( temp >= 0x0fff0 )
+	{
+	  //printf("\n???ack????\n");
+	  break;
+	}
   }
+
+  //printf("\n????Ack????:%d \n",temp );
+
+  temp =0;
+  while(1)	// ??ACK???????
+  {
+    if( AckOver == RxOk )
+	{
+	  break;
+	}
+	temp ++;
+	delay_us(50);
+	if( temp >= 0x0fff0 )
+	{
+	  //printf("\n???Ack??\n");
+	  break;
+	}
+  }
+  //printf("\n???Ack??:%d\n",temp);
+
+  ackflagbuff = ManageACK();
+  if( ackflagbuff == IsNc)
+  {
+    //printf("\n?????\n");
+  }
+  else if(ackflagbuff == IsAck)
+  {
+    //printf("\n??????\n");
+  }
+  else if( ackflagbuff == IsNack)
+  {
+     //printf("\n???????\n");
+  }
+  else
+  {
+     //printf("\n??????,ack????:%d\n",ackflagbuff);
+  }
+
+  if( ackflagbuff == IsAck )
+  	{
+  	  
+	  temp =0;
+		while(1) //??????????????
+		{
+		  if( Usart2Flag == DataFlag )
+		  {
+			break;
+		  }
+		  temp ++;
+		  delay_us(50);
+		  if( temp >= 0x0fff0 )
+		  {
+			//printf("\n??????????\n");
+			break;
+		  }
+		}
+		//printf("\n??????????:%d\n",temp);
+	  
+	  
+		temp =0;
+		while(1) //?????????????
+		{
+		  if( DataOver == RxOk )
+		  {
+			break;
+		  }
+		  temp ++;
+		  delay_us(50);
+		  if( temp >= 0x0fff0 )
+		  {
+			//printf("\n?????????\n");
+			break;
+		  }
+		}
+		//printf("\n???????:%d\n",temp);
+	  
+		dataflagbuff = ManageRxData();//????????????
+	  
+		/*??????????*/
+		if( dataflagbuff == DataNc)
+		{
+		  //printf("\n????????\n");
+		}
+		else if( dataflagbuff == DataReOk)
+		{
+		   //printf("\n??????\n");
+		   
+		   orderType = PrintBuf2[22];  
+		}
+		else if( dataflagbuff == DataReErr)
+		{
+		   //printf("\n???????\n");
+		}
+		else 
+		{
+		   //printf("\n??????,????????%d\n",dataflagbuff);
+		}
+  	}
+  //printf("\nPrintIndex2= %d",PrintIndex2);
+	//printf("\n??????:%x",orderType);
+  
+  //Close_Szt_Gpboc();
 
   return orderType;
 }

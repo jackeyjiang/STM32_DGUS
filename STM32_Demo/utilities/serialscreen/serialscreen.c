@@ -638,14 +638,15 @@ void SyncMealCntDisp(uint8_t meal_cnt,uint8_t floor)
 {
 	  char temp[20]={0};  //存放串口数据的临时数组
 		char buffer[5]={0};
-		int cnt_t=0;
+		int cnt_t=0,i=0;
 		cnt_t= sprintf(buffer,"%d",meal_cnt);
+		if(meal_cnt==0xff) cnt_t=0;
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
 		temp[2]= 4+cnt_t; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 
 		myunion.adress= sync_column1st_number+ floor*(0x0100); 
 		temp[4]= myunion.adr[1];
 		temp[5]= myunion.adr[0];
-    strcat(temp,buffer);
+		for(i=0;i<cnt_t;i++) temp[i+6]=buffer[i]; 
 		Uart3_Sent(temp,sizeof(temp));	
 }
 
@@ -1233,13 +1234,19 @@ loop1:	switch(MealID)
 					}break;
 					case 0x04:  /*数据同步*/
 					{
-						 uint32_t mealcompare_data=0;
-						 uint8_t mealsample_data=0,cnt_t=0,floor=0;
+						uint32_t mealcompare_data=0;
+						uint8_t mealsample_data=0,cnt_t=0,floor=0;
+						for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
+						{
+							/*显示餐品,数量*/									
+              SyncMealNameDisp(0,cnt_t);
+              SyncMealCntDisp(0xFF,cnt_t); 									 
+						}	
 						//禁止屏幕点击*/
              ScreenControl(ScreenDisable);
 						//数据同步子程序
-						 mealcompare_data= MealDataCompareFun();
-						 if(mealcompare_data==0xFFFFFFFF) //正确
+						 MealDataCompareFun();
+						 if(MealCompareData.MealCompareTotoal==0xFFFFFFFF) //正确
 						 {
 							 PageChange(Data_synchronization);
 							 for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
@@ -1252,6 +1259,7 @@ loop1:	switch(MealID)
 						 }
              else
              {
+							 PageChange(Data_synchronization+2);
 							 for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
 							 {
 								 if(MealCompareData.MealComparePart[cnt_t]==0xff)
@@ -1265,8 +1273,7 @@ loop1:	switch(MealID)
                   SyncMealCntDisp(MealCompareData.MealComparePart[cnt_t],floor); 
                   floor++;									 
 								 }
-               }
-							 PageChange(Data_synchronization+2);
+               }						 
 						 }
 						//超时时退出，错误退出
 						ScreenControl(ScreenEnable);

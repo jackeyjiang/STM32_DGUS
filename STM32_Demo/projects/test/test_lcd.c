@@ -43,7 +43,7 @@ int main(void)
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
 	printf("SignInFunction ok\r\n");  //
 	/*深圳通签到*/
-	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
+	//if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	printf("Szt_GpbocAutoCheckIn ok\r\n");	
 	PageChange(Menu_interface); //显示选餐界面
 	delay_ms(1000);
