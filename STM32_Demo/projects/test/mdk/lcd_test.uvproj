@@ -813,7 +813,7 @@
             <File>
               <FileName>readme.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>.\readme.txt</FilePath>
+              <FilePath>..\readme.txt</FilePath>
             </File>
           </Files>
         </Group>

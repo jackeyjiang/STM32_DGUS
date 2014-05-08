@@ -94,4 +94,5 @@ In order to make the program work, you must do the following :
       Run->Debug (F11)
     
  * <h3><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h3>
- */
+ */文档说明：
+ 1.银联卡长响一声后，还是没有扣款成功？？？

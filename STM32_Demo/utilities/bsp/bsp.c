@@ -155,7 +155,7 @@ unsigned char  WaitPayMoney(void)
 			else
 			{
 				WaitTimeInit(&WaitTime);
-				PageChange(Acount_interface);
+				PageChange(Acount_interface+2);
 				CurrentPoint = 1;
 			  /*支付方式*/			 
 			  UserAct.PayType = 0x00;/* 现金支付*/			
@@ -180,7 +180,7 @@ unsigned char  WaitPayMoney(void)
 			else
 			{
 				WaitTimeInit(&WaitTime);
-				PageChange(Acount_interface);
+				PageChange(Acount_interface+2);
 				CurrentPoint = 1;
 			  /*支付方式*/			 
 			  UserAct.PayType = 0x00;/* 现金支付*/			
@@ -217,8 +217,7 @@ unsigned char  WaitPayMoney(void)
 	{
     WaitTimeInit(&WaitTime);
 		PageChange(Menu_interface);//超时退出用户餐品数量选择界面
-		delay_ms(1000);
-		if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
+		if(!CloseCashSystem()) printf("cash system is erro6\r\n");  //关闭现金接受
 		CurrentPoint = 0 ;
 		UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 		ClearUserBuffer();//清空用户数据
@@ -502,10 +501,10 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
-#define bill_time  500  //500ms不会出错，100ms纸币机反应不过来
+#define bill_time  600  //500ms不会出错，100ms纸币机反应不过来
 bool CloseCashSystem(void)
 {
-	uint8_t cnt_t=20,money=0,temp=0;
+	uint8_t cnt_t=253,money=0,temp=0;
   CloseCoinMachine();			    //关闭投币机	
 	delay_ms(bill_time);
 	memset(BillDataBuffer,0xFE,sizeof(BillDataBuffer));
@@ -513,7 +512,7 @@ bool CloseCashSystem(void)
 	do
 	{
 		cnt_t--;
-		delay_us(100);
+		delay_ms(1);
 		if((RX4Buffer[0]=='0')&&(RX4Buffer[1]=='0'))
 		{
 			return true;
@@ -528,7 +527,7 @@ bool CloseCashSystem(void)
 
 bool OpenCashSystem(void)
 {
-	uint8_t cnt_t=20,temp;	
+	uint8_t cnt_t=254,temp;	
 	OpenCoinMachine();    //打开投币机	
 	delay_ms(bill_time);        //需要控制
 	memset(BillDataBuffer,0xFE,sizeof(BillDataBuffer));
@@ -536,7 +535,7 @@ bool OpenCashSystem(void)
 	do
 	{
 		cnt_t--;
-		delay_us(100);
+		delay_ms(1);
 		if((RX4Buffer[0]=='0')&&(RX4Buffer[1]=='0'))
 		{
 			return true;

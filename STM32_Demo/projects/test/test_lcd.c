@@ -43,7 +43,7 @@ int main(void)
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
 	printf("SignInFunction ok\r\n");  //
 	/*深圳通签到*/
-	//if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
+	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	printf("Szt_GpbocAutoCheckIn ok\r\n");	
 	PageChange(Menu_interface); //显示选餐界面
 	delay_ms(1000);
@@ -64,7 +64,7 @@ int main(void)
 					temp =0;
 					temp = OrderSendLink();  //为1成功，为0失败
 					VariableChage(current_temprature,Temperature); //5S一次
-					if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
+					//if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
 					printf("temp = %d",temp);
 				}
 				//显示倒计时
@@ -84,9 +84,7 @@ int main(void)
         if( WaitPayMoney()==Status_OK)
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
-					PlayMusic(VOICE_7);
-					delay_ms(1000);
-					if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受					
+					PlayMusic(VOICE_7);					
 					CloseTIM3();
 					CloseTIM7();					
 					WaitTime=5;//5S计时   
@@ -95,7 +93,12 @@ int main(void)
 					MoneyBack =UserAct.MoneyBack *100 ;  /*扩大10倍*/
 			    mealvariety =0; 
 					Current= hpper_out;
-					UserAct.Meal_takeout= 0;
+					UserAct.Meal_takeout= 0;					
+					if(UserAct.PayType == '1')
+					{
+						delay_ms(3000);
+						if(!CloseCashSystem()) printf("cash system is erro1\r\n");  //关闭现金接受
+					}
 			  }
 			}break;
 //			case data_record:  /*数据记录*/

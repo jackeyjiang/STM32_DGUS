@@ -282,56 +282,40 @@ uint8_t ManageRxData(void)
 	 return DataReErr;
    }
 }
-/*??????????,?????0,????????*/
+
 uint8_t ManageReOrderType(void)
 {
-  uint32_t temp;  //???????
+  uint32_t temp; 
   uint8_t  ackflagbuff = IsNc;
   uint8_t  dataflagbuff = DataNc;
   uint8_t  orderType = 0 ;
-
-  
   //Open_Szt_Gpboc();
-  delay_us(5);
-  
-  //Order_Ifn_QueryStatus(); //??????????
-
-  while(1) //???Ack?????
+  delay_us(5);  
+  //Order_Ifn_QueryStatus(); 
+  while(1) 
   {
-    if(( Usart2Flag == AckFlag ) || ( AckOver == RxOk ))
-	{
-	  break;
-	}
-	temp ++;
-	delay_us(50);
-	if( temp >= 0x0fff0 )
-	{
-	  //printf("\n???ack????\n");
-	  break;
-	}
+    if((Usart2Flag == AckFlag) || (AckOver == RxOk))
+       break;
+	  temp ++;
+	  delay_us(50);
+	  if(temp >= 0x0fff0 )
+			break;;
   }
 
   //printf("\n????Ack????:%d \n",temp );
 
   temp =0;
-  while(1)	// ??ACK???????
+  while(1)
   {
     if( AckOver == RxOk )
-	{
-	  break;
+	    break;
+	  temp ++;
+	  delay_us(50);
+	  if(temp >= 0x0fff0)
+	    break;  
 	}
-	temp ++;
-	delay_us(50);
-	if( temp >= 0x0fff0 )
-	{
-	  //printf("\n???Ack??\n");
-	  break;
-	}
-  }
-  //printf("\n???Ack??:%d\n",temp);
-
   ackflagbuff = ManageACK();
-  if( ackflagbuff == IsNc)
+  if(ackflagbuff == IsNc)
   {
     //printf("\n?????\n");
   }
@@ -347,56 +331,37 @@ uint8_t ManageReOrderType(void)
   {
      //printf("\n??????,ack????:%d\n",ackflagbuff);
   }
-
   if( ackflagbuff == IsAck )
-  	{
-  	  
+  {  
 	  temp =0;
-		while(1) //??????????????
+		while(1) 
 		{
 		  if( Usart2Flag == DataFlag )
-		  {
-			break;
-		  }
+			  break;
 		  temp ++;
 		  delay_us(50);
 		  if( temp >= 0x0fff0 )
-		  {
-			//printf("\n??????????\n");
-			break;
-		  }
+			  break;
 		}
-		//printf("\n??????????:%d\n",temp);
-	  
-	  
 		temp =0;
-		while(1) //?????????????
+		while(1)
 		{
-		  if( DataOver == RxOk )
-		  {
-			break;
-		  }
+		  if(DataOver == RxOk)
+			  break;
 		  temp ++;
 		  delay_us(50);
-		  if( temp >= 0x0fff0 )
-		  {
-			//printf("\n?????????\n");
-			break;
-		  }
-		}
-		//printf("\n???????:%d\n",temp);
+		  if(temp >= 0x0fff0)
+			  break;
+		}	  
+		dataflagbuff = ManageRxData();
 	  
-		dataflagbuff = ManageRxData();//????????????
-	  
-		/*??????????*/
 		if( dataflagbuff == DataNc)
 		{
 		  //printf("\n????????\n");
 		}
 		else if( dataflagbuff == DataReOk)
 		{
-		   //printf("\n??????\n");
-		   
+		   //printf("\n??????\n");   
 		   orderType = PrintBuf2[22];  
 		}
 		else if( dataflagbuff == DataReErr)
@@ -2909,7 +2874,7 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
   uint8_t result1 =0;
   uint8_t result2 =0;
   int32_t FristMoney=0;
-	uint8_t cnt_t=0;
+	uint8_t cnt_t=0,i=0;
 //   int32_t EndMoney=0;
 //   int32_t FactMoney;
   //TRANSLOG_TO_HOST saveDeductIfn;
@@ -2933,54 +2898,49 @@ loop5:
   	FristMoney = UpReadCardData.GpbocMoney;
 // 	    EndMoney = FristMoney;
        //在显示屏上显示刷卡前金额UpReadCardData.GpbocMoney
-      VariableChagelong(cardbalence_before,UpReadCardData.GpbocMoney);	
-      if( FristMoney < money_deduct )
-      {
-        //printf("\n卡内余额为%ld",FristMoney);
-        //printf("卡内余额不足，请先充值\r\n");
-        return 0;
-      }
-      else
-      {
-        orderFlag1 =0;
-	  	  Order_Gpboc_Deduct(money_deduct);
-        orderFlag1 = ManageReOrderType();
-
-        if(orderFlag1 == R_GpbocDeduct)
-          {
-            result2 = ManageGpbocDeduct();
-						if( result2 == 1)   //付款成功
-						{
-							//printf("付款成功\r\n");
-              //在显示屏上显示扣款金额与余额，UpDeductData.lTransAmount（扣款），UpDeductData.lCardBalance（余额）
-							VariableChagelong(amountof_consumption,UpDeductData.lTransAmount);
-							VariableChagelong(cardbalence_after,UpDeductData.lCardBalance);	
-							delay_ms(1000);
-							return 1;
-						}
-						else
-						{
-							//printf("付款失败\r\n");
-							return 0;
-						}
-          }
-          
-      }
-  	}
-    else
+    VariableChagelong(cardbalence_before,UpReadCardData.GpbocMoney);	
+    if( FristMoney < money_deduct )
     {
-			cnt_t++;
-      //printf("读卡失败\r\n");
-			if(cnt_t<15)goto loop5;
+      //printf("\n卡内余额为%ld",FristMoney);
+      //printf("卡内余额不足，请先充值\r\n");
       return 0;
     }
-
-}
-
-
-
-
-
+    else
+    {
+      orderFlag1 =0;
+	  	Order_Gpboc_Deduct(money_deduct);
+			for(i=0;i<20;i++)
+			{
+				orderFlag1 = ManageReOrderType();
+				if(orderFlag1 == R_GpbocDeduct)
+				{
+					result2 = ManageGpbocDeduct();
+					if( result2 == 1)   //付款成功
+					{
+						//printf("付款成功\r\n");
+						//在显示屏上显示扣款金额与余额，UpDeductData.lTransAmount（扣款），UpDeductData.lCardBalance（余额）
+						VariableChagelong(amountof_consumption,UpDeductData.lTransAmount);
+						VariableChagelong(cardbalence_after,UpDeductData.lCardBalance);	
+						delay_ms(1000);
+						return 1;
+					}
+					else
+					{
+						//printf("付款失败\r\n");
+						return 0;
+					}
+				}
+      }  
+    }
+  }
+  else
+  {
+	  cnt_t++;
+    //printf("读卡失败\r\n");
+	  if(cnt_t<15)goto loop5;
+    return 0;
+  }
+ }
 
 /*上送银联数据，成功上送返回1，失败返回0*/
 uint8_t UpperGpboc(void)
@@ -3009,12 +2969,8 @@ uint8_t UpperGpboc(void)
   	  //printf("\n上送银联数据失败\n");
   	  endresult =0;
   	}
-
   return endresult;
 }
-
-
-
 /*银联批结流程，成功批结返回1，失败返回0*/
 uint8_t GpbocVout(void)
 {
@@ -3253,6 +3209,7 @@ uint8_t SztDeduct(int32_t money)
   uint8_t EndMoney =0;
   int32_t TrueMoney=0;
 	uint8_t cnt_t=0;
+	uint8_t tempcount=0;
 
   SztReductInf.BeginMoney =0;
   SztReductInf.EndMoney =0;
@@ -3289,6 +3246,7 @@ uint8_t SztDeduct(int32_t money)
   		}
   		else if( flag1 == 0x52 )  //重操作扣款
   		{
+				loop7:
   		  Order_SztDeductAgain(money);
 				delay_us(15);
 				temp = 0xff;
@@ -3329,6 +3287,15 @@ uint8_t SztDeduct(int32_t money)
 				}
 			}
 	  }
+		else
+		{
+			tempcount++;
+			if(tempcount <5)
+			{
+				goto loop7;
+			}
+			
+		}
 		if( (flag4 == 0x01) &&(flag3 == 0x01))
 		{
 			TrueMoney = FristMoney - EndMoney;
@@ -3341,7 +3308,7 @@ uint8_t SztDeduct(int32_t money)
 	else
 	{
     cnt_t++;
-	  if(cnt_t>15) goto loop6;		
+	  if(cnt_t<15) goto loop6;		
 	}
   return endflag; 
 }
