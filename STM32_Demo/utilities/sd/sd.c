@@ -279,7 +279,7 @@ void Fwriter(unsigned char *p)
 	else
 	{
 		res = f_lseek(&fsrc,fsrc.fsize);
-   	res = f_write(&fsrc,p,256, &rd);
+   	res = f_write(&fsrc,p,512, &rd);
 	//	res = f_write(&fsrc,"Ð¡ÍõÍ¯Ð¬ÄãºÃ£¡£¡£¡\r\n",512, &rd);
 		f_sync(&fsrc)	;
 	  if(res!=FR_OK)
@@ -329,7 +329,7 @@ char  Fread(unsigned char *p)
 		  // res = f_lseek(&fsrc,fsrc.fsize);
 		  res = f_lseek(&fsrc,Index); //Ö¸ÕëÖ¸ÏòµÚIndex¸ö×Ö½Ú
 			//	printf("Index = %d \r\n",res);
-		  res = f_read(&fsrc,p,256, &rd);//¶ÁÈ¡256×Ö½ÚµÄÊý¾Ýµ½Buffer,rd ´æ´¢µÄÊÇ¶Áµ½µÄ×Ö½ÚÊý
+		  res = f_read(&fsrc,p,512, &rd);//¶ÁÈ¡512×Ö½ÚµÄÊý¾Ýµ½Buffer,rd ´æ´¢µÄÊÇ¶Áµ½µÄ×Ö½ÚÊý
 			//	printf("Index = %d \r\n",res);
 //				if(1)
 //				//if(Resend(Buffer,Lenght) == 0x00)
@@ -347,9 +347,9 @@ char  Fread(unsigned char *p)
 //					f_close(&fsrc);
 //        }
       }
-		  Index += 256 ; //Æ«ÒÆ256
+		  Index += 512 ; //Æ«ÒÆ512
 		  // printf("Index = %d \r\n",Index);
-	    if(res!=FR_OK ||fsrc.fsize <= Index ) //fsrc.fsizeÊÇÎÄ¼þ´óÐ¡£¬ÕâÀïÅÐ¶ÏÎÄ¼þ´óÐ¡
+	    if(res!=FR_OK ||fsrc.fsize < Index ) //fsrc.fsizeÊÇÎÄ¼þ´óÐ¡£¬ÕâÀïÅÐ¶ÏÎÄ¼þ´óÐ¡Ö®Ç°ÊÇif(res!=FR_OK ||fsrc.fsize <=Index )
 	    {
 //	      f_close(&fsrc);????
 //      f_mount(0, NULL);
@@ -394,20 +394,20 @@ bool ReadDatatoBuffer(void)
   unsigned char DelteFlag = 0 ;//ÓÃÀ´±ê¼ÇÊÇ·ñÈ«²¿ÉÏ´«ÁËÊý¾ÝµÄº¯Êý
 	unsigned int  Times  = 0  ;
 	uint32_t  indexflag = 0;
-	for(Times = 0 ;Times <1000 ;Times--)
+	for(Times = 0 ;Times <1000 ;Times++)
 	{
 	  if(Fread(ReadSdBuff)== 0x01)					      //¼ÙÈç³ö´íÁË¡??
        break;
 		else 
 		{
 			SearchSeparator(ReadBuf,ReadSdBuff,17);
-			if(ReadBuf[0]=='E')
+			if(ReadBuf[0]=='n')
 			{
-				if(TakeMealsFun1(ReadSdBuff)==0) //ÔÚµÚÊ®Áù¸ö¶ººÅºóÐ´Y
+				if(TakeMealsFun1(ReadSdBuff)==0) //ÔÚµÚÊ®Áù¸ö¶ººÅºóÐ´Y 255-162=93
 				{
-					indexflag = Index -120; //³¤¶ÈÒª¼ÆËã
+					indexflag = Index-512+162; //³¤¶ÈÒª¼ÆËã120-26  256-120-26=
 					res = f_lseek(&fsrc,indexflag);//Æ«ÒÆIndex+1021
-					res = f_write(&fsrc,"Y",1, &bw); //Ð´"Y"
+					res = f_write(&fsrc,"y",1, &bw); //Ð´"Y"
 				  f_close(&fsrc);
         }				 
 				else
@@ -544,17 +544,17 @@ void HextoChar(char *destbuff,char *buffer)
   char temp=0;
   while(1)
   {
-   if((buffer[i]==',')||(buffer[i]=='n')||(buffer[i]=='y')) 
+   if(buffer[i]==',')
    {
       destbuff[j++]=buffer[i];
 		  temp++;
    }
-   else if(buffer[i]=='\r')
+   else if((buffer[i]=='n')||(buffer[i]=='y'))
    {
 		 if(temp!=9)
 		 {
-		  destbuff[j++]='\r';
-		  destbuff[j]='\n';
+			destbuff[j++]= buffer[i]; 
+		  destbuff[j]='\r';
 			break;
 		 }
    }   
@@ -575,12 +575,12 @@ void HextoChar(char *destbuff,char *buffer)
 }
 
 
-char Send_Buf[128] ={0};
-char Rec_Buf[256]={0};
+char Send_Buf[100] ={0};
+char Rec_Buf[512]={0};
 void Sd_Write(char erro_flag)
 {
    uint16_t CmdLenght =0,i=0,j=0;
-   unsigned int CRCValue=0;
+   long CRCValue=0;
   	 /*Ë®Á÷ºÅ++*/
 	 Send_Buf[0] =	0x02 ;
 	 Send_Buf[1] =	0x80 ;
@@ -647,16 +647,17 @@ void Sd_Write(char erro_flag)
 	 CmdLenght+=0x03;
    /*¶ÔÓ¦ --> ¸ßÎ»*/
 	 HL_IntToBuffer(CmdLenght-8,&Send_Buf[3]);
-	 CRCValue=GetCrc16(&Send_Buf[1],CmdLenght-4);
+	 //CRCValue=GetCrc16(&Send_Buf[1],CmdLenght-4);
+	 CRCValue=0x0000;
 	 HL_IntToBuffer(CRCValue,&Send_Buf[CmdLenght-2]); 
 	 Send_Buf[CmdLenght++]=',';
 	 Send_Buf[CmdLenght]=erro_flag;
-	 Send_Buf[126]='\r';
-	 Send_Buf[127]='\n';
+//	 Send_Buf[126]='\r';
+//	 Send_Buf[127]='\n';
 	 HextoChar(Rec_Buf,Send_Buf);
 	 Fwriter(Rec_Buf);
-	 memset(Send_Buf,0,128);
-   memset(Rec_Buf,0,256);
+	 memset(Send_Buf,0,100);
+   memset(Rec_Buf,0,512);
 }
 
 

@@ -344,7 +344,7 @@ static void CmdDataSend(unsigned char *p,long Lenght)
 
 unsigned char  MealComparefunDemo(long Cmd ,unsigned char *p,unsigned long lenght)
 {
-  long  CRCValue= 0 ;
+  uint16_t  CRCValue= 0 ;
 // static  int Bno = 0 ;
   unsigned char Waittimeout = 250 ;
   /*给数组赋值命令*/
@@ -1587,7 +1587,7 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 
  }
 
-char ReadSdBuff[256]={0};
+char ReadSdBuff[512]={0};
 char SendHostBuff[128]={0};
 //void DataUpload(void)
 //{

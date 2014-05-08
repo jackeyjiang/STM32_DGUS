@@ -2,24 +2,6 @@
 #define __network_handle__h
 #include "stdint.h"
 
-//#define FH        0
-//#define TID       1
-//#define BRWN      2
-//#define BNO       3
-//#define DevArea   4
-//#define DevAreaNo 5
-//#define DealBalance 6
-//#define MealID    7
-//#define MealNO    8
-//#define MealName  9
-//#define MealPrice 10
-//#define PayType   11
-//#define PayBack   12
-//#define LeftMeal  13
-//#define MAC       14
-//#define CardInfo  15
-//#define FL        16
-//#define SendFlag  17
 
 extern   unsigned char   F_RX1_Right ;
 extern   uint16_t		  rx1BufIndex ;
@@ -93,7 +75,7 @@ typedef struct
 }CustomerSel__struction ;
 extern CustomerSel__struction CustomerSel;
 
-extern char ReadSdBuff[256];
+extern char ReadSdBuff[512];
 extern char SendHostBuff[128];
 extern char ReadBuf[20];
 
