@@ -612,8 +612,9 @@ void AbnormalHandle(uint16_t erro)
 				}
 				else 
 				{
-					erro_record &= ~(1<<erro);
-					return;
+					//erro_record &= ~(1<<erro);
+					erro_flag= 0;
+					break;;
 				}
 			}break;
 		case sdcard_erro:     //SD¿¨´æ´¢Òì³£
