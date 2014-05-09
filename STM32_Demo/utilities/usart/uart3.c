@@ -16,7 +16,7 @@ void Uart3_Configuration(void)
   	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   	GPIO_Init(GPIOD, &GPIO_InitStructure);//初始化串口1的GPIO  
 	 
-  	USART_InitStructure.USART_BaudRate = 38400;//波特率设置
+  	USART_InitStructure.USART_BaudRate = 115200;//波特率设置
   	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//8位数据模式
   	USART_InitStructure.USART_StopBits = USART_StopBits_1;//1位停止位
   	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位

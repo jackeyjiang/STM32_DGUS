@@ -48,6 +48,7 @@ uint8_t  WaitTime=0;
  *******************************************************************************/  
 void InitSetting(void)
 {
+	uint8_t cnt_t=0,id_t=0;
   if(FloorMealMessageWriteToFlash.FloorMeal[CurFloor.FloorNum - 1].MealID == CurFloor.MealID)
   {
 		CurFloor.MealCount = FloorMealMessageWriteToFlash.FloorMeal[CurFloor.FloorNum - 1].MealCount;
@@ -67,6 +68,15 @@ void InitSetting(void)
 	VariableChage(row_2nd,CurFloor.SCount);
 	VariableChage(row_3rd,CurFloor.TCount);
 	//之后在加入放餐设置
+//  for(cnt_t = 0; cnt_t < FloorMealNum; cnt_t++)  //查找层
+//	{
+//    if(FloorMealMessageWriteToFlash.FloorMeal[cnt_t].MealCount ==0)
+//		{
+//		   CurFloor.FloorNum = FloorMealNum;
+//			 break;
+//		}			
+//	}
+//	VariableChage(floor_num,CurFloor.FloorNum);
 }
  /*******************************************************************************
  * 函数名称:MealArr                                                                     

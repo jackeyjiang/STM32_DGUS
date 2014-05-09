@@ -2936,8 +2936,14 @@ loop5:
   else
   {
 	  cnt_t++;
-    //printf("¶Á¿¨Ê§°Ü\r\n");
-	  if(cnt_t<15)goto loop5;
+		DealSeriAceptData();
+		if(caedbalence_cancel_flag)
+		{
+			caedbalence_cancel_flag=false;
+			return 0;
+		}
+	  if(cnt_t<15)
+			goto loop5;
     return 0;
   }
  }
@@ -3307,7 +3313,13 @@ uint8_t SztDeduct(int32_t money)
   }
 	else
 	{
+		if(caedbalence_cancel_flag)
+		{
+			caedbalence_cancel_flag=false;
+			return 0;
+		}
     cnt_t++;
+		DealSeriAceptData();
 	  if(cnt_t<15) goto loop6;		
 	}
   return endflag; 

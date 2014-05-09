@@ -24,6 +24,7 @@
 #define Data_synchronization  0x1E  /*数据同步*/
 #define Coinset_interface     0x22  /*硬币设置*/
 #define Cardbalence_interface 0x25  /*刷卡界面*/
+#define UserAbonamalRecord_interface 0x27/*异常用户记录界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -157,10 +158,32 @@
 #define sync_column3rd_number 0x4B00  
 #define sync_column4th_number 0X4C00
 
+//用户错误记录界面
+#define record_column1st_name   0x5000 //第一栏名字
+#define record_column2nd_name   0x5100 //第二栏名字
+#define record_column3rd_name   0x5200 //第三栏名字
+#define record_column4th_name   0x5300 //第四栏名字
+
+#define record_column1st_cnt_t  0x5400 //第一栏餐品总数
+#define record_column2nd_cnt_t  0x5500 //第二栏餐品总数
+#define record_column3rd_cnt_t  0x5600 //第三栏餐品总数
+#define record_column4th_cnt_t  0x5700 //第四栏餐品总数
+
+#define record_column1st_cnt    0x5800 //第一栏餐品已出总数
+#define record_column2nd_cnt    0x5900 //第二栏餐品已出总数
+#define record_column3rd_cnt    0x5A00 //第三栏餐品已出总数
+#define record_column4th_cnt    0x5B00 //第四栏餐品已出总数
+
+#define record_UserActPayAlready  0x5C00 //用户已付款
+#define record_UserActPayBack     0x5D00 //用户找零
+
+#define record_clear  0x0054/*清楚记录按键*/
+
 extern const char price_1st;
 extern const char price_2nd;
 extern const char price_3rd;
 extern const char price_4th;
+extern bool caedbalence_cancel_flag;
 
 void ClearUserBuffer(void);
 void PageChange(char page);

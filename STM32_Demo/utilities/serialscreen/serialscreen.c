@@ -543,6 +543,13 @@ void SettleAccounts(void)
 		MealCntDisp(Null,tempcnt);//显示数量
 		MealCostDisplay(Null,tempcnt);//显示单总价 有两个重复		
 	}
+  for(Floor=0;Floor<4;Floor++)
+	{
+		DispMeal[Floor].meal_id= 0x00; //0x01为第一个餐品的ID
+		DispMeal[Floor].meal_cnt= 0x00; //餐品的数量赋值
+		DispMeal[Floor].meal_cost= 0x00; //餐品单总价的赋值
+	}
+	Floor= 0;
 	tempcnt=0; /*计数清零*/
   PageChange(Acount_interface);//结算界面
 	//在这里做标记 current = payformoney
@@ -650,7 +657,137 @@ void SyncMealCntDisp(uint8_t meal_cnt,uint8_t floor)
 		Uart3_Sent(temp,sizeof(temp));	
 }
 
+ /*******************************************************************************
+ * 函数名称:AbnomalMealNameDisp                                                                  
+ * 描    述:错误记录时显示餐品名称                                                          
+ *           根据ID 显示名称 ，根据floor 改变现实变量的地址                                                                    
+ * 输    入:meal_id ,floor                                                               
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年5月9日                                                                    
+ *******************************************************************************/ 							
+void AbnomalMealNameDisp(uint8_t meal_id,uint8_t floor)							
+{
+	  char temp[30]={0};  //存放串口数据的临时数组
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 15; //0x83 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+		myunion.adress= record_column1st_name+ floor*(0x0100); 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+		switch(meal_id)
+		{
+			case 0x00:break;
+			case 0x01:mystrcat(temp,meat_name,10);break;	
+			case 0x02:mystrcat(temp,chicken_name,8);break;		
+			case 0x03:mystrcat(temp,duck_name,8);break;	
+			case 0x04:mystrcat(temp,fish_name,8);break;
+			default:break;			
+		}
+		Uart3_Sent(temp,sizeof(temp));	
+}
 
+/*******************************************************************************
+ * 函数名称:AbnomalMealCnttDisp                                                                 
+ * 描    述:错误记录时显示餐品数量  ，以文本方式显示                                                        
+ *           更具floor 改变变量 ，meal_cnt 是要现实的数量                                                                    
+ * 输    入:meal_id                                                                
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void AbnomalMealCnttDisp(uint8_t meal_cnt,uint8_t floor)							
+{
+	  char temp[20]={0};  //存放串口数据的临时数组
+		char buffer[5]={0};
+		int cnt_t=0,i=0;
+		cnt_t= sprintf(buffer,"%d",meal_cnt);
+		if(meal_cnt==0xff) cnt_t=0;
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 4+cnt_t; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 
+		myunion.adress= record_column1st_cnt_t+ floor*(0x0100); 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+		for(i=0;i<cnt_t;i++) temp[i+6]=buffer[i]; 
+		Uart3_Sent(temp,sizeof(temp));	
+}
+
+/*******************************************************************************
+ * 函数名称:AbnomalMealCntDisp                                                                 
+ * 描    述:错误记录时显示餐品数量  ，以文本方式显示                                                        
+ *           更具floor 改变变量 ，meal_cnt 是要现实的数量                                                                    
+ * 输    入:meal_id                                                                
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年3月13日                                                                    
+ *******************************************************************************/ 							
+void AbnomalMealCntDisp(uint8_t meal_cnt,uint8_t floor)							
+{
+	  char temp[20]={0};  //存放串口数据的临时数组
+		char buffer[5]={0};
+		int cnt_t=0,i=0;
+		cnt_t= sprintf(buffer,"%d",meal_cnt);
+		if(meal_cnt==0xff) cnt_t=0;
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 4+cnt_t; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 
+		myunion.adress= record_column1st_cnt+ floor*(0x0100); 
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+		for(i=0;i<cnt_t;i++) temp[i+6]=buffer[i]; 
+		Uart3_Sent(temp,sizeof(temp));	
+}
+
+ /*******************************************************************************
+ * 函数名称:DisplayUserRecord                                                                     
+ * 描    述:显示出错时的错误记录                                                              
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年5月9日                                                                    
+ *******************************************************************************/  
+void DisplayUserRecord(void)
+{
+	uint8_t cnt_t=0,floor=0;
+	for(floor=0;floor<4;floor++)		//清楚屏幕数据
+	{
+		AbnomalMealNameDisp(0,floor);
+		AbnomalMealCnttDisp(0xff,floor);
+		AbnomalMealCntDisp(0xff,floor);		
+	}
+	floor=0; //复原
+	if(UserAct.MealCnt_1st>0)
+	{
+		AbnomalMealNameDisp(cnt_t+1,floor);
+		AbnomalMealCnttDisp(UserAct.MealCnt_1st_t,floor);
+		AbnomalMealCntDisp(UserAct.MealCnt_1st,floor);		
+		floor++;
+	}
+	cnt_t++;
+	if(UserAct.MealCnt_2nd>0)
+	{
+		AbnomalMealNameDisp(cnt_t+1,floor);
+		AbnomalMealCnttDisp(UserAct.MealCnt_2nd_t,floor);
+		AbnomalMealCntDisp(UserAct.MealCnt_2nd,floor);	
+		floor++;
+	}
+	cnt_t++;
+	if(UserAct.MealCnt_3rd>0)
+	{
+		AbnomalMealNameDisp(cnt_t+1,floor);
+		AbnomalMealCnttDisp(UserAct.MealCnt_3rd_t,floor);
+		AbnomalMealCntDisp(UserAct.MealCnt_3rd,floor);	
+		floor++;
+	}
+	cnt_t++;
+	if(UserAct.MealCnt_4th>0)
+	{
+		AbnomalMealNameDisp(cnt_t+1,floor);
+		AbnomalMealCnttDisp(UserAct.MealCnt_4th_t,floor);
+		AbnomalMealCntDisp(UserAct.MealCnt_4th,floor);	
+		floor++;
+	}
+}
+	
  /*******************************************************************************
  * 函数名称:GetPassWord                                                                     
  * 描    述:原始密码 可以加入修改密码函数                                                               
@@ -712,6 +849,7 @@ char meat_cnt_t= 0,chicken_cnt_t= 0,duck_cnt_t= 0,fish_cnt_t= 0; /*临时数量*/
 uint8_t  PassWordLen=0;	//密码的长度为0
 uint8_t  PassWord[6]={0};
 uint8_t  InputPassWord[6]={0};
+bool caedbalence_cancel_flag= false;
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 {
 	char MealID =0;
@@ -764,10 +902,10 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							MealCostDisp(UserAct.MealID,UserAct.MealCnt_3rd_t);//根据用户所选餐品ID号显示合计钱数
 						}break;						
 					case 0x04:
-					{
-						PlayMusic(VOICE_1);
+					{					
 						if(DefineMeal[3].MealCount > 0)	   //判断餐品是否大于0
 						{
+							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1];
 							UserAct.MealCnt_4th_t= 1;//设置默认分数为 1
 							WaitTimeInit(&WaitTime);							
@@ -922,7 +1060,7 @@ loop1:	switch(MealID)
 					    VariableChage(VariableAdress,UserAct.MealCnt_2nd); //改变数量
 					    VariableChage(VariableAdress+1,UserAct.MealCost_2nd); //改变单总价
 				    }
-				   else
+				    else
 				    {
 					    VariableChage(VariableAdress,UserAct.MealCnt_2nd); //维持原来所选的数量
 				    }									
@@ -936,7 +1074,7 @@ loop1:	switch(MealID)
 					    VariableChage(VariableAdress,UserAct.MealCnt_3rd); //改变数量
 					    VariableChage(VariableAdress+1,UserAct.MealCost_3rd); //改变单总价
 				    }
-				   else
+				    else
 				    {
 					     VariableChage(VariableAdress,UserAct.MealCnt_3rd); //维持原来所选的数量
 				    }							
@@ -950,7 +1088,7 @@ loop1:	switch(MealID)
 					    VariableChage(VariableAdress,UserAct.MealCnt_4th); //改变数量
 					    VariableChage(VariableAdress+1,UserAct.MealCost_4th); //改变单总价
 				    }
-				   else
+				    else
 				    {
 					     VariableChage(VariableAdress,UserAct.MealCnt_4th); //维持原来所选的数量
 				    }							
@@ -1000,6 +1138,11 @@ loop1:	switch(MealID)
 					default:break;		
 				}					
 			}break;
+			case caedbalence_cancel:/*刷卡取消*/
+			{
+				PageChange(Acount_interface+2);
+				caedbalence_cancel_flag=true;
+			}break;			
 			case bill_print:
 			{
 				switch(VariableData[1])
@@ -1077,10 +1220,10 @@ loop1:	switch(MealID)
 		           /*进入管理员界面*/
 							 if(erro_flag!=0) 
 							 {
-								 PageChange(Logo_interface);
+								 PageChange(UserAbonamalRecord_interface);
+								 DisplayUserRecord();
 							   DisplayPassWord(0);//清楚密码显示
-			           PassWordLen = 0;							 
-								 erro_flag=0;
+			           PassWordLen = 0;							 			 
 								 break;
 							 }
 							 else
@@ -1112,10 +1255,26 @@ loop1:	switch(MealID)
           default:break;					
         } 					
 			}break;
+			case record_clear:
+			{
+				switch(VariableData[1])
+			  {
+					case 0x01: //清除数据
+					{
+						erro_flag=0; //清除数据标记
+						ClearUserBuffer();
+   				}break;
+					case 0x02: //返回
+					{
+						PageChange(Err_interface);
+					}break;
+          default:break;
+				}	
+			}break;
 			case admin_set:
 			{
 				switch(VariableData[1])
-				{
+				{ 
 					case 0x01:  /*温度设置按钮*/
 					{
 						PageChange(TemperatureSet_interface);
@@ -1140,10 +1299,19 @@ loop1:	switch(MealID)
 				}					
 			}break;
 			case meal_num:
-			{			
+			{
+				uint8_t cnt_t=0;
 			  CurFloor.MealID= VariableData[1];	
-				VariableChage(floor_num,CurFloor.FloorNum);
 				InitSetting();
+				for(cnt_t = 0; cnt_t < FloorMealNum; cnt_t++)  //查找层
+				{
+					if(FloorMealMessageWriteToFlash.FloorMeal[cnt_t].MealCount ==0)
+					{
+						 CurFloor.FloorNum = cnt_t+1;
+						 break;
+					}			
+				}
+				VariableChage(floor_num,CurFloor.FloorNum);				
 			}break;
       case floor_num:
 			{

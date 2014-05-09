@@ -31,12 +31,10 @@ int main(void)
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
 	//if(!CloseCashSystem())  
   //OnlymachieInit();  //机械手初始化
-	//printf("OnlymachieInit ok\r\n");  //
+	printf("OnlymachieInit ok\r\n");  //
 	//delay_ms(30000);
-  //ReadDatatoBuffer(); //上一个程序有这个函数
    /*从网络  获得时间，更新本地时钟*/
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
-	EchoFuntion(RTC_TimeRegulate);
 	printf("EchoFuntion ok\r\n");  //	
 	/*网络签到*/
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
@@ -47,7 +45,7 @@ int main(void)
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	printf("Szt_GpbocAutoCheckIn ok\r\n");	
 	PageChange(Menu_interface); //显示选餐界面
-	delay_ms(1000);
+	delay_ms(1500);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
 	DispLeftMeal();             //显示餐品数据
 	while(1)
