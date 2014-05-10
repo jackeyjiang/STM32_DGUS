@@ -43,7 +43,10 @@ int main(void)
 	printf("SendtoServce");
 	/*深圳通签到*/
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
-	printf("Szt_GpbocAutoCheckIn ok\r\n");	
+	printf("Szt_GpbocAutoCheckIn ok\r\n");
+	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
+	AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
+	PageChange(Logo_interface);	
 	PageChange(Menu_interface); //显示选餐界面
 	delay_ms(1500);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	

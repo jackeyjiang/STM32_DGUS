@@ -702,13 +702,14 @@ unsigned char SignOutFun()
 * Output         : void
 * Return         : void         ok
 *******************************************************************************/
-unsigned char StatusUploadingFun()
+unsigned char StatusUploadingFun(uint16_t erro_status)
  {
 
 	 unsigned char i = 0 ;
 	 long  Lenght = 0 ,j;
 	 long	 CmdLenght = 0 ;
-	 unsigned char	   Send_Buf[400];
+	 unsigned char	Send_Buf[400];
+	 char  state_temp[4]={0};  
 	 mem_set_00(rx1Buf,sizeof(rx1Buf));
 	 /*水流号++*/
 	 Send_Buf[0] =	0x02 ;
@@ -721,6 +722,11 @@ unsigned char StatusUploadingFun()
 	 GetBRWN(); /*得到水流号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));	/*批次号*/
+	 sprintf(state_temp,"%x",erro_status); 
+	 for(i=0;i<4;i++)
+	 {
+		 DeviceStatus[2+i]= state_temp[i];
+	 }
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceStatus,sizeof(DeviceStatus));  /*终端的状态*/
 	 Send_Buf[CmdLenght] = 0x03  ;
 	 CmdLenght+=0x03;
@@ -730,7 +736,7 @@ unsigned char StatusUploadingFun()
 	 Lenght = HL_BufferToInit(&rx1Buf[2]) ;
 	 for(j=0;j<Lenght+7;j++)
 	 {
-
+  
  //   printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
 
 	 }
@@ -1184,28 +1190,25 @@ bool SignInFunction(void)
    *******************************************************************************/
   void StateSend(void)
   {
-
 	  RTC_TimeShow();//获得时间
-
 	  switch(TimeDate.Minutes)
-		  {
-			  case 10:
-			  case 30:
-			  case 50:
+		{
+			case 10:
+			case 30:
+			case 50:
+			{
+			  delay_ms(900);
+			  if(TimeDate.Senconds==10) //控制多次传输
 			  {
-			   delay_ms(900);
-			   if(TimeDate.Senconds==10) //控制多次传输
-			   {
-				 StatusUploadingFun(); //状态上送
-			   }
-			   break;
+					//需要读取机器的状态
+					//if()
+				  StatusUploadingFun(0xE800); //状态上送
 			  }
-
-		   default : break;
-		  }
-
+			  break;
+			}
+		  default : break;
+		}
   }
-
 
   /*******************************************************************************
 * Function Name  : SignInFunction

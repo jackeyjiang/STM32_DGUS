@@ -2937,9 +2937,9 @@ loop5:
   {
 	  cnt_t++;
 		DealSeriAceptData();
-		if(caedbalence_cancel_flag)
+		if(cardbalence_cancel_flag)
 		{
-			caedbalence_cancel_flag=false;
+			cardbalence_cancel_flag=false;
 			return 0;
 		}
 	  if(cnt_t<15)
@@ -3313,9 +3313,9 @@ uint8_t SztDeduct(int32_t money)
   }
 	else
 	{
-		if(caedbalence_cancel_flag)
+		if(cardbalence_cancel_flag)
 		{
-			caedbalence_cancel_flag=false;
+			cardbalence_cancel_flag=false;
 			return 0;
 		}
     cnt_t++;

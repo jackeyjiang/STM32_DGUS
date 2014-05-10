@@ -183,7 +183,7 @@ extern const char price_1st;
 extern const char price_2nd;
 extern const char price_3rd;
 extern const char price_4th;
-extern bool caedbalence_cancel_flag;
+extern bool cardbalence_cancel_flag;
 
 void ClearUserBuffer(void);
 void PageChange(char page);

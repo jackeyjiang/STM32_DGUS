@@ -38,16 +38,19 @@ void Uart3_Configuration(void)
 void Uart3_Send(const uint8_t *p,uint8_t length)
 {
    uint8_t i=0;
+	 USART_ClearFlag(USART3,USART_FLAG_TC);
 	 for(i=0;i<length;i++)
-	 {	  
-	    USART3->DR = (u8) p[i];       
-    	while((USART3->SR&0X40)==0);//循环发送,直到发送完毕   
+	 {	
+		  //while((USART3->SR&0X40)==0);//循环发送,直到发送完毕    
+	    USART_SendData(USART3, (u8) p[i]);   
+    	while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
     	    
 	 }
 }
 void Uart3_Sent(const char *p,uint8_t length)
 {
    uint8_t i=0;
+	 USART_ClearFlag(USART3,USART_FLAG_TC);
 	 for(i=0;i<length;i++)
 	 {	  
 	    USART3->DR = (u8) p[i];       

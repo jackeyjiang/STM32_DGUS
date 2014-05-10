@@ -849,7 +849,8 @@ char meat_cnt_t= 0,chicken_cnt_t= 0,duck_cnt_t= 0,fish_cnt_t= 0; /*临时数量*/
 uint8_t  PassWordLen=0;	//密码的长度为0
 uint8_t  PassWord[6]={0};
 uint8_t  InputPassWord[6]={0};
-bool caedbalence_cancel_flag= false;
+bool cardbalence_cancel_flag= false;
+bool mealneed_sync = false;  //餐品同步标记
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 {
 	char MealID =0;
@@ -1141,7 +1142,7 @@ loop1:	switch(MealID)
 			case caedbalence_cancel:/*刷卡取消*/
 			{
 				PageChange(Acount_interface+2);
-				caedbalence_cancel_flag=true;
+				cardbalence_cancel_flag=true;
 			}break;			
 			case bill_print:
 			{
@@ -1263,6 +1264,7 @@ loop1:	switch(MealID)
 					{
 						erro_flag=0; //清除数据标记
 						ClearUserBuffer();
+						
    				}break;
 					case 0x02: //返回
 					{
@@ -1293,7 +1295,10 @@ loop1:	switch(MealID)
 					}break;
 					case 0x03:	/*取消键*/
 					{
-						PageChange(Menu_interface);
+						if(mealneed_sync == false)
+						{
+						  PageChange(Menu_interface);
+						}
 					}
           default:break;
 				}					
@@ -1398,6 +1403,7 @@ loop1:	switch(MealID)
 						StatisticsTotal(); //先统计数目在写入
 						WriteMeal(); //写数据到flash
 						DispLeftMeal(); //更新餐品数据
+						mealneed_sync = true;
 						//printf("DefineMeal[%d].MealCount=%d\r\n",i,DefineMeal[i].MealCount);
 					}break;
 					case 0x04:  /*数据同步*/
@@ -1416,6 +1422,7 @@ loop1:	switch(MealID)
 						 MealDataCompareFun();
 						 if(MealCompareData.MealCompareTotoal==0xFFFFFFFF) //正确
 						 {
+							 mealneed_sync = false;
 							 PageChange(Data_synchronization);
 							 for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
 							 {
@@ -1425,6 +1432,11 @@ loop1:	switch(MealID)
                   floor++;									 
 							 }							 
 						 }
+						 /*可以加入对比的返回值进行判断*/
+//						 else if(MealCompareData.MealCompareTotoal==0)
+//						 {
+//							 PageChange(Data_synchronization+2);
+//						 }
              else
              {
 							 PageChange(Data_synchronization+2);
@@ -1467,15 +1479,20 @@ loop1:	switch(MealID)
 			}break;
 			case coins_key:
       {
+				uint16_t cnt_t=0;
 				if(VariableData[1]==0x01)
 				{
 					Coins_cnt=0;
 					coins_time= (CoinsTotoalMessageWriteToFlash.CoinTotoal/10);
 					VariableChage(coins_back,Coins_cnt);
-					VariableChage(coins_back,CoinsTotoalMessageWriteToFlash.CoinTotoal-SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal));	
-          delay_ms(1000*(coins_time+1));					
-				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
-					VariableChage(coins_back,Coins_cnt);
+					cnt_t = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);
+					  do
+						{
+							 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
+							VariableChage(coins_back,Coins_cnt);
+							delay_ms(10);
+							if(cnt_t==Coins_cnt)break;
+						}while(1);				
 				}
 				else if(VariableData[1] == 0x02)
 				{

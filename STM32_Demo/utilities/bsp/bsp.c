@@ -283,55 +283,55 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
 			WriteMeal();
 			StatisticsTotal();
 			DispLeftMeal(); 
-			CurrentPointer = 2 ;
+			CurrentPointer = 5 ;
 		}//break ;   
-    case 2 : /*发送行和列的位置，等待响应*/
- 		{
-        //根据[Line][Column]的值发送坐标 等待ACK	
-			printf("发送行和列的位置，等待响应\r\n");
- 			temp =0;
- 			temp = OrderSendCoord(Line,Column);
- 			
- 			if( temp ==1)//发送成功
- 			{
-        LinkTime =0;
-				machinerec.rerelative =0;   //不是待机位置
- 				CurrentPointer = 3 ;
- 			}
- 			else				//发送失败
- 			{
- 				printf("send coord error\r\n");
-        AbnormalHandle(SendUR6Erro);
- 			}
- 	  }//break;  
- 		case 3 :    /*发送取餐命令*/
- 		{
-			printf("发送取餐命令\r\n");
- 			//查询机械手是否准备好，如果准备好发送取餐命令
- 			//如果超时则 返回错误，
- 		  //如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
- 			while(1)  //查询机械手是否准备好，
-      {
-        if(LinkTime > 10)    //超时
-        {
-          LinkTime =0;
-          printf("move to coord timeout!\r\n");
-          AbnormalHandle(SendUR6Erro);
-          break;
-        }       
- 			  manageusart6data();  //若机械手有数据，处理机械手返回数据
-        if(machinerec.regoal ==1)   //到达取餐点
-        {
-           break;
-        }
-      }
-      if(machinerec.regoal ==1)   //到达取餐点
-      {
-        machinerec.regoal =0 ;
-        temp =0;
-        temp = OrderGetMeal();   //发送取餐命令
-        LinkTime =0;
-        CurrentPointer=4;  				
+//    case 2 : /*发送行和列的位置，等待响应*/
+// 		{
+//        //根据[Line][Column]的值发送坐标 等待ACK	
+//			printf("发送行和列的位置，等待响应\r\n");
+// 			temp =0;
+// 			temp = OrderSendCoord(Line,Column);
+// 			
+// 			if( temp ==1)//发送成功
+// 			{
+//        LinkTime =0;
+//				machinerec.rerelative =0;   //不是待机位置
+// 				CurrentPointer = 3 ;
+// 			}
+// 			else				//发送失败
+// 			{
+// 				printf("send coord error\r\n");
+//        AbnormalHandle(SendUR6Erro);
+// 			}
+// 	  }//break;  
+// 		case 3 :    /*发送取餐命令*/
+// 		{
+//			printf("发送取餐命令\r\n");
+// 			//查询机械手是否准备好，如果准备好发送取餐命令
+// 			//如果超时则 返回错误，
+// 		  //如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
+// 			while(1)  //查询机械手是否准备好，
+//      {
+//        if(LinkTime > 10)    //超时
+//        {
+//          LinkTime =0;
+//          printf("move to coord timeout!\r\n");
+//          AbnormalHandle(SendUR6Erro);
+//          break;
+//        }       
+// 			  manageusart6data();  //若机械手有数据，处理机械手返回数据
+//        if(machinerec.regoal ==1)   //到达取餐点
+//        {
+//           break;
+//        }
+//      }
+//      if(machinerec.regoal ==1)   //到达取餐点
+//      {
+//        machinerec.regoal =0 ;
+//        temp =0;
+//        temp = OrderGetMeal();   //发送取餐命令
+//        LinkTime =0;
+//        CurrentPointer=4;  				
 //        if(temp ==1)       // 取餐命令发送成功
 //        {
 //          LinkTime =0;
@@ -342,75 +342,75 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
 //          printf(" send getmeal order error\r\n");
 //          AbnormalHandle(SendUR6Erro);
 //        }
-      }
- 		}//break;
- 	  case 4 :  	/*播放语音，请取餐*/
- 		{
-			//CurrentPointer=5; 
-      PlayMusic(VOICE_9);			
-      printf("播放语音，请取餐");			
-       //如果餐品到达取餐口播放语音
- 			//如果餐品取出则 跳出子程序进行数据上传  
- 			while(1)
-       {
-         if(LinkTime >120)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
-         {
-           printf("from send getmeal order to sell door timeout!\r\n");
-           AbnormalHandle(SendUR6Erro);
-           break;
-         }
- 			   manageusart6data();   //若机械手有数据，处理机械手返回数据
-         if(machinerec.retodoor == 1)   //到达出餐口
-         {
-					 machinerec.retodoor = 0;
-					 //播放请取餐语音
-					  PlayMusic(VOICE_9);
-           break;
-         }
-         if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
-         {
-           printf("取餐5秒了还未取到餐\r\n");
-					 
-           AbnormalHandle(GetMealError);
-           break;
-         }
-       }
+//      }
+// 		}//break;
+// 	  case 4 :  	/*播放语音，请取餐*/
+// 		{
+//			//CurrentPointer=5; 
+//      //PlayMusic(VOICE_9);			
+//      printf("播放语音，请取餐");			
+//       //如果餐品到达取餐口播放语音
+// 			//如果餐品取出则 跳出子程序进行数据上传  
+// 			while(1)
+//       {
+//         if(LinkTime >120)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
+//         {
+//           printf("from send getmeal order to sell door timeout!\r\n");
+//           AbnormalHandle(SendUR6Erro);
+//           break;
+//         }
+// 			   manageusart6data();   //若机械手有数据，处理机械手返回数据
+//         if(machinerec.retodoor == 1)   //到达出餐口
+//         {
+//					 machinerec.retodoor = 0;
+//					 //播放请取餐语音
+//					  PlayMusic(VOICE_9);
+//           break;
+//         }
+//         if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
+//         {
+//           printf("取餐5秒了还未取到餐\r\n");
+//					 
+//           AbnormalHandle(GetMealError);
+//           break;
+//         }
+//       }
 //       if( machinerec.retodoor == 1) //到达出餐口
 //       {
 //         machinerec.retodoor = 0;
 //         
 //       }
-       LinkTime =0;
-       while(1)//等待客户取走餐之后，才跳到Case 5
-       {
-         if( LinkTime >180) //餐在出餐口未被取走，最多等待3分，超过了报错
-         {
-           printf("餐未超过了三分钟还未被取走\r\n");
-           AbnormalHandle(SendUR6Erro);
-           break;
-         }
- 			 manageusart6data();   //若机械手有数据，处理机械手返回数据
- 		   if( machinerec.remealaway == 1) //餐已被取走
-       {
-					 printf("餐已被取走\r\n");
-					 //machinerec.remealaway = 0;
-					 LinkTime =0;
-					 machinerec.remealaway = 0;
-					 CurrentPointer=5;
-           break;
-       }
-       if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
-       {
-					printf("餐在取餐口过了20秒还未被取走\r\n");
-				  PlayMusic(VOICE_10);
-           //machinerec.remealnoaway = 0;
-					 LinkTime =0;
-					 machinerec.remealnoaway = 0;
-					 CurrentPointer=5;
-					break;
-           //语音提示“请取走出餐口的餐 "
-        } 
-      }
+//       LinkTime =0;
+//       while(1)//等待客户取走餐之后，才跳到Case 5
+//       {
+//         if( LinkTime >180) //餐在出餐口未被取走，最多等待3分，超过了报错
+//         {
+//           printf("餐未超过了三分钟还未被取走\r\n");
+//           AbnormalHandle(SendUR6Erro);
+//           break;
+//         }
+// 			 manageusart6data();   //若机械手有数据，处理机械手返回数据
+// 		   if( machinerec.remealaway == 1) //餐已被取走
+//       {
+//					 printf("餐已被取走\r\n");
+//					 //machinerec.remealaway = 0;
+//					 LinkTime =0;
+//					 machinerec.remealaway = 0;
+//					 CurrentPointer=5;
+//           break;
+//       }
+//       if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
+//       {
+//					printf("餐在取餐口过了20秒还未被取走\r\n");
+//				  PlayMusic(VOICE_10);
+//           //machinerec.remealnoaway = 0;
+//					 LinkTime =0;
+//					 machinerec.remealnoaway = 0;
+//					 CurrentPointer=5;
+//					break;
+//           //语音提示“请取走出餐口的餐 "
+//        } 
+//      }
 //      if( machinerec.remealaway == 1) //餐已被取走
 //      {
 //         LinkTime =0;
@@ -423,7 +423,7 @@ loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
 //         machinerec.remealnoaway = 0;
 //         CurrentPointer=5;
 //      }
- 	  }//break;			    
+// 	  }//break;			    
     case 5:     /*对用户数据进行减一*/  //?? 如果需要进行错误退币，需要修该返回值所在范围
 		{
 			delay_ms(1000);
@@ -571,7 +571,7 @@ void AcountCopy(void)
  * 函数名称:PowerupAbnormalHandle                                                                    
  * 描    述:开机异常处理，只显示错误标识，更根据密码显示用户操作记录                                                                
  *            首先需要判断是否断电，再判断UserAct.paybacke是否大于0，显示用户选择的
-              餐品数，未出的餐品数，以及钱数，                                                                  
+              餐品数，未出的餐品数，以及钱数                                                                   
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:void                                                               
@@ -580,11 +580,13 @@ void AcountCopy(void)
 void PowerupAbnormalHandle(int32_t erro_record)
 {
 	uint16_t i=0;
-	for(i=0;i<32;i++)
-	{
-		if(erro_record&(1<<i))
-		AbnormalHandle(i);	
-	}
+//	for(i=0;i<32;i++) //32位记录各种异常，开机需要处理 ，可以通过管理员清理错误
+//	{
+//		if(erro_record&(1<<i))
+//		AbnormalHandle(i);	
+//	}
+  if(erro_record&(1<<i))  //只需检测断电的时候用户的数据是否保存了
+	AbnormalHandle(i);	
 }
 
   /*******************************************************************************
@@ -603,18 +605,19 @@ void AbnormalHandle(uint16_t erro)
 	erro_record |= (1<<erro);
 	switch(erro)
 	{
-		case outage_erro:      //断电
+		case outage_erro:      //断电 
 			{
-				if(UserAct.MoneyBack>0)
+				if(UserAct.MoneyBack>0) //断电需要根据UserAct.MoneyBack
 				{
 					PageChange(Err_interface);
-					DisplayAbnormal("E070");					
+					DisplayAbnormal("E070");
+          StatusUploadingFun(0xE070); //状态上送					
 				}
 				else 
 				{
-					//erro_record &= ~(1<<erro);
-					erro_flag= 0;
-					break;;
+					erro_record &= ~(1<<erro); //如果需要处理其他异常呢
+					//erro_flag= 0;
+					return;
 				}
 			}break;
 		case sdcard_erro:     //SD卡存储异常
@@ -622,30 +625,36 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);				
 				DisplayAbnormal("E000");
+				StatusUploadingFun(0xE000); //状态上送
 			}break;
 		case billset_erro:    //纸币机异常
 			{
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);				
 				DisplayAbnormal("E010");
+				StatusUploadingFun(0xE010); //状态上送
 			}break;
 		case coinset_erro:      //投币机
 			{
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);				
 				DisplayAbnormal("E020");
+				StatusUploadingFun(0xE020); //状态上送
 			}break;
 		case coinhooperset_erro:    //退币机
 			{
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);				
 				DisplayAbnormal("E030");
+				StatusUploadingFun(0xE030); //状态上送
+				//没有币可退的时候，UserAct.Payback 不为0
 			}break;
 		case coinhooperset_empty:   //找零用光
 			{
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E032");
+				StatusUploadingFun(0xE032); //状态上送
 				//UserAct.MoneyBack
 			}break;
 		case printer_erro:      //打印机异常
@@ -653,12 +662,14 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E040");
+				StatusUploadingFun(0xE040); //状态上送
 			}break;
 		case cardread_erro:     //读卡器异常
 			{
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E050");
+				StatusUploadingFun(0xE050); //状态上送
 			}break;
 		case network_erro:     //网络异常
 			{
@@ -672,6 +683,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E101");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE101); //状态上送
 			}break;
 		case X_leftlimit:      //马达左动作极限输出
 			{
@@ -679,6 +691,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E102");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE102); //状态上送
 			}break;
 		case X_rightlimit:     //马达右动作极限输出
 			{
@@ -686,6 +699,7 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				PayBackUserMoney();
+				StatusUploadingFun(0xE103); //状态上送
 			}break;
 		case mealtake_timeout: //取餐口传感器超时
 			{
@@ -693,6 +707,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E201");
 			  PayBackUserMoney();
+				StatusUploadingFun(0xE201); //状态上送
 			}break;
 		case Y_timeout:        //y轴传感器超时
 			{
@@ -700,6 +715,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E301");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE302); //状态上送
 			}break;
 		case link_timeout:     //链接超时
 			{
@@ -707,6 +723,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E401");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE401); //状态上送
 			}break;
 		case Z_timeout:        //z轴传感器超时
 			{
@@ -714,6 +731,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E501");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE501); //状态上送
 			}break;
 		case Z_uplimit:        //z轴马达上动作超出
 			{
@@ -721,6 +739,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E502");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE502); //状态上送
 			}break;
 		case Z_downlimit:      //z马达下动作超出
 			{
@@ -728,6 +747,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E503");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE503); //状态上送
 			}break;
 		case solenoid_timeout: //电磁阀超时  ???有时有异常
 			{
@@ -735,13 +755,14 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E601");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE601); //状态上送
 			}break;
 		case Eeprom_erro:      //eeprom 异常
 			{
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E711");
-				PayBackUserMoney();
+				StatusUploadingFun(0xE711); //状态上送
 			}break;
 		case SendUR6Erro:      //发送数据异常或超时
 			{
@@ -749,6 +770,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
         DisplayAbnormal("E801");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE801); //状态上送
       }break;
     case GetMealError:     //机械手5秒取不到餐
 			{
@@ -756,12 +778,14 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
         DisplayAbnormal("E802");
 				PayBackUserMoney();
+				StatusUploadingFun(0xE802); //状态上送
       }break;
     case MealNoAway:       //餐在出餐口20秒还未被取走
 			{
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
         DisplayAbnormal("E803");
+				StatusUploadingFun(0xE803); //状态上送
       }break;
 		default:break;
 	}
@@ -770,7 +794,7 @@ void AbnormalHandle(uint16_t erro)
 			DealSeriAceptData();
 			if(erro_flag==0)
 			{
-				erro_record=0;
+				erro_record &= ~(1<<erro); //一次只处理一次异常
 				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
 				break;
 			}
@@ -927,6 +951,7 @@ void hardfawreInit(void)
 	 //WriteCoins();
    ReadCoins();//读取有多少硬币	 
 	 //VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
+
 	 for(i=0;i<90;i++)
 	 {
 	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
@@ -943,9 +968,4 @@ void hardfawreInit(void)
 	 {
 		 ClearUserBuffer(); //清除之前读取的数据
 	 }
-	 
 }														 
-
-
-
-
