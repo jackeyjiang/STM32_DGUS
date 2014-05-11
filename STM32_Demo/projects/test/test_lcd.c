@@ -26,7 +26,7 @@ uint16_t VarValue = 0;
 
 int main(void)
 {
- 	uint16_t temp = 0;
+	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
 	//if(!CloseCashSystem())  
@@ -224,42 +224,3 @@ void assert_failed(uint8_t* file, uint32_t line)
 }
 #endif
 
-// FLASH_Unlock();
-
-//  /* EEPROM Init */
-//  EE_Init();
-
-///* --- Store successively many values of the three variables in the EEPROM ---*/
-//  /* Store 0x1000 values of Variable1 in EEPROM */
-//  for (VarValue = 1; VarValue <= 0x1000; VarValue++)
-//  {
-//    EE_WriteVariable(VirtAddVarTab[0], VarValue);
-//  }
-
-//  /* read the last stored variables data*/
-//  EE_ReadVariable(VirtAddVarTab[0], &VarDataTab[0]);
-
-
-//  /* Store 0x2000 values of Variable2 in EEPROM */
-//  for (VarValue = 1; VarValue <= 0x2000; VarValue++)
-//  {
-//    EE_WriteVariable(VirtAddVarTab[1], VarValue);
-//  }
-
-//  /* read the last stored variables data*/
-//  EE_ReadVariable(VirtAddVarTab[0], &VarDataTab[0]);
-//  EE_ReadVariable(VirtAddVarTab[1], &VarDataTab[1]);
-
-
-//  /* Store 0x3000 values of Variable3 in EEPROM */
-//  for (VarValue = 1; VarValue <= 0x3000; VarValue++)
-//  {
-//    EE_WriteVariable(VirtAddVarTab[2], VarValue);
-//  }
-
-//  /* read the last stored variables data*/
-//  EE_ReadVariable(VirtAddVarTab[0], &VarDataTab[0]);
-//  EE_ReadVariable(VirtAddVarTab[1], &VarDataTab[1]);
-//  EE_ReadVariable(VirtAddVarTab[2], &VarDataTab[2]);
-
-//  while (1);	
