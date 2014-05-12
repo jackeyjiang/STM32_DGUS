@@ -29,9 +29,9 @@ int main(void)
 	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
 	printf("hardfawreInit is ok\r\n");  //关闭现金接受
-	//if(!CloseCashSystem())  
   //OnlymachieInit();  //机械手初始化
 	printf("OnlymachieInit ok\r\n");  //
+	//if(!CloseCashSystem())  
 	//delay_ms(30000);
    /*从网络  获得时间，更新本地时钟*/
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
@@ -40,7 +40,7 @@ int main(void)
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
 	printf("SignInFunction ok\r\n");  //
   SendtoServce();  //上传前七天的数据
-	printf("SendtoServce");
+	//printf("SendtoServce");
 	/*深圳通签到*/
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	printf("Szt_GpbocAutoCheckIn ok\r\n");
@@ -67,7 +67,7 @@ int main(void)
 					temp = OrderSendLink();  //为1成功，为0失败
 					VariableChage(current_temprature,Temperature); //5S一次
 					//if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
-					printf("temp = %d",temp);
+					//printf("temp = %d",temp);
 				}
 				//显示倒计时
 				if(WaitTime==0)

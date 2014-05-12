@@ -30,7 +30,7 @@ void Uart3_Configuration(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); //嵌套优先级分组为1
 	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;//嵌套通道为USART3_IRQn
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;//抢占优先级为0
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;//响应优先级为0
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;//响应优先级为0
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //通道中断使能 
 	NVIC_Init(&NVIC_InitStructure);
 }

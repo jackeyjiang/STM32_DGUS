@@ -1,9 +1,8 @@
-#ifndef __timer4__
-#define __timer4__
-
+#ifndef __timer2__
+#define __timer2__
 
 void TIM2_Init(void);
-
-extern unsigned char TimerFlag ;
+void OpenTIM2(void);
+void CloseTIM2(void);
 
 #endif

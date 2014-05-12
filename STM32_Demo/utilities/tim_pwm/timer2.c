@@ -15,48 +15,33 @@
 
 
 void TIM2_Init(void)				   //用于采集ADC用的定时器
-  {
+{
+	  TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+  	NVIC_InitTypeDef  NVIC_InitStructure; 
+	 
+  	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);//外设时钟使能  
+  	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;					
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;//抢占优先级最高
+  	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;//子优先级
+  	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  	NVIC_Init(&NVIC_InitStructure);					
+  	TIM_TimeBaseStructure.TIM_Period = 10000-1;//计数器重装值
+  	TIM_TimeBaseStructure.TIM_Prescaler = 4199;
+  	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+  	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//递增计数方式
+  	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+  	TIM_PrescalerConfig(TIM2, (4200-1), TIM_PSCReloadMode_Immediate);//设置16位时钟分频系数,立即重载模式
+	  TIM_ClearFlag(TIM2, TIM_FLAG_Update);							    		/* 清除溢出中断标志 */
+  	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);//计满中断
+  	TIM_Cmd(TIM2, DISABLE);
+}
 
-  TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-  NVIC_InitTypeDef NVIC_InitStructure;
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA , ENABLE);
+void OpenTIM2(void)
+{
+   TIM_Cmd(TIM2, ENABLE);
+}
 
-  /* GPIOC clock enable */
-  
-  /* --------------------------NVIC Configuration -------------------------------*/
-  /* Enable the TIM2 gloabal Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-  /* ------------------- TIM1 Configuration:Output Compare Timing Mode ---------*/
-    
-   
-
-  /*分频和周期计算公式：
-  Prescaler = (TIMxCLK / TIMx counter clock) - 1;
-  Period = (TIMx counter clock / TIM3 output clock) - 1 
-  TIMx counter clock为你所需要的TXM的定时器时钟 
-  */
-
-
-  TIM_DeInit(TIM2);
-
-  TIM_TimeBaseStructure.TIM_Period =10000-1  ;	
-  TIM_TimeBaseStructure.TIM_ClockDivision = 1;
-  TIM_TimeBaseStructure.TIM_Prescaler = 8400-1;;					  //
-//  TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-  TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
-
-  TIM_ClearFlag(TIM2, TIM_FLAG_Update);							    		/* 清除溢出中断标志 */
-  TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);
-  /* TIM2 enable counter */
-  TIM_Cmd(TIM2, DISABLE);
-//   TIM_Cmd(TIM2, ENABLE);
-  }
-
-
-
+void CloseTIM2(void)
+{
+   TIM_Cmd(TIM2, DISABLE);
+}

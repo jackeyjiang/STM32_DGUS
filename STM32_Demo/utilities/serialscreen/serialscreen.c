@@ -786,6 +786,11 @@ void DisplayUserRecord(void)
 		AbnomalMealCntDisp(UserAct.MealCnt_4th,floor);	
 		floor++;
 	}
+	//显示用户已付 和  应退
+	VariableChage(record_UserActPayAlready,UserAct.PayAlready);
+	//应退的钱 = 已付的钱 - 各餐品的数量*价格
+	UserAct.MoneyBack = UserAct.MealCnt_1st* price_1st+ UserAct.MealCnt_2nd* price_2nd+ UserAct.MealCnt_3rd* price_3rd+ UserAct.MealCnt_4th* price_4th;
+	VariableChage(record_UserActPayBack,UserAct.MoneyBack);
 }
 	
  /*******************************************************************************
@@ -1264,6 +1269,9 @@ loop1:	switch(MealID)
 					{
 						erro_flag=0; //清除数据标记
 						ClearUserBuffer();
+						SaveUserData();
+						Current = hpper_out;
+						UserAct.Cancle = 0x01; //相当与取消购买
 						
    				}break;
 					case 0x02: //返回
@@ -1488,10 +1496,10 @@ loop1:	switch(MealID)
 					cnt_t = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);
 					  do
 						{
-							 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
+							VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
 							VariableChage(coins_back,Coins_cnt);
 							delay_ms(10);
-							if(cnt_t==Coins_cnt)break;
+							if((CoinsTotoalMessageWriteToFlash.CoinTotoal-cnt_t)==Coins_cnt)break;
 						}while(1);				
 				}
 				else if(VariableData[1] == 0x02)

@@ -39,19 +39,19 @@ void Uart1_Configuration(void)
   
   /* NVIC configuration */
   /* Configure the Priority Group to 2 bits */
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-  
-  /* Enable the USARTx Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-  
-  /* Enable USART */
-  USART_Cmd(USART1, ENABLE);
-  USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
-  USART_ClearFlag(USART1, USART_FLAG_TC);     // 清标志
+//  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+//  
+//  /* Enable the USARTx Interrupt */
+//  NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+//  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+//  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+//  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//  NVIC_Init(&NVIC_InitStructure);
+//  
+//  /* Enable USART */
+    USART_Cmd(USART1, ENABLE);
+//  USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+//  USART_ClearFlag(USART1, USART_FLAG_TC);     // 清标志
 }
 
 

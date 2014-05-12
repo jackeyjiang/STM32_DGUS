@@ -767,7 +767,7 @@ void OnlymachieInit(void)
           
           if(LinkTime >= 60)
           {
-            printf("机械手初始化超时\r\n");
+            //printf("机械手初始化超时\r\n");
             break;
           }
         }
@@ -776,13 +776,13 @@ void OnlymachieInit(void)
     
     if(LinkTime >= 60)
     {
-      printf("机械手连接超时\r\n");
+      //printf("机械手连接超时\r\n");
       break;
     }
     
     if(InitOkflag ==1 )
     {
-      printf(" 机械手初始化成功\r\n");
+      //printf(" 机械手初始化成功\r\n");
       break;
     }
    

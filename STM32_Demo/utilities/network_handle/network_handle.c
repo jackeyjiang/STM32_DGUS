@@ -1194,7 +1194,9 @@ bool SignInFunction(void)
 	  switch(TimeDate.Minutes)
 		{
 			case 10:
+			case 20:
 			case 30:
+			case 40:
 			case 50:
 			{
 			  delay_ms(900);
@@ -1342,7 +1344,7 @@ void DataUpload(void)
 				itoa(f_name,TimeDate);	  //把时间转换成字符
 				MealArr(UserAct.MealID);
 				/*发送取餐数据给服务器*/
-        printf("发送取餐数据给服务器1");
+        //printf("发送取餐数据给服务器1");
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
@@ -1362,7 +1364,7 @@ void DataUpload(void)
 				itoa(f_name,TimeDate);	  //把时间转换成字符
 				MealArr(UserAct.MealID);
 				/*发送取餐数据给服务器*/
-				printf("发送取餐数据给服务器2");
+				//printf("发送取餐数据给服务器2");
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
@@ -1382,7 +1384,7 @@ void DataUpload(void)
 				itoa(f_name,TimeDate);	  //把时间转换成字符
 				MealArr(UserAct.MealID);
 				/*发送取餐数据给服务器*/
-				printf("发送取餐数据给服务器3");
+				//printf("发送取餐数据给服务器3");
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
@@ -1402,7 +1404,7 @@ void DataUpload(void)
 				itoa(f_name,TimeDate);	  //把时间转换成字符
 				MealArr(UserAct.MealID);
 				/*发送取餐数据给服务器*/
-				printf("发送取餐数据给服务器4");
+				//printf("发送取餐数据给服务器4");
 				memset(Record_buffer,0,254);
 				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
 				{
