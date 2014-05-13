@@ -708,8 +708,9 @@ unsigned char StatusUploadingFun(uint16_t erro_status)
 	 unsigned char i = 0 ;
 	 long  Lenght = 0 ,j;
 	 long	 CmdLenght = 0 ;
-	 unsigned char	Send_Buf[400];
-	 char  state_temp[4]={0};  
+	 unsigned char	Send_Buf[400]={0};
+	 char  state_temp[2]={0};  
+	 //sprintf(state_temp,"%x",erro_status); 
 	 mem_set_00(rx1Buf,sizeof(rx1Buf));
 	 /*水流号++*/
 	 Send_Buf[0] =	0x02 ;
@@ -722,10 +723,12 @@ unsigned char StatusUploadingFun(uint16_t erro_status)
 	 GetBRWN(); /*得到水流号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));	/*批次号*/
-	 sprintf(state_temp,"%x",erro_status); 
-	 for(i=0;i<4;i++)
+	 
+   state_temp[1]=(erro_status&0x00ff);
+	 state_temp[0]=(erro_status>>8)&0x00ff;
+	 for(i=0;i<3;i++) 
 	 {
-		 DeviceStatus[2+i]= state_temp[i];
+		 DeviceStatus[3+i]= state_temp[i];
 	 }
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceStatus,sizeof(DeviceStatus));  /*终端的状态*/
 	 Send_Buf[CmdLenght] = 0x03  ;
@@ -1194,10 +1197,31 @@ bool SignInFunction(void)
 	  switch(TimeDate.Minutes)
 		{
 			case 10:
+			case 12:
+			case 14:
+			case 16:						
+	    case 18:
+		  case 19:								
 			case 20:
+			case 22:
+			case 24:
+			case 26:
+			case 28:
 			case 30:
+			case 32:
+			case 34:
+			case 36:
+			case 38:
 			case 40:
+			case 42:
+			case 44:
+			case 46:
+			case 48:				
 			case 50:
+			case 52:
+			case 54:
+			case 56:
+			case 58:				
 			{
 			  delay_ms(900);
 			  if(TimeDate.Senconds==10) //控制多次传输

@@ -28,7 +28,7 @@ int main(void)
 {
 	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
-	printf("hardfawreInit is ok\r\n");  //关闭现金接受
+	//printf("hardfawreInit is ok\r\n");  //关闭现金接受
   //OnlymachieInit();  //机械手初始化
 	printf("OnlymachieInit ok\r\n");  //
 	//if(!CloseCashSystem())  

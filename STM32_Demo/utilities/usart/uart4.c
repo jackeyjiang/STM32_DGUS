@@ -28,7 +28,7 @@ void Uart4_Configuration(void)
   	USART_ClearFlag(UART4, USART_FLAG_TC);//清传送完成标志
 	  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); //嵌套优先级分组为1
 	  NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;//嵌套通道为USART6_IRQn
-	  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;//抢占优先级为0
+	  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//抢占优先级为0
 	  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;//响应优先级为0
 	  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //通道中断使能 
 	  NVIC_Init(&NVIC_InitStructure);

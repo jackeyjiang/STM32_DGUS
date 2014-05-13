@@ -129,6 +129,7 @@ extern uint8_t   Current ;    //Ö÷×´Ì¬
 extern uint8_t   CurrentPointer; //²ÍÆ·³ö²Í×´Ì¬
 extern uint16_t  erro_flag;  //´íÎó×´Ì¬
 extern int32_t   erro_record;  //´íÎó±ê¼ÇÎ»
+extern uint8_t  MealoutCurrentPointer;//³ö²Í×´Ì¬
 
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);	
