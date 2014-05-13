@@ -799,6 +799,7 @@ void AbnormalHandle(uint16_t erro)
 			{
 				erro_record &= ~(1<<erro); //一次只处理一次异常
 				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
+				StatusUploadingFun(0xE800); //处理后返回正常
 				break;
 			}
 		}

@@ -179,8 +179,8 @@ void SetTemper(uint8_t temper)
   uint8_t Cmd[6]={'H','D','0','0',0x0d,0x0a};
   uint8_t i;
 
-  Cmd[2] = Cmd[2] + (temper+1)/10;
-  Cmd[3] = Cmd[3] + (temper+1)%10;
+  Cmd[2] = Cmd[2] + (temper)/10;
+  Cmd[3] = Cmd[3] + (temper)%10;
   
   for(i=0;i<6;i++)
   {

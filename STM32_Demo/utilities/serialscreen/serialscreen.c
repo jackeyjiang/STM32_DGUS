@@ -789,7 +789,7 @@ void DisplayUserRecord(void)
 	//显示用户已付 和  应退
 	VariableChage(record_UserActPayAlready,UserAct.PayAlready);
 	//应退的钱 = 已付的钱 - 各餐品的数量*价格
-	UserAct.MoneyBack = UserAct.MealCnt_1st* price_1st+ UserAct.MealCnt_2nd* price_2nd+ UserAct.MealCnt_3rd* price_3rd+ UserAct.MealCnt_4th* price_4th;
+	UserAct.MoneyBack = UserAct.PayAlready -((UserAct.MealCnt_1st_t-UserAct.MealCnt_1st)* price_1st+ (UserAct.MealCnt_2nd_t-UserAct.MealCnt_2nd)* price_2nd+ (UserAct.MealCnt_3rd_t-UserAct.MealCnt_3rd)* price_3rd+(UserAct.MealCnt_4th_t-UserAct.MealCnt_4th)* price_4th);
 	VariableChage(record_UserActPayBack,UserAct.MoneyBack);
 }
 	
@@ -957,7 +957,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				{
 					UserAct.MealCnt_2nd_t= DefineMeal[1].MealCount;
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_2nd_t);
-					VariableChage(meat_cnt,UserAct.MealCnt_2nd_t);	//改变变量地址数据
+					VariableChage(chicken_cnt,UserAct.MealCnt_2nd_t);	//改变变量地址数据
 				}	 						 
 			}break;
 			case duck_cnt:/*脆皮烤鸭*/
@@ -972,7 +972,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				{
 					UserAct.MealCnt_3rd_t= DefineMeal[2].MealCount;
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_3rd_t);
-					VariableChage(meat_cnt,UserAct.MealCnt_3rd_t);	//改变变量地址数据			
+					VariableChage(duck_cnt,UserAct.MealCnt_3rd_t);	//改变变量地址数据			
 				}	 
 			}break;	
 			case fish_cnt:/*红烧鱼块*/
@@ -987,7 +987,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				{
 					UserAct.MealCnt_4th_t= DefineMeal[3].MealCount;
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_4th_t);
-					VariableChage(meat_cnt,UserAct.MealCnt_4th_t);	//改变变量地址数据
+					VariableChage(duck_cost,UserAct.MealCnt_4th_t);	//改变变量地址数据
 				}
 			}break;	
    
@@ -1107,6 +1107,7 @@ loop1:	switch(MealID)
 			case payment_method: /*付款方式*/
 			{
 				AcountCopy();
+				if(UserAct.PayShould==0) goto loop7;
 				PageChange(Acount_interface+2); //当按下付款后，跳转到另一个页面禁止分数加减
 				switch(VariableData[1])
 				{
@@ -1131,7 +1132,7 @@ loop1:	switch(MealID)
 					}break;
 					case 0x04:   /*取消*/
 					{
-						if(!CloseCashSystem()) printf("cash system is erro5");  //关闭现金接受
+loop7:			if(!CloseCashSystem()) printf("cash system is erro5");  //关闭现金接受
 						CloseTIM3();
 						CloseTIM7();
 						CurrentPoint = 0 ;

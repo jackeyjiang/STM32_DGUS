@@ -1197,31 +1197,31 @@ bool SignInFunction(void)
 	  switch(TimeDate.Minutes)
 		{
 			case 10:
-			case 12:
-			case 14:
-			case 16:						
-	    case 18:
-		  case 19:								
+//			case 12:
+//			case 14:
+//			case 16:						
+//	    case 18:
+//		  case 19:								
 			case 20:
-			case 22:
-			case 24:
-			case 26:
-			case 28:
+//			case 22:
+//			case 24:
+//			case 26:
+//			case 28:
 			case 30:
-			case 32:
-			case 34:
-			case 36:
-			case 38:
+//			case 32:
+//			case 34:
+//			case 36:
+//			case 38:
 			case 40:
-			case 42:
-			case 44:
-			case 46:
-			case 48:				
+//			case 42:
+//			case 44:
+//			case 46:
+//			case 48:				
 			case 50:
-			case 52:
-			case 54:
-			case 56:
-			case 58:				
+//			case 52:
+//			case 54:
+//			case 56:
+//			case 58:				
 			{
 			  delay_ms(900);
 			  if(TimeDate.Senconds==10) //控制多次传输
