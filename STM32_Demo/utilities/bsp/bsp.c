@@ -687,6 +687,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E101");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE101); //状态上送
+				DataUpload(Failed);
 			}break;
 		case X_leftlimit:      //马达左动作极限输出
 			{
@@ -719,6 +720,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E301");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE302); //状态上送
+				
 			}break;
 		case link_timeout:     //链接超时
 			{
@@ -946,6 +948,7 @@ void hardfawreInit(void)
    InitMiniGPIO() ;		   //退币器始化	 
 	 InitVoice();             //语音初始化
 	 MyRTC_Init();              //RTC初始化
+	 //IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
 	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
 	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
 	 IWDG_SetReload(0x0138); // 1S

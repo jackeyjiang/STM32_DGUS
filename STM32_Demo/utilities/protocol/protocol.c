@@ -417,7 +417,22 @@ void manageusart6data(void)
 						//取餐5秒了还未取到餐
 					machinerec.reenablegetmeal = 1;
 					}
-				else
+				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '2')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+					{
+						//取餐5秒了还未取到餐
+					machinerec.reenablegetmeal = 1;
+					}
+				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '3')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+					{
+						//取餐5秒了还未取到餐
+					machinerec.reenablegetmeal = 1;
+					}
+				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '4')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+					{
+						//取餐5秒了还未取到餐
+					machinerec.reenablegetmeal = 1;
+					}
+					else
 				{
 				
 				}
@@ -486,7 +501,7 @@ uint8_t OrderSendLink(void)
 		{
 			LinkTime =0;
 			machinerec.reack = 0;
-			machinerec.renack = 0;
+			machinerec.renack = 0; 
 			return 0;
 		}
 		

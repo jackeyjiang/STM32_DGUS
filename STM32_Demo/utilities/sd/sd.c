@@ -400,12 +400,12 @@ bool ReadDatatoBuffer(void)
        break;
 		else 
 		{
-			SearchSeparator(ReadBuf,ReadSdBuff,17);
+			SearchSeparator(ReadBuf,ReadSdBuff,18);
 			if(ReadBuf[0]=='n')
 			{
 				if(TakeMealsFun1(ReadSdBuff)==0) //在第十六个逗号后写Y 255-162=93
 				{
-					indexflag = Index-512+162; //长度要计算120-26  256-120-26=
+					indexflag = Index-512+166; //长度要计算120-26  256-120-26=
 					res = f_lseek(&fsrc,indexflag);//偏移Index+1021
 					res = f_write(&fsrc,"y",1, &bw); //写"Y"
 				  f_close(&fsrc);
@@ -511,28 +511,28 @@ void DataRecord(void)
      UserAct.MealID = 0x01;
 		 MealArr(UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
-     Sd_Write('N');
+     Sd_Write('N',Success);
 	 }
 	 if(UserAct.MealCnt_2nd_t>0)
 	 {
      UserAct.MealID = 0x02;
 		 MealArr(UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
-     Sd_Write('N');
+     Sd_Write('N',Success);
 	 }
 	 if(UserAct.MealCnt_3rd_t>0)
 	 {
      UserAct.MealID = 0x03;
 		 MealArr(UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
-     Sd_Write('N');
+     Sd_Write('N',Success);
 	 }
 	 if(UserAct.MealCnt_4th_t>0)
 	 {
      UserAct.MealID = 0x04;
 		 MealArr(UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
-     Sd_Write('N');
+     Sd_Write('N',Success);
 	 }
 }
 
@@ -575,9 +575,9 @@ void HextoChar(char *destbuff,char *buffer)
 }
 
 
-char Send_Buf[100] ={0};
+char Send_Buf[103] ={0};
 char Rec_Buf[512]={0};
-void Sd_Write(char erro_flag)
+void Sd_Write(char erro_flag,char takeout_flag)
 {
    uint16_t CmdLenght =0,i=0,j=0;
    long CRCValue=0;
@@ -638,6 +638,8 @@ void Sd_Write(char erro_flag)
     //printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
 	 }
 	   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&RemainMealNum[3],sizeof(RemainMealNum)-3);  /*剩余餐品数量*/
+	   TakeMealFlag[4]= takeout_flag;
+	   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&TakeMealFlag[3],sizeof(TakeMealFlag)-3); /*取餐标记*/
 	   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MAC[3],sizeof(MAC)-3);					  /*MAC*/
  //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
  //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/

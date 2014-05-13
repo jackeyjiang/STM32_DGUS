@@ -152,13 +152,15 @@ void MealArr(unsigned char index)
 	    default : break ;
 	  }	
 /*------购买餐品的数量-----------------*/
-	  switch(index)
-	  {
-			case 1:CustomerSel.MealNo  =  UserAct.MealCnt_1st_t;break;
-			case 2:CustomerSel.MealNo  =  UserAct.MealCnt_2nd_t;break;
-			case 3:CustomerSel.MealNo  =  UserAct.MealCnt_3rd_t;break;
-			case 4:CustomerSel.MealNo  =  UserAct.MealCnt_4th_t;break;
-	  }
+		CustomerSel.MealNo  =  0x01; //取一个餐品上传一次数据
+//	  switch(index)
+//	  {
+//			case 1:CustomerSel.MealNo  =  UserAct.MealCnt_1st_t;break;
+//			case 2:CustomerSel.MealNo  =  UserAct.MealCnt_2nd_t;break;
+//			case 3:CustomerSel.MealNo  =  UserAct.MealCnt_3rd_t;break;
+//			case 4:CustomerSel.MealNo  =  UserAct.MealCnt_4th_t;break;
+//	  }
+		
 		/*购买餐品的类型*/
     CustomerSel.PayType =  UserAct.PayType;  //	UserAct.PayType  ;
 	 if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
@@ -189,10 +191,10 @@ void MealArr(unsigned char index)
 		//PayBill  =	(UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards)*100 ;
 	  switch(index)
 		{
-			case 1: PayBill= UserAct.MealCost_1st*100;break;
-			case 2: PayBill= UserAct.MealCost_2nd*100;break;
-			case 3: PayBill= UserAct.MealCost_3rd*100;break;
-			case 4: PayBill= UserAct.MealCost_4th*100;break;
+			case 1: PayBill= price_1st*100;break;
+			case 2: PayBill= price_2nd*100;break;
+			case 3: PayBill= price_3rd*100;break;
+			case 4: PayBill= price_4th*100;break;
 			default:break;
 		}
 	 	/*支付了多少钱*/

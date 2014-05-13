@@ -2,6 +2,8 @@
 #define __network_handle__h
 #include "stdint.h"
 
+#define Success 0x01
+#define Failed 0x02
 
 extern   unsigned char   F_RX1_Right ;
 extern   uint16_t		  rx1BufIndex ;
@@ -36,6 +38,7 @@ extern unsigned char  TTCount[3+2];
 extern unsigned char  TNCT[6+3];
 extern unsigned char  TNtype[3+2];
 extern unsigned char  TotalChange[3+6];
+extern unsigned char  TakeMealFlag[3+2];
 
 extern unsigned char  UpdataFlag[4];
 extern unsigned char  WordKeyCipher[11];
@@ -92,13 +95,13 @@ uint32_t  MealDataCompareFun(void);/*餐品数据对比*/
 unsigned char SignOutFun(void);/*退签*/
 unsigned char StatusUploadingFun(uint16_t erro_status);
 unsigned char EchoFun(void);/*回响测试*/
-unsigned char TakeMealsFun(unsigned char *SendBuffer);/*取餐设置*/
+unsigned char TakeMealsFun(unsigned char *SendBuffer,unsigned char takeout_flag);/*取餐设置*/
 unsigned char MealUploadingFun(void);/*上送餐品数据*/
 unsigned char ClearingFun(void);/*结算命令*/
 //void  EchoFuntion(void (*fptr)(void)) ;
 unsigned char 	Resend(unsigned char *p,long lenght);
 void WriteToSD_data(void);
-void DataUpload(void);
+void DataUpload(char takemeal_flag);
 void StateSend(void);
 //void SignInFunction(void);
 void GetBRWN(void);

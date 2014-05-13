@@ -29,7 +29,7 @@ int main(void)
 	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
 	//printf("hardfawreInit is ok\r\n");  //关闭现金接受
-  //OnlymachieInit();  //机械手初始化
+  OnlymachieInit();  //机械手初始化
 	printf("OnlymachieInit ok\r\n");  //
 	//if(!CloseCashSystem())  
 	//delay_ms(30000);
@@ -176,17 +176,18 @@ int main(void)
 				}
 				else if(waitmeal_status == tookkind_meal) //取完一种餐品
 				{
-					PageChange(Mealout_interface);
-					Current = data_upload;
+					PageChange(Mealout_interface);//不知道需要加些什么
+					Current = data_upload;	
 				}
 				else if(waitmeal_status == tookone_meal)  //取完一个餐品
 				{
-					PageChange(Mealout_interface);//不知道需要加些什么
+					PageChange(Mealout_interface);
+					Current = data_upload;					
 				}				
 			}break;
 	    case data_upload:	 /*数据上传*/
 	    {  		
-        DataUpload();//根据UserAct.ID 判断需要上传的数据
+        DataUpload(Success);//根据UserAct.ID 判断需要上传的数据
 			  Current = meal_out;		
 	    }break ;
       case status_upload: /*状态上传*/

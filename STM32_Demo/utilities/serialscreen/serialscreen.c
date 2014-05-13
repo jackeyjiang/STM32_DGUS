@@ -1530,7 +1530,7 @@ loop7:			if(!CloseCashSystem()) printf("cash system is erro5");  //关闭现金接受
  * 修改日期:2014年3月13日                                                                   
  *******************************************************************************/ 	
 void DealSeriAceptData(void)
-{
+ {
 	unsigned char i;
 	unsigned char temp,temp1,length,checkout;
 	char RegisterAdress=0;

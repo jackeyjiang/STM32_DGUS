@@ -140,7 +140,7 @@ uint8_t WaitMeal(void);
 void hardfawreInit(void);
 void  WaitTimeInit(uint8_t *Time);
 void StateSend(void);
-void DataUpload(void);
+void DataUpload(char takemeal_flag);
 void PrintTickFun(unsigned char *PrintTickFlag);
 void PowerupAbnormalHandle(int32_t erro_record);
 void AbnormalHandle(uint16_t erro);

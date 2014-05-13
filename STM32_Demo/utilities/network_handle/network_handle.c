@@ -13,7 +13,7 @@
 
 static long Batch = 0x00 ;//交易流水号
 
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x12}; /*终端TID码 10000006*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
@@ -40,7 +40,7 @@ unsigned char  TTCount[3+2]     ={0xb7,0x00,0x02,0x00,0x00};	                   
 unsigned char  TNCT[6+3]        ={0xb8,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};                            /*交易总金额*/
 unsigned char  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};											    /*交易总产品数 d9*/
 unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};							/*总找零金额 d7*/
-
+unsigned char  TakeMealFlag[3+2]={0xdb,0x00,0x02,0x00,0x00};        /*取餐标志 0x01:成功 0x02:失败 */
 unsigned char  UpdataFlag[4];
 unsigned char  ACK[4];  //这个是什么?
 unsigned char  WordKeyCipher[11];
@@ -840,7 +840,7 @@ unsigned char EchoFun(void)
 *******************************************************************************/
 
 CustomerSel__struction CustomerSel;
-unsigned char TakeMealsFun(unsigned char *SendBuffer)
+unsigned char TakeMealsFun(unsigned char *SendBuffer,unsigned char takeout_flag)
  {
 	 unsigned char i = 0 ;
 	 long  Lenght = 0 ,j=0;
@@ -894,7 +894,7 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
 	 /*找零金额*/
 	 for(i=0;i<6;i++)
 	 Change[3+i] = CustomerSel.Change[i] ;
-	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change)); 			   /*找零金额*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change)); 			   /*找零金额*/
 	 /*剩余餐品数量*/
 	 for(i=0;i<2;i++)
 	 {
@@ -902,6 +902,8 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer)
     //printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
 	 }
 	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/
+	   TakeMealFlag[4]= takeout_flag;
+	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*取餐标记*/
 	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
  //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
  //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
@@ -1355,94 +1357,21 @@ unsigned char HexToChar(unsigned char byTemp)
  *******************************************************************************/
 extern uint8_t Current;
 char mealvariety=0;
-void DataUpload(void)
+void DataUpload(char takemeal_flag)
 {
-	switch(mealvariety)
+
+	itoa(f_name,TimeDate);	  //把时间转换成字符
+	MealArr(UserAct.MealID);
+	/*发送取餐数据给服务器*/
+  printf("发送取餐数据给服务器1");
+  memset(Record_buffer,0,254);
+	if(TakeMealsFun(Record_buffer,takemeal_flag) == 0x01) //表示发送失败
 	{
-		case 0:
-		{
-			mealvariety++;
-			if(UserAct.MealCnt_1st_t>0)
-			{
-				UserAct.MealID = 0x01;
-				itoa(f_name,TimeDate);	  //把时间转换成字符
-				MealArr(UserAct.MealID);
-				/*发送取餐数据给服务器*/
-        //printf("发送取餐数据给服务器1");
-				memset(Record_buffer,0,254);
-				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-				{
-           Sd_Write('n');//发送失败
-				}
-				else 
-					 Sd_Write('y');//改变当前最后两位为N0
-				break;
-			}
-		}
-		case 1:
-		{
-			mealvariety++;
-			if(UserAct.MealCnt_2nd_t>0)
-			{
-				UserAct.MealID = 0x02;
-				itoa(f_name,TimeDate);	  //把时间转换成字符
-				MealArr(UserAct.MealID);
-				/*发送取餐数据给服务器*/
-				//printf("发送取餐数据给服务器2");
-				memset(Record_buffer,0,254);
-				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-				{
-           Sd_Write('n');
-				}
-				else 
-					 Sd_Write('y');//改变当前最后两位为N0
-				break;
-			}
-		}
-		case 2:
-		{
-			mealvariety++;
-			if(UserAct.MealCnt_3rd_t>0)
-			{
-				UserAct.MealID = 0x03;
-				itoa(f_name,TimeDate);	  //把时间转换成字符
-				MealArr(UserAct.MealID);
-				/*发送取餐数据给服务器*/
-				//printf("发送取餐数据给服务器3");
-				memset(Record_buffer,0,254);
-				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-				{
-           Sd_Write('n');
-				}
-				else 
-					 Sd_Write('y');//改变当前最后两位为N0
-				break;
-			}
-		}
-		case 3:
-		{
-			mealvariety= 0;
-			if(UserAct.MealCnt_4th_t>0)
-			{
-				UserAct.MealID = 0x04;
-				itoa(f_name,TimeDate);	  //把时间转换成字符
-				MealArr(UserAct.MealID);
-				/*发送取餐数据给服务器*/
-				//printf("发送取餐数据给服务器4");
-				memset(Record_buffer,0,254);
-				if(TakeMealsFun(Record_buffer) == 0x01) //表示发送失败
-				{
-           Sd_Write('n');
-				}
-				else 
-					 Sd_Write('y');//改变当前最后两位为N0
-				break;
-			}
-    }
-	  default:break;
-		//DataRecord();
-  }
-}
+    Sd_Write('n',takemeal_flag);//发送失败
+	}
+	else 
+		Sd_Write('y',takemeal_flag);//改变当前最后两位为N0
+}	
 
  /*******************************************************************************
 * Function Name  : 取餐发送数据  OK
