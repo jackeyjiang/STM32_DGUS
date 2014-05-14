@@ -228,9 +228,9 @@ unsigned char  WaitPayMoney(void)
 }												
 
 
-uint8_t  MealoutCurrentPointer = 0 ;
 uint8_t WaitMeal(void)
 {
+	uint8_t MealoutCurrentPointer=0;
   //static unsigned char Cmd[20]={0x05, 0x31, 0x30, 0x30, 0x31, 0x30 ,0x30, 0x36, 0x34, 0x30, 0x30, 0x30, 0x34, 0x4D, 0x31, 0x35, 0x43, 0x03, 0x0D ,0x0A};
 	uint8_t temp;
 	do
@@ -304,6 +304,7 @@ uint8_t WaitMeal(void)
 				{
 					printf("send coord error\r\n");
 					AbnormalHandle(SendUR6Erro);
+					return takemeal_erro;
 				}
 			}break;  
 			case 3 :    /*发送取餐命令*/
@@ -319,7 +320,7 @@ uint8_t WaitMeal(void)
 						LinkTime =0;
 						printf("move to coord timeout!\r\n");
 						AbnormalHandle(SendUR6Erro);
-						break;
+						return takemeal_erro;
 					}       
 					manageusart6data();  //若机械手有数据，处理机械手返回数据
 					if(machinerec.regoal ==1)   //到达取餐点
@@ -343,6 +344,7 @@ uint8_t WaitMeal(void)
 					{
 						printf(" send getmeal order error\r\n");
 						AbnormalHandle(SendUR6Erro);
+						return takemeal_erro;
 					}
 				}
 			}break;
@@ -359,6 +361,7 @@ uint8_t WaitMeal(void)
 					 {
 						 printf("from send getmeal order to sell door timeout!\r\n");
 						 AbnormalHandle(SendUR6Erro);
+						 return takemeal_erro;
 						 break;
 					 }
 					 manageusart6data();   //若机械手有数据，处理机械手返回数据
@@ -371,16 +374,15 @@ uint8_t WaitMeal(void)
 					 }
 					 if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
 					 {
-						 printf("取餐5秒了还未取到餐\r\n");
-						 
+						 printf("取餐5秒了还未取到餐\r\n");	 
 						 AbnormalHandle(GetMealError);
+						 return takemeal_erro;
 						 break;
 					 }
 				 }
 				 if( machinerec.retodoor == 1) //到达出餐口
 				 {
-					 machinerec.retodoor = 0;
-					 
+					 machinerec.retodoor = 0;				 
 				 }
 				 LinkTime =0;
 				 while(1)//等待客户取走餐之后，才跳到Case 5
@@ -389,7 +391,7 @@ uint8_t WaitMeal(void)
 					 {
 						 //printf("餐未超过了三分钟还未被取走\r\n");
 						 AbnormalHandle(SendUR6Erro);
-						 break;
+						 return takemeal_erro;
 					 }
 				 manageusart6data();   //若机械手有数据，处理机械手返回数据
 				 if( machinerec.remealaway == 1) //餐已被取走
@@ -696,6 +698,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E102");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE102); //状态上送
+				DataUpload(Failed);
 			}break;
 		case X_rightlimit:     //马达右动作极限输出
 			{
@@ -704,6 +707,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				PayBackUserMoney();
 				StatusUploadingFun(0xE103); //状态上送
+				DataUpload(Failed);
 			}break;
 		case mealtake_timeout: //取餐口传感器超时
 			{
@@ -712,6 +716,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E201");
 			  PayBackUserMoney();
 				StatusUploadingFun(0xE201); //状态上送
+				DataUpload(Failed);
 			}break;
 		case Y_timeout:        //y轴传感器超时
 			{
@@ -720,7 +725,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E301");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE302); //状态上送
-				
+				DataUpload(Failed);
 			}break;
 		case link_timeout:     //链接超时
 			{
@@ -738,6 +743,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E501");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE501); //状态上送
+				DataUpload(Failed);
 			}break;
 		case Z_uplimit:        //z轴马达上动作超出
 			{
@@ -746,6 +752,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E502");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE502); //状态上送
+				DataUpload(Failed);
 			}break;
 		case Z_downlimit:      //z马达下动作超出
 			{
@@ -754,6 +761,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E503");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE503); //状态上送
+				DataUpload(Failed);
 			}break;
 		case solenoid_timeout: //电磁阀超时  ???有时有异常
 			{
@@ -762,6 +770,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E601");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE601); //状态上送
+				DataUpload(Failed);
 			}break;
 		case Eeprom_erro:      //eeprom 异常
 			{
@@ -769,6 +778,7 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E711");
 				StatusUploadingFun(0xE711); //状态上送
+				DataUpload(Failed);
 			}break;
 		case SendUR6Erro:      //发送数据异常或超时
 			{
@@ -777,6 +787,7 @@ void AbnormalHandle(uint16_t erro)
         DisplayAbnormal("E801");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE801); //状态上送
+				DataUpload(Failed);
       }break;
     case GetMealError:     //机械手5秒取不到餐
 			{

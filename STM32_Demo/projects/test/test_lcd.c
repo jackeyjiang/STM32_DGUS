@@ -183,7 +183,14 @@ int main(void)
 				{
 					PageChange(Mealout_interface);
 					Current = data_upload;					
-				}				
+				}
+        else if(waitmeal_status == takemeal_erro)
+				{
+					OnlymachieInit();
+					PageChange(Menu_interface);
+					Current = current_temperature;
+				}
+					
 			}break;
 	    case data_upload:	 /*数据上传*/
 	    {  		

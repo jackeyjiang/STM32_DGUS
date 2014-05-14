@@ -13,11 +13,12 @@
 #define status_upload        0x09
 
 /**********等待餐品状态************/
+
 #define takeing_meal   0x01 //正在取餐
 #define tookone_meal   0x02 //已取一份餐
 #define tookkind_meal  0x03 //已取一种餐
 #define takeafter_meal 0x04 //取餐完毕
-
+#define takemeal_erro  0x05 //取餐错误
 
 /**********异常******************/
 #define outage_erro      0x01 //断电
@@ -68,6 +69,7 @@
 #include "uart6.h"           //机械手接口
 #include "pvd.h"
 #include "eeprom.h"
+#include "intel_flash.h."
 
 //#include "led.h"				   //led灯
 #include "coin.h"				     //硬币机
@@ -129,7 +131,6 @@ extern uint8_t   Current ;    //主状态
 extern uint8_t   CurrentPointer; //餐品出餐状态
 extern uint16_t  erro_flag;  //错误状态
 extern int32_t   erro_record;  //错误标记位
-extern uint8_t  MealoutCurrentPointer;//出餐状态
 
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);	

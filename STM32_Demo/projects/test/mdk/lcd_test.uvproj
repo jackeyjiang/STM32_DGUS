@@ -553,6 +553,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\eeprom\eeprom.c</FilePath>
             </File>
+            <File>
+              <FileName>intel_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\intel_flash\intel_flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -964,6 +969,11 @@
               <FileName>eeprom.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\utilities\include\eeprom.h</FilePath>
+            </File>
+            <File>
+              <FileName>intel_flash.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\intel_flash.h</FilePath>
             </File>
           </Files>
         </Group>
