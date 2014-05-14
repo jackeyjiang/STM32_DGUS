@@ -1160,7 +1160,8 @@ loop7:			if(!CloseCashSystem()) printf("cash system is erro5");  //关闭现金接受
 						UserAct.PrintTick= VariableData[1];
 							 /*判断是否打印小票*/ 			
             PrintTickFun(&UserAct.PrintTick);
-            CloseTIM4();						
+            CloseTIM4();
+            if(!erro_flag) //当有错误的时候不进入出餐界面						
 						PageChange(Mealout_interface);
 					}break;  
 					default:break;
@@ -1448,6 +1449,7 @@ loop7:			if(!CloseCashSystem()) printf("cash system is erro5");  //关闭现金接受
 //						 }
              else
              {
+							 mealneed_sync = true;
 							 PageChange(Data_synchronization+2);
 							 for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
 							 {

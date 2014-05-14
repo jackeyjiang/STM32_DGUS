@@ -405,7 +405,7 @@ bool ReadDatatoBuffer(void)
 			{
 				if(TakeMealsFun1(ReadSdBuff)==0) //在第十六个逗号后写Y 255-162=93
 				{
-					indexflag = Index-512+166; //长度要计算120-26  256-120-26=
+					indexflag = Index-512+167; //长度要计算120-26  256-120-26=
 					res = f_lseek(&fsrc,indexflag);//偏移Index+1021
 					res = f_write(&fsrc,"y",1, &bw); //写"Y"
 				  f_close(&fsrc);
@@ -718,7 +718,7 @@ void SearchSeparator(char *dest,char *souce,int Separator)
 		else if(SeparatorCnt== Separator-1)
 		{
 			dest[j++]=temp;
-			if(Separator==17)
+			if(Separator==18)
 				break;
 		}
 		if(SeparatorCnt==Separator)

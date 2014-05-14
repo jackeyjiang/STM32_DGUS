@@ -729,6 +729,7 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E401");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE401); //状态上送
+				DataUpload(Failed);
 			}break;
 		case Z_timeout:        //z轴传感器超时
 			{
@@ -784,6 +785,7 @@ void AbnormalHandle(uint16_t erro)
         DisplayAbnormal("E802");
 				PayBackUserMoney();
 				StatusUploadingFun(0xE802); //状态上送
+				DataUpload(Failed);
       }break;
     case MealNoAway:       //餐在出餐口20秒还未被取走
 			{

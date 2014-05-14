@@ -1497,22 +1497,23 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 RemainMealNum[3+i]=temp[i];
 	 }	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/
+	 SearchSeparator(ReadBuf,SendBuffer,15); //取餐标记
+	 StringToHexGroup1(temp,ReadBuf,4); 	 
+   for(i=0;i<4;i++)
+   {
+		 TakeMealFlag[3+i]=temp[i];
+	 }	 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag));  /*取餐标记*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
  //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
  //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
  //  if(UserAct.PayType == '3')
  //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
-	 SearchSeparator(ReadBuf,SendBuffer,15); //剩余餐品数量
-	 StringToHexGroup1(temp,ReadBuf,4); 
-   for(i=0;i<2;i++)
-   {
-		 Change[3+i]=temp[i];
-	 }
 	 
 	 Send_Buf[CmdLenght] = 0x03  ;  //包含数据包包尾标识和CRC校验码
 	 CmdLenght+=0x03;
    i = MealComparefunDemo(0x0800,Send_Buf,CmdLenght); //发送数据(取餐交易)
-   mem_copy00(SendBuffer, Send_Buf,CmdLenght);	//把发送的参数传入数组写入SD卡
+ //mem_copy00(SendBuffer, Send_Buf,CmdLenght);	//把发送的参数传入数组写入SD卡
  /***************************************************************************/
 	 HL_IntToBuffer(CmdLenght,&SendBuffer[1019]);	/*保存数据的长度*/
 
