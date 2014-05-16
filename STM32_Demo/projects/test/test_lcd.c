@@ -141,15 +141,15 @@ int main(void)
 						Current= current_temperature;
 					}
 				}
-			  if(OldCoinsCnt>NewCoinsCnt)//????
-		    {
-		      delay_ms((OldCoinsCnt-NewCoinsCnt)/10*1000+1000); //延时得好好控制
-          UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
-		    }
-		    else if(OldCoinsCnt==NewCoinsCnt)
-		    {
-			    UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
-		    }
+//			  if(OldCoinsCnt>NewCoinsCnt)//????
+//		    {
+//		      delay_ms((OldCoinsCnt-NewCoinsCnt)/10*1000+1000); //延时得好好控制
+//          UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
+//		    }
+//		    else if(OldCoinsCnt==NewCoinsCnt)
+//		    {
+//			    UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
+//		    }
 			}break;
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{

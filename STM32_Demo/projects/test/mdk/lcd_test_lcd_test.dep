@@ -1,5 +1,5 @@
 Dependencies for Project 'lcd_test', Target 'lcd_test': (DO NOT MODIFY !)
-F (..\test_lcd.c)(0x5375AAEA)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\test_lcd.o --omf_browse .\debug\test_lcd.crf --depend .\debug\test_lcd.d)
+F (..\test_lcd.c)(0x5375E797)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\test_lcd.o --omf_browse .\debug\test_lcd.crf --depend .\debug\test_lcd.d)
 I (..\..\..\utilities\include\bsp.h)(0x53757CFF)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x535E3258)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)
@@ -549,7 +549,7 @@ I (..\..\..\utilities\include\rtc.h)(0x535E325A)
 I (..\..\..\utilities\include\delay.h)(0x535E325A)
 I (..\..\..\utilities\include\Mini_hopper.h)(0x535E325A)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x52846614)
-F (..\..\..\utilities\serialscreen\serialscreen.c)(0x5375AA26)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\serialscreen.o --omf_browse .\debug\serialscreen.crf --depend .\debug\serialscreen.d)
+F (..\..\..\utilities\serialscreen\serialscreen.c)(0x53760030)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -o .\debug\serialscreen.o --omf_browse .\debug\serialscreen.crf --depend .\debug\serialscreen.d)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x5284661A)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x535E3258)
 I (C:\Keil\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h)(0x512C1E62)

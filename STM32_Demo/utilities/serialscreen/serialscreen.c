@@ -786,11 +786,19 @@ void DisplayUserRecord(void)
 		AbnomalMealCntDisp(UserAct.MealCnt_4th,floor);	
 		floor++;
 	}
-	//显示用户已付 和  应退
-	VariableChage(record_UserActPayAlready,UserAct.PayAlready);
-	//应退的钱 = 已付的钱 - 各餐品的数量*价格
-	UserAct.MoneyBack = UserAct.PayAlready -((UserAct.MealCnt_1st_t-UserAct.MealCnt_1st)* price_1st+ (UserAct.MealCnt_2nd_t-UserAct.MealCnt_2nd)* price_2nd+ (UserAct.MealCnt_3rd_t-UserAct.MealCnt_3rd)* price_3rd+(UserAct.MealCnt_4th_t-UserAct.MealCnt_4th)* price_4th);
-	VariableChage(record_UserActPayBack,UserAct.MoneyBack);
+	if(UserAct.MoneyBack>0)
+	{
+		//显示用户已付 和  应退
+		VariableChage(record_UserActPayAlready,UserAct.PayAlready);
+		//应退的钱 = 已付的钱 - 各餐品的数量*价格
+		UserAct.MoneyBack = UserAct.PayAlready -((UserAct.MealCnt_1st_t-UserAct.MealCnt_1st)* price_1st+ (UserAct.MealCnt_2nd_t-UserAct.MealCnt_2nd)* price_2nd+ (UserAct.MealCnt_3rd_t-UserAct.MealCnt_3rd)* price_3rd+(UserAct.MealCnt_4th_t-UserAct.MealCnt_4th)* price_4th);
+		VariableChage(record_UserActPayBack,UserAct.MoneyBack);
+	}
+	else
+	{
+		VariableChage(record_UserActPayAlready,0);
+		VariableChage(record_UserActPayBack,0);
+	}
 }
 	
  /*******************************************************************************
