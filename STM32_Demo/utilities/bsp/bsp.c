@@ -263,7 +263,7 @@ uint8_t WaitMeal(void)
 				else
 				{	
 					 //如果餐品全部出完，退出到主界面		
-					 printf("takeafter_meal\r\n");		
+					 //printf("takeafter_meal\r\n");		
 					 PlayMusic(VOICE_12);				
 					 return takeafter_meal;
 				}
@@ -290,7 +290,7 @@ uint8_t WaitMeal(void)
 			case 2 : /*发送行和列的位置，等待响应*/
 			{
 					//根据[Line][Column]的值发送坐标 等待ACK	
-				printf("发送行和列的位置，等待响应\r\n");
+				//printf("发送行和列的位置，等待响应\r\n");
 				temp =0;
 				temp = OrderSendCoord(Line,Column);
 				
@@ -302,14 +302,15 @@ uint8_t WaitMeal(void)
 				}
 				else				//发送失败
 				{
-					printf("send coord error\r\n");
-					AbnormalHandle(SendUR6Erro);
+					//printf("send coord error\r\n");
+					//AbnormalHandle(SendUR6Erro);
+					erro_record |= (1<<SendUR6Erro);
 					return takemeal_erro;
 				}
 			}break;  
 			case 3 :    /*发送取餐命令*/
 			{
-				printf("发送取餐命令\r\n");
+				//printf("发送取餐命令\r\n");
 				//查询机械手是否准备好，如果准备好发送取餐命令
 				//如果超时则 返回错误，
 				//如果没有餐品 CurrentPointer=0;  else CurrentPointer=3
@@ -318,8 +319,9 @@ uint8_t WaitMeal(void)
 					if(LinkTime > 10)    //超时
 					{
 						LinkTime =0;
-						printf("move to coord timeout!\r\n");
-						AbnormalHandle(SendUR6Erro);
+						//printf("move to coord timeout!\r\n");
+						//AbnormalHandle(SendUR6Erro);
+						erro_record |= (1<<SendUR6Erro);
 						return takemeal_erro;
 					}       
 					manageusart6data();  //若机械手有数据，处理机械手返回数据
@@ -342,8 +344,9 @@ uint8_t WaitMeal(void)
 					}
 					else          //发送失败     
 					{
-						printf(" send getmeal order error\r\n");
-						AbnormalHandle(SendUR6Erro);
+						//printf(" send getmeal order error\r\n");
+						//AbnormalHandle(SendUR6Erro);
+						erro_record |= (1<<SendUR6Erro);
 						return takemeal_erro;
 					}
 				}
@@ -352,7 +355,7 @@ uint8_t WaitMeal(void)
 			{
 				//CurrentPointer=5; 
 				//PlayMusic(VOICE_9);			
-				printf("播放语音，请取餐");			
+				//printf("播放语音，请取餐");			
 				 //如果餐品到达取餐口播放语音
 				//如果餐品取出则 跳出子程序进行数据上传  
 				while(1)
@@ -360,7 +363,8 @@ uint8_t WaitMeal(void)
 					 if(LinkTime >120)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
 					 {
 						 printf("from send getmeal order to sell door timeout!\r\n");
-						 AbnormalHandle(SendUR6Erro);
+						 //AbnormalHandle(SendUR6Erro);
+						 erro_record |= (1<<SendUR6Erro);
 						 return takemeal_erro;
 						 break;
 					 }
@@ -374,8 +378,10 @@ uint8_t WaitMeal(void)
 					 }
 					 if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
 					 {
+						 machinerec.reenablegetmeal =0; //新加的需要把相关标记清零
 						 printf("取餐5秒了还未取到餐\r\n");	 
-						 AbnormalHandle(GetMealError);
+						 erro_record |= (1<<GetMealError);
+						 //AbnormalHandle(GetMealError);
 						 return takemeal_erro;
 						 break;
 					 }
@@ -390,13 +396,14 @@ uint8_t WaitMeal(void)
 					 if( LinkTime >180) //餐在出餐口未被取走，最多等待3分，超过了报错
 					 {
 						 //printf("餐未超过了三分钟还未被取走\r\n");
-						 AbnormalHandle(SendUR6Erro);
+						 //AbnormalHandle(MealNoAway);
+						 erro_record |= (1<<MealNoAway);
 						 return takemeal_erro;
 					 }
 				 manageusart6data();   //若机械手有数据，处理机械手返回数据
 				 if( machinerec.remealaway == 1) //餐已被取走
 				 {
-						 printf("餐已被取走\r\n");
+						 //printf("餐已被取走\r\n");
 						 //machinerec.remealaway = 0;
 						 LinkTime =0;
 						 machinerec.remealaway = 0;
@@ -405,7 +412,7 @@ uint8_t WaitMeal(void)
 				 }
 				 if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
 				 {
-						 printf("餐在取餐口过了20秒还未被取走\r\n");
+						 //printf("餐在取餐口过了20秒还未被取走\r\n");
 						 PlayMusic(VOICE_10);
 						 //machinerec.remealnoaway = 0;
 						 LinkTime =0;
@@ -439,7 +446,7 @@ uint8_t WaitMeal(void)
 					UserAct.MealCnt_1st--;
 					if(UserAct.MealCnt_1st==0)
 					{
-						printf("tookkind_meal\r\n");
+						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
 					}
 				}
@@ -448,7 +455,7 @@ uint8_t WaitMeal(void)
 					UserAct.MealCnt_2nd--;
 					if(UserAct.MealCnt_2nd==0)
 					{
-						printf("tookkind_meal\r\n");
+						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
 					}					
 				}
@@ -457,7 +464,7 @@ uint8_t WaitMeal(void)
 					UserAct.MealCnt_3rd--;
 					if(UserAct.MealCnt_3rd==0)
 					{
-						printf("tookkind_meal\r\n");
+						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
 					}			
 				}				
@@ -466,11 +473,11 @@ uint8_t WaitMeal(void)
 					UserAct.MealCnt_4th--; 	
 					if(UserAct.MealCnt_4th==0)
 					{
-						printf("tookkind_meal\r\n");
+						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
 					}		
 				}
-				printf("tookone_meal\r\n");
+				//printf("tookone_meal\r\n");
 				return tookone_meal;
 			}
 			default:break;
@@ -595,6 +602,24 @@ void PowerupAbnormalHandle(int32_t erro_record)
 }
 
   /*******************************************************************************
+ * 函数名称:PollAbnormalHandle                                                                   
+ * 描    述:轮询                                                                 
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年5月9日                                                                    
+ *******************************************************************************/ 
+void PollAbnormalHandle(void)
+{
+	uint8_t i=0;
+	for(i=0;i<32;i++) //32位记录各种异常，开机需要处理 ，可以通过管理员清理错误
+	{
+		if(erro_record&(1<<i))
+		AbnormalHandle(i);	
+	}	
+}
+
+  /*******************************************************************************
  * 函数名称:AbnormalHandle                                                                    
  * 描    述:异常处理                                                                 
  *                                                                               
@@ -687,7 +712,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E101");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE101); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -696,7 +720,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E102");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE102); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -705,7 +728,6 @@ void AbnormalHandle(uint16_t erro)
 				DisplayAbnormal("E103");
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
-				PayBackUserMoney();
 				StatusUploadingFun(0xE103); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -714,7 +736,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E201");
-			  PayBackUserMoney();
 				StatusUploadingFun(0xE201); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -723,7 +744,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E301");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE302); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -732,7 +752,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E401");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE401); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -741,7 +760,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E501");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE501); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -750,7 +768,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E502");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE502); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -759,7 +776,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E503");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE503); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -768,7 +784,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
 				DisplayAbnormal("E601");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE601); //状态上送
 				DataUpload(Failed);
 			}break;
@@ -785,7 +800,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
         DisplayAbnormal("E801");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE801); //状态上送
 				DataUpload(Failed);
       }break;
@@ -794,7 +808,6 @@ void AbnormalHandle(uint16_t erro)
 	      PlayMusic(VOICE_11);	
 	      PageChange(Err_interface);
         DisplayAbnormal("E802");
-				PayBackUserMoney();
 				StatusUploadingFun(0xE802); //状态上送
 				DataUpload(Failed);
       }break;
@@ -812,35 +825,17 @@ void AbnormalHandle(uint16_t erro)
 			DealSeriAceptData();
 			if(erro_flag==0)
 			{
+				if(erro>=0x10)
+				{
+					ClearUserBuffer();
+					SaveUserData();
+					OnlymachieInit();	//只有机械手出错的时候复位机械手
+				}
 				erro_record &= ~(1<<erro); //一次只处理一次异常
 				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
-				StatusUploadingFun(0xE800); //处理后返回正常
 				break;
 			}
 		}
-}
-  /*******************************************************************************
- * 函数名称:PayBackUserMoney                                                                    
- * 描    述:出餐出错退币                                                              
- *                                                                               
- * 输    入:无                                                                     
- * 输    出:无                                                                     
- * 返    回:void                                                               
- * 修改日期:2014年4月23日    
- *******************************************************************************/ 
-uint32_t UserMoneyBack=0;
-void PayBackUserMoney(void)
-{
-	UserMoneyBack =UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th; //计算单总价
-  if(CoinsTotoalMessageWriteToFlash.CoinTotoal>=UserMoneyBack)
-	{
-		SendOutN_Coin(UserMoneyBack);
-		ClearUserBuffer();
-	}
-	else
-	{
-		PlayMusic(VOICE_11);
-	}
 }
 
   /*******************************************************************************

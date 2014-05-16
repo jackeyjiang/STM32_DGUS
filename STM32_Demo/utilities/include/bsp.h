@@ -10,7 +10,7 @@
 #define meal_out             0x06
 #define data_upload          0x07
 #define data_record          0x08
-#define status_upload        0x09
+#define erro_hanle           0x09
 
 /**********µÈ´ý²ÍÆ·×´Ì¬************/
 
@@ -145,6 +145,7 @@ void DataUpload(char takemeal_flag);
 void PrintTickFun(unsigned char *PrintTickFlag);
 void PowerupAbnormalHandle(int32_t erro_record);
 void AbnormalHandle(uint16_t erro);
+void PollAbnormalHandle(void);
 void SaveUserData(void);
 void ReadUserData(void);
 void AcountCopy(void);

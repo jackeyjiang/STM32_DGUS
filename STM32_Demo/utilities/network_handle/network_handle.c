@@ -13,7 +13,7 @@
 
 static long Batch = 0x00 ;//交易流水号
 
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x12}; /*终端TID码 10000006*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
@@ -623,11 +623,11 @@ uint32_t  MealDataCompareFun(void)
 	    return MealCompareData.MealCompareTotoal;	 /*数据正确*/
 	}
 	CmdLenght = GetData(TempBuffer,rx1Buf,Lenght,0xBC);/*餐品对比*/
-  printf("StatusCmdLenght=%x\r\n",CmdLenght);
+  //printf("StatusCmdLenght=%x\r\n",CmdLenght);
 	if(CmdLenght>34)
 	{
 	  status  = CmdLenght / 35  ;
-		printf("Statusstatus=%x\r\n",status);
+		//printf("Statusstatus=%x\r\n",status);
 		//for(i=0;i<status;i++)
 
 		for(i=0;i<4;i++)
@@ -646,7 +646,7 @@ uint32_t  MealDataCompareFun(void)
   for(j=0;j<Lenght;j++)
   {
 //	CheckInitReturnUnion.CheckInitReturnBuffer[j]= rx1Buf[j];
-	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+//	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
   }
   MealCompareData.MealCompareTotoal=0;
   return MealCompareData.MealCompareTotoal;

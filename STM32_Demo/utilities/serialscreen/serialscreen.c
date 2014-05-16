@@ -1115,24 +1115,24 @@ loop1:	switch(MealID)
 					{
 						CurrentPoint =2;
 						PlayMusic(VOICE_3);
-						if(!OpenCashSystem()) printf("cash system is erro2");  //关闭现金接受
+						if(!OpenCashSystem()){};// printf("cash system is erro2");  //关闭现金接受
 					}break;
 					case 0x02:   /*银行预付卡*/
 					{
 						CurrentPoint =7;
 						PlayMusic(VOICE_4);
-						if(!CloseCashSystem()) printf("cash system is erro3");  //关闭现金接受
+						if(!CloseCashSystem()){};// printf("cash system is erro3");  //关闭现金接受
 					}break;
 					case 0x03:   /*深圳通支付*/
 					{
 						CurrentPoint =8;
 						PlayMusic(VOICE_4);
-						if(!CloseCashSystem()) printf("cash system is erro4");  //关闭现金接受
+						if(!CloseCashSystem()){};//printf("cash system is erro4");  //关闭现金接受
 						
 					}break;
 					case 0x04:   /*取消*/
 					{
-loop7:			if(!CloseCashSystem()) printf("cash system is erro5");  //关闭现金接受
+loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //关闭现金接受
 						CloseTIM3();
 						CloseTIM7();
 						CurrentPoint = 0 ;
@@ -1270,10 +1270,8 @@ loop7:			if(!CloseCashSystem()) printf("cash system is erro5");  //关闭现金接受
 					case 0x01: //清除数据
 					{
 						erro_flag=0; //清除数据标记
-						ClearUserBuffer();
-						SaveUserData();
-						Current = hpper_out;
-						UserAct.Cancle = 0x01; //相当与取消购买
+						//Current = hpper_out;
+						//UserAct.Cancle = 0x01; //相当与取消购买
 						
    				}break;
 					case 0x02: //返回

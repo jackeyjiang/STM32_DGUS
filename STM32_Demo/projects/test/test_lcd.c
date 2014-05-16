@@ -30,20 +30,20 @@ int main(void)
 	hardfawreInit(); //硬件初始化
 	//printf("hardfawreInit is ok\r\n");  //关闭现金接受
   OnlymachieInit();  //机械手初始化
-	printf("OnlymachieInit ok\r\n");  //
+	//printf("OnlymachieInit ok\r\n");  //
 	//if(!CloseCashSystem())  
 	//delay_ms(30000);
    /*从网络  获得时间，更新本地时钟*/
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
-	printf("EchoFuntion ok\r\n");  //	
+	//printf("EchoFuntion ok\r\n");  //	
 	/*网络签到*/
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
-	printf("SignInFunction ok\r\n");  //
+	//printf("SignInFunction ok\r\n");  //
   SendtoServce();  //上传前七天的数据
 	//printf("SendtoServce");
 	/*深圳通签到*/
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
-	printf("Szt_GpbocAutoCheckIn ok\r\n");
+	//printf("Szt_GpbocAutoCheckIn ok\r\n");
 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
 	AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	PageChange(Logo_interface);	
@@ -90,17 +90,16 @@ int main(void)
 					PlayMusic(VOICE_7);					
 					CloseTIM3();
 					CloseTIM7();					
-					WaitTime=5;//5S计时   
-	       	OpenTIM4(); 
 					//改变用户所选餐的总数
 					MoneyBack =UserAct.MoneyBack *100 ;  /*扩大10倍*/
 			    mealvariety =0; 
+					UserAct.Cancle= 0x00; //以免出错
 					Current= hpper_out;
 					UserAct.Meal_takeout= 0;					
 					if(UserAct.PayType == '1')
 					{
 						delay_ms(3000);
-						if(!CloseCashSystem()) printf("cash system is erro1\r\n");  //关闭现金接受
+						if(!CloseCashSystem()){};// printf("cash system is erro1\r\n");  //关闭现金接受
 					}
 			  }
 			}break;
@@ -113,17 +112,14 @@ int main(void)
 //			}break;
       case hpper_out:	 /*退币状态*/
 			{
-		    if(UserAct.MoneyBack > 0) //需要找币的时候进入
+		    if(UserAct.MoneyBack >0) //需要找币的时候进入
 		    {
-          while(UserAct.MoneyBack > 0) //if >1
-          {
-             SendOutN_Coin(1);		//找币
-	           --UserAct.MoneyBack;
-	           delay_ms(200); //延时得好好控制
-          }
-					if(ErrorType ==1)
+					//需变动
+					UserAct.MoneyBack = SendOutN_Coin(UserAct.MoneyBack);					
+					if(ErrorType ==1)  //退币机无币错误
 					{
-						AbnormalHandle(coinhooperset_empty);
+						erro_record |= (1<<coinhooperset_empty);
+						//AbnormalHandle(coinhooperset_empty);
 					}
 				}
 				else  //无需找币的时候直接进入出餐状态,
@@ -131,7 +127,13 @@ int main(void)
 					if(UserAct.Cancle== 0x00) //判断是不是取消购买
 					{
 					  Current= meal_out; 
+						WaitTime=5;//5S计时   
+	       	  OpenTIM4(); 
 						break;
+					}
+					else if(erro_record>0x10) //退币后的异常处理
+					{
+						Current= erro_hanle;
 					}
 					else
 					{
@@ -139,7 +141,7 @@ int main(void)
 						Current= current_temperature;
 					}
 				}
-			  if(OldCoinsCnt>NewCoinsCnt)
+			  if(OldCoinsCnt>NewCoinsCnt)//????
 		    {
 		      delay_ms((OldCoinsCnt-NewCoinsCnt)/10*1000+1000); //延时得好好控制
           UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
@@ -154,7 +156,6 @@ int main(void)
 				SaveUserData();
 				if(WaitTime==0)
 				{
-					WaitTimeInit(&WaitTime);
 		      PlayMusic(VOICE_8);			
 				}
 				waitmeal_status= WaitMeal();       
@@ -186,21 +187,27 @@ int main(void)
 				}
         else if(waitmeal_status == takemeal_erro)
 				{
-					OnlymachieInit();
-					PageChange(Menu_interface);
-					Current = current_temperature;
-				}
-					
+					//机械手复位中请等待界面		
+					NewCoinsCnt= 0; 
+          UserAct.MoneyBack =UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th; //计算单总价		
+					OldCoinsCnt= UserAct.MoneyBack;
+					PageChange(Err_interface);
+					UserAct.Cancle= 0x01;
+					Current = hpper_out;	
+          break;					
+				}			
 			}break;
 	    case data_upload:	 /*数据上传*/
 	    {  		
         DataUpload(Success);//根据UserAct.ID 判断需要上传的数据
 			  Current = meal_out;		
 	    }break ;
-      case status_upload: /*状态上传*/
+      case erro_hanle: /*异常状态处理*/
       {
-				Current = current_temperature;
-			}
+				PollAbnormalHandle(); //异常处理 一直处于异常处理程序
+				StatusUploadingFun(0xE800); //处理后返回正常	
+        Current = current_temperature;					
+		  }
 	  }
   }
 }

@@ -36,7 +36,7 @@ typedef struct UserAction
 	uint16_t PayForBills;           //用户投入的纸币数
 	uint16_t PayForCards;           //用户应经刷卡的数
 	uint16_t PayAlready;            //用户已经付款总额
-	uint16_t MoneyBack;              //用户找零数
+	int16_t  MoneyBack;              //用户找零数  //有符号性避免数量减为0xfffe
 	uint8_t  PrintTick;              //是否打印小票标志
 	uint8_t  PayType ;              //支付方式
 	uint8_t  Cancle;                //用户取消购买
