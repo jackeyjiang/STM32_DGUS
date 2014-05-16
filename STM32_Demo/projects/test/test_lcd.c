@@ -95,7 +95,8 @@ int main(void)
 			    mealvariety =0; 
 					UserAct.Cancle= 0x00; //以免出错
 					Current= hpper_out;
-					UserAct.Meal_takeout= 0;					
+					UserAct.Meal_takeout= 0;	
+          VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示					
 					if(UserAct.PayType == '1')
 					{
 						delay_ms(3000);
@@ -172,7 +173,6 @@ int main(void)
           UserAct.Meal_totoal = 0;
 					//清楚购物车
 					ClearUserBuffer();          
-					VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示
 					Current = current_temperature;
 				}
 				else if(waitmeal_status == tookkind_meal) //取完一种餐品
