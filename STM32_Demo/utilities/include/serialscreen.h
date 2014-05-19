@@ -24,7 +24,11 @@
 #define Data_synchronization  0x1E  /*数据同步*/
 #define Coinset_interface     0x22  /*硬币设置*/
 #define Cardbalence_interface 0x25  /*刷卡界面*/
-#define UserAbonamalRecord_interface 0x27/*异常用户记录界面*/
+#define UserAbonamalRecord_interface 0x27 /*异常用户记录界面*/
+#define HardwareInit_interface         0x29 /*硬件初始化界面*/
+#define OnlymachieInit_interface       0x2A /*机械手初始化界面*/
+#define SignInFunction_interface       0x2B /*网络签到界面*/
+#define Szt_GpbocAutoCheckIn_interface 0x2C /*深圳通签到界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/

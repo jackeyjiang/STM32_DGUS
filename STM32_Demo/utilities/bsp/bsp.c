@@ -962,7 +962,7 @@ void hardfawreInit(void)
 	 IWDG_SetReload(0x0138); // 1S
 	 IWDG_Enable();
 	 OpenTIM2();
-	 PageChange(Logo_interface); //显示logo
+	 PageChange(HardwareInit_interface); //硬件初始化界面
   //PageChange(Logo_interface); //重复一次就可以成功
 
 	 SPI_FLASH_Init();          //Flash初始化

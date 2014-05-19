@@ -28,22 +28,17 @@ int main(void)
 {
 	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
-	//printf("hardfawreInit is ok\r\n");  //关闭现金接受
+	PageChange(OnlymachieInit_interface);
   OnlymachieInit();  //机械手初始化
-	//printf("OnlymachieInit ok\r\n");  //
-	//if(!CloseCashSystem())  
-	//delay_ms(30000);
    /*从网络  获得时间，更新本地时钟*/
+	PageChange(SignInFunction_interface);
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
-	//printf("EchoFuntion ok\r\n");  //	
 	/*网络签到*/
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
-	//printf("SignInFunction ok\r\n");  //
   SendtoServce();  //上传前七天的数据
-	//printf("SendtoServce");
 	/*深圳通签到*/
+	PageChange(Szt_GpbocAutoCheckIn_interface);
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
-	//printf("Szt_GpbocAutoCheckIn ok\r\n");
 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
 	AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	PageChange(Logo_interface);	
@@ -54,7 +49,6 @@ int main(void)
 	
 	while(1)
   {
-		//delay_ms(200);
 		DealSeriAceptData();
 		manageusart6data();   //
     switch(Current)
@@ -67,8 +61,6 @@ int main(void)
 					temp =0;
 					temp = OrderSendLink();  //为1成功，为0失败
 					VariableChage(current_temprature,Temperature); //5S一次
-					//if(!CloseCashSystem()) printf("cash system is erro\r\n");  //关闭现金接受
-					//printf("temp = %d",temp);
 				}
 				//显示倒计时
 				if(WaitTime==0)
@@ -104,23 +96,14 @@ int main(void)
 					}
 			  }
 			}break;
-//			case data_record:  /*数据记录*/
-//			{
-//				//将售餐的数据全部写入SD卡
-//         //DataRecord();
-//				 Current= hpper_out;
-//				 //Current= meal_out;
-//			}break;
       case hpper_out:	 /*退币状态*/
 			{
 		    if(UserAct.MoneyBack >0) //需要找币的时候进入
 		    {
-					//需变动
 					UserAct.MoneyBack = SendOutN_Coin(UserAct.MoneyBack);					
-					if(ErrorType ==1)  //退币机无币错误
+					if(ErrorType ==1)  //退币机无币错误，还未测试其他状态？？？
 					{
 						erro_record |= (1<<coinhooperset_empty);
-						//AbnormalHandle(coinhooperset_empty);
 					}
 				}
 				else  //无需找币的时候直接进入出餐状态,
@@ -142,15 +125,6 @@ int main(void)
 						Current= current_temperature;
 					}
 				}
-//			  if(OldCoinsCnt>NewCoinsCnt)//????
-//		    {
-//		      delay_ms((OldCoinsCnt-NewCoinsCnt)/10*1000+1000); //延时得好好控制
-//          UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
-//		    }
-//		    else if(OldCoinsCnt==NewCoinsCnt)
-//		    {
-//			    UserAct.MoneyBack= OldCoinsCnt- NewCoinsCnt;//
-//		    }
 			}break;
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{
