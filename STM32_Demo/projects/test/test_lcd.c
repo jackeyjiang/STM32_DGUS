@@ -62,15 +62,18 @@ int main(void)
 					temp = OrderSendLink();  //为1成功，为0失败
 					VariableChage(current_temprature,Temperature); //5S一次
 				}
-				//显示倒计时
-				if(WaitTime==0)
-				{					 
-					PageChange(Menu_interface);//超时退出用户餐品数量选择界面
-					WaitTimeInit(&WaitTime);
-				}
-				else if(WaitTime!=60)
+				//显示倒计时,可以更具标记为对选餐倒计时进行更新
+				if(UserAct.MealID)
 				{
-					VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
+					if(WaitTime==0)
+					{					 
+						PageChange(Menu_interface);//超时退出用户餐品数量选择界面
+						WaitTimeInit(&WaitTime);
+					}
+					else if(WaitTime!=60)
+					{
+						VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
+					}
 				}
 			}break;
 	    case waitfor_money:	 /*等待付钱*/

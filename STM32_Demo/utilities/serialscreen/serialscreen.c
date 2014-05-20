@@ -936,8 +936,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
 					default:break;
 				}
-			}break;
-        				
+			}break;      				
 			case meat_cnt: /*ºúÂÜ²·³´Èâ·ÖÊı*/
 			{
 				if(VariableData[1]<= DefineMeal[0].MealCount)	//ÉèÖÃ²ÍÆ·Ñ¡ÔñµÄÉÏÏŞ
@@ -1433,10 +1432,15 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
               SyncMealCntDisp(0xFF,cnt_t); 									 
 						}	
 						//½ûÖ¹ÆÁÄ»µã»÷*/
-             ScreenControl(ScreenDisable);
+            ScreenControl(ScreenDisable);
+						/*²ÍÆ·Í¬²½Ê±¾¡Á¿±ÜÃâÓë·şÎñÆ÷¶Ï¿ªµÄÇé¿ö*/
+						/*²»ÄÜ¼ÓÈëÇ©µ½º¯Êı£¬Ö±½ÓËÀµô*/
+						//if(!SignInFunction())  AbnormalHandle(signin_erro);
+						/*ÉÏ´«¶ÏÍøºóµÄÊı¾İ£¬¹©ºóÌ¨ÊµÊ±¸üĞÂÊı¾İ*/
+            SendtoServce(); 
 						//Êı¾İÍ¬²½×Ó³ÌĞò
-						 MealDataCompareFun();
-						 if(MealCompareData.MealCompareTotoal==0xFFFFFFFF) //ÕıÈ·
+						MealDataCompareFun();
+						if(MealCompareData.MealCompareTotoal==0xFFFFFFFF) //ÕıÈ·
 						 {
 							 mealneed_sync = false;
 							 PageChange(Data_synchronization);
@@ -1449,10 +1453,6 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 							 }							 
 						 }
 						 /*¿ÉÒÔ¼ÓÈë¶Ô±ÈµÄ·µ»ØÖµ½øĞĞÅĞ¶Ï*/
-//						 else if(MealCompareData.MealCompareTotoal==0)
-//						 {
-//							 PageChange(Data_synchronization+2);
-//						 }
              else
              {
 							 mealneed_sync = true;

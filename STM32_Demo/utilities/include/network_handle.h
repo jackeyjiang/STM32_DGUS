@@ -44,18 +44,18 @@ extern unsigned char  UpdataFlag[4];
 extern unsigned char  WordKeyCipher[11];
 
 /*******************************************
-这个结构体是定义9种餐品的定义
+这个结构体是定义4种餐品的定义
 设置餐品的时候定义的一个结构体 与服务器对比
 
 ********************************/
 typedef struct
 {
 
-	unsigned char MealID[4];
-	unsigned char MaelName[20];
-	unsigned char MealNum[2];
-	unsigned char MealPreace[4];
-	unsigned char MealType[4];
+	const unsigned char MealID[4];
+	const unsigned char MaelName[20];
+	const unsigned char MealNum[2];
+	const unsigned char MealPreace[4];
+	const unsigned char MealType[4];
 
 }Meal_struction;
 extern	Meal_struction  	Meal[4];

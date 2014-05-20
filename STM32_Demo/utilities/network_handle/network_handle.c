@@ -45,7 +45,7 @@ unsigned char  UpdataFlag[4];
 unsigned char  ACK[4];  //这个是什么?
 unsigned char  WordKeyCipher[11];
 
- Meal_struction Meal[4]={
+Meal_struction Meal[4]={
 							 /*餐品ID*/ 			 /*餐品名字*/			/*餐品数量*/	  /*餐品价格*/			   /*餐品类型*/
 								   0x10,0x00,0x00,0x20,  {"红萝卜炒肉      "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
 								   0x10,0x00,0x00,0x23,  {"香菇滑鸡        "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
@@ -512,16 +512,14 @@ void StructCopyToBuffer(unsigned char *dest)
 // 有j0<9改为j0<4 是餐品的数据
   for(j0 = 0; j0 < 4; j0++)
 	{
-	// dest[j0] = source[j0];
 	  for(i=0;i<4;i++)
 	  dest[k++]=Meal[j0].MealID[i];
+		
 	  for(i=0;i<20;i++)
 	  dest[k++]=Meal[j0].MaelName[i];
 
-		Meal[j0].MealNum[1]= DefineMeal[j0].MealCount;
-		
-	  for(i=0;i<2;i++)
-	  dest[k++]=Meal[j0].MealNum[i];
+		dest[k++]= Meal[j0].MealNum[0]; //第一个数为0
+	  dest[k++]= DefineMeal[j0].MealCount; //第二个数为餐品的数量
 
 	  for(i=0;i<4;i++)
 	  dest[k++]=Meal[j0].MealPreace[i];
@@ -529,26 +527,6 @@ void StructCopyToBuffer(unsigned char *dest)
 	  for(i=0;i<4;i++)
 	  dest[k++]=Meal[j0].MealType[i];
 	}
-}
-void BufferToStructCopy(unsigned char *dest,unsigned char Index)
-{
-    long i=0,k=0;
-
-	  for(i=0;i<4;i++)
-	  Meal[Index].MealID[i]=dest[k++];
-	  for(i=0;i<20;i++)
-	  Meal[Index].MaelName[i]=dest[k++];
-
-	  for(i=0;i<2;i++)
-	  {
-	    Meal[Index].MealNum[i]=dest[k++];
-	//  printf("Meal[%d].MealNum[%d]=%x\r\n",Index,i,Meal[Index].MealNum[i]);
-	  }
-	  for(i=0;i<4;i++)
-	  Meal[Index].MealPreace[i]=dest[k++];
-
-	  for(i=0;i<4;i++)
-	  Meal[Index].MealType[i]=dest[k++];
 }
 
 /*******************************************************************************
@@ -627,9 +605,6 @@ uint32_t  MealDataCompareFun(void)
 	if(CmdLenght>34)
 	{
 	  status  = CmdLenght / 35  ;
-		//printf("Statusstatus=%x\r\n",status);
-		//for(i=0;i<status;i++)
-
 		for(i=0;i<4;i++)
 		{
 			if(rx1Buf[45+i*35]==0x04)   //餐品对比标志
@@ -641,13 +616,12 @@ uint32_t  MealDataCompareFun(void)
 				MealCompareData.MealComparePart[i]=rx1Buf[36+i*35];
 		  }				
 		}
+		for(j=0;j<Lenght;j++)
+		{
+			printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+		}
 		return MealCompareData.MealCompareTotoal ;/*餐品对比信息*/
 	}
-  for(j=0;j<Lenght;j++)
-  {
-//	CheckInitReturnUnion.CheckInitReturnBuffer[j]= rx1Buf[j];
-//	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-  }
   MealCompareData.MealCompareTotoal=0;
   return MealCompareData.MealCompareTotoal;
 }
