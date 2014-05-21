@@ -138,7 +138,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>/</Name>
+          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -622,10 +622,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>30</ColumnNumber>
+      <ColumnNumber>7</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>106</TopLine>
-      <CurrentLine>180</CurrentLine>
+      <TopLine>166</TopLine>
+      <CurrentLine>187</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\test_lcd.c</PathWithFileName>
       <FilenameWithoutPath>test_lcd.c</FilenameWithoutPath>
@@ -806,10 +806,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>7</ColumnNumber>
+      <ColumnNumber>25</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>931</TopLine>
-      <CurrentLine>1274</CurrentLine>
+      <TopLine>1146</TopLine>
+      <CurrentLine>1583</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\serialscreen\serialscreen.c</PathWithFileName>
       <FilenameWithoutPath>serialscreen.c</FilenameWithoutPath>
@@ -856,8 +856,8 @@
       <Focus>0</Focus>
       <ColumnNumber>14</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>465</TopLine>
-      <CurrentLine>475</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\protocol\protocol.c</PathWithFileName>
       <FilenameWithoutPath>protocol.c</FilenameWithoutPath>
@@ -872,8 +872,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>90</TopLine>
-      <CurrentLine>98</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\rtc\rtc.c</PathWithFileName>
       <FilenameWithoutPath>rtc.c</FilenameWithoutPath>
@@ -920,8 +920,8 @@
       <Focus>0</Focus>
       <ColumnNumber>3</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>112</TopLine>
-      <CurrentLine>116</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\mini_hopper\Mini_hopper.c</PathWithFileName>
       <FilenameWithoutPath>Mini_hopper.c</FilenameWithoutPath>
@@ -950,10 +950,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>26</ColumnNumber>
+      <ColumnNumber>4</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>66</TopLine>
-      <CurrentLine>73</CurrentLine>
+      <TopLine>555</TopLine>
+      <CurrentLine>556</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\network_handle\network_handle.c</PathWithFileName>
       <FilenameWithoutPath>network_handle.c</FilenameWithoutPath>
@@ -984,8 +984,8 @@
       <Focus>0</Focus>
       <ColumnNumber>16</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>236</TopLine>
-      <CurrentLine>247</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\bsp\bsp.c</PathWithFileName>
       <FilenameWithoutPath>bsp.c</FilenameWithoutPath>
@@ -1696,7 +1696,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>167</TopLine>
+      <TopLine>170</TopLine>
       <CurrentLine>175</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\arm\startup_stm32f4xx.s</PathWithFileName>
@@ -1974,10 +1974,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>34</ColumnNumber>
+      <ColumnNumber>82</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>47</TopLine>
+      <CurrentLine>53</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\network_handle.h</PathWithFileName>
       <FilenameWithoutPath>network_handle.h</FilenameWithoutPath>

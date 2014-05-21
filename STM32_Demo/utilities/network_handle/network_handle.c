@@ -46,11 +46,11 @@ unsigned char  ACK[4];  //这个是什么?
 unsigned char  WordKeyCipher[11];
 
 Meal_struction Meal[4]={
-							 /*餐品ID*/ 			 /*餐品名字*/			/*餐品数量*/	  /*餐品价格*/			   /*餐品类型*/
-								   0x10,0x00,0x00,0x20,  {"红萝卜炒肉      "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
-								   0x10,0x00,0x00,0x23,  {"香菇滑鸡        "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
-								   0x10,0x00,0x00,0x26,  {"脆皮烧鸭        "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
-								   0x10,0x00,0x00,0x24,  {"红烧鱼块        "}, 0x00,0x00,	   0x00,0x00,0x15,0x00, 	{"C001"},
+						    /*餐品数量*/	 /*餐品ID*/ 			     /*餐品名字*/				    /*餐品价格*/			     /*餐品类型*/
+								   0x00,0x00,	 0x10,0x00,0x00,0x20,  {"红萝卜炒肉      "},   0x00,0x00,0x15,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x23,  {"香菇滑鸡        "},   0x00,0x00,0x15,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x26,  {"脆皮烧鸭        "},   0x00,0x00,0x15,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x24,  {"红烧鱼块        "},   0x00,0x00,0x15,0x00, 	{"C001"},
 						   };
  unsigned char	Record_buffer[254] = {0} ;
 
@@ -588,7 +588,7 @@ uint32_t  MealDataCompareFun(void)
 	Lenght = HL_BufferToInit(&rx1Buf[2]);		//得到数据长度
 	GetData(&ReturnData.Lenght[0],rx1Buf,Lenght,0xc0);	  /*返回状态*/
 	
- 	printf("Status=%x\r\n",ReturnData.Lenght[0]);
+ 	//printf("Status=%x\r\n",ReturnData.Lenght[0]);
 
 	if(ReturnData.Lenght[0] == 0x00 )
 	{
@@ -615,10 +615,6 @@ uint32_t  MealDataCompareFun(void)
 			{
 				MealCompareData.MealComparePart[i]=rx1Buf[36+i*35];
 		  }				
-		}
-		for(j=0;j<Lenght;j++)
-		{
-			printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
 		}
 		return MealCompareData.MealCompareTotoal ;/*餐品对比信息*/
 	}
