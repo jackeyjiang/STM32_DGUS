@@ -612,7 +612,7 @@ void PowerupAbnormalHandle(int32_t erro_record)
 void PollAbnormalHandle(void)
 {
 	uint8_t i=0;
-	for(i=0;i<32;i++) //32位记录各种异常，开机需要处理 ，可以通过管理员清理错误
+	for(i=32;i>0;i--) //32位记录各种异常，开机需要处理 ，可以通过管理员清理错误
 	{
 		if(erro_record&(1<<i))
 		AbnormalHandle(i);	
@@ -825,11 +825,11 @@ void AbnormalHandle(uint16_t erro)
 			DealSeriAceptData();
 			if(erro_flag==0)
 			{
-				if(erro>=0x10)
+				if(erro>=0x10) //需要判断什么情况下对用户数据清零
 				{
 					ClearUserBuffer();
 					SaveUserData();
-					OnlymachieInit();	//只有机械手出错的时候复位机械手
+					//OnlymachieInit();	//只有机械手出错的时候复位机械手
 				}
 				erro_record &= ~(1<<erro); //一次只处理一次异常
 				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);

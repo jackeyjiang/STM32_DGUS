@@ -1494,7 +1494,7 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 				SetTemper(VariableData[1]);
 			//VariableData[1]; ÎÂ¶È±äÁ¿=VariableData[1];
 			}break;
-			case coins_key:
+			case coins_key:  //°´Ò»´ÎÍËÒ»´Î
       {
 				uint16_t cnt_t=0;
 				if(VariableData[1]==0x01)
@@ -1502,14 +1502,17 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 					Coins_cnt=0;
 					coins_time= (CoinsTotoalMessageWriteToFlash.CoinTotoal/10);
 					VariableChage(coins_back,Coins_cnt);
+					//²ÉÓÃÄÜ·¢ËÍ¼¸¸öÊÇ¼¸¸öµÄ·½·¨ÊÇ¿ÉĞĞµÄ£¬//CoinsTotoalMessageWriteToFlash.CoinTotoal = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);
 					cnt_t = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);
-					  do
-						{
-							VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
-							VariableChage(coins_back,Coins_cnt);
-							delay_ms(10);
-							if((CoinsTotoalMessageWriteToFlash.CoinTotoal-cnt_t)==Coins_cnt)break;
-						}while(1);				
+					VariableChage(coins_in,cnt_t);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
+					VariableChage(coins_back,CoinsTotoalMessageWriteToFlash.CoinTotoal-cnt_t);					
+//					  do
+//						{//¼«Ò×ËÀ»ú
+//							VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
+//							VariableChage(coins_back,Coins_cnt);
+//							delay_ms(10);
+//							if((CoinsTotoalMessageWriteToFlash.CoinTotoal-cnt_t)==Coins_cnt)break;
+//						}while(1);				
 				}
 				else if(VariableData[1] == 0x02)
 				{
