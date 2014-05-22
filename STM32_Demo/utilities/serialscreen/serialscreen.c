@@ -790,8 +790,8 @@ void DisplayUserRecord(void)
 	{
 		//ÏÔÊ¾ÓÃ»§ÒÑ¸¶ ºÍ  Ó¦ÍË
 		VariableChage(record_UserActPayAlready,UserAct.PayAlready);
-		//Ó¦ÍËµÄÇ® = ÒÑ¸¶µÄÇ® - ¸÷²ÍÆ·µÄÊıÁ¿*¼Û¸ñ
-		UserAct.MoneyBack = UserAct.PayAlready -((UserAct.MealCnt_1st_t-UserAct.MealCnt_1st)* price_1st+ (UserAct.MealCnt_2nd_t-UserAct.MealCnt_2nd)* price_2nd+ (UserAct.MealCnt_3rd_t-UserAct.MealCnt_3rd)* price_3rd+(UserAct.MealCnt_4th_t-UserAct.MealCnt_4th)* price_4th);
+		//Ó¦ÍËµÄÇ® = Ö®Ç°»¹Ã»ÍËµÄÇ® + Ó¦¸¶µÄÇ® - Î´±»È¡³öµÄ¸÷²ÍÆ·µÄÊıÁ¿*¼Û¸ñ
+		UserAct.MoneyBack += UserAct.PayShould -((UserAct.MealCnt_1st_t-UserAct.MealCnt_1st)* price_1st+ (UserAct.MealCnt_2nd_t-UserAct.MealCnt_2nd)* price_2nd+ (UserAct.MealCnt_3rd_t-UserAct.MealCnt_3rd)* price_3rd+(UserAct.MealCnt_4th_t-UserAct.MealCnt_4th)* price_4th);
 		VariableChage(record_UserActPayBack,UserAct.MoneyBack);
 	}
 	else
@@ -867,7 +867,6 @@ bool mealneed_sync = false;  //²ÍÆ·Í¬²½±ê¼Ç
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 {
 	char MealID =0;
-	uint16_t coins_time=0;
 	uint8_t i= 0,j=0;
 	  switch (VariableAdress)
 		{
@@ -1218,6 +1217,7 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 		        {
 							PassWordLen = 0;		
 							DisplayPassWord(0);//Çå³şÃÜÂëÏÔÊ¾
+							memset(InputPassWord,0,6);
 						  if(erro_flag!=0) 
 						  {
 							  break;
@@ -1233,6 +1233,7 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 		        {
 							//½øÈë¹ÜÀíÔ±¹¦ÄÜÉèÖÃ£¬ĞèÒª¼ÓÈëÌØ¶¨µÄ¹¦ÄÜÑ¡Ôñ
 		           /*½øÈë¹ÜÀíÔ±½çÃæ*/
+							 memset(InputPassWord,0,6);
 							 if(erro_flag!=0) 
 							 {
 								 PageChange(UserAbonamalRecord_interface);
@@ -1277,9 +1278,12 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 					case 0x01: //Çå³ıÊı¾İ
 					{
 						erro_flag=0; //Çå³ıÊı¾İ±ê¼Ç
-						//Current = hpper_out;
-						//UserAct.Cancle = 0x01; //Ïàµ±ÓëÈ¡Ïû¹ºÂò
-						
+						if(Current==current_temperature)//ÏŞ¶¨ÔÚ³õÊ¼»¯×´Ì¬
+						{
+							ClearUserBuffer();
+					    SaveUserData();
+							PageChange(Menu_interface);
+						}
    				}break;
 					case 0x02: //·µ»Ø
 					{
@@ -1496,23 +1500,36 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 			}break;
 			case coins_key:  //°´Ò»´ÎÍËÒ»´Î
       {
-				uint16_t cnt_t=0;
+				uint16_t cnt_t=0,i=0,temp=0;
+			  uint16_t coins_time=0;
 				if(VariableData[1]==0x01)
 				{
 					Coins_cnt=0;
 					coins_time= (CoinsTotoalMessageWriteToFlash.CoinTotoal/10);
+					cnt_t= (CoinsTotoalMessageWriteToFlash.CoinTotoal%10);
 					VariableChage(coins_back,Coins_cnt);
-					//²ÉÓÃÄÜ·¢ËÍ¼¸¸öÊÇ¼¸¸öµÄ·½·¨ÊÇ¿ÉĞĞµÄ£¬//CoinsTotoalMessageWriteToFlash.CoinTotoal = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);
-					cnt_t = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);
-					VariableChage(coins_in,cnt_t);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
-					VariableChage(coins_back,CoinsTotoalMessageWriteToFlash.CoinTotoal-cnt_t);					
-//					  do
-//						{//¼«Ò×ËÀ»ú
-//							VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
-//							VariableChage(coins_back,Coins_cnt);
-//							delay_ms(10);
-//							if((CoinsTotoalMessageWriteToFlash.CoinTotoal-cnt_t)==Coins_cnt)break;
-//						}while(1);				
+					for(i=0;i<coins_time+1;i++) //Ò»´ÎÍË±Ò10¸ö£¬
+					{
+					  if(i!=coins_time)
+						{
+						  UserAct.MoneyBack+=SendOutN_Coin(10);		
+						}
+						else
+						{
+							if(cnt_t>0)
+							  UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
+							else
+								break;
+						}
+            delay_ms(1000); 
+						VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
+						VariableChage(coins_back,Coins_cnt);						
+					  if(ErrorType ==1)  //ÍË±Ò»úÎŞ±Ò´íÎó,Ö±½Ó½øÈë´íÎó×´Ì¬
+					  {
+							break;
+					  }														
+					}
+					//²ÉÓÃÄÜ·¢ËÍ¼¸¸öÊÇ¼¸¸öµÄ·½·¨ÊÇ²»¿ÉĞĞµÄ£¬//CoinsTotoalMessageWriteToFlash.CoinTotoal = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);			
 				}
 				else if(VariableData[1] == 0x02)
 				{

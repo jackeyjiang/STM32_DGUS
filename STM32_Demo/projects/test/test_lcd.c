@@ -26,7 +26,6 @@ uint16_t VarValue = 0;
 
 int main(void)
 {
-	uint16_t temp = 0;
 	hardfawreInit(); //硬件初始化
 	PageChange(OnlymachieInit_interface);
   OnlymachieInit();  //机械手初始化
@@ -56,10 +55,14 @@ int main(void)
 	    case current_temperature: /*温度处理函数*/
 			{
 				StateSend();
+				if((LinkTime==1)||(LinkTime==2)||(LinkTime==3))
+				{
+				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
+					VariableChage(coins_back,Coins_cnt);
+				}
 				if(LinkTime >=5)
 				{
-					temp =0;
-					temp = OrderSendLink();  //为1成功，为0失败
+					OrderSendLink();  //为1成功，为0失败
 					VariableChage(current_temprature,Temperature); //5S一次
 				}
 				//显示倒计时,可以更具标记为对选餐倒计时进行更新
@@ -94,20 +97,42 @@ int main(void)
           VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示					
 					if(UserAct.PayType == '1')
 					{
+						CloseCoinMachine();			    //关闭投币机	
 						delay_ms(3000);
 						if(!CloseCashSystem()){};// printf("cash system is erro1\r\n");  //关闭现金接受
 					}
 			  }
 			}break;
-      case hpper_out:	 /*退币状态*/
+      case hpper_out:	 /*退币状态:该程序的前提是在一次退10个硬币，不会出现退币机空转的情况*/
 			{
-		    if(UserAct.MoneyBack >0) //需要找币的时候进入
+				uint16_t i=0,cnt_t=0;
+			  uint16_t coins_time=0;		    
+				if(UserAct.MoneyBack >0) //需要找币的时候进入
 		    {
-					UserAct.MoneyBack = SendOutN_Coin(UserAct.MoneyBack);					
-					if(ErrorType ==1)  //退币机无币错误，还未测试其他状态？？？
+					coins_time= (UserAct.MoneyBack/10); 
+					cnt_t =  UserAct.MoneyBack%10;		
+          UserAct.MoneyBack= 0;					
+					for(i=0;i<coins_time+1;i++) //一次退币10个，
 					{
-						erro_record |= (1<<coinhooperset_empty);
-					}
+						if(i!=coins_time)
+						{
+						  UserAct.MoneyBack+=SendOutN_Coin(10);		
+						}
+						else
+						{
+							if(cnt_t>0)
+							  UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
+							else
+								break;
+						}
+            delay_ms(1000);   							
+					  if(ErrorType ==1)  //退币机无币错误,直接进入错误状态
+					  {
+						  erro_record |= (1<<coinhooperset_empty);
+							Current= meal_out; ; //找币错误的时候还是继续出餐
+							break;
+					  }											
+					}		
 				}
 				else  //无需找币的时候直接进入出餐状态,
 				{
@@ -141,7 +166,6 @@ int main(void)
 				{
 					PageChange(Menu_interface);
 					//出餐完毕，跳到回温度处理
-          UserAct.MoneyBack   = 0;
           UserAct.PayAlready  = 0;
           UserAct.PayForBills = 0;
           UserAct.PayForCoins = 0;
@@ -149,8 +173,15 @@ int main(void)
           UserAct.Meal_takeout= 0;
           UserAct.Meal_totoal = 0;
 					//清楚购物车
-					ClearUserBuffer();          
-					Current = current_temperature;
+					ClearUserBuffer(); 
+					if(UserAct.MoneyBack>0)
+					{
+						Current = hpper_out;
+					}
+					else
+					{
+					  Current = current_temperature;
+					}
 				}
 				else if(waitmeal_status == tookkind_meal) //取完一种餐品
 				{
@@ -166,7 +197,7 @@ int main(void)
 				{
 					//机械手复位中请等待界面		
 					NewCoinsCnt= 0; 
-          UserAct.MoneyBack =UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th; //计算单总价		
+          UserAct.MoneyBack+= UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th; //计算单总价		
 					OldCoinsCnt= UserAct.MoneyBack;
 					PageChange(Err_interface);
 					UserAct.Cancle= 0x01;

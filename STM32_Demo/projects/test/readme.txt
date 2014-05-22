@@ -95,4 +95,6 @@ In order to make the program work, you must do the following :
     
  * <h3><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h3>
  */文档说明：
- 1.银联卡长响一声后，还是没有扣款成功？？？
+ 1.银联卡长响一声后，还是没有扣款成功？？？解决：发送扣款命令后，循环读取读卡器返回的数据
+ 2.退币机的应该怎么优化 : 降低一次性发送退币的数量10个一次，采用之前的计算退币输入脉冲数，作为机内硬币显示
+ 3.购买成功后的退币应该修改

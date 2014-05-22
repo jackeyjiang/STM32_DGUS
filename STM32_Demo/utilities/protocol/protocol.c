@@ -472,7 +472,6 @@ uint8_t OrderSendLink(void)
 	LinkTime =0;
 	RetryFre =0;
 	SendLink();
-	delay_ms(5);
 	while(1)
 	{
 		if( machinerec.reack ==1)	  //ack
