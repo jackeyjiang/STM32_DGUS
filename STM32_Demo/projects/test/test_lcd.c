@@ -27,6 +27,7 @@ uint16_t VarValue = 0;
 int main(void)
 {
 	hardfawreInit(); //硬件初始化
+	DisplayRecordTime(); //初始化时获取时间作为异常的时间
 	PageChange(OnlymachieInit_interface);
   OnlymachieInit();  //机械手初始化
    /*从网络  获得时间，更新本地时钟*/
@@ -45,7 +46,7 @@ int main(void)
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
 	DispLeftMeal();             //显示餐品数据	
 	PageChange(Menu_interface); //显示选餐界面
-	
+
 	while(1)
   {
 		DealSeriAceptData();
@@ -129,6 +130,7 @@ int main(void)
 					  if(ErrorType ==1)  //退币机无币错误,直接进入错误状态
 					  {
 						  erro_record |= (1<<coinhooperset_empty);
+							MoneyBack -=UserAct.MoneyBack *100 ;  /*扩大10倍*/
 							Current= meal_out; ; //找币错误的时候还是继续出餐
 							break;
 					  }											
