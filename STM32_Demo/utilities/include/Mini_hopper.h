@@ -9,7 +9,7 @@ u8 SendOutN_Coin(int num);
 uint8_t StatisticalCoin(void);
 void CloseCoins(void);
 void OpenCoins(void);
-void RefundButton(void);
+void RefundButton(uint16_t coins_cnt);
 void StopRefond(void);
 
 #endif

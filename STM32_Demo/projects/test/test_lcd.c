@@ -212,6 +212,8 @@ int main(void)
 	    }break ;
       case erro_hanle: /*异常状态处理*/
       {
+				//获取当前时间，并显示
+				DisplayRecordTime();
 				PollAbnormalHandle(); //异常处理 一直处于异常处理程序
 				StatusUploadingFun(0xE800); //处理后返回正常	
         Current = current_temperature;					

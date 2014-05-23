@@ -20,6 +20,9 @@
 #define takeafter_meal 0x04 //取餐完毕
 #define takemeal_erro  0x05 //取餐错误
 
+/**********机内硬币保留数*********/
+#define coins_remain   50  //保留50个
+
 /**********异常******************/
 #define outage_erro      0x01 //断电
 #define sdcard_erro      0x02 //SD卡存储异常

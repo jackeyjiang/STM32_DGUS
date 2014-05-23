@@ -124,10 +124,10 @@ uint8_t SendOutN_Coin(int num)
 * Output         : Î´ÍËµÄ±ÒÊý£¬ÐÞ¸Ä
 * Return         : 
 *******************************************************************************/
-void RefundButton(void)
+void RefundButton(uint16_t coins_cnt)
 {
 	uint16_t i;
-	for(i=0;i<20;i++)
+	for(i=0;i<coins_cnt;i++)
 	{
 		GPIO_ResetBits(GPIOE,GPIO_Pin_11);
 		delay_ms(15);

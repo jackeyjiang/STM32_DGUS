@@ -737,6 +737,42 @@ void AbnomalMealCntDisp(uint8_t meal_cnt,uint8_t floor)
 }
 
  /*******************************************************************************
+ * º¯ÊıÃû³Æ:DisplayRecordTime                                                                     
+ * Ãè    Êö:ÏÔÊ¾³ö´íÊ±µÄ´íÎó¼ÇÂ¼                                                              
+ *                                                                               
+ * Êä    Èë:ÎŞ                                                                     
+ * Êä    ³ö:ÎŞ                                                                     
+ * ·µ    »Ø:void                                                               
+ * ĞŞ¸ÄÈÕÆÚ:2014Äê5ÔÂ23ÈÕ                                                                    
+ *******************************************************************************/  
+void DisplayRecordTime(void)
+{
+    char record_time[20]={"20yy-mm-dd hh:mm:ss"}; 
+	  char temp[30]={0};  //´æ·Å´®¿ÚÊı¾İµÄÁÙÊ±Êı×é  
+		RTC_TimeShow();     /*Ê±¼ä×÷Îª´íÎó¼ÇÂ¼Ê±¼ä*/
+		record_time[0] =    20/10+'0'; 
+		record_time[1] =    20%10 +'0'; 
+		record_time[2] =    TimeDate.Year/10+ '0'; 
+		record_time[3] =    TimeDate.Year%10+ '0' ;
+		record_time[5] =    TimeDate.Month/10+ '0';
+		record_time[6] =    TimeDate.Month%10+ '0';
+		record_time[8] =    TimeDate.Date/10+ '0'; 
+		record_time[9] =    TimeDate.Date%10+ '0';
+		record_time[11] =   TimeDate.Hours/10+ '0';
+		record_time[12] =   TimeDate.Hours%10+ '0';
+		record_time[14] =   TimeDate.Minutes/10+ '0';
+		record_time[15] =   TimeDate.Minutes%10+ '0' ;
+		record_time[17] =   TimeDate.Senconds/10+ '0'; 
+		record_time[18] =   TimeDate.Senconds%10+ '0';	
+		memcpy(temp,VariableWrite,sizeof(VariableWrite));
+		temp[2]= 23; //22 0x83 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+		myunion.adress= record_UserDataTime;
+		temp[4]= myunion.adr[1];
+		temp[5]= myunion.adr[0];
+		mystrcat(temp,record_time,20);
+		Uart3_Sent(temp,sizeof(temp));	
+}
+ /*******************************************************************************
  * º¯ÊıÃû³Æ:DisplayUserRecord                                                                     
  * Ãè    Êö:ÏÔÊ¾³ö´íÊ±µÄ´íÎó¼ÇÂ¼                                                              
  *                                                                               
@@ -1243,9 +1279,13 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 								 break;
 							 }
 							 else
-							 {
+							 {					 
+								 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±Ò×ÜÊı
+								 VariableChage(coins_input,0);//ÏÔÊ¾·Å±ÒÊı
+								 VariableChage(coins_retain,coins_remain);//±£ÁôÓ²±ÒÊı
+								 VariableChage(coins_back,0); //ÏÔÊ¾ÍË±ÒÊı
 								 PageChange(Coinset_interface);
-								 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);
+								 //µ±Ç°ÍË±ÒÊı
 								 DisplayPassWord(0);//Çå³şÃÜÂëÏÔÊ¾
 								 PassWordLen = 0;break;
 							 }
@@ -1502,11 +1542,11 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
       {
 				uint16_t cnt_t=0,i=0,temp=0;
 			  uint16_t coins_time=0;
-				if(VariableData[1]==0x01)
+				if(VariableData[1]==0x01) /*²¿·ÖÍË±Ò*/
 				{
 					Coins_cnt=0;
-					coins_time= (CoinsTotoalMessageWriteToFlash.CoinTotoal/10);
-					cnt_t= (CoinsTotoalMessageWriteToFlash.CoinTotoal%10);
+					coins_time= ((CoinsTotoalMessageWriteToFlash.CoinTotoal-coins_remain)/10);
+					cnt_t= ((CoinsTotoalMessageWriteToFlash.CoinTotoal-coins_remain)%10);
 					VariableChage(coins_back,Coins_cnt);
 					for(i=0;i<coins_time+1;i++) //Ò»´ÎÍË±Ò10¸ö£¬
 					{
@@ -1531,7 +1571,36 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 					}
 					//²ÉÓÃÄÜ·¢ËÍ¼¸¸öÊÇ¼¸¸öµÄ·½·¨ÊÇ²»¿ÉĞĞµÄ£¬//CoinsTotoalMessageWriteToFlash.CoinTotoal = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);			
 				}
-				else if(VariableData[1] == 0x02)
+				else if(VariableData[1] == 0x02) /*È«²¿ÍË±Ò*/
+				{
+					Coins_cnt=0;
+					coins_time= (CoinsTotoalMessageWriteToFlash.CoinTotoal/10);
+					cnt_t= (CoinsTotoalMessageWriteToFlash.CoinTotoal%10);
+					VariableChage(coins_back,Coins_cnt);
+					for(i=0;i<coins_time+1;i++) //Ò»´ÎÍË±Ò10¸ö£¬
+					{
+					  if(i!=coins_time)
+						{
+						  UserAct.MoneyBack+=SendOutN_Coin(10);		
+						}
+						else
+						{
+							if(cnt_t>0)
+							  UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
+							else
+								break;
+						}
+            delay_ms(1000); 
+						VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
+						VariableChage(coins_back,Coins_cnt);						
+					  if(ErrorType ==1)  //ÍË±Ò»úÎŞ±Ò´íÎó,Ö±½Ó½øÈë´íÎó×´Ì¬
+					  {
+							RefundButton(UserAct.MoneyBack);
+							break;
+					  }														
+					}					
+				}
+				else if(VariableData[1] == 0x03) /*·µ»Ø*/
 				{
 					StopRefond();
 					PageChange(Menu_interface);
@@ -1539,8 +1608,8 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 			}break;	
       case 	coins_in:
       {	
-				CoinsTotoalMessageWriteToFlash.CoinsCnt[0]= VariableData[1];
-				CoinsTotoalMessageWriteToFlash.CoinsCnt[1]= VariableData[0];
+				CoinsTotoalMessageWriteToFlash.CoinsCnt[0]+= VariableData[1]; //Ö±½Ó½«Öµ¸³Öµ¸ø×ÜÊı£¿£¿£¿
+				CoinsTotoalMessageWriteToFlash.CoinsCnt[1]+= VariableData[0];
 				WriteCoins();
 				VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
 				

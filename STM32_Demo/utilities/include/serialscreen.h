@@ -141,16 +141,22 @@
 #define meal_num  0x0015
 
 //退币变量
-#define coins_back  0x0050 //退币计数
-#define coins_in    0x0051 //退币机内的硬币总量
-#define coins_key   0x0052 //退币的按键
+#define coins_in     0x0050 //退币机内的硬币总量   
+#define coins_input  0x0051 //硬币放置数量
+#define coins_retain 0x0052 //保留硬币数量
+#define coins_back	 0x0053 //当前退币数量
+#define coins_key    0x0054 //退币的按键
+
+#define caedbalence_cancel    0x0055  //刷卡取消按键
+
+#define record_clear  0x0056    /*清楚记录按键*/
 
 //刷卡金额变量
 #define cardbalence_before    0x0060  //刷卡钱余额
 #define amountof_consumption  0x0065 //本次消费金额
 #define cardbalence_after     0x006A  //刷卡后余额
 
-#define caedbalence_cancel    0x0053  //刷卡取消按键
+
 
 //同步界面
 #define sync_column1st_name   0x4500
@@ -178,10 +184,12 @@
 #define record_column3rd_cnt    0x5A00 //第三栏餐品已出总数
 #define record_column4th_cnt    0x5B00 //第四栏餐品已出总数
 
-#define record_UserActPayAlready  0x5C00 //用户已付款
-#define record_UserActPayBack     0x5D00 //用户找零
+#define record_UserActPayAlready     0x5C00  //用户已付款
+#define record_UserActPayBack        0x5D00  //用户应退币
+#define record_UserActPayBackAlready 0x5E00  //已退用户硬币数
 
-#define record_clear  0x0054/*清楚记录按键*/
+#define record_UserDataTime          0x5F00  //出错时间显示
+
 
 extern const char price_1st;
 extern const char price_2nd;
@@ -196,6 +204,7 @@ void DispLeftMeal(void);
 void DealSeriAceptData(void);
 void VariableChage(uint16_t Variable,uint16_t Value);	
 void DisplayAbnormal(char *abnomal_code);
-void VariableChagelong (uint16_t Variable,uint32_t Value);		
+void VariableChagelong (uint16_t Variable,uint32_t Value);
+void DisplayRecordTime(void);
 
 #endif
