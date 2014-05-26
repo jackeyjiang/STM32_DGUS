@@ -92,12 +92,12 @@ uint8_t  ReadBill(void)
 				   case 0x03: BillValue = 20;break;
 				   default:break ;
 				}
-			/*在暂存器中的钱币*/
-			BillRunStatus =BillInEscrow;            
+			  /*在暂存器中的钱币*/
+			  BillRunStatus =BillInEscrow;            
       }
 			else if(BillStatus ==DisabledBillRejected)
 			{
-				AbnormalHandle(billset_erro);
+				//AbnormalHandle(billset_erro);
 			}
 	  }
 	  else if(BillDataBuffer[1]==0x06)
@@ -107,19 +107,11 @@ uint8_t  ReadBill(void)
 	  }
     else if(BillDataBuffer[1]==0x09)
 	  {
-		  BillRunStatus = Abnormal;
+		   BillRunStatus = Abnormal;
 	  }
 		return 0 ;
 	}
-	else if(BillDataBuffer[0]==0xFF)
-	{ 
-		return nack_flag;
-  }
-  else if(BillDataBuffer[0]==0x00)
-	{
-		return ack_flag;
-	}
-   return 0 ;	
+  return 0 ;	
 }
 
 

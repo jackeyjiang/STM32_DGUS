@@ -152,33 +152,11 @@ void MealArr(unsigned char index)
 		
 		/*购买餐品的类型*/
     CustomerSel.PayType =  UserAct.PayType;  //	UserAct.PayType  ;
-	 if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
-	 { 
-		//	printf("UserAct.MoneyBack=%d\r\n",UserAct.MoneyBack);
-		 /*十进制转换成16*/
-		 CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
-		 CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
-		 CustomerSel.Change[1]      =	     MoneyBack / 100000000 %100;
-		 CustomerSel.Change[1]      =         CustomerSel.Change[1]/10 *16 +CustomerSel.Change[1]%10 ;                              
-		 CustomerSel.Change[2]      =	     MoneyBack / 1000000 %100;
-		 CustomerSel.Change[2]      =         CustomerSel.Change[2]/10 *16 +CustomerSel.Change[2]%10 ;
-		 CustomerSel.Change[3]      =	     MoneyBack / 10000 %100;
-		 CustomerSel.Change[3]      =         CustomerSel.Change[3]/10 *16 +CustomerSel.Change[3]%10 ;
-		 CustomerSel.Change[4]      =	     MoneyBack / 100 %100;
-		 CustomerSel.Change[4]      =         CustomerSel.Change[4]/10 *16 +CustomerSel.Change[4]%10 ;
-		 CustomerSel.Change[5]      =	     MoneyBack % 100 ;
-		 CustomerSel.Change[5]      =         CustomerSel.Change[5]/10 *16 +CustomerSel.Change[5]%10 ;
-		 MoneyBack = 0 ;
-	 }
-		/*购买餐品的剩余份数*/
-		CustomerSel.RemainMealNum[0]  =	 (DefineMeal[index-1].MealCount>>8)&0xff;
-		CustomerSel.RemainMealNum[1]  =	  DefineMeal[index-1].MealCount &0xff;
-		/*购买的类型*/
 		CustomerSel.MealName	   =  	   index ;
 		/*付了多少现金*/
 		//PayBill  =UserAct.PayForBills +*100 ;  /*扩大10倍*/
 		//PayBill  =	(UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards)*100 ;
-	  switch(index)
+	  switch(index) //投币与找零都在第一份餐品中，
 		{
 			case 1: PayBill= price_1st*100;break;
 			case 2: PayBill= price_2nd*100;break;
@@ -187,6 +165,7 @@ void MealArr(unsigned char index)
 			default:break;
 		}
 	 	/*支付了多少钱*/
+		PayBill+=MoneyBack;
 		CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
 		CustomerSel.DealBalance[0]      =       CustomerSel.DealBalance[0]/10 *16 +CustomerSel.DealBalance[0]%10 ;   
 		CustomerSel.DealBalance[1]      =	      PayBill / 100000000 %100;
@@ -198,5 +177,30 @@ void MealArr(unsigned char index)
 		CustomerSel.DealBalance[4]      =	      PayBill / 100 %100;
 		CustomerSel.DealBalance[4]      =       CustomerSel.DealBalance[4]/10 *16 +CustomerSel.DealBalance[4]%10 ;
 		CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
-		CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;
+		CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;		
+		
+	  if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
+	  {
+      if(MoneyBack>0)			
+			MoneyBack-=UserAct.MoneyBack*100;
+		//	printf("UserAct.MoneyBack=%d\r\n",UserAct.MoneyBack);
+		 /*十进制转换成16*/
+		  CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
+		  CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
+		  CustomerSel.Change[1]      =	     MoneyBack / 100000000 %100;
+		  CustomerSel.Change[1]      =         CustomerSel.Change[1]/10 *16 +CustomerSel.Change[1]%10 ;                              
+		  CustomerSel.Change[2]      =	     MoneyBack / 1000000 %100;
+		  CustomerSel.Change[2]      =         CustomerSel.Change[2]/10 *16 +CustomerSel.Change[2]%10 ;
+		  CustomerSel.Change[3]      =	     MoneyBack / 10000 %100;
+		  CustomerSel.Change[3]      =         CustomerSel.Change[3]/10 *16 +CustomerSel.Change[3]%10 ;
+		  CustomerSel.Change[4]      =	     MoneyBack / 100 %100;
+		  CustomerSel.Change[4]      =         CustomerSel.Change[4]/10 *16 +CustomerSel.Change[4]%10 ;
+		  CustomerSel.Change[5]      =	     MoneyBack % 100 ;
+		  CustomerSel.Change[5]      =         CustomerSel.Change[5]/10 *16 +CustomerSel.Change[5]%10 ;
+	  }
+		MoneyBack = 0 ;
+		/*购买餐品的剩余份数*/
+		CustomerSel.RemainMealNum[0]  =	 (DefineMeal[index-1].MealCount>>8)&0xff;
+		CustomerSel.RemainMealNum[1]  =	  DefineMeal[index-1].MealCount &0xff;
+		/*购买的类型*/
 }

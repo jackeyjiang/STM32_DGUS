@@ -106,7 +106,7 @@
         <tRtrace>0</tRtrace>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
-        <nTsel>6</nTsel>
+        <nTsel>7</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -120,11 +120,6 @@
         <pMon>Segger\JL2CM3.dll</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
-        <SetRegEntry>
-          <Number>0</Number>
-          <Key>ST-LINKIII-KEIL</Key>
-          <Name>-S</Name>
-        </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGTARM</Key>
@@ -152,438 +147,26 @@
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint/>
-      <WatchWindow1>
-        <Ww>
-          <count>0</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>WaitTime</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>CurrentPoint</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>WaitTime</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>ntime</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>BillDataBuffer</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>temp</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>cnt_t</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>DefineMeal</ItemText>
-        </Ww>
-        <Ww>
-          <count>8</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Meal</ItemText>
-        </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>rx1Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>10</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Meal</ItemText>
-        </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Lenght</ItemText>
-        </Ww>
-        <Ww>
-          <count>12</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>ReturnData</ItemText>
-        </Ww>
-        <Ww>
-          <count>13</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>TempBuffer</ItemText>
-        </Ww>
-        <Ww>
-          <count>14</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>CmdLenght</ItemText>
-        </Ww>
-        <Ww>
-          <count>15</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>status</ItemText>
-        </Ww>
-        <Ww>
-          <count>16</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Send_Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>17</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>UART_InpLen</ItemText>
-        </Ww>
-        <Ww>
-          <count>18</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>UserAct</ItemText>
-        </Ww>
-        <Ww>
-          <count>19</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>\\lcd_test\../../../utilities/usart/uart3.c\UART_InpLen</ItemText>
-        </Ww>
-        <Ww>
-          <count>20</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>TimeDate</ItemText>
-        </Ww>
-        <Ww>
-          <count>21</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Send_Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>22</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Rec_Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>23</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>UART_InpLen</ItemText>
-        </Ww>
-        <Ww>
-          <count>24</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>RX_IndexW</ItemText>
-        </Ww>
-        <Ww>
-          <count>25</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>RX3_BUFF</ItemText>
-        </Ww>
-        <Ww>
-          <count>26</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>cardbalence_before</ItemText>
-        </Ww>
-        <Ww>
-          <count>27</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>UpReadCardData</ItemText>
-        </Ww>
-        <Ww>
-          <count>28</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>mealvariety</ItemText>
-        </Ww>
-        <Ww>
-          <count>29</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>BillDataBuffer</ItemText>
-        </Ww>
-        <Ww>
-          <count>30</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>ack</ItemText>
-        </Ww>
-        <Ww>
-          <count>31</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>RX4Buffer</ItemText>
-        </Ww>
-        <Ww>
-          <count>32</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>MealCompareData</ItemText>
-        </Ww>
-        <Ww>
-          <count>33</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>temp</ItemText>
-        </Ww>
-        <Ww>
-          <count>34</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>buffer</ItemText>
-        </Ww>
-        <Ww>
-          <count>35</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>temp</ItemText>
-        </Ww>
-        <Ww>
-          <count>36</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>temp[20]</ItemText>
-        </Ww>
-        <Ww>
-          <count>37</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>meal_cnt</ItemText>
-        </Ww>
-        <Ww>
-          <count>38</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>RX4Buffer[0]</ItemText>
-        </Ww>
-        <Ww>
-          <count>39</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Current</ItemText>
-        </Ww>
-        <Ww>
-          <count>40</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>PrintBuf2</ItemText>
-        </Ww>
-        <Ww>
-          <count>41</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>cnt_t</ItemText>
-        </Ww>
-        <Ww>
-          <count>42</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>RTC_TimeStructure</ItemText>
-        </Ww>
-        <Ww>
-          <count>43</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>ReadBuf[0]</ItemText>
-        </Ww>
-        <Ww>
-          <count>44</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>ReadSdBuff</ItemText>
-        </Ww>
-        <Ww>
-          <count>45</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Send_Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>46</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Index</ItemText>
-        </Ww>
-        <Ww>
-          <count>47</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>DispMeal</ItemText>
-        </Ww>
-        <Ww>
-          <count>48</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>DispMeal[Floor]</ItemText>
-        </Ww>
-        <Ww>
-          <count>49</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Current</ItemText>
-        </Ww>
-        <Ww>
-          <count>50</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Send_Buf</ItemText>
-        </Ww>
-      </WatchWindow1>
       <WatchWindow2>
         <Ww>
           <count>0</count>
           <WinNumber>2</WinNumber>
-          <ItemText>Meal[j0]</ItemText>
+          <ItemText>erro_record</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>2</WinNumber>
-          <ItemText>Meal</ItemText>
+          <ItemText>CoinsTotoalMessageWriteToFlash</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>2</WinNumber>
-          <ItemText>MealCompareData</ItemText>
+          <ItemText>CoinsTotoalMessageWriteToFlash.CoinTotoal-coins_remain</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>2</WinNumber>
-          <ItemText>MealCompareData.MealComparePart[cnt_t]</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>temp</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>temp</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>cnt_t</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>MealCompareData</ItemText>
-        </Ww>
-        <Ww>
-          <count>8</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>RX4Buffer</ItemText>
-        </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>f_name</ItemText>
-        </Ww>
-        <Ww>
-          <count>10</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>RTC_TimeStructure</ItemText>
-        </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>ReadBuf</ItemText>
-        </Ww>
-        <Ww>
-          <count>12</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>fsrc</ItemText>
-        </Ww>
-        <Ww>
-          <count>13</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>DispMeal[Floor]</ItemText>
-        </Ww>
-        <Ww>
-          <count>14</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>Floor</ItemText>
-        </Ww>
-        <Ww>
-          <count>15</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>erro_flag</ItemText>
-        </Ww>
-        <Ww>
-          <count>16</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>FloorMealMessageWriteToFlash</ItemText>
-        </Ww>
-        <Ww>
-          <count>17</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>UserAct</ItemText>
-        </Ww>
-        <Ww>
-          <count>18</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>Current</ItemText>
-        </Ww>
-        <Ww>
-          <count>19</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>rx1Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>20</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>state_temp</ItemText>
-        </Ww>
-        <Ww>
-          <count>21</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>Send_Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>22</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>fsrc</ItemText>
-        </Ww>
-        <Ww>
-          <count>23</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>Send_Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>24</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>ReadBuf[0]</ItemText>
-        </Ww>
-        <Ww>
-          <count>25</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>ReadBuf</ItemText>
-        </Ww>
-        <Ww>
-          <count>26</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>SendBuffer</ItemText>
-        </Ww>
-        <Ww>
-          <count>27</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>Send_Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>28</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>Send_Buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>29</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>LinkTime</ItemText>
-        </Ww>
-        <Ww>
-          <count>30</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>UART_InpLen</ItemText>
-        </Ww>
-        <Ww>
-          <count>31</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>UserAct</ItemText>
-        </Ww>
-        <Ww>
-          <count>32</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>erro_record</ItemText>
-        </Ww>
-        <Ww>
-          <count>33</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>CoinsTotoalMessageWriteToFlash</ItemText>
-        </Ww>
-        <Ww>
-          <count>34</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>Current</ItemText>
+          <ItemText>coins_time</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>
@@ -622,7 +205,7 @@
 
   <Group>
     <GroupName>user</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -632,17 +215,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-<<<<<<< HEAD
-      <ColumnNumber>23</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>127</TopLine>
-      <CurrentLine>133</CurrentLine>
-=======
-      <ColumnNumber>39</ColumnNumber>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>31</CurrentLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
+      <TopLine>18</TopLine>
+      <CurrentLine>29</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\test_lcd.c</PathWithFileName>
       <FilenameWithoutPath>test_lcd.c</FilenameWithoutPath>
@@ -655,10 +231,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>11</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>345</TopLine>
-      <CurrentLine>361</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\stm32f4xx_it.c</PathWithFileName>
       <FilenameWithoutPath>stm32f4xx_it.c</FilenameWithoutPath>
@@ -679,10 +255,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>4</ColumnNumber>
+      <ColumnNumber>2</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>2</TopLine>
+      <CurrentLine>15</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\usart\uart1.c</PathWithFileName>
       <FilenameWithoutPath>uart1.c</FilenameWithoutPath>
@@ -711,10 +287,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>15</ColumnNumber>
+      <ColumnNumber>63</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>46</TopLine>
-      <CurrentLine>52</CurrentLine>
+      <TopLine>35</TopLine>
+      <CurrentLine>46</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\usart\uart3.c</PathWithFileName>
       <FilenameWithoutPath>uart3.c</FilenameWithoutPath>
@@ -727,7 +303,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>58</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -743,7 +319,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>51</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -759,7 +335,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>58</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -793,8 +369,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>219</TopLine>
-      <CurrentLine>220</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\sd\sd.c</PathWithFileName>
       <FilenameWithoutPath>sd.c</FilenameWithoutPath>
@@ -807,17 +383,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-<<<<<<< HEAD
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>777</TopLine>
+      <TopLine>775</TopLine>
       <CurrentLine>800</CurrentLine>
-=======
-      <ColumnNumber>23</ColumnNumber>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>777</TopLine>
-      <CurrentLine>802</CurrentLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\spi_flash\spi_flash.c</PathWithFileName>
       <FilenameWithoutPath>spi_flash.c</FilenameWithoutPath>
@@ -830,17 +399,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-<<<<<<< HEAD
-      <ColumnNumber>36</ColumnNumber>
+      <ColumnNumber>56</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>810</TopLine>
-      <CurrentLine>827</CurrentLine>
-=======
-      <ColumnNumber>10</ColumnNumber>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>973</TopLine>
-      <CurrentLine>989</CurrentLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
+      <TopLine>1524</TopLine>
+      <CurrentLine>1548</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\serialscreen\serialscreen.c</PathWithFileName>
       <FilenameWithoutPath>serialscreen.c</FilenameWithoutPath>
@@ -855,8 +417,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>2923</TopLine>
-      <CurrentLine>2949</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\szt_Gpboc\szt_gpboc.c</PathWithFileName>
       <FilenameWithoutPath>szt_gpboc.c</FilenameWithoutPath>
@@ -869,7 +431,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>5</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -885,17 +447,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-<<<<<<< HEAD
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>468</TopLine>
-      <CurrentLine>469</CurrentLine>
-=======
-      <ColumnNumber>8</ColumnNumber>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>433</TopLine>
-      <CurrentLine>447</CurrentLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\protocol\protocol.c</PathWithFileName>
       <FilenameWithoutPath>protocol.c</FilenameWithoutPath>
@@ -910,8 +465,8 @@
       <Focus>0</Focus>
       <ColumnNumber>27</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>76</TopLine>
-      <CurrentLine>86</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\rtc\rtc.c</PathWithFileName>
       <FilenameWithoutPath>rtc.c</FilenameWithoutPath>
@@ -926,11 +481,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-<<<<<<< HEAD
-      <TopLine>4</TopLine>
-=======
       <TopLine>1</TopLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
       <CurrentLine>10</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\delay\delay.c</PathWithFileName>
@@ -944,10 +495,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>33</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>39</TopLine>
-      <CurrentLine>55</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\coins\coin.c</PathWithFileName>
       <FilenameWithoutPath>coin.c</FilenameWithoutPath>
@@ -962,8 +513,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>116</TopLine>
-      <CurrentLine>127</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\mini_hopper\Mini_hopper.c</PathWithFileName>
       <FilenameWithoutPath>Mini_hopper.c</FilenameWithoutPath>
@@ -976,17 +527,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-<<<<<<< HEAD
-      <ColumnNumber>48</ColumnNumber>
+      <ColumnNumber>50</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>150</TopLine>
-      <CurrentLine>159</CurrentLine>
-=======
-      <ColumnNumber>0</ColumnNumber>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>4</TopLine>
-      <CurrentLine>10</CurrentLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\LedMsgHandle\MsgHandle.c</PathWithFileName>
       <FilenameWithoutPath>MsgHandle.c</FilenameWithoutPath>
@@ -999,15 +543,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>6</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-<<<<<<< HEAD
-      <TopLine>1314</TopLine>
-      <CurrentLine>1334</CurrentLine>
-=======
-      <TopLine>1293</TopLine>
-      <CurrentLine>1305</CurrentLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\network_handle\network_handle.c</PathWithFileName>
       <FilenameWithoutPath>network_handle.c</FilenameWithoutPath>
@@ -1020,7 +559,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>37</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1036,17 +575,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-<<<<<<< HEAD
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>611</TopLine>
-      <CurrentLine>612</CurrentLine>
-=======
-      <ColumnNumber>13</ColumnNumber>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>760</TopLine>
-      <CurrentLine>776</CurrentLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
+      <TopLine>954</TopLine>
+      <CurrentLine>991</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\bsp\bsp.c</PathWithFileName>
       <FilenameWithoutPath>bsp.c</FilenameWithoutPath>
@@ -1059,10 +591,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>12</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\vioce\voice.c</PathWithFileName>
       <FilenameWithoutPath>voice.c</FilenameWithoutPath>
@@ -1075,7 +607,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>3</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1091,7 +623,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>3</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1107,7 +639,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>1</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1123,7 +655,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>5</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1155,7 +687,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>20</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1171,7 +703,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>22</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1227,7 +759,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>14</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1331,15 +863,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>5</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-<<<<<<< HEAD
-      <TopLine>2710</TopLine>
+      <TopLine>2696</TopLine>
       <CurrentLine>2716</CurrentLine>
-=======
-      <TopLine>2274</TopLine>
-      <CurrentLine>2276</CurrentLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f4xx_rtc.c</FilenameWithoutPath>
@@ -1368,7 +895,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>35</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1624,7 +1151,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>36</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -1762,11 +1289,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-<<<<<<< HEAD
-      <TopLine>172</TopLine>
-=======
-      <TopLine>167</TopLine>
->>>>>>> ef0cd05f57cd859b67368e9d63e184d2a6ed7cc3
+      <TopLine>164</TopLine>
       <CurrentLine>175</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\arm\startup_stm32f4xx.s</PathWithFileName>
@@ -1802,7 +1325,7 @@
 
   <Group>
     <GroupName>Doc</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1812,10 +1335,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>58</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>78</TopLine>
-      <CurrentLine>99</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\readme.txt</PathWithFileName>
       <FilenameWithoutPath>readme.txt</FilenameWithoutPath>
@@ -1950,8 +1473,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>3</TopLine>
-      <CurrentLine>5</CurrentLine>
+      <TopLine>13</TopLine>
+      <CurrentLine>24</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\bsp.h</PathWithFileName>
       <FilenameWithoutPath>bsp.h</FilenameWithoutPath>
@@ -2028,10 +1551,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>19</ColumnNumber>
+      <ColumnNumber>18</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>53</TopLine>
+      <CurrentLine>72</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\MsgHandle.h</PathWithFileName>
       <FilenameWithoutPath>MsgHandle.h</FilenameWithoutPath>
@@ -2044,7 +1567,7 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>82</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -2108,10 +1631,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>57</ColumnNumber>
+      <ColumnNumber>18</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>168</TopLine>
-      <CurrentLine>183</CurrentLine>
+      <TopLine>140</TopLine>
+      <CurrentLine>166</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\serialscreen.h</PathWithFileName>
       <FilenameWithoutPath>serialscreen.h</FilenameWithoutPath>
@@ -2140,7 +1663,7 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>66</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -2268,7 +1791,7 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>90</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -2284,7 +1807,7 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>2</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>

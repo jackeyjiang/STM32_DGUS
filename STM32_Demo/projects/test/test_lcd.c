@@ -58,7 +58,7 @@ int main(void)
 				StateSend();
 				if((LinkTime==1)||(LinkTime==2)||(LinkTime==3))
 				{
-				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
+				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+CoinTotoal_t);//显示机内硬币数
 					VariableChage(coins_back,Coins_cnt);
 				}
 				if(LinkTime >=5)

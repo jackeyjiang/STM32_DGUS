@@ -5,7 +5,7 @@
 void Uart1_Configuration(void)
 {
   USART_InitTypeDef USART_InitStructure;
-  NVIC_InitTypeDef NVIC_InitStructure;
+//  NVIC_InitTypeDef NVIC_InitStructure;
   GPIO_InitTypeDef GPIO_InitStructure;
   
   /* Enable GPIO clock */

@@ -197,7 +197,7 @@ extern const char price_3rd;
 extern const char price_4th;
 extern bool cardbalence_cancel_flag;
 extern char record_time[20];
-
+extern int16_t CoinTotoal_t;
 void ClearUserBuffer(void);
 void PageChange(char page);
 void ScreenControl(char cmd);

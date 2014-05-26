@@ -835,6 +835,7 @@ void DisplayUserRecord(void)
 	{
 		VariableChage(record_UserActPayAlready,0);
 		VariableChage(record_UserActPayBack,0);
+		VariableChage(record_UserActPayBackAlready,0);
 	}
 }
 	
@@ -901,6 +902,7 @@ uint8_t  PassWord[6]={0};
 uint8_t  InputPassWord[6]={0};
 bool cardbalence_cancel_flag= false;
 bool mealneed_sync = false;  //²ÍÆ·Í¬²½±ê¼Ç
+int16_t CoinTotoal_t=0; //×÷Îª»ùÊı 		
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 {
 	char MealID =0;
@@ -1541,35 +1543,42 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 			}break;
 			case coins_key:  //°´Ò»´ÎÍËÒ»´Î
       {
-				uint16_t cnt_t=0,i=0,temp=0;
-			  uint16_t coins_time=0;
+				int16_t cnt_t=0,i=0,temp=0;
+			  int16_t coins_time=0;
+				/*µ±°´ÏÂÈÎÒâÒ»¸ö°´¼üµÄÊ±ºòĞèÒª¶ÁÓ²±ÒÊı¾İ½øĞĞ´¦Àí*/
+				CoinsTotoalMessageWriteToFlash.CoinTotoal+= CoinTotoal_t;
+				CoinTotoal_t=0;
+				WriteCoins();
 				if(VariableData[1]==0x01) /*²¿·ÖÍË±Ò*/
 				{
-					Coins_cnt=0;
-					coins_time= ((CoinsTotoalMessageWriteToFlash.CoinTotoal-coins_remain)/10);
-					cnt_t= ((CoinsTotoalMessageWriteToFlash.CoinTotoal-coins_remain)%10);
-					VariableChage(coins_back,Coins_cnt);
-					for(i=0;i<coins_time+1;i++) //Ò»´ÎÍË±Ò10¸ö£¬
+					if(CoinsTotoalMessageWriteToFlash.CoinTotoal-coins_remain>0)
 					{
-					  if(i!=coins_time)
+						Coins_cnt=0;
+						coins_time= ((CoinsTotoalMessageWriteToFlash.CoinTotoal-coins_remain)/10);
+						cnt_t= ((CoinsTotoalMessageWriteToFlash.CoinTotoal-coins_remain)%10);
+						VariableChage(coins_back,Coins_cnt);
+						for(i=0;i<coins_time+1;i++) //Ò»´ÎÍË±Ò10¸ö£¬
 						{
-						  UserAct.MoneyBack+=SendOutN_Coin(10);		
-						}
-						else
-						{
-							if(cnt_t>0)
-							  UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
+							if(i!=coins_time)
+							{
+								UserAct.MoneyBack+=SendOutN_Coin(10);		
+							}
 							else
+							{
+								if(cnt_t>0)
+									UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
+								else
+									break;
+							}
+							delay_ms(1000); 
+							VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
+							VariableChage(coins_back,Coins_cnt);						
+							if(ErrorType ==1)  //ÍË±Ò»úÎŞ±Ò´íÎó,Ö±½Ó½øÈë´íÎó×´Ì¬
+							{
 								break;
+							}														
 						}
-            delay_ms(1000); 
-						VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
-						VariableChage(coins_back,Coins_cnt);						
-					  if(ErrorType ==1)  //ÍË±Ò»úÎŞ±Ò´íÎó,Ö±½Ó½øÈë´íÎó×´Ì¬
-					  {
-							break;
-					  }														
-					}
+					}	
 					//²ÉÓÃÄÜ·¢ËÍ¼¸¸öÊÇ¼¸¸öµÄ·½·¨ÊÇ²»¿ÉĞĞµÄ£¬//CoinsTotoalMessageWriteToFlash.CoinTotoal = SendOutN_Coin(CoinsTotoalMessageWriteToFlash.CoinTotoal);			
 				}
 				else if(VariableData[1] == 0x02) /*È«²¿ÍË±Ò*/
@@ -1607,13 +1616,12 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 					PageChange(Menu_interface);
 				}
 			}break;	
-      case 	coins_in:
-      {	
-				CoinsTotoalMessageWriteToFlash.CoinsCnt[0]+= VariableData[1]; //Ö±½Ó½«Öµ¸³Öµ¸ø×ÜÊı£¿£¿£¿
-				CoinsTotoalMessageWriteToFlash.CoinsCnt[1]+= VariableData[0];
-				WriteCoins();
-				VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊı
-				
+      case 	coins_input: /*½«Òª½«·ÅÖÃµÄÓ²±ÒÓë×ÜÊıÁªºÏÆğÀ´*/
+      {
+        myunion.adr[0] =	VariableData[1];
+				myunion.adr[1] =	VariableData[0];
+				CoinTotoal_t   =  myunion.adress;
+				VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+ CoinTotoal_t);//ÏÔÊ¾»úÄÚÓ²±ÒÊı			
 			}break;			
 			  default:break;		
 		}
