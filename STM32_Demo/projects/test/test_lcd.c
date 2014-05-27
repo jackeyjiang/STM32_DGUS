@@ -90,7 +90,7 @@ int main(void)
 					CloseTIM3();
 					CloseTIM7();					
 					//改变用户所选餐的总数
-					MoneyBack =UserAct.MoneyBack *100 ;  /*扩大10倍*/
+					MoneyBack =UserAct.MoneyBack *100 ;  /*扩大100倍*/
 			    mealvariety =0; 
 					UserAct.Cancle= 0x00; //以免出错
 					Current= hpper_out;
@@ -130,7 +130,7 @@ int main(void)
 					  if(ErrorType ==1)  //退币机无币错误,直接进入错误状态
 					  {
 						  erro_record |= (1<<coinhooperset_empty);
-							MoneyBack -=UserAct.MoneyBack *100 ;  /*扩大10倍*/
+							MoneyBack -=UserAct.MoneyBack *100 ;  /*MoneyBack是已找币的数量*/
 							Current= meal_out; ; //找币错误的时候还是继续出餐
 							break;
 					  }											

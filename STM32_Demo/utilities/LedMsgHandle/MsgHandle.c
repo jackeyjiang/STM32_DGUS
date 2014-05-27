@@ -165,7 +165,7 @@ void MealArr(unsigned char index)
 			default:break;
 		}
 	 	/*支付了多少钱*/
-		PayBill+=MoneyBack;
+		PayBill+=(MoneyBack+UserAct.MoneyBack*100); //已付的钱=已照比的钱+未找币的钱
 		CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
 		CustomerSel.DealBalance[0]      =       CustomerSel.DealBalance[0]/10 *16 +CustomerSel.DealBalance[0]%10 ;   
 		CustomerSel.DealBalance[1]      =	      PayBill / 100000000 %100;
@@ -178,12 +178,9 @@ void MealArr(unsigned char index)
 		CustomerSel.DealBalance[4]      =       CustomerSel.DealBalance[4]/10 *16 +CustomerSel.DealBalance[4]%10 ;
 		CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
 		CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;		
-		
+		//已找币的钱
 	  if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
 	  {
-      if(MoneyBack>0)			
-			MoneyBack-=UserAct.MoneyBack*100;
-		//	printf("UserAct.MoneyBack=%d\r\n",UserAct.MoneyBack);
 		 /*十进制转换成16*/
 		  CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
 		  CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
