@@ -133,7 +133,10 @@ int main(void)
 							{
 								erro_record |= (1<<coinhooperset_empty);
 								MoneyBack -=UserAct.MoneyBack *100 ;  /*还有多少币还未找出*/
-								Current= meal_out; ; //找币错误的时候还是继续出餐
+								if(erro_record>0x10)//如果是机械手异常，直接进行错误处理
+						       Current = erro_hanle;	
+								else
+								   Current= meal_out; ; //找币错误的时候还是继续出餐
 								break;
 							}											
 						}		
@@ -160,7 +163,7 @@ int main(void)
 						}
 					}
 				}				
-				else //机内硬币不够时
+				else //机内硬币不够时,MoneyBack不变
 				{ 
 					if(erro_record>0x10)//如果是机械手异常，直接进行错误处理
 					{
@@ -168,8 +171,7 @@ int main(void)
 					  break;
 					}
 					erro_record |= (1<<coinhooperset_empty);
-					MoneyBack = UserAct.MoneyBack *100 ;  /*还有多少币还未找出*/
-					Current= meal_out; ; //找币错误的时候还是继续出餐	
+					Current= meal_out; //找币错误的时候还是继续出餐	
 				}
 			}break;
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
