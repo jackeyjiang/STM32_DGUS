@@ -1471,8 +1471,7 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ð½
 					}break;
 					case 0x04:  /*Êý¾ÝÍ¬²½*/
 					{
-						uint32_t mealcompare_data=0;
-						uint8_t mealsample_data=0,cnt_t=0,floor=0;
+						uint8_t cnt_t=0,floor=0;
 						for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
 						{
 							/*ÏÔÊ¾²ÍÆ·,ÊýÁ¿*/									
@@ -1544,7 +1543,7 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ð½
 			}break;
 			case coins_key:  //°´Ò»´ÎÍËÒ»´Î
       {
-				int16_t cnt_t=0,i=0,temp=0;
+				int16_t cnt_t=0,i=0;
 			  int16_t coins_time=0;
 				/*µ±°´ÏÂÈÎÒâÒ»¸ö°´¼üµÄÊ±ºòÐèÒª¶ÁÓ²±ÒÊý¾Ý½øÐÐ´¦Àí*/
 				CoinsTotoalMessageWriteToFlash.CoinTotoal+= CoinTotoal_t;
@@ -1603,15 +1602,16 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ð½
 								else
 									break;
 							}
-							delay_ms(1000); 
+							delay_ms(1500); 
 							VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//ÏÔÊ¾»úÄÚÓ²±ÒÊý
-							VariableChage(coins_back,Coins_cnt);						
-							if(ErrorType ==1)  //ÍË±Ò»úÎÞ±Ò´íÎó,Ö±½Ó½øÈë´íÎó×´Ì¬
-							{
-								RefundButton(UserAct.MoneyBack);
-								break;
-							}														
-						}
+							VariableChage(coins_back,Coins_cnt);												
+						}							
+						if(ErrorType ==1)  //ÍË±Ò»úÎÞ±Ò´íÎó,ÔÙ´Î·¢ËÍÍË±Ò
+						{
+							UserAct.MoneyBack= SendOutN_Coin(UserAct.MoneyBack);
+							//RefundButton(UserAct.MoneyBack);Èç¹ûÊ¹ÓÃÕâ¸ö»áÔì³ÉÍË±Ò»ú´íÎó
+							//ÒÑÍêÈ«ÍË±Ò£¬ÏÔÊ¾ÍË±Ò³ö´í½çÃæ£¬ÇëÖØÆô
+						}	
 					}						
 				}
 				else if(VariableData[1] == 0x03) /*·µ»Ø*/
