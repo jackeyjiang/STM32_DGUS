@@ -1195,7 +1195,6 @@ bool SignInFunction(void)
 //			case 56:
 //			case 58:				
 			{
-			  delay_ms(900);
 			  if(TimeDate.Senconds==10) //控制多次传输
 			  {
 					//需要读取机器的状态

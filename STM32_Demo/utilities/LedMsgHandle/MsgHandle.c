@@ -76,7 +76,7 @@ void InitSetting(void)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
-int MoneyBack = 0;
+int MoneyBack = 0; //已找币的数量
 void MealArr(unsigned char index)
 {
     int PayBill = 0;
@@ -165,7 +165,7 @@ void MealArr(unsigned char index)
 			default:break;
 		}
 	 	/*支付了多少钱*/
-		PayBill+=(MoneyBack+UserAct.MoneyBack*100); //已付的钱=已照比的钱+未找币的钱
+		PayBill+=MoneyBack; //已付的钱=需找币的钱
 		CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
 		CustomerSel.DealBalance[0]      =       CustomerSel.DealBalance[0]/10 *16 +CustomerSel.DealBalance[0]%10 ;   
 		CustomerSel.DealBalance[1]      =	      PayBill / 100000000 %100;
@@ -181,6 +181,7 @@ void MealArr(unsigned char index)
 		//已找币的钱
 	  if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
 	  {
+			MoneyBack-= (UserAct.MoneyBack*100); //计算已退的钱=应退币的临时变量-还有多少币未退
 		 /*十进制转换成16*/
 		  CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
 		  CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   

@@ -90,7 +90,7 @@ int main(void)
 					CloseTIM3();
 					CloseTIM7();					
 					//改变用户所选餐的总数
-					MoneyBack =UserAct.MoneyBack *100 ;  /*扩大100倍*/
+					MoneyBack =UserAct.MoneyBack *100 ;  /*需退币退币的临时变量*/
 			    mealvariety =0; 
 					UserAct.Cancle= 0x00; //以免出错
 					Current= hpper_out;
@@ -107,53 +107,69 @@ int main(void)
       case hpper_out:	 /*退币状态:该程序的前提是在一次退10个硬币，不会出现退币机空转的情况*/
 			{
 				uint16_t i=0,cnt_t=0;
-			  uint16_t coins_time=0;		    
-				if(UserAct.MoneyBack >0) //需要找币的时候进入
-		    {
-					coins_time= (UserAct.MoneyBack/10); 
-					cnt_t =  UserAct.MoneyBack%10;		
-          UserAct.MoneyBack= 0;					
-					for(i=0;i<coins_time+1;i++) //一次退币10个，
+			  uint16_t coins_time=0;
+        if(CoinsTotoalMessageWriteToFlash.CoinTotoal>=UserAct.MoneyBack)	//条件是机内的硬币>应退的币
+				{					
+					if(UserAct.MoneyBack >0) //需要找币的时候进入,
 					{
-						if(i!=coins_time)
+						coins_time= (UserAct.MoneyBack/10); 
+						cnt_t =  UserAct.MoneyBack%10;		
+						UserAct.MoneyBack= 0;					
+						for(i=0;i<coins_time+1;i++) //一次退币10个，
 						{
-						  UserAct.MoneyBack+=SendOutN_Coin(10);		
+							if(i!=coins_time)
+							{
+								UserAct.MoneyBack+=SendOutN_Coin(10);		
+							}
+							else
+							{
+								if(cnt_t>0)
+									UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
+								else
+									break;
+							}
+							//delay_ms(1000);   							
+							if(ErrorType ==1)  //退币机无币错误,直接进入错误状态
+							{
+								erro_record |= (1<<coinhooperset_empty);
+								MoneyBack -=UserAct.MoneyBack *100 ;  /*还有多少币还未找出*/
+								Current= meal_out; ; //找币错误的时候还是继续出餐
+								break;
+							}											
+						}		
+					}
+					else  //无需找币的时候直接进入出餐状态,
+					{
+						if(UserAct.Cancle== 0x00) //如果不是取消购买的话，就直接进入出餐界面
+						{
+							Current= meal_out; 
+							WaitTime=5;//5S计时   
+							OpenTIM4(); 
+							break;
+						}
+						else if(erro_record!=0x00) //出餐后的异常处理
+						{
+							Current= erro_hanle;
+							break;
 						}
 						else
 						{
-							if(cnt_t>0)
-							  UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
-							else
-								break;
-						}
-            delay_ms(1000);   							
-					  if(ErrorType ==1)  //退币机无币错误,直接进入错误状态
-					  {
-						  erro_record |= (1<<coinhooperset_empty);
-							MoneyBack -=UserAct.MoneyBack *100 ;  /*MoneyBack是已找币的数量*/
-							Current= meal_out; ; //找币错误的时候还是继续出餐
+							UserAct.Cancle= 0x00;
+							Current= current_temperature;
 							break;
-					  }											
-					}		
-				}
-				else  //无需找币的时候直接进入出餐状态,
-				{
-					if(UserAct.Cancle== 0x00) //判断是不是取消购买
-					{
-					  Current= meal_out; 
-						WaitTime=5;//5S计时   
-	       	  OpenTIM4(); 
-						break;
+						}
 					}
-					else if(erro_record>0x10) //退币后的异常处理
+				}				
+				else //机内硬币不够时
+				{ 
+					if(erro_record>0x10)//如果是机械手异常，直接进行错误处理
 					{
-						Current= erro_hanle;
+						Current = erro_hanle;	
+					  break;
 					}
-					else
-					{
-						UserAct.Cancle= 0x00;
-						Current= current_temperature;
-					}
+					erro_record |= (1<<coinhooperset_empty);
+					MoneyBack = UserAct.MoneyBack *100 ;  /*还有多少币还未找出*/
+					Current= meal_out; ; //找币错误的时候还是继续出餐	
 				}
 			}break;
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
@@ -166,8 +182,6 @@ int main(void)
 				waitmeal_status= WaitMeal();       
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{
-					PageChange(Menu_interface);
-					//出餐完毕，跳到回温度处理
           UserAct.PayAlready  = 0;
           UserAct.PayForBills = 0;
           UserAct.PayForCoins = 0;
@@ -176,12 +190,15 @@ int main(void)
           UserAct.Meal_totoal = 0;
 					//清楚购物车
 					ClearUserBuffer(); 
-					if(UserAct.MoneyBack>0)
+					if(UserAct.MoneyBack>0) //出餐完毕如果UserAct.MoneyBack>0 直接进入错误处理
 					{
-						Current = hpper_out;
+						erro_record |= (1<<coinhooperset_empty);
+						Current = erro_hanle; 
 					}
 					else
 					{
+						/*无错状态进入到售餐界面*/
+						PageChange(Menu_interface);
 					  Current = current_temperature;
 					}
 				}
@@ -203,7 +220,11 @@ int main(void)
 					OldCoinsCnt= UserAct.MoneyBack;
 					PageChange(Err_interface);
 					UserAct.Cancle= 0x01;
-					Current = hpper_out;	
+				  /*如果有币进入退币，如果无币进入错误处理*/
+					if(erro_record&(1<<coinhooperset_empty))
+						Current = erro_hanle;
+          else					
+					  Current = hpper_out;	
           break;					
 				}			
 			}break;
@@ -212,13 +233,15 @@ int main(void)
         DataUpload(Success);//根据UserAct.ID 判断需要上传的数据
 			  Current = meal_out;		
 	    }break ;
-      case erro_hanle: /*异常状态处理*/
+      case erro_hanle: /*异常状态处理:需要对程序一直死在错误处理*/
       {
 				//获取当前时间，并显示
 				DisplayRecordTime();
 				PollAbnormalHandle(); //异常处理 一直处于异常处理程序
-				StatusUploadingFun(0xE800); //处理后返回正常	
-        Current = current_temperature;					
+				PageChange(Logo_interface);
+				StatusUploadingFun(0xE800); //处理后返回正常
+        while(1);				
+        //Current = current_temperature;					
 		  }
 	  }
   }
