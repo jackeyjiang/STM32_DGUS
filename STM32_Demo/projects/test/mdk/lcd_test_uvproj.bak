@@ -29,7 +29,8 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>SFD\ST\STM32F4xx\STM32F4xx.sfr</SFDFile>
+          <SFDFile>C:\Keil\ARM\SFD\ST\STM32F4xx\STM32F4xx.SFR</SFDFile>
+          <bCustSvd>1</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -61,6 +62,8 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopU1X>0</nStopU1X>
+            <nStopU2X>0</nStopU2X>
           </BeforeCompile>
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
@@ -95,6 +98,7 @@
           <StopOnExitCode>3</StopOnExitCode>
           <CustomArgument></CustomArgument>
           <IncludeLibraryModules></IncludeLibraryModules>
+          <ComprImg>1</ComprImg>
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
@@ -115,7 +119,7 @@
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
           <Simulator>
-            <UseSimulator>1</UseSimulator>
+            <UseSimulator>0</UseSimulator>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -126,17 +130,18 @@
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
           </Simulator>
           <Target>
-            <UseTarget>0</UseTarget>
+            <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>0</RunToMain>
+            <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
+            <RestoreTracepoints>0</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>0</TargetSelection>
+          <TargetSelection>6</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -150,7 +155,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>BIN\UL2CM3.DLL</Driver>
+            <Driver>Segger\JL2CM3.dll</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -160,11 +165,16 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4096</DriverSelection>
+            <DriverSelection>4099</DriverSelection>
           </Flash1>
-          <Flash2>BIN\UL2CM3.DLL</Flash2>
+          <bUseTDR>1</bUseTDR>
+          <Flash2>Segger\JL2CM3.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
+          <pFcarmOut></pFcarmOut>
+          <pFcarmGrp></pFcarmGrp>
+          <pFcArmRoot></pFcArmRoot>
+          <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
           <ArmAdsMisc>
@@ -208,7 +218,7 @@
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <RoSelD>3</RoSelD>
@@ -342,6 +352,7 @@
             <Rwpi>0</Rwpi>
             <wLevel>0</wLevel>
             <uThumb>0</uThumb>
+            <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
@@ -357,6 +368,7 @@
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
+            <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -396,21 +408,41 @@
               <FileType>1</FileType>
               <FilePath>..\stm32f4xx_it.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>utilities</GroupName>
+          <Files>
+            <File>
+              <FileName>uart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart2.c</FilePath>
+            </File>
             <File>
               <FileName>uart3.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\usart\uart3.c</FilePath>
             </File>
             <File>
-              <FileName>serialscreen.c</FileName>
+              <FileName>uart4.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\serialscreen\serialscreen.c</FilePath>
+              <FilePath>..\..\..\utilities\usart\uart4.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>utilities</GroupName>
-          <Files>
+            <File>
+              <FileName>uart5.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart5.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart6.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\usart\uart6.c</FilePath>
+            </File>
             <File>
               <FileName>MMC_SD.C</FileName>
               <FileType>1</FileType>
@@ -422,14 +454,109 @@
               <FilePath>..\..\..\utilities\sd\sd.c</FilePath>
             </File>
             <File>
+              <FileName>spi_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\spi_flash\spi_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>serialscreen.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\serialscreen\serialscreen.c</FilePath>
+            </File>
+            <File>
+              <FileName>szt_gpboc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\szt_Gpboc\szt_gpboc.c</FilePath>
+            </File>
+            <File>
+              <FileName>bill.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\bill\bill.c</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\protocol\protocol.c</FilePath>
+            </File>
+            <File>
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\utilities\rtc\rtc.c</FilePath>
             </File>
             <File>
-              <FileName>hyperterminal.c</FileName>
+              <FileName>delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\utilities\hyperterminal\hyperterminal.c</FilePath>
+              <FilePath>..\..\..\utilities\delay\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>coin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\coins\coin.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mini_hopper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\mini_hopper\Mini_hopper.c</FilePath>
+            </File>
+            <File>
+              <FileName>MsgHandle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\LedMsgHandle\MsgHandle.c</FilePath>
+            </File>
+            <File>
+              <FileName>network_handle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\network_handle\network_handle.c</FilePath>
+            </File>
+            <File>
+              <FileName>printer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\printer\printer.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\bsp\bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>voice.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\vioce\voice.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\tim_pwm\timer2.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\tim_pwm\timer3.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\tim_pwm\timer4.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer6.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\tim_pwm\timer6.c</FilePath>
+            </File>
+            <File>
+              <FileName>pvd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\PVD\pvd.c</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\eeprom\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>intel_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utilities\intel_flash\intel_flash.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -450,6 +577,7 @@
               <StopOnExitCode>11</StopOnExitCode>
               <CustomArgument></CustomArgument>
               <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>0</ComprImg>
             </CommonProperty>
             <GroupArmAds>
               <Cads>
@@ -465,6 +593,7 @@
                 <Rwpi>2</Rwpi>
                 <wLevel>0</wLevel>
                 <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -480,6 +609,7 @@
                 <SplitLS>2</SplitLS>
                 <SwStkChk>2</SwStkChk>
                 <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -660,6 +790,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f4xx_iwdg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -684,6 +819,163 @@
         </Group>
         <Group>
           <GroupName>Doc</GroupName>
+          <Files>
+            <File>
+              <FileName>readme.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\readme.txt</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>include</GroupName>
+          <Files>
+            <File>
+              <FileName>uart1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart1.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart2.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart3.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart4.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart5.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart5.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart6.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\uart6.h</FilePath>
+            </File>
+            <File>
+              <FileName>bill.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\bill.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\bsp.h</FilePath>
+            </File>
+            <File>
+              <FileName>coin.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\coin.h</FilePath>
+            </File>
+            <File>
+              <FileName>delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\delay.h</FilePath>
+            </File>
+            <File>
+              <FileName>Mini_hopper.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\Mini_hopper.h</FilePath>
+            </File>
+            <File>
+              <FileName>MMC_SD.H</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\MMC_SD.H</FilePath>
+            </File>
+            <File>
+              <FileName>MsgHandle.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\MsgHandle.h</FilePath>
+            </File>
+            <File>
+              <FileName>network_handle.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\network_handle.h</FilePath>
+            </File>
+            <File>
+              <FileName>printer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\printer.h</FilePath>
+            </File>
+            <File>
+              <FileName>rtc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\rtc.h</FilePath>
+            </File>
+            <File>
+              <FileName>sd.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\sd.h</FilePath>
+            </File>
+            <File>
+              <FileName>serialscreen.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\serialscreen.h</FilePath>
+            </File>
+            <File>
+              <FileName>spi_flash.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\spi_flash.h</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\protocol.h</FilePath>
+            </File>
+            <File>
+              <FileName>szt_gpboc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\szt_gpboc.h</FilePath>
+            </File>
+            <File>
+              <FileName>vioce.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\vioce.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\timer2.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\timer3.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\timer4.h</FilePath>
+            </File>
+            <File>
+              <FileName>timer6.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\timer6.h</FilePath>
+            </File>
+            <File>
+              <FileName>PVD.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\PVD.h</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\eeprom.h</FilePath>
+            </File>
+            <File>
+              <FileName>intel_flash.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\utilities\include\intel_flash.h</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

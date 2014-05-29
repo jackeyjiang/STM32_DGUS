@@ -1545,6 +1545,7 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
       {
 				int16_t cnt_t=0,i=0;
 			  int16_t coins_time=0;
+				int16_t MoneyBack_cnt=0;
 				/*µ±°´ÏÂÈÎÒâÒ»¸ö°´¼üµÄÊ±ºòĞèÒª¶ÁÓ²±ÒÊı¾İ½øĞĞ´¦Àí*/
 				CoinsTotoalMessageWriteToFlash.CoinTotoal+= CoinTotoal_t;
 				CoinTotoal_t=0;
@@ -1593,12 +1594,12 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 						{
 							if(i!=coins_time)
 							{
-								UserAct.MoneyBack+=SendOutN_Coin(10);		
+								MoneyBack_cnt+=SendOutN_Coin(10);		
 							}
 							else
 							{
 								if(cnt_t>0)
-									UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
+									MoneyBack_cnt+=SendOutN_Coin(cnt_t);	
 								else
 									break;
 							}
@@ -1608,7 +1609,7 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 						}							
 						if(ErrorType ==1)  //ÍË±Ò»úÎŞ±Ò´íÎó,ÔÙ´Î·¢ËÍÍË±Ò
 						{
-							UserAct.MoneyBack= SendOutN_Coin(UserAct.MoneyBack);
+							MoneyBack_cnt= SendOutN_Coin(MoneyBack_cnt);
 							//RefundButton(UserAct.MoneyBack);Èç¹ûÊ¹ÓÃÕâ¸ö»áÔì³ÉÍË±Ò»ú´íÎó
 							//ÒÑÍêÈ«ÍË±Ò£¬ÏÔÊ¾ÍË±Ò³ö´í½çÃæ£¬ÇëÖØÆô
 						}	
