@@ -181,7 +181,8 @@ void MealArr(unsigned char index)
 		//已找币的钱
 	  if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
 	  {
-			MoneyBack-= (UserAct.MoneyBack*100); //计算已退的钱=应退币的临时变量-还有多少币未退
+			//MoneyBack-= (UserAct.MoneyBack*100); //计算已退的钱=应退币的临时变量-还有多少币未退xxxx
+			
 		 /*十进制转换成16*/
 		  CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
 		  CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
