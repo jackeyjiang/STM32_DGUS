@@ -218,7 +218,8 @@ int main(void)
 				{
 					//机械手复位中请等待界面		
 					NewCoinsCnt= 0; 
-          UserAct.MoneyBack+= UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th; //计算单总价		
+          UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //计算单总价		
+					MoneyBack = UserAct.MoneyBack*100;
 					OldCoinsCnt= UserAct.MoneyBack;
 					PageChange(Err_interface);
 					UserAct.Cancle= 0x01;
