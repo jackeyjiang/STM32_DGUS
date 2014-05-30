@@ -20,6 +20,9 @@ uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
 uint8_t waitmeal_status=0;    //等待取餐状态
 int32_t erro_record=0x00000000; //错误标记位
 
+uint16_t MoneyPayBack_Already = 0;//需要上传的退币数
+uint16_t MoneyPayBack_Already_total=0; //计算总的退币数
+
 uint16_t VirtAddVarTab[NB_OF_VAR] = {0x0001, 0x0002, 0x0003,};
 uint16_t VarDataTab[NB_OF_VAR] = {0, 0, 0};
 uint16_t VarValue = 0;
@@ -46,6 +49,8 @@ int main(void)
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
 	DispLeftMeal();             //显示餐品数据	
 	PageChange(Menu_interface); //显示选餐界面
+	erro_record = 0;            //清除错误标志位
+	RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);	
 
 	while(1)
   {
@@ -114,32 +119,50 @@ int main(void)
 					{
 						coins_time= (UserAct.MoneyBack/10); 
 						cnt_t =  UserAct.MoneyBack%10;		
-						UserAct.MoneyBack= 0;					
+						UserAct.MoneyBack= 0;			
 						for(i=0;i<coins_time+1;i++) //一次退币10个，
 						{
 							if(i!=coins_time)
 							{
-								UserAct.MoneyBack+=SendOutN_Coin(10);		
+								UserAct.MoneyBack+= SendOutN_Coin(10);		
 							}
 							else
 							{
 								if(cnt_t>0)
-									UserAct.MoneyBack+=SendOutN_Coin(cnt_t);	
+									UserAct.MoneyBack+= SendOutN_Coin(cnt_t);	
 								else
 									break;
-							}
-							//delay_ms(1000);   							
-							if(ErrorType ==1)  //退币机无币错误,直接进入错误状态
+							} 							
+							if(ErrorType ==1) //出错再次发送退币 
 							{
-								erro_record |= (1<<coinhooperset_empty);
-								MoneyBack -=UserAct.MoneyBack *100 ;  /*还有多少币还未找出*/
-								if(erro_record>0x10)//如果是机械手异常，直接进行错误处理
-						       Current = erro_hanle;	
-								else
-								   Current= meal_out; ; //找币错误的时候还是继续出餐
-								break;
+								delay_ms(1500); 
+								UserAct.MoneyBack= SendOutN_Coin(UserAct.MoneyBack);
+								if(ErrorType ==1)//退币机无币错误,直接进入错误状态
+								{
+									erro_record |= (1<<coinhooperset_empty);	
+									if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
+									{
+										 Current = erro_hanle;	
+									}
+									else
+									{  /*只有在机械手没有错误的情况下 才计算上传退币的值*/
+										 MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*已找出的币*/
+										 Current= meal_out;//找币错误的时候还是继续出餐
+									}
+									break;
+								}
 							}											
-						}		
+						}
+						if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
+						{
+						  Current = erro_hanle;	
+						}
+						else
+						{  /*只有在机械手没有错误的情况下 才计算上传退币的值*/
+							MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*已找出的币*/
+							Current= meal_out;//找币错误的时候还是继续出餐
+						}
+            break;						
 					}
 					else  //无需找币的时候直接进入出餐状态,
 					{
@@ -165,11 +188,12 @@ int main(void)
 				}				
 				else //机内硬币不够时,MoneyBack不变
 				{ 
-					if(erro_record>0x10)//如果是机械手异常，直接进行错误处理
+					if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
 					{
 						Current = erro_hanle;	
 					  break;
 					}
+					MoneyPayBack_Already= 0; //不够的时候那就是一个币都没有退
 					erro_record |= (1<<coinhooperset_empty);
 					Current= meal_out; //找币错误的时候还是继续出餐	
 				}
@@ -219,15 +243,16 @@ int main(void)
 					//机械手复位中请等待界面		
 					NewCoinsCnt= 0; 
           UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //计算单总价		
-					MoneyBack = UserAct.MoneyBack*100;
 					OldCoinsCnt= UserAct.MoneyBack;
 					PageChange(Err_interface);
 					UserAct.Cancle= 0x01;
 				  /*如果有币进入退币，如果无币进入错误处理*/
 					if(erro_record&(1<<coinhooperset_empty))
 						Current = erro_hanle;
-          else					
-					  Current = hpper_out;	
+          else 
+					{
+					  Current = hpper_out;
+					}						
           break;					
 				}			
 			}break;

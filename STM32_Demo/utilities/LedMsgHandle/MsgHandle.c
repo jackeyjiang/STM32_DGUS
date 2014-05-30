@@ -181,19 +181,20 @@ void MealArr(unsigned char index)
 		//已找币的钱
 	  if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
 	  {
-			MoneyBack-= (UserAct.MoneyBack*100); //计算已退的钱=应退币的临时变量-还有多少币未退
+			//MoneyBack-= (UserAct.MoneyBack*100); //计算已退的钱=应退币的临时变量-还有多少币未退xxxx
+			
 		 /*十进制转换成16*/
-		  CustomerSel.Change[0]      =	     MoneyBack / 10000000000 %100;
+		  CustomerSel.Change[0]      =	     MoneyPayBack_Already / 10000000000 %100;
 		  CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
-		  CustomerSel.Change[1]      =	     MoneyBack / 100000000 %100;
+		  CustomerSel.Change[1]      =	     MoneyPayBack_Already / 100000000 %100;
 		  CustomerSel.Change[1]      =         CustomerSel.Change[1]/10 *16 +CustomerSel.Change[1]%10 ;                              
-		  CustomerSel.Change[2]      =	     MoneyBack / 1000000 %100;
+		  CustomerSel.Change[2]      =	     MoneyPayBack_Already / 1000000 %100;
 		  CustomerSel.Change[2]      =         CustomerSel.Change[2]/10 *16 +CustomerSel.Change[2]%10 ;
-		  CustomerSel.Change[3]      =	     MoneyBack / 10000 %100;
+		  CustomerSel.Change[3]      =	     MoneyPayBack_Already / 10000 %100;
 		  CustomerSel.Change[3]      =         CustomerSel.Change[3]/10 *16 +CustomerSel.Change[3]%10 ;
-		  CustomerSel.Change[4]      =	     MoneyBack / 100 %100;
+		  CustomerSel.Change[4]      =	     MoneyPayBack_Already / 100 %100;
 		  CustomerSel.Change[4]      =         CustomerSel.Change[4]/10 *16 +CustomerSel.Change[4]%10 ;
-		  CustomerSel.Change[5]      =	     MoneyBack % 100 ;
+		  CustomerSel.Change[5]      =	     MoneyPayBack_Already % 100 ;
 		  CustomerSel.Change[5]      =         CustomerSel.Change[5]/10 *16 +CustomerSel.Change[5]%10 ;
 	  }
 		MoneyBack = 0 ;
