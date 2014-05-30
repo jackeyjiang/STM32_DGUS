@@ -825,9 +825,10 @@ void AbnormalHandle(uint16_t erro)
 			DealSeriAceptData();
 			if(erro_flag==0)
 			{
-				if(erro>=0x00)//if(erro>=0x10) //需要判断什么情况下对用户数据清零
+				if(erro>=0x00) //所有的情况下都需要将数据清零
 				{
 					UserAct.MoneyBack=0;
+					MoneyPayBack_Already_total=0;
 					ClearUserBuffer();
 					SaveUserData();	
 					//OnlymachieInit();	//只有机械手出错的时候复位机械手
