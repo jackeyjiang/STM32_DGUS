@@ -43,14 +43,14 @@ int main(void)
 	PageChange(Szt_GpbocAutoCheckIn_interface);
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
-	AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
+	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	PageChange(Logo_interface);	
 	delay_ms(1500);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
+	//加入
 	DispLeftMeal();             //显示餐品数据	
 	PageChange(Menu_interface); //显示选餐界面
-	erro_record = 0;            //清除错误标志位
-	RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);	
+
 
 	while(1)
   {
@@ -87,7 +87,6 @@ int main(void)
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
 			{
-				SaveUserData();
         if( WaitPayMoney()==Status_OK)
 				{
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
@@ -105,10 +104,11 @@ int main(void)
 					if(UserAct.PayType == '1')
 					{
 						CloseCoinMachine();			    //关闭投币机	
-						delay_ms(3000);
+						delay_ms(1500);
 						if(!CloseCashSystem()){};// printf("cash system is erro1\r\n");  //关闭现金接受
 					}
 			  }
+				SaveUserData();
 			}break;
       case hpper_out:	 /*退币状态:该程序的前提是在一次退10个硬币，不会出现退币机空转的情况*/
 			{
@@ -133,60 +133,63 @@ int main(void)
 									UserAct.MoneyBack+= SendOutN_Coin(cnt_t);	
 								else
 									break;
-							} 							
-							if(ErrorType ==1) //出错再次发送退币 
+							}
+						} 							
+						if(ErrorType ==1) //出错再次发送退币 
+						{
+							delay_ms(1500); 
+							UserAct.MoneyBack= SendOutN_Coin(UserAct.MoneyBack);
+							if(ErrorType ==1)//退币机无币错误,直接进入错误状态
 							{
-								delay_ms(1500); 
-								UserAct.MoneyBack= SendOutN_Coin(UserAct.MoneyBack);
-								if(ErrorType ==1)//退币机无币错误,直接进入错误状态
+								erro_record |= (1<<coinhooperset_empty);	
+								if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
 								{
-									erro_record |= (1<<coinhooperset_empty);	
-									if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
-									{
-										 Current = erro_hanle;	
-									}
-									else
-									{  /*只有在机械手没有错误的情况下 才计算上传退币的值*/
-										 MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*已找出的币*/
-										 Current= meal_out;//找币错误的时候还是继续出餐
-									}
-									break;
+									Current = erro_hanle;	
 								}
-							}											
-						}
+								else
+								{  /*只有在机械手没有错误的情况下 才计算上传退币的值*/
+									MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*已找出的币*/
+									Current= meal_out;//找币错误的时候还是继续出餐
+								}
+								SaveUserData();
+								break;
+							}
+							else
+								erro_record &= ~(1<<coinhooperset_empty);//
+						}											
 						if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
 						{
-						  Current = erro_hanle;	
+							Current = erro_hanle;	
 						}
 						else
 						{  /*只有在机械手没有错误的情况下 才计算上传退币的值*/
 							MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*已找出的币*/
 							Current= meal_out;//找币错误的时候还是继续出餐
 						}
-            break;						
-					}
-					else  //无需找币的时候直接进入出餐状态,
-					{
-						if(UserAct.Cancle== 0x00) //如果不是取消购买的话，就直接进入出餐界面
-						{
-							Current= meal_out; 
-							WaitTime=5;//5S计时   
-							OpenTIM4(); 
-							break;
-						}
-						else if(erro_record!=0x00) //出餐后的异常处理
-						{
-							Current= erro_hanle;
-							break;
-						}
-						else
-						{
-							UserAct.Cancle= 0x00;
-							Current= current_temperature;
-							break;
-						}
-					}
-				}				
+						break;						
+				  }
+				  else  //无需找币的时候直接进入出餐状态,
+				  {
+					  if(UserAct.Cancle== 0x00) //如果不是取消购买的话，就直接进入出餐界面
+					  {
+						  Current= meal_out; 
+						  WaitTime=5;//5S计时   
+						  OpenTIM4(); 
+						  break;
+					  }
+					  else if(erro_record!=0x00) //出餐后的异常处理
+					  {
+						  Current= erro_hanle;
+						  break;
+					  }
+					  else
+					  {
+						  UserAct.Cancle= 0x00;
+						  Current= current_temperature;
+						  break;
+					  }
+				  }
+			  }					
 				else //机内硬币不够时,MoneyBack不变
 				{ 
 					if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
@@ -201,7 +204,6 @@ int main(void)
 			}break;
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{
-				SaveUserData();
 				if(WaitTime==0)
 				{
 		      PlayMusic(VOICE_8);			
@@ -228,6 +230,7 @@ int main(void)
 						PageChange(Menu_interface);
 					  Current = current_temperature;
 					}
+					SaveUserData();
 				}
 				else if(waitmeal_status == tookkind_meal) //取完一种餐品
 				{
@@ -254,7 +257,8 @@ int main(void)
           else 
 					{
 					  Current = hpper_out;
-					}						
+					}
+          SaveUserData();					
           break;					
 				}			
 			}break;
