@@ -76,6 +76,53 @@
         <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
       <CpuCode>255</CpuCode>
+      <Books>
+        <Book>
+          <Number>0</Number>
+          <Title>Getting Started (STM32F4-Discovery)</Title>
+          <Path>C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\DM00037368.pdf</Path>
+        </Book>
+        <Book>
+          <Number>1</Number>
+          <Title>User Manual (STM32F4-Discovery)</Title>
+          <Path>C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\DM00039084.pdf</Path>
+        </Book>
+        <Book>
+          <Number>2</Number>
+          <Title>User Manual (MCBSTM32F400)</Title>
+          <Path>C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\mcbstm32f200.chm</Path>
+        </Book>
+        <Book>
+          <Number>3</Number>
+          <Title>Schematics (MCBSTM32F400)</Title>
+          <Path>C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\mcbstm32f400-schematics.pdf</Path>
+        </Book>
+        <Book>
+          <Number>4</Number>
+          <Title>Bill of Materials (STM32F4-Discovery)</Title>
+          <Path>C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\stm32f4discovery_bom.zip</Path>
+        </Book>
+        <Book>
+          <Number>5</Number>
+          <Title>Gerber Files (STM32F4-Discovery)</Title>
+          <Path>C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\stm32f4discovery_gerber.zip</Path>
+        </Book>
+        <Book>
+          <Number>6</Number>
+          <Title>Schematics (STM32F4-Discovery)</Title>
+          <Path>C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Documents\stm32f4discovery_sch.zip</Path>
+        </Book>
+        <Book>
+          <Number>7</Number>
+          <Title>MCBSTM32F400 Evaluation Board Web Page (MCBSTM32F400)</Title>
+          <Path>http://www.keil.com/mcbstm32f400/</Path>
+        </Book>
+        <Book>
+          <Number>8</Number>
+          <Title>STM32F4-Discovery Web Page (STM32F4-Discovery)</Title>
+          <Path>http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1199/PF252419</Path>
+        </Book>
+      </Books>
       <DllOpt>
         <SimDllName>SARMCM3.DLL</SimDllName>
         <SimDllArguments>-MPU</SimDllArguments>
@@ -104,6 +151,8 @@
         <tRfunc>0</tRfunc>
         <tRbox>1</tRbox>
         <tRtrace>0</tRtrace>
+        <sRSysVw>1</sRSysVw>
+        <tRSysVw>1</tRSysVw>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
         <nTsel>6</nTsel>
@@ -256,8 +305,8 @@
       <Focus>0</Focus>
       <ColumnNumber>4</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>214</TopLine>
-      <CurrentLine>228</CurrentLine>
+      <TopLine>84</TopLine>
+      <CurrentLine>85</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\test_lcd.c</PathWithFileName>
       <FilenameWithoutPath>test_lcd.c</FilenameWithoutPath>
@@ -438,10 +487,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>69</ColumnNumber>
+      <ColumnNumber>53</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1568</TopLine>
-      <CurrentLine>1558</CurrentLine>
+      <TopLine>1598</TopLine>
+      <CurrentLine>1612</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\serialscreen\serialscreen.c</PathWithFileName>
       <FilenameWithoutPath>serialscreen.c</FilenameWithoutPath>
