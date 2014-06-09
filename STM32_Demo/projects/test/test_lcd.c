@@ -1,27 +1,27 @@
  /**
   ******************************************************************************
-  * ÎÄ¼þ: test_lcd.c
-  * ×÷Õß: jackey
-  * °æ±¾: V1.0.0
-  * ÃèÊö: DWIN ´®¿ÚÆÁÖ÷³ÌÐò£¬ÊµÏÖ´®¿ÚÆÁÄ»ÇÐ»»ÓëÊý¾Ý¶ÁÈ¡
+  * ï¿½Ä¼ï¿½: test_lcd.c
+  * ï¿½ï¿½ï¿½ï¿½: jackey
+  * ï¿½æ±¾: V1.0.0
+  * ï¿½ï¿½ï¿½ï¿½: DWIN ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¶ï¿½È¡
   *       test_lcd
   ******************************************************************************
   *
-  *                  	×÷ÎªSTM32F407¿ª·¢µÄÄ£°å
+  *                  	ï¿½ï¿½ÎªSTM32F407ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
   *
   *
-  ******************************************************************************
+  *****************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
 #include "bsp.h"
-uint8_t Current= 0x01;        //×´Ì¬»ú±äÁ¿
-uint8_t LinkMachineFlag =0;	  //Óë»úÐµÊÖÁ¬½Ó±êÖ¾£¬0±íÊ¾Ã»Á¬½Ó£¬1±íÊ¾Á¬½Ó
-uint8_t waitmeal_status=0;    //µÈ´ýÈ¡²Í×´Ì¬
-int32_t erro_record=0x00000000; //´íÎó±ê¼ÇÎ»
+uint8_t Current= 0x01;        //×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uint8_t LinkMachineFlag =0;	  //ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Ó±ï¿½Ö¾ï¿½ï¿½0ï¿½ï¿½Ê¾Ã»ï¿½ï¿½ï¿½Ó£ï¿½1ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+uint8_t waitmeal_status=0;    //ï¿½È´ï¿½È¡ï¿½ï¿½×´Ì¬
+int32_t erro_record=0x00000000; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
 
-uint16_t MoneyPayBack_Already = 0;//ÐèÒªÉÏ´«µÄÍË±ÒÊý
-uint16_t MoneyPayBack_Already_total=0; //×ÜµÄÍË±ÒÊý
+uint16_t MoneyPayBack_Already = 0;//ï¿½ï¿½Òªï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ë±ï¿½ï¿½ï¿½
+uint16_t MoneyPayBack_Already_total=0; //ï¿½Üµï¿½ï¿½Ë±ï¿½ï¿½ï¿½
 
 uint16_t VirtAddVarTab[NB_OF_VAR] = {0x0001, 0x0002, 0x0003,};
 uint16_t VarDataTab[NB_OF_VAR] = {0, 0, 0};
@@ -29,27 +29,27 @@ uint16_t VarValue = 0;
 
 int main(void)
 {
-	hardfawreInit(); //Ó²¼þ³õÊ¼»¯
-	DisplayRecordTime(); //³õÊ¼»¯Ê±»ñÈ¡Ê±¼ä×÷ÎªÒì³£µÄÊ±¼ä
+	hardfawreInit(); //Ó²ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+	DisplayRecordTime(); //ï¿½ï¿½Ê¼ï¿½ï¿½Ê±ï¿½ï¿½È¡Ê±ï¿½ï¿½ï¿½ï¿½Îªï¿½ì³£ï¿½ï¿½Ê±ï¿½ï¿½
 	PageChange(OnlymachieInit_interface);
-  OnlymachieInit();  //»úÐµÊÖ³õÊ¼»¯
-   /*´ÓÍøÂç  »ñµÃÊ±¼ä£¬¸üÐÂ±¾µØÊ±ÖÓ*/
+  OnlymachieInit();  //ï¿½ï¿½Ðµï¿½Ö³ï¿½Ê¼ï¿½ï¿½
+   /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£¬ï¿½ï¿½ï¿½Â±ï¿½ï¿½ï¿½Ê±ï¿½ï¿½*/
 	PageChange(SignInFunction_interface);
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
-	/*ÍøÂçÇ©µ½*/
+	/*ï¿½ï¿½ï¿½ï¿½Ç©ï¿½ï¿½*/
 	if(!SignInFunction())       AbnormalHandle(signin_erro);
-  SendtoServce();  //ÉÏ´«Ç°ÆßÌìµÄÊý¾Ý
-	/*ÉîÛÚÍ¨Ç©µ½*/
+  SendtoServce();  //ï¿½Ï´ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	/*ï¿½ï¿½ï¿½ï¿½Í¨Ç©ï¿½ï¿½*/
 	PageChange(Szt_GpbocAutoCheckIn_interface);
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
-	  AbnormalHandle(coinhooperset_erro); //µ±»úÄÚÓ²±ÒÊýÐ¡ÓÚ50 ºÍ Ó²±Ò»ú´«¸ÐÆ÷Ïß ±¨´í 
+	  AbnormalHandle(coinhooperset_erro); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½50 ï¿½ï¿½ Ó²ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 	PageChange(Logo_interface);	
 	delay_ms(1500);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
-	//¼ÓÈë
-	DispLeftMeal();             //ÏÔÊ¾²ÍÆ·Êý¾Ý	
-	PageChange(Menu_interface); //ÏÔÊ¾Ñ¡²Í½çÃæ
+	//ï¿½ï¿½ï¿½ï¿½
+	DispLeftMeal();             //ï¿½ï¿½Ê¾ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½	
+	PageChange(Menu_interface); //ï¿½ï¿½Ê¾Ñ¡ï¿½Í½ï¿½ï¿½ï¿½
 
 
 	while(1)
@@ -58,70 +58,70 @@ int main(void)
 		manageusart6data();   //
     switch(Current)
 	  {
-	    case current_temperature: /*ÎÂ¶È´¦Àíº¯Êý*/
+	    case current_temperature: /*ï¿½Â¶È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 			{
 				StateSend();
 				if((LinkTime==1)||(LinkTime==2)||(LinkTime==3))
 				{
-				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+CoinTotoal_t);//ÏÔÊ¾»úÄÚÓ²±ÒÊý
+				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+CoinTotoal_t);//ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½
 					VariableChage(coins_back,Coins_cnt);
 				}
 				if(LinkTime >=5)
 				{
-					OrderSendLink();  //Îª1³É¹¦£¬Îª0Ê§°Ü
-					VariableChage(current_temprature,Temperature); //5SÒ»´Î
+					OrderSendLink();  //Îª1ï¿½É¹ï¿½ï¿½ï¿½Îª0Ê§ï¿½ï¿½
+					VariableChage(current_temprature,Temperature); //5SÒ»ï¿½ï¿½
 				}
-				//ÏÔÊ¾µ¹¼ÆÊ±,¿ÉÒÔ¸ü¾ß±ê¼ÇÎª¶ÔÑ¡²Íµ¹¼ÆÊ±½øÐÐ¸üÐÂ
+				//ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê±,ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ß±ï¿½ï¿½ï¿½Îªï¿½ï¿½Ñ¡ï¿½Íµï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ð¸ï¿½ï¿½ï¿½
 				if(UserAct.MealID)
 				{
 					if(WaitTime==0)
 					{					 
-						PageChange(Menu_interface);//³¬Ê±ÍË³öÓÃ»§²ÍÆ·ÊýÁ¿Ñ¡Ôñ½çÃæ
+						PageChange(Menu_interface);//ï¿½ï¿½Ê±ï¿½Ë³ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						WaitTimeInit(&WaitTime);
 					}
 					else if(WaitTime!=60)
 					{
-						VariableChage(count_dowm,WaitTime); //¶ÌÐ¡µÄ³ÌÐò¿ÉÒÔÔÚÖÕ¶ËÖÐÖ±½Ó½øÐÐ
+						VariableChage(count_dowm,WaitTime); //ï¿½ï¿½Ð¡ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¶ï¿½ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½ï¿½
 					}
 				}
 			}break;
-	    case waitfor_money:	 /*µÈ´ý¸¶Ç®*/
+	    case waitfor_money:	 /*ï¿½È´ï¿½ï¿½ï¿½Ç®*/
 			{
         if( WaitPayMoney()==Status_OK)
 				{
-          PageChange(TicketPrint_interface);/*´òÓ¡·¢ÔÚÏÔÊ¾´¦Àíº¯Êý*/
+          PageChange(TicketPrint_interface);/*ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 					PlayMusic(VOICE_7);					
 					CloseTIM3();
 					CloseTIM7();					
-					//¸Ä±äÓÃ»§ËùÑ¡²ÍµÄ×ÜÊý
-					MoneyBack =UserAct.MoneyBack *100 ;  /*ÐèÍË±ÒÍË±ÒµÄÁÙÊ±±äÁ¿*/
-					MoneyPayBack_Already_total = UserAct.MoneyBack; //¼ÆËãÓ¦ÍË±ÒµÄÊý
+					//ï¿½Ä±ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ñ¡ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½
+					MoneyBack =UserAct.MoneyBack *100 ;  /*ï¿½ï¿½ï¿½Ë±ï¿½ï¿½Ë±Òµï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½*/
+					MoneyPayBack_Already_total = UserAct.MoneyBack; //ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ë±Òµï¿½ï¿½ï¿½
 			    mealvariety =0; 
-					UserAct.Cancle= 0x00; //ÒÔÃâ³ö´í
+					UserAct.Cancle= 0x00; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					Current= hpper_out;
 					UserAct.Meal_takeout= 0;	
-          VariableChage(mealout_already,UserAct.Meal_takeout);	//UIÏÔÊ¾					
+          VariableChage(mealout_already,UserAct.Meal_takeout);	//UIï¿½ï¿½Ê¾					
 					if(UserAct.PayType == '1')
 					{
-						CloseCoinMachine();			    //¹Ø±ÕÍ¶±Ò»ú	
+						CloseCoinMachine();			    //ï¿½Ø±ï¿½Í¶ï¿½Ò»ï¿½	
 						delay_ms(1500);
-						if(!CloseCashSystem()){};// printf("cash system is erro1\r\n");  //¹Ø±ÕÏÖ½ð½ÓÊÜ
+						if(!CloseCashSystem()){};// printf("cash system is erro1\r\n");  //ï¿½Ø±ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½
 					}
 			  }
 				SaveUserData();
 			}break;
-      case hpper_out:	 /*ÍË±Ò×´Ì¬:¸Ã³ÌÐòµÄÇ°ÌáÊÇÔÚÒ»´ÎÍË10¸öÓ²±Ò£¬²»»á³öÏÖÍË±Ò»ú¿Õ×ªµÄÇé¿ö*/
+      case hpper_out:	 /*ï¿½Ë±ï¿½×´Ì¬:ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½10ï¿½ï¿½Ó²ï¿½Ò£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë±Ò»ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 			{
 				uint16_t i=0,cnt_t=0;
 			  uint16_t coins_time=0;
-        if(CoinsTotoalMessageWriteToFlash.CoinTotoal>=UserAct.MoneyBack)	//Ìõ¼þÊÇ»úÄÚµÄÓ²±Ò>Ó¦ÍËµÄ±Ò
+        if(CoinsTotoalMessageWriteToFlash.CoinTotoal>=UserAct.MoneyBack)	//ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½ï¿½Úµï¿½Ó²ï¿½ï¿½>Ó¦ï¿½ËµÄ±ï¿½
 				{					
-					if(UserAct.MoneyBack >0) //ÐèÒªÕÒ±ÒµÄÊ±ºò½øÈë,
+					if(UserAct.MoneyBack >0) //ï¿½ï¿½Òªï¿½Ò±Òµï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,
 					{
 						coins_time= (UserAct.MoneyBack/10); 
 						cnt_t =  UserAct.MoneyBack%10;		
 						UserAct.MoneyBack= 0;			
-						for(i=0;i<coins_time+1;i++) //Ò»´ÎÍË±Ò10¸ö£¬
+						for(i=0;i<coins_time+1;i++) //Ò»ï¿½ï¿½ï¿½Ë±ï¿½10ï¿½ï¿½ï¿½ï¿½
 						{
 							if(i!=coins_time)
 							{
@@ -135,21 +135,21 @@ int main(void)
 									break;
 							}
 						} 							
-						if(ErrorType ==1) //³ö´íÔÙ´Î·¢ËÍÍË±Ò 
+						if(ErrorType ==1) //ï¿½ï¿½ï¿½ï¿½ï¿½Ù´Î·ï¿½ï¿½ï¿½ï¿½Ë±ï¿½ 
 						{
 							delay_ms(1500); 
 							UserAct.MoneyBack= SendOutN_Coin(UserAct.MoneyBack);
-							if(ErrorType ==1)//ÍË±Ò»úÎÞ±Ò´íÎó,Ö±½Ó½øÈë´íÎó×´Ì¬
+							if(ErrorType ==1)//ï¿½Ë±Ò»ï¿½ï¿½Þ±Ò´ï¿½ï¿½ï¿½,Ö±ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 							{
 								erro_record |= (1<<coinhooperset_empty);	
-								if(erro_record>=(1<<X_timeout))//Èç¹ûÊÇ»úÐµÊÖÒì³££¬Ö±½Ó½øÐÐ´íÎó´¦Àí
+								if(erro_record>=(1<<X_timeout))//ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½Ðµï¿½ï¿½ï¿½ì³£ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 								{
 									Current = erro_hanle;	
 								}
 								else
-								{  /*Ö»ÓÐÔÚ»úÐµÊÖÃ»ÓÐ´íÎóµÄÇé¿öÏÂ ²Å¼ÆËãÉÏ´«ÍË±ÒµÄÖµ*/
-									MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*ÒÑÕÒ³öµÄ±Ò*/
-									Current= meal_out;//ÕÒ±Ò´íÎóµÄÊ±ºò»¹ÊÇ¼ÌÐø³ö²Í
+								{  /*Ö»ï¿½ï¿½ï¿½Ú»ï¿½Ðµï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¼ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½Ë±Òµï¿½Öµ*/
+									MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ä±ï¿½*/
+									Current= meal_out;//ï¿½Ò±Ò´ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ç¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 								}
 								SaveUserData();
 								break;
@@ -157,27 +157,27 @@ int main(void)
 							else
 								erro_record &= ~(1<<coinhooperset_empty);//
 						}											
-						if(erro_record>=(1<<X_timeout))//Èç¹ûÊÇ»úÐµÊÖÒì³££¬Ö±½Ó½øÐÐ´íÎó´¦Àí
+						if(erro_record>=(1<<X_timeout))//ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½Ðµï¿½ï¿½ï¿½ì³£ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						{
 							Current = erro_hanle;	
 						}
 						else
-						{  /*Ö»ÓÐÔÚ»úÐµÊÖÃ»ÓÐ´íÎóµÄÇé¿öÏÂ ²Å¼ÆËãÉÏ´«ÍË±ÒµÄÖµ*/
-							MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*ÒÑÕÒ³öµÄ±Ò*/
-							Current= meal_out;//ÕÒ±Ò´íÎóµÄÊ±ºò»¹ÊÇ¼ÌÐø³ö²Í
+						{  /*Ö»ï¿½ï¿½ï¿½Ú»ï¿½Ðµï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¼ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½Ë±Òµï¿½Öµ*/
+							MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ä±ï¿½*/
+							Current= meal_out;//ï¿½Ò±Ò´ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ç¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						}
 						break;						
 				  }
-				  else  //ÎÞÐèÕÒ±ÒµÄÊ±ºòÖ±½Ó½øÈë³ö²Í×´Ì¬,
+				  else  //ï¿½ï¿½ï¿½ï¿½ï¿½Ò±Òµï¿½Ê±ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬,
 				  {
-					  if(UserAct.Cancle== 0x00) //Èç¹û²»ÊÇÈ¡Ïû¹ºÂòµÄ»°£¬¾ÍÖ±½Ó½øÈë³ö²Í½çÃæ
+					  if(UserAct.Cancle== 0x00) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ï¿½ï¿½
 					  {
 						  Current= meal_out; 
-						  WaitTime=5;//5S¼ÆÊ±   
+						  WaitTime=5;//5Sï¿½ï¿½Ê±   
 						  OpenTIM4(); 
 						  break;
 					  }
-					  else if(erro_record!=0x00) //³ö²ÍºóµÄÒì³£´¦Àí
+					  else if(erro_record!=0x00) //ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½
 					  {
 						  Current= erro_hanle;
 						  break;
@@ -190,26 +190,26 @@ int main(void)
 					  }
 				  }
 			  }					
-				else //»úÄÚÓ²±Ò²»¹»Ê±,MoneyBack²»±ä
+				else //ï¿½ï¿½ï¿½ï¿½Ó²ï¿½Ò²ï¿½ï¿½ï¿½Ê±,MoneyBackï¿½ï¿½ï¿½ï¿½
 				{ 
-					if(erro_record>=(1<<X_timeout))//Èç¹ûÊÇ»úÐµÊÖÒì³££¬Ö±½Ó½øÐÐ´íÎó´¦Àí
+					if(erro_record>=(1<<X_timeout))//ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½Ðµï¿½ï¿½ï¿½ì³£ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					{
 						Current = erro_hanle;	
 					  break;
 					}
-					MoneyPayBack_Already= 0; //²»¹»µÄÊ±ºòÄÇ¾ÍÊÇÒ»¸ö±Ò¶¼Ã»ÓÐÍË
+					MoneyPayBack_Already= 0; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ò¶ï¿½Ã»ï¿½ï¿½ï¿½ï¿½
 					erro_record |= (1<<coinhooperset_empty);
-					Current= meal_out; //ÕÒ±Ò´íÎóµÄÊ±ºò»¹ÊÇ¼ÌÐø³ö²Í	
+					Current= meal_out; //ï¿½Ò±Ò´ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ç¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
 				}
 			}break;
-	    case meal_out:	 /*³ö²Í×´Ì¬£ºÕýÔÚ³ö²Í£¬ÒÑ³öÒ»ÖÖ²ÍÆ·£¬³ö²ÍÍê±Ï*/
+	    case meal_out:	 /*ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½Í£ï¿½ï¿½Ñ³ï¿½Ò»ï¿½Ö²ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 			{
 				if(WaitTime==0)
 				{
 		      PlayMusic(VOICE_8);			
 				}
 				waitmeal_status= WaitMeal();       
-			  if(waitmeal_status == takeafter_meal) //³ö²ÍÍê±Ï
+			  if(waitmeal_status == takeafter_meal) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				{
           UserAct.PayAlready  = 0;
           UserAct.PayForBills = 0;
@@ -217,41 +217,41 @@ int main(void)
           UserAct.PayForCards = 0;
           UserAct.Meal_takeout= 0;
           UserAct.Meal_totoal = 0;
-					//Çå³þ¹ºÎï³µ
+					//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï³µ
 					ClearUserBuffer(); 
-					if(UserAct.MoneyBack>0) //³ö²ÍÍê±ÏÈç¹ûUserAct.MoneyBack>0 Ö±½Ó½øÈë´íÎó´¦Àí
+					if(UserAct.MoneyBack>0) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UserAct.MoneyBack>0 Ö±ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					{
 						erro_record |= (1<<coinhooperset_empty);
 						Current = erro_hanle; 
 					}
 					else
 					{
-						/*ÎÞ´í×´Ì¬½øÈëµ½ÊÛ²Í½çÃæ*/
+						/*ï¿½Þ´ï¿½×´Ì¬ï¿½ï¿½ï¿½ëµ½ï¿½Û²Í½ï¿½ï¿½ï¿½*/
 						PageChange(Menu_interface);
 					  Current = current_temperature;
 					}
 					SaveUserData();
 				}
-				else if(waitmeal_status == tookkind_meal) //È¡ÍêÒ»ÖÖ²ÍÆ·
+				else if(waitmeal_status == tookkind_meal) //È¡ï¿½ï¿½Ò»ï¿½Ö²ï¿½Æ·
 				{
-					PageChange(Mealout_interface);//²»ÖªµÀÐèÒª¼ÓÐ©Ê²Ã´
+					PageChange(Mealout_interface);//ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ð©Ê²Ã´
 					Current = data_upload;	
 				}
-				else if(waitmeal_status == tookone_meal)  //È¡ÍêÒ»¸ö²ÍÆ·
+				else if(waitmeal_status == tookone_meal)  //È¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Æ·
 				{
 					PageChange(Mealout_interface);
 					Current = data_upload;					
 				}
         else if(waitmeal_status == takemeal_erro)
 				{
-					//»úÐµÊÖ¸´Î»ÖÐÇëµÈ´ý½çÃæ		
+					//ï¿½ï¿½Ðµï¿½Ö¸ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½		
 					NewCoinsCnt= 0; 
-					MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//¼ÆËã×ÜµÄÓ¦¸ÃÍË±ÒµÄÇ®
-          UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //Ó¦¸ÃÐèÒªÍË±ÒµÄÇ®	
+					MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½Ó¦ï¿½ï¿½ï¿½Ë±Òµï¿½Ç®
+          UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //Ó¦ï¿½ï¿½ï¿½ï¿½Òªï¿½Ë±Òµï¿½Ç®	
 					OldCoinsCnt= UserAct.MoneyBack;
 					PageChange(Err_interface);
 					UserAct.Cancle= 0x01;
-				  /*Èç¹ûÓÐ±Ò½øÈëÍË±Ò£¬Èç¹ûÎÞ±Ò½øÈë´íÎó´¦Àí*/
+				  /*ï¿½ï¿½ï¿½ï¿½ï¿½Ð±Ò½ï¿½ï¿½ï¿½ï¿½Ë±Ò£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ±Ò½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 					if(erro_record&(1<<coinhooperset_empty))
 						Current = erro_hanle;
           else 
@@ -262,18 +262,18 @@ int main(void)
           break;					
 				}			
 			}break;
-	    case data_upload:	 /*Êý¾ÝÉÏ´«*/
+	    case data_upload:	 /*ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½*/
 	    {  		
-        DataUpload(Success);//¸ù¾ÝUserAct.ID ÅÐ¶ÏÐèÒªÉÏ´«µÄÊý¾Ý
+        DataUpload(Success);//ï¿½ï¿½ï¿½ï¿½UserAct.ID ï¿½Ð¶ï¿½ï¿½ï¿½Òªï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			  Current = meal_out;		
 	    }break ;
-      case erro_hanle: /*Òì³£×´Ì¬´¦Àí:ÐèÒª¶Ô³ÌÐòÒ»Ö±ËÀÔÚ´íÎó´¦Àí*/
+      case erro_hanle: /*ï¿½ì³£×´Ì¬ï¿½ï¿½ï¿½ï¿½:ï¿½ï¿½Òªï¿½Ô³ï¿½ï¿½ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
       {
-				//»ñÈ¡µ±Ç°Ê±¼ä£¬²¢ÏÔÊ¾
+				//ï¿½ï¿½È¡ï¿½ï¿½Ç°Ê±ï¿½ä£¬ï¿½ï¿½ï¿½ï¿½Ê¾
 				DisplayRecordTime();
-				PollAbnormalHandle(); //Òì³£´¦Àí Ò»Ö±´¦ÓÚÒì³£´¦Àí³ÌÐò
+				PollAbnormalHandle(); //ï¿½ì³£ï¿½ï¿½ï¿½ï¿½ Ò»Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				PageChange(Logo_interface);
-				StatusUploadingFun(0xE800); //´¦Àíºó·µ»ØÕý³£
+				StatusUploadingFun(0xE800); //ï¿½ï¿½ï¿½ï¿½ï¿½ó·µ»ï¿½ï¿½ï¿½ï¿½ï¿½
         while(1);				
         //Current = current_temperature;					
 		  }
