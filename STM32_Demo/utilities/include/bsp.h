@@ -35,8 +35,7 @@
 #define network_erro     0x09 //网络异常
 #define signin_erro      0x0a //签到异常
 #define cardchck_erro    0x0b //深圳通银行卡签到异常
-
-
+#define powerup_erro     0x0e //开机的时候需要一个错误标记
 
 #define X_timeout        0x10 //x轴传感器超时
 #define X_leftlimit      0x11 //马达左动作极限输出
@@ -134,7 +133,8 @@ extern uint8_t   Current ;    //主状态
 extern uint8_t   CurrentPointer; //餐品出餐状态
 extern uint16_t  erro_flag;  //错误状态
 extern int32_t   erro_record;  //错误标记位
-
+extern uint16_t MoneyPayBack_Already; //上传用的已退币数量值
+extern uint16_t MoneyPayBack_Already_total; //计算总的退币数
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);	
 bool FindMeal(MealAttribute *DefineMeal); 

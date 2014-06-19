@@ -745,7 +745,7 @@ void AbnomalMealCntDisp(uint8_t meal_cnt,uint8_t floor)
  * 返    回:void                                                               
  * 修改日期:2014年5月23日                                                                    
  *******************************************************************************/  
-char record_time[20]={"20yy-mm-dd hh:mm:ss"};
+char record_time[20]={"20yy-mm-dd_hh:mm:ss"};
 void DisplayRecordTime(void)
 { 
 	  char temp[30]={0};  //存放串口数据的临时数组  
@@ -822,21 +822,12 @@ void DisplayUserRecord(void)
 		AbnomalMealCntDisp(UserAct.MealCnt_4th,floor);	
 		floor++;
 	}
-	if(UserAct.MoneyBack>0)
-	{
 		//显示用户已付 和  应退  和 已退
-		VariableChage(record_UserActPayAlready,UserAct.PayAlready);
-		//应退的钱 = 之前还没退的钱 + 未被取出的各餐品的数量*价格
-		VariableChage(record_UserActPayBack,UserAct.MoneyBack+((UserAct.MealCnt_1st_t-UserAct.MealCnt_1st)* price_1st+ (UserAct.MealCnt_2nd_t-UserAct.MealCnt_2nd)* price_2nd+ (UserAct.MealCnt_3rd_t-UserAct.MealCnt_3rd)* price_3rd+(UserAct.MealCnt_4th_t-UserAct.MealCnt_4th)* price_4th));
-		//已退的钱 = MoneyBack/100
-		VariableChage(record_UserActPayBackAlready,MoneyBack/100);//出错了
-	}
-	else
-	{
-		VariableChage(record_UserActPayAlready,0);
-		VariableChage(record_UserActPayBack,0);
-		VariableChage(record_UserActPayBackAlready,0);
-	}
+	VariableChage(record_UserActPayAlready,UserAct.PayAlready);
+		//应退的钱 = 总的应该退币的钱
+	VariableChage(record_UserActPayBack,MoneyPayBack_Already_total);
+	  //已退的钱 = 总的应该退币的钱- 还未退的钱
+	VariableChage(record_UserActPayBackAlready,MoneyPayBack_Already_total-UserAct.MoneyBack);
 }
 	
  /*******************************************************************************

@@ -589,16 +589,10 @@ void AcountCopy(void)
  * 返    回:void                                                               
  * 修改日期:2014年5月9日                                                                    
  *******************************************************************************/ 
-void PowerupAbnormalHandle(int32_t erro_record)
+void PowerupAbnormalHandle(int32_t erro_record_t)
 {
-	uint16_t i=0;
-//	for(i=0;i<32;i++) //32位记录各种异常，开机需要处理 ，可以通过管理员清理错误
-//	{
-//		if(erro_record&(1<<i))
-//		AbnormalHandle(i);	
-//	}
-  if(erro_record&(1<<i))  //只需检测断电的时候用户的数据是否保存了
-	AbnormalHandle(i);	
+  AbnormalHandle(erro_record_t);
+	erro_record=0;
 }
 
   /*******************************************************************************
@@ -707,6 +701,12 @@ void AbnormalHandle(uint16_t erro)
 	      PageChange(Err_interface);
 				DisplayAbnormal("E060");
 			}break;
+		case powerup_erro:     //开机的用户数据处理，只有在开机的时候才有
+			{
+        PlayMusic(VOICE_11);				
+	      PageChange(Err_interface);
+				DisplayAbnormal("E070");
+			}break;					
 		case X_timeout:        //x轴传感器超时
 			{
 	      PlayMusic(VOICE_11);	
@@ -825,9 +825,10 @@ void AbnormalHandle(uint16_t erro)
 			DealSeriAceptData();
 			if(erro_flag==0)
 			{
-				if(erro>=0x00)//if(erro>=0x10) //需要判断什么情况下对用户数据清零
+				if(erro>=0x00) //所有的情况下都需要将数据清零
 				{
 					UserAct.MoneyBack=0;
+					MoneyPayBack_Already_total=0;
 					ClearUserBuffer();
 					SaveUserData();	
 					//OnlymachieInit();	//只有机械手出错的时候复位机械手
@@ -850,7 +851,6 @@ void AbnormalHandle(uint16_t erro)
  *******************************************************************************/ 
 void SaveUserData(void)
 {
-	RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
 	RTC_WriteBackupRegister(RTC_BKP_DR4,  UserAct.MealCnt_1st);
 	RTC_WriteBackupRegister(RTC_BKP_DR5,  UserAct.MealCnt_2nd);
 	RTC_WriteBackupRegister(RTC_BKP_DR6,  UserAct.MealCnt_3rd);
@@ -860,10 +860,12 @@ void SaveUserData(void)
 	RTC_WriteBackupRegister(RTC_BKP_DR10, UserAct.PayShould);	
 	RTC_WriteBackupRegister(RTC_BKP_DR11, UserAct.PayAlready);
 	RTC_WriteBackupRegister(RTC_BKP_DR12, UserAct.MoneyBack);
+	RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
 	RTC_WriteBackupRegister(RTC_BKP_DR14,  UserAct.MealCnt_1st_t);
 	RTC_WriteBackupRegister(RTC_BKP_DR15,  UserAct.MealCnt_2nd_t);
 	RTC_WriteBackupRegister(RTC_BKP_DR16,  UserAct.MealCnt_3rd_t);
 	RTC_WriteBackupRegister(RTC_BKP_DR17,  UserAct.MealCnt_4th_t);	
+	RTC_WriteBackupRegister(RTC_BKP_DR18,  MoneyPayBack_Already_total);	
 }
 
   /*******************************************************************************
@@ -890,7 +892,8 @@ void ReadUserData(void)
 	UserAct.MealCnt_1st_t= RTC_ReadBackupRegister(RTC_BKP_DR14);
 	UserAct.MealCnt_2nd_t= RTC_ReadBackupRegister(RTC_BKP_DR15);
 	UserAct.MealCnt_3rd_t= RTC_ReadBackupRegister(RTC_BKP_DR16);
-	UserAct.MealCnt_4th_t= RTC_ReadBackupRegister(RTC_BKP_DR17);	
+	UserAct.MealCnt_4th_t= RTC_ReadBackupRegister(RTC_BKP_DR17);
+	MoneyPayBack_Already_total= RTC_ReadBackupRegister(RTC_BKP_DR18);	
 }
 
 
@@ -982,10 +985,12 @@ void hardfawreInit(void)
 	 ReadUserData();  //需要进行数据处理，判断
 	 if(erro_record!=0) //当有错误记录，需要进行处理
 	 {
-		 PowerupAbnormalHandle(erro_record);
+		 AbnormalHandle(powerup_erro);
+		 erro_record=0;
 	 }
 	 else
 	 {
 		 ClearUserBuffer(); //清除之前读取的数据
 	 }
+	 RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);		
 }														 
