@@ -1173,6 +1173,8 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
 						CloseTIM7();
 						CurrentPoint = 0 ;
 						UserAct.MoneyBack= UserAct.PayAlready; //³¬Ê±½«ÊÕµ½µÄÇ®ÒÔÓ²±ÒµÄĞÎÊ½·µ»¹
+						MoneyBack =UserAct.MoneyBack *100 ;  /*ĞèÍË±ÒÍË±ÒµÄÁÙÊ±±äÁ¿*/
+					  MoneyPayBack_Already_total = UserAct.MoneyBack; //¼ÆËãÓ¦ÍË±ÒµÄÊı
             ClearUserBuffer();
 						UserAct.Cancle= 0x01;
 						PageChange(Menu_interface);

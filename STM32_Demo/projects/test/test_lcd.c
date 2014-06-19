@@ -35,13 +35,13 @@ int main(void)
   OnlymachieInit();  //机械手初始化
    /*从网络  获得时间，更新本地时钟*/
 	PageChange(SignInFunction_interface);
-  if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
+  //if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
 	/*网络签到*/
-	if(!SignInFunction())       AbnormalHandle(signin_erro);
+	//if(!SignInFunction())       AbnormalHandle(signin_erro);
   SendtoServce();  //上传前七天的数据
 	/*深圳通签到*/
 	PageChange(Szt_GpbocAutoCheckIn_interface);
-	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
+	//if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	PageChange(Logo_interface);	
