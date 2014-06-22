@@ -16,6 +16,7 @@ unsigned char   SetReceChangeMoney(void);
 unsigned char   NoAcceptMoneyFun(void);
 bool StringToHexGroup(unsigned char *OutHexBuffer, char *InStrBuffer, unsigned int strLength);
 uint8_t  ReadBill(void);
+uint8_t  ReadBills(void);
 
 #endif
 

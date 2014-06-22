@@ -33,29 +33,24 @@ int main(void)
 	DisplayRecordTime(); //初始化时获取时间作为异常的时间
 	PageChange(OnlymachieInit_interface);
   OnlymachieInit();  //机械手初始化
-   /*从网络  获得时间，更新本地时钟*/
 	PageChange(SignInFunction_interface);
-  if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);
-	/*网络签到*/
-	if(!SignInFunction())       AbnormalHandle(signin_erro);
-  SendtoServce();  //上传前七天的数据
-	/*深圳通签到*/
+  if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/
+	PageChange(SignInFunction_interface);
+	if(!SignInFunction())       AbnormalHandle(signin_erro); /*网络签到*/
+  SendtoServce();          //上传前七天的数据
 	PageChange(Szt_GpbocAutoCheckIn_interface);
-	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);
-	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
-	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
+	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
+// 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
+// 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	PageChange(Logo_interface);	
-	delay_ms(1500);
+	delay_ms(2000);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
-	//加入
 	DispLeftMeal();             //显示餐品数据	
 	PageChange(Menu_interface); //显示选餐界面
-
-
 	while(1)
   {
 		DealSeriAceptData();
-		manageusart6data();   //
+		manageusart6data();  
     switch(Current)
 	  {
 	    case current_temperature: /*温度处理函数*/
@@ -104,7 +99,7 @@ int main(void)
 					if(UserAct.PayType == '1')
 					{
 						CloseCoinMachine();			    //关闭投币机	
-						delay_ms(1500);
+						delay_ms(2000);
 						if(!CloseCashSystem()){};// printf("cash system is erro1\r\n");  //关闭现金接受
 					}
 			  }
@@ -206,7 +201,7 @@ int main(void)
 			{
 				if(WaitTime==0)
 				{
-		      PlayMusic(VOICE_8);			
+		      //PlayMusic(VOICE_8);			
 				}
 				waitmeal_status= WaitMeal();       
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
