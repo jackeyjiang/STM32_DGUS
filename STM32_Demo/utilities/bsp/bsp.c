@@ -891,6 +891,7 @@ void hardfawreInit(void)
 {
   uint8_t i, j, k;
 	Uart6_Configuration();   //机械手 1 ,2
+	Uart3_Configuration();	    // 串口屏初始化  0 , 3
  //初始化存放位置数据结构体
   for(i = 0; i < 4; i++)
 	{
@@ -913,7 +914,6 @@ void hardfawreInit(void)
 	 PVD_Configuration();        //掉电检测初始化 0 , 0
 	 Uart4_Configuration();     //纸币机串口初始化 1, 2
 	 Uart1_Configuration();	    //打印机串口初始化
-	 Uart3_Configuration();	    // 串口屏初始化  0 , 3
 	 Uart2_Configuration();	    //深圳通、银联卡串口 1 , 0
 	 Uart5_Configuration();		//网络串口初始化 1 , 1
 	 TIM2_Init();		        //电机
@@ -931,6 +931,7 @@ void hardfawreInit(void)
 	 IWDG_SetReload(0x0138); // 1S
 	 IWDG_Enable();
 	 OpenTIM2();
+	 delay_ms(1000);//等待设备启动
 	 PageChange(HardwareInit_interface); //硬件初始化界面
   //PageChange(Logo_interface); //重复一次就可以成功
 
@@ -957,5 +958,7 @@ void hardfawreInit(void)
 	 {
 		 ClearUserBuffer(); //清除之前读取的数据
 	 }
-	 RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);		
+	 RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);	
+	 PageChange(HardwareInit_interface); //硬件初始化界面
+	 PageChange(HardwareInit_interface); //硬件初始化界面	 
 }														 

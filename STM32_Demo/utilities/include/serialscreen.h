@@ -4,7 +4,7 @@
 /*帧的一些字节定义*/
 #define FH0 0x5A 
 #define FH1 0xA5
-#define RD_LEN 0x00
+#define RD_LEN 0x02
 #define ADR 0x00
 
 #define Logo_interface        0x00  /*logo界面*/
@@ -190,7 +190,8 @@
 
 #define record_UserDataTime          0x5F00  //出错时间显示
 
-
+extern char cmd_page;
+extern char current_page;
 extern const char price_1st;
 extern const char price_2nd;
 extern const char price_3rd;
@@ -200,6 +201,7 @@ extern char record_time[20];
 extern int16_t CoinTotoal_t;
 void ClearUserBuffer(void);
 void PageChange(char page);
+void ReadPage(void);
 void ScreenControl(char cmd);
 void DispLeftMeal(void);
 void DealSeriAceptData(void);

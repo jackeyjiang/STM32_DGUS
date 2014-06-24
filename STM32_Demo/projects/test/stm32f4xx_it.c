@@ -365,7 +365,7 @@ void PVD_IRQHandler(void)
   if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
  {
      PWR_ClearFlag(PWR_FLAG_PVDO);
-	   erro_record |= (1<<outage_erro);  
+	   //erro_record |= (1<<outage_erro);  
 	   SaveUserData();
      f_close(&fsrc);	   //µÍµçÑ¹¼ì²â    
  }	
