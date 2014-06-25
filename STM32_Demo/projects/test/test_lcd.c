@@ -20,8 +20,8 @@ uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
 uint8_t waitmeal_status=0;    //等待取餐状态
 int32_t erro_record=0x00000000; //错误标记位
 
-uint16_t MoneyPayBack_Already = 0;//需要上传的退币数
-uint16_t MoneyPayBack_Already_total=0; //总的退币数
+int16_t MoneyPayBack_Already = 0;//需要上传的退币数
+int16_t MoneyPayBack_Already_total=0; //总的退币数
 
 uint16_t VirtAddVarTab[NB_OF_VAR] = {0x0001, 0x0002, 0x0003,};
 uint16_t VarDataTab[NB_OF_VAR] = {0, 0, 0};
@@ -31,7 +31,6 @@ int main(void)
 {
 	hardfawreInit(); //硬件初始化
 	PageChange(OnlymachieInit_interface);
-	DisplayRecordTime(); //初始化时获取时间作为异常的时间
   OnlymachieInit();  //机械手初始化
 	PageChange(SignInFunction_interface);
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/

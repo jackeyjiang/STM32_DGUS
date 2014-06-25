@@ -219,6 +219,7 @@ unsigned char  WaitPayMoney(void)
 		if(!CloseCashSystem()) printf("cash system is erro6\r\n");  //关闭现金接受
 		CurrentPoint = 0 ;
 		UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+    MoneyPayBack_Already_total = UserAct.MoneyBack; //计算应退币的数
 		ClearUserBuffer();//清空用户数据
 		if(UserAct.MoneyBack>0)
 		Current= hpper_out;
@@ -891,7 +892,6 @@ void hardfawreInit(void)
 {
   uint8_t i, j, k;
 	Uart6_Configuration();   //机械手 1 ,2
-	Uart3_Configuration();	    // 串口屏初始化  0 , 3
  //初始化存放位置数据结构体
   for(i = 0; i < 4; i++)
 	{
@@ -913,6 +913,7 @@ void hardfawreInit(void)
 //	 delay_ms(30000); //上电等待路由器启动
 	 PVD_Configuration();        //掉电检测初始化 0 , 0
 	 Uart4_Configuration();     //纸币机串口初始化 1, 2
+	 Uart3_Configuration();	    // 串口屏初始化  0 , 3
 	 Uart1_Configuration();	    //打印机串口初始化
 	 Uart2_Configuration();	    //深圳通、银联卡串口 1 , 0
 	 Uart5_Configuration();		//网络串口初始化 1 , 1
@@ -925,19 +926,19 @@ void hardfawreInit(void)
    InitMiniGPIO() ;		   //退币器始化	 
 	 InitVoice();             //语音初始化
 	 MyRTC_Init();              //RTC初始化
-	 //IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
-	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
-	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
-	 IWDG_SetReload(0x0138); // 1S
-	 IWDG_Enable();
-	 OpenTIM2();
-	 delay_ms(1000);//等待设备启动
-	 PageChange(HardwareInit_interface); //硬件初始化界面
+// 	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
+// 	 WDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
+// 	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
+// 	 IWDG_SetReload(0x0138); // 1S
+// 	 IWDG_Enable();
+ 	 OpenTIM2();
   //PageChange(Logo_interface); //重复一次就可以成功
-
+   delay_ms(500);//等待设备启动
 	 SPI_FLASH_Init();          //Flash初始化
-	 SPI_FLASH_Init();          //重复初始化才行
+	// SPI_FLASH_Init();          //重复初始化才行
    SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品
+	 delay_ms(500);//等待设备启动
+	 PageChange(HardwareInit_interface); //硬件初始化界面
 	 //WriteCoins();
    ReadCoins();//读取有多少硬币	 
 	 //VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
@@ -948,6 +949,7 @@ void hardfawreInit(void)
 	 }
 	 WriteMeal();  //写入餐品数据
 	 StatisticsTotal(); //后面的程序需要使用  	
+	 DisplayRecordTime(); //初始化时获取时间作为异常的时间
 	 ReadUserData();  //需要进行数据处理，判断
 	 if(erro_record!=0) //当有错误记录，需要进行处理
 	 {
