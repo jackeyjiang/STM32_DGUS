@@ -13,7 +13,7 @@
 
 static long Batch = 0x00 ;//交易流水号
 
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x12}; /*终端TID码 10000006*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x13}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
@@ -1322,7 +1322,7 @@ void DataUpload(char takemeal_flag)
 	itoa(f_name,TimeDate);	  //把时间转换成字符
 	MealArr(UserAct.MealID);
 	/*发送取餐数据给服务器*/
-  printf("发送取餐数据给服务器1");
+  //printf("发送取餐数据给服务器1");
   memset(Record_buffer,0,254);
 	if(TakeMealsFun(Record_buffer,takemeal_flag) == 0x01) //表示发送失败
 	{

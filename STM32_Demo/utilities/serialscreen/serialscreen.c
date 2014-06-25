@@ -352,7 +352,23 @@ void PageChange(char page)
 	  temp[6]=  page;
 		pageunitil = page;
 		Uart3_Send(temp,sizeof(temp));
-}	
+}
+ /*******************************************************************************
+ * 函数名称:ReadPage                                                                     
+ * 描    述:读取当前页,数据处理在DealSeriAceptData中处理                                                           
+ *                                                                               
+ * 输    入:无                                                                    
+ * 输    出:                                                                     
+ * 返    回:                                                             
+ * 修改日期:2014年6月24日                                                                    
+ *******************************************************************************/ 	
+void ReadPage(void)
+{
+		unsigned char temp[6]={0};
+		memcpy(temp,RegisterRead,sizeof(RegisterRead));	
+		temp[4]=	PIC_ID;	
+		Uart3_Send(temp,sizeof(temp));
+}
 
  /*******************************************************************************
  * 函数名称:DispLeftMeal                                                                     
@@ -879,6 +895,28 @@ uint8_t VerifyPassword( uint8_t *Src1, uint8_t *Src2, uint8_t Length)
 	}
 	return 1;
 }
+
+ /*******************************************************************************
+ * 函数名称:RecRegisterValues                                                                   
+ * 描    述:获取寄存器的值                                                                                                                          
+ * 输    入:寄存器地址,寄存器数据,寄存器数据长度                                                                  
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年6月24日                                                                   
+ *******************************************************************************/ 
+char current_page =0;//当前页面
+void RecRegisterValues(char VariableAdress,char *VariableData,char length)
+{
+	if(VariableAdress==PIC_ID)//读取判断当前的页面的ID
+	{
+		current_page =VariableData[length-1];
+		if(current_page!=pageunitil)
+		{
+			//PageChange(cmd_page);
+    }
+  }
+}
+
  /*******************************************************************************
  * 函数名称:ChangeVariableValues                                                                   
  * 描    述:改变数据变量的值                                                                                                                          
@@ -1140,7 +1178,7 @@ loop1:	switch(MealID)
 				UserAct.PayShould= (UserAct.MealCost_1st+UserAct.MealCost_2nd+UserAct.MealCost_3rd+UserAct.MealCost_4th);
 	      VariableChage(mealtotoal_cost,UserAct.PayShould);
 			}break;
-			case payment_method: /*付款方式*/
+			case payment_method: /*付款方式*/ //当选择付款方式后可以查询当前的用户选餐的ID,直接发送坐标
 			{
 				AcountCopy();
 				if(UserAct.PayShould==0) goto loop7;
@@ -1163,20 +1201,20 @@ loop1:	switch(MealID)
 					{
 						CurrentPoint =8;
 						PlayMusic(VOICE_4);
-						if(!CloseCashSystem()){};//printf("cash system is erro4");  //关闭现金接受
-						
+						if(!CloseCashSystem()){};//printf("cash system is erro4");  //关闭现金接受			
 					}break;
 					case 0x04:   /*取消*/
 					{
-loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //关闭现金接受
+loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro5");  //关闭现金接受
+            PageChange(Menu_interface);
 						CloseTIM3();
 						CloseTIM7();
 						CurrentPoint = 0 ;
 						UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+	          MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
 	          MoneyBack =UserAct.MoneyBack *100 ;  /*需退币退币的临时变量*/
             ClearUserBuffer();
 						UserAct.Cancle= 0x01;
-						PageChange(Menu_interface);
 						Current= hpper_out;
 					}break;
 					default:break;		
@@ -1639,9 +1677,11 @@ void DealSeriAceptData(void)
 	unsigned char temp,temp1,length,checkout;
 	char RegisterAdress=0;
 	int16_t VariableAdress=0;
+	
 	unsigned char Rx3DataBuff[10]={0};/*设置一个数组大小，?以免越界(out of bounds),?可变长度数组*/
 	char RegisterData[5]={0};  //寄存器数据数组
 	char VariableData[5]={0};  //变量数据数组
+	char RegisterLength= 0;   //寄存器数据的长度
 	char VariableLength= 0;   //变量数据的长度
 	while(UART3_GetCharsInRxBuf()>=9) //获取缓冲区大小，直至缓冲区无数据
 	{	
@@ -1671,7 +1711,8 @@ loop:	  if(USART3_GetChar(&temp1)==1)
 			  RegisterAdress =Rx3DataBuff[1];
 			  for(i=0;i<(length-2);i++)
 			  RegisterData[i]=Rx3DataBuff[2+i];
-			  //加入修改相关数据的功能
+				//加入修改相关数据的功能
+				RecRegisterValues(RegisterAdress,RegisterData,RegisterLength);
 		  }
 		  else if(Rx3DataBuff[0]==0x83) //读数据存储器返回命令
 		  {

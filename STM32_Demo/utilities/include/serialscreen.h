@@ -200,6 +200,7 @@ extern char record_time[20];
 extern int16_t CoinTotoal_t;
 void ClearUserBuffer(void);
 void PageChange(char page);
+void ReadPage(void);
 void ScreenControl(char cmd);
 void DispLeftMeal(void);
 void DealSeriAceptData(void);

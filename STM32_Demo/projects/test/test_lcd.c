@@ -30,7 +30,6 @@ uint16_t VarValue = 0;
 int main(void)
 {
 	hardfawreInit(); //硬件初始化
-	DisplayRecordTime(); //初始化时获取时间作为异常的时间
 	PageChange(OnlymachieInit_interface);
   OnlymachieInit();  //机械手初始化
 	PageChange(SignInFunction_interface);
@@ -65,6 +64,9 @@ int main(void)
 				{
 					OrderSendLink();  //为1成功，为0失败
 					VariableChage(current_temprature,Temperature); //5S一次
+					ReadPage();//
+					delay_ms(1);
+					ReadPage();//
 				}
 				//显示倒计时,可以更具标记为对选餐倒计时进行更新
 				if(UserAct.MealID)

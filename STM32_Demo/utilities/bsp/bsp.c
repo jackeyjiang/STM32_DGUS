@@ -671,7 +671,7 @@ void AbnormalHandle(uint16_t erro)
 			{
         PlayMusic(VOICE_11);				
 	      PageChange(Err_interface);
-				DisplayAbnormal("E070");
+				DisplayAbnormal("E071");
 			}break;					
 		case X_timeout:        //x轴传感器超时
 			{
@@ -910,7 +910,6 @@ void hardfawreInit(void)
 	 UserAct.PayForCards     = 0;
 	 UserAct.PayAlready      = 0;
    SystemInit();
-//	 delay_ms(30000); //上电等待路由器启动
 	 PVD_Configuration();        //掉电检测初始化 0 , 0
 	 Uart4_Configuration();     //纸币机串口初始化 1, 2
 	 Uart1_Configuration();	    //打印机串口初始化
@@ -934,14 +933,11 @@ void hardfawreInit(void)
 	 OpenTIM2();
 	 delay_ms(1000);
 	 PageChange(HardwareInit_interface); //硬件初始化界面
-  //PageChange(Logo_interface); //重复一次就可以成功
-
+	 DisplayRecordTime(); //初始化时获取时间作为异常的时间
 	 SPI_FLASH_Init();          //Flash初始化
 	 SPI_FLASH_Init();          //重复初始化才行
    SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品
-	 //WriteCoins();
    ReadCoins();//读取有多少硬币	 
-	 //VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
 	 for(i=0;i<90;i++)
 	 {
 	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
