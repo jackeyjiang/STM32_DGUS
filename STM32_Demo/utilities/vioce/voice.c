@@ -70,7 +70,8 @@ void InitVoice(void)
 
 	GPIO_SetBits(GPIOB, GPIO_Pin_6);
 	GPIO_SetBits(GPIOB, GPIO_Pin_7);
-	GPIO_SetBits(GPIOC, GPIO_Pin_8);
+	GPIO_SetBits(GPIOB, GPIO_Pin_8);
+	GPIO_SetBits(GPIOD, GPIO_Pin_7);
 }
 void PlayMusic( unsigned char Data)
 {
@@ -88,10 +89,10 @@ void PlayMusic( unsigned char Data)
      {
 	     GPIO_ResetBits(GPIOB,GPIO_Pin_6);
      }
-   Data>>=1;
-   delay_us(300);
-   GPIO_SetBits(GPIOB,GPIO_Pin_8);
-   delay_us(300);
+		 Data>>=1;
+		 delay_us(300);
+		 GPIO_SetBits(GPIOB,GPIO_Pin_8);
+		 delay_us(300);
    }
    GPIO_SetBits(GPIOD,GPIO_Pin_7);
 }

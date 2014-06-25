@@ -146,7 +146,6 @@ unsigned char  WaitPayMoney(void)
 			if(temp1 == 1)
 			{
 				UserAct.PayForCards = UserAct.PayShould - UserAct.PayAlready;
-			  //UserAct.PayForCards = UserAct.PayShould ;
 			  UserAct.PayAlready += UserAct.PayForCards ;
 				UART3_ClrRxBuf();
 			  CurrentPoint =6;
@@ -189,6 +188,7 @@ unsigned char  WaitPayMoney(void)
 	  case 9 :  //付款成功关闭所有的收银系统
 		{
 			UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
+			MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
 			UserAct.Meal_totoal= UserAct.MealCnt_4th+UserAct.MealCnt_3rd+UserAct.MealCnt_2nd+UserAct.MealCnt_1st;
       OldCoinsCnt= UserAct.MoneyBack ; //在这里程序只执行一次
 			VariableChage(mealout_totle,UserAct.Meal_totoal);	
@@ -216,9 +216,10 @@ unsigned char  WaitPayMoney(void)
 	{
     WaitTimeInit(&WaitTime);
 		PageChange(Menu_interface);//超时退出用户餐品数量选择界面
-		if(!CloseCashSystem()) printf("cash system is erro6\r\n");  //关闭现金接受
+		if(!CloseCashSystem()) {};//printf("cash system is erro6\r\n");  //关闭现金接受
 		CurrentPoint = 0 ;
 		UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+		MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
 		ClearUserBuffer();//清空用户数据
 		if(UserAct.MoneyBack>0)
 		Current= hpper_out;
@@ -931,6 +932,7 @@ void hardfawreInit(void)
 	 IWDG_SetReload(0x0138); // 1S
 	 IWDG_Enable();
 	 OpenTIM2();
+	 delay_ms(1000);
 	 PageChange(HardwareInit_interface); //硬件初始化界面
   //PageChange(Logo_interface); //重复一次就可以成功
 
