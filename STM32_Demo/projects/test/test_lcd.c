@@ -20,8 +20,8 @@ uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
 uint8_t waitmeal_status=0;    //等待取餐状态
 int32_t erro_record=0x00000000; //错误标记位
 
-uint16_t MoneyPayBack_Already = 0;//需要上传的退币数
-uint16_t MoneyPayBack_Already_total=0; //总的退币数
+int16_t MoneyPayBack_Already = 0;//需要上传的退币数
+int16_t MoneyPayBack_Already_total=0; //总的退币数
 
 uint16_t VirtAddVarTab[NB_OF_VAR] = {0x0001, 0x0002, 0x0003,};
 uint16_t VarDataTab[NB_OF_VAR] = {0, 0, 0};
@@ -30,7 +30,6 @@ uint16_t VarValue = 0;
 int main(void)
 {
 	hardfawreInit(); //硬件初始化
-	DisplayRecordTime(); //初始化时获取时间作为异常的时间
 	PageChange(OnlymachieInit_interface);
   OnlymachieInit();  //机械手初始化
 	PageChange(SignInFunction_interface);
@@ -43,7 +42,7 @@ int main(void)
 // 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
 // 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	PageChange(Logo_interface);	
-	delay_ms(2000);
+	delay_ms(3000);
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
 	DispLeftMeal();             //显示餐品数据	
 	PageChange(Menu_interface); //显示选餐界面
@@ -61,9 +60,17 @@ int main(void)
 				  VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+CoinTotoal_t);//显示机内硬币数
 					VariableChage(coins_back,Coins_cnt);
 				}
-				if(LinkTime >=5)
+				if(LinkTime >=5) //长链接出错重发与错误处理
 				{
-					OrderSendLink();  //为1成功，为0失败
+					if(OrderSendLink()==0)
+					{
+						if(OrderSendLink()==0)
+						{
+							erro_record |= (1<<SendUR6Erro);
+						  Current = erro_hanle;
+							break;
+            }
+          }
 					VariableChage(current_temprature,Temperature); //5S一次
 				}
 				//显示倒计时,可以更具标记为对选餐倒计时进行更新
@@ -95,12 +102,18 @@ int main(void)
 					UserAct.Cancle= 0x00; //以免出错
 					Current= hpper_out;
 					UserAct.Meal_takeout= 0;	
-          VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示					
+          VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示		
+          //CloseCashSystem();//避免出问题，付完钱就关闭					
 					if(UserAct.PayType == '1')
 					{
 						CloseCoinMachine();			    //关闭投币机	
 						delay_ms(2000);
-						if(!CloseCashSystem()){};// printf("cash system is erro1\r\n");  //关闭现金接受
+						if(!CloseCashSystem())
+						{	
+							CloseCashSystem();
+							delay_ms(1000);
+							CloseCashSystem();
+            };// printf("cash system is erro1\r\n");  //关闭现金接受
 					}
 			  }
 				SaveUserData();

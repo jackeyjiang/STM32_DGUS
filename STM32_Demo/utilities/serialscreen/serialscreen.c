@@ -343,14 +343,35 @@ void DisplayAbnormal(char *abnomal_code)
  * ·µ    »Ø:void                                                               
  * ĞŞ¸ÄÈÕÆÚ:2014Äê3ÔÂ13ÈÕ                                                                    
  *******************************************************************************/ 	
-char pageunitil= 0;
+char cmd_page= 0;
 void PageChange(char page)
 {
 		unsigned char temp[7]={0};
 		memcpy(temp,RegisterWrite,sizeof(RegisterWrite));	
 		temp[4]=	PIC_ID;	
 	  temp[6]=  page;
-		pageunitil = page;
+		cmd_page = page;
+		Uart3_Send(temp,sizeof(temp));
+    delay_ms(1);//µÈ´ıÆÁÄ»ÏìÓ¦¿ÉÒÔ¼õÉÙ
+    ReadPage();//·¢ËÍ¶ÁÈ¡Ò³ÃæµÄ²ÎÊı 
+    delay_ms(1);//µÈ´ıÆÁÄ»ÏìÓ¦¿ÉÒÔ¼õÉÙ
+    ReadPage();//·¢ËÍ¶ÁÈ¡Ò³ÃæµÄ²ÎÊı 
+}	
+
+ /*******************************************************************************
+ * º¯ÊıÃû³Æ:ReadPage                                                                     
+ * Ãè    Êö:¶ÁÈ¡µ±Ç°Ò³,Êı¾İ´¦ÀíÔÚDealSeriAceptDataÖĞ´¦Àí                                                           
+ *                                                                               
+ * Êä    Èë:ÎŞ                                                                    
+ * Êä    ³ö:                                                                     
+ * ·µ    »Ø:                                                             
+ * ĞŞ¸ÄÈÕÆÚ:2014Äê6ÔÂ24ÈÕ                                                                    
+ *******************************************************************************/ 	
+void ReadPage(void)
+{
+		unsigned char temp[6]={0};
+		memcpy(temp,RegisterRead,sizeof(RegisterRead));	
+		temp[4]=	PIC_ID;	
 		Uart3_Send(temp,sizeof(temp));
 }	
 
@@ -879,6 +900,28 @@ uint8_t VerifyPassword( uint8_t *Src1, uint8_t *Src2, uint8_t Length)
 	}
 	return 1;
 }
+
+ /*******************************************************************************
+ * º¯ÊıÃû³Æ:RecRegisterValues                                                                   
+ * Ãè    Êö:»ñÈ¡¼Ä´æÆ÷µÄÖµ                                                                                                                          
+ * Êä    Èë:¼Ä´æÆ÷µØÖ·,¼Ä´æÆ÷Êı¾İ,¼Ä´æÆ÷Êı¾İ³¤¶È                                                                  
+ * Êä    ³ö:ÎŞ                                                                     
+ * ·µ    »Ø:void                                                               
+ * ĞŞ¸ÄÈÕÆÚ:2014Äê6ÔÂ24ÈÕ                                                                   
+ *******************************************************************************/ 
+char current_page =0;//µ±Ç°Ò³Ãæ
+void RecRegisterValues(char VariableAdress,char *VariableData,char length)
+{
+	if(VariableAdress==PIC_ID)//¶ÁÈ¡ÅĞ¶Ïµ±Ç°µÄÒ³ÃæµÄID
+	{
+		current_page =VariableData[length-1];
+		if(current_page!=cmd_page)
+		{
+			//PageChange(cmd_page);
+    }
+  }
+}
+
  /*******************************************************************************
  * º¯ÊıÃû³Æ:ChangeVariableValues                                                                   
  * Ãè    Êö:¸Ä±äÊı¾İ±äÁ¿µÄÖµ                                                                                                                          
@@ -1634,7 +1677,7 @@ loop7:			if(!CloseCashSystem()){};//printf("cash system is erro5");  //¹Ø±ÕÏÖ½ğ½
  * ĞŞ¸ÄÈÕÆÚ:2014Äê3ÔÂ13ÈÕ                                                                   
  *******************************************************************************/ 	
 void DealSeriAceptData(void)
- {
+{
 	unsigned char i;
 	unsigned char temp,temp1,length,checkout;
 	char RegisterAdress=0;
@@ -1642,8 +1685,10 @@ void DealSeriAceptData(void)
 	unsigned char Rx3DataBuff[10]={0};/*ÉèÖÃÒ»¸öÊı×é´óĞ¡£¬?ÒÔÃâÔ½½ç(out of bounds),?¿É±ä³¤¶ÈÊı×é*/
 	char RegisterData[5]={0};  //¼Ä´æÆ÷Êı¾İÊı×é
 	char VariableData[5]={0};  //±äÁ¿Êı¾İÊı×é
+  char RegisterLength= 0;   //¼Ä´æÆ÷Êı¾İµÄ³¤¶È
 	char VariableLength= 0;   //±äÁ¿Êı¾İµÄ³¤¶È
-	while(UART3_GetCharsInRxBuf()>=9) //»ñÈ¡»º³åÇø´óĞ¡£¬Ö±ÖÁ»º³åÇøÎŞÊı¾İ
+
+	while(UART3_GetCharsInRxBuf()>=9) //»ñÈ¡»º³åÇø´óĞ¡£¬Ö±ÖÁ»º³åÇøÎŞÊı¾İ,Ò»¿ªÊ¼ÊÇ9
 	{	
 		if(USART3_GetChar(&temp)==1)
 		{	
@@ -1669,9 +1714,11 @@ loop:	  if(USART3_GetChar(&temp1)==1)
 		  if(Rx3DataBuff[0]==0x81)  //¶Á¼Ä´æÆ÷·µ»ØÃüÁî
 		  {
 			  RegisterAdress =Rx3DataBuff[1];
-			  for(i=0;i<(length-2);i++)
-			  RegisterData[i]=Rx3DataBuff[2+i];
-			  //¼ÓÈëĞŞ¸ÄÏà¹ØÊı¾İµÄ¹¦ÄÜ
+				RegisterLength =Rx3DataBuff[2];
+			  for(i=0;i<(length-3);i++)
+			  RegisterData[i]=Rx3DataBuff[3+i];
+				//¼ÓÈëĞŞ¸ÄÏà¹ØÊı¾İµÄ¹¦ÄÜ
+        RecRegisterValues(RegisterAdress,RegisterData,RegisterLength);
 		  }
 		  else if(Rx3DataBuff[0]==0x83) //¶ÁÊı¾İ´æ´¢Æ÷·µ»ØÃüÁî
 		  {
@@ -1683,8 +1730,8 @@ loop:	  if(USART3_GetChar(&temp1)==1)
 			  VariableData[i]=Rx3DataBuff[4+i];
 			  //¼ÓÈëĞŞ¸Ä±äÁ¿µØÖ·Êı¾İµÄ¹¦ÄÜ
 			  ChangeVariableValues(VariableAdress,VariableData,VariableLength);
-		   }
-	   } 
-	 }		
+		  }
+	  } 
+	}		
 }
 
