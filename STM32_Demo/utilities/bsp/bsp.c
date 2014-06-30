@@ -39,7 +39,39 @@
 		return false ;
  }
 
-
+  /*******************************************************************************
+ * 函数名称:MoveToFisrtMeal();                                                                    
+ * 描    述:找到用户选择的第一份餐品，并且移动到相应位置                                                              
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年6月25日                                                                    
+ *******************************************************************************/ 
+void MoveToFisrtMeal(void)
+{
+	if(UserAct.MealCnt_1st>0)
+	{
+	  UserAct.MealID = 0x01; 
+	}				
+	else if(UserAct.MealCnt_2nd>0)
+  {
+    UserAct.MealID = 0x02;
+	}				
+	else if(UserAct.MealCnt_3rd>0)
+	{
+		UserAct.MealID = 0x03;	
+	}
+	else if(UserAct.MealCnt_4th>0)
+	{
+		UserAct.MealID = 0x04;	
+	}
+  if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
+  {
+		OrderSendCoord(Line,Column);
+	}   
+}
+ 
   /*******************************************************************************
  * 函数名称:PrintTick                                                                     
  * 描    述:是否打印小票                                                                
@@ -245,31 +277,27 @@ uint8_t WaitMeal(void)
 				if(UserAct.MealCnt_1st>0)
 				{
 					UserAct.MealID = 0x01; 
-					goto loop3;
 				}				
 				else if(UserAct.MealCnt_2nd>0)
 				{
 					UserAct.MealID = 0x02;
-					goto loop3;
 				}				
 				else if(UserAct.MealCnt_3rd>0)
 				{
-					 UserAct.MealID = 0x03;	
-						goto loop3;
+					UserAct.MealID = 0x03;	
 				}
 				else if(UserAct.MealCnt_4th>0)
 				{
-					 UserAct.MealID = 0x04;	
-						goto loop3;
+					UserAct.MealID = 0x04;	
 				}
 				else
 				{	
 					 //如果餐品全部出完，退出到主界面		
 					 //printf("takeafter_meal\r\n");		
-					 PlayMusic(VOICE_12);				
-					 return takeafter_meal;
+					PlayMusic(VOICE_12);				
+					return takeafter_meal;
 				}
-loop3:	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
+      	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
         {
 					PlayMusic(VOICE_8);	
 					MealoutCurrentPointer= 1;
@@ -576,7 +604,7 @@ void PollAbnormalHandle(void)
   /*******************************************************************************
  * 函数名称:AbnormalHandle                                                                    
  * 描    述:异常处理 ，包含用户数据的显示                                                                
- *                                                                               
+ *           包含开机异常处理，需要进行判断，相当于开机判断                                                                     
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:void                                                               
@@ -589,13 +617,18 @@ void AbnormalHandle(uint16_t erro)
 	erro_record |= (1<<erro);
 	switch(erro)
 	{
-		case outage_erro:      //断电 
+		case outage_erro:      //断电：只有在开机的时候判断是否有断电的情况发生 
 			{
-				if(UserAct.MoneyBack>0) //断电需要根据UserAct.MoneyBack
+			  if(UserAct.Meal_totoal!=UserAct.Meal_takeout)//先判断是否还有餐品没有取出
+				{
+					PageChange(Err_interface);
+					DisplayAbnormal("E070");					
+        }
+				else if(UserAct.MoneyBack>0) //再判断用户未退的钱
 				{
 					PageChange(Err_interface);
 					DisplayAbnormal("E070");
-          StatusUploadingFun(0xE070); //状态上送					
+          //StatusUploadingFun(0xE070); //状态上送					
 				}
 				else 
 				{
@@ -948,12 +981,12 @@ void hardfawreInit(void)
 	 ReadUserData();  //需要进行数据处理，判断
 	 if(erro_record!=0) //当有错误记录，需要进行处理
 	 {
-		 AbnormalHandle(powerup_erro);
-		 erro_record=0;
+		 PollAbnormalHandle();
+		 //AbnormalHandle(outage_erro);//相当于开机异常处理
+		 //erro_record=0;
 	 }
 	 else
 	 {
 		 ClearUserBuffer(); //清除之前读取的数据
-	 }
-	 RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);		
+	 }	
 }														 

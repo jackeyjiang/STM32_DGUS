@@ -346,7 +346,7 @@ unsigned char  MealComparefunDemo(long Cmd ,unsigned char *p,unsigned long lengh
 {
   uint16_t  CRCValue= 0 ;
 // static  int Bno = 0 ;
-  unsigned char Waittimeout = 250 ;
+  unsigned char Waittimeout = 100 ;
   /*给数组赋值命令*/
   HL_IntToBuffer(Cmd,&p[1]);
   /*数组长度*/

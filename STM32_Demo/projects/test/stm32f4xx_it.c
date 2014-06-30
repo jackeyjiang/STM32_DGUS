@@ -301,7 +301,7 @@ void TIM4_IRQHandler(void)
 		else 
 		{
 			CloseTIM4();
-			if(!erro_flag) //当有错误的时候不进入出餐界面
+			if(!erro_record) //当有错误的时候不进入出餐界面
 			PageChange(Mealout_interface);//超时退出进入餐品数量选择界面,出餐的时候花费时间过长只能在中断中执行
 	  }	     
   }
@@ -365,7 +365,7 @@ void PVD_IRQHandler(void)
   if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
  {
      PWR_ClearFlag(PWR_FLAG_PVDO);
-	   //erro_record |= (1<<outage_erro);  
+	   erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
 	   SaveUserData();
      f_close(&fsrc);	   //低电压检测    
  }	

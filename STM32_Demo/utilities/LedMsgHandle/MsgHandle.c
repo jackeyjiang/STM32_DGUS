@@ -82,7 +82,7 @@ void MealArr(unsigned char index)
     int PayBill = 0;
 	  switch(index)
 	  {
-      case 1 :	/*购买餐品的ID*/
+      case 0x01 :	/*购买餐品的ID*/
 			{				
  		    CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
@@ -96,7 +96,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;
-      case 2 :	/*购买餐品的ID*/
+      case 0x02 :	/*购买餐品的ID*/
 			{
  		    CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
@@ -110,7 +110,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;
-      case 3 :	/*购买餐品的ID*/
+      case 0x03 :	/*购买餐品的ID*/
 			{
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
@@ -124,7 +124,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;
-      case 4 :	/*购买餐品的ID*/
+      case 0x04 :	/*购买餐品的ID*/
 			{
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;

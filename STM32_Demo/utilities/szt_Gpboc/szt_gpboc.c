@@ -2946,6 +2946,7 @@ loop5:
 			goto loop5;
     return 0;
   }
+	return 0;
  }
 
 /*上送银联数据，成功上送返回1，失败返回0*/

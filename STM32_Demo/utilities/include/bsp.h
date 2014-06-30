@@ -135,10 +135,11 @@ extern uint16_t  erro_flag;  //错误状态
 extern int32_t   erro_record;  //错误标记位
 extern uint16_t MoneyPayBack_Already; //上传用的已退币数量值
 extern uint16_t MoneyPayBack_Already_total; //计算总的退币数
+
 bool CloseCashSystem(void);
-bool OpenCashSystem(void);	
+bool OpenCashSystem(void);
+void MoveToFisrtMeal(void);
 bool FindMeal(MealAttribute *DefineMeal); 
-// uint8_t CanRecvCmd(uint8_t p);
 unsigned char  WaitPayMoney(void);
 uint8_t WaitMeal(void);
 void hardfawreInit(void);
@@ -153,7 +154,5 @@ void SaveUserData(void);
 void ReadUserData(void);
 void AcountCopy(void);
 void PayBackUserMoney(void);
-// void LcdHandler(void);
-// void  TempHandler(void);
-// void ClearingFuntion(void) ;//退签上送
+
 #endif

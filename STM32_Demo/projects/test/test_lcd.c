@@ -64,9 +64,7 @@ int main(void)
 				{
 					OrderSendLink();  //为1成功，为0失败
 					VariableChage(current_temprature,Temperature); //5S一次
-					ReadPage();//
-					delay_ms(1);
-					ReadPage();//
+					//ReadPage();不能进行页面查询，我的程序处理方法不适合一帧一帧的解
 				}
 				//显示倒计时,可以更具标记为对选餐倒计时进行更新
 				if(UserAct.MealID)

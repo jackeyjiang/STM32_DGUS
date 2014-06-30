@@ -807,7 +807,7 @@ void DisplayUserRecord(void)
 		AbnomalMealCntDisp(0xff,floor);		
 	}
 	floor=0; //复原
-	if(UserAct.MealCnt_1st>0)
+	if(UserAct.MealCnt_1st_t>0)
 	{
 		AbnomalMealNameDisp(cnt_t+1,floor);
 		AbnomalMealCnttDisp(UserAct.MealCnt_1st_t,floor);
@@ -815,7 +815,7 @@ void DisplayUserRecord(void)
 		floor++;
 	}
 	cnt_t++;
-	if(UserAct.MealCnt_2nd>0)
+	if(UserAct.MealCnt_2nd_t>0)
 	{
 		AbnomalMealNameDisp(cnt_t+1,floor);
 		AbnomalMealCnttDisp(UserAct.MealCnt_2nd_t,floor);
@@ -823,7 +823,7 @@ void DisplayUserRecord(void)
 		floor++;
 	}
 	cnt_t++;
-	if(UserAct.MealCnt_3rd>0)
+	if(UserAct.MealCnt_3rd_t>0)
 	{
 		AbnomalMealNameDisp(cnt_t+1,floor);
 		AbnomalMealCnttDisp(UserAct.MealCnt_3rd_t,floor);
@@ -831,7 +831,7 @@ void DisplayUserRecord(void)
 		floor++;
 	}
 	cnt_t++;
-	if(UserAct.MealCnt_4th>0)
+	if(UserAct.MealCnt_4th_t>0)
 	{
 		AbnomalMealNameDisp(cnt_t+1,floor);
 		AbnomalMealCnttDisp(UserAct.MealCnt_4th_t,floor);
@@ -1178,30 +1178,31 @@ loop1:	switch(MealID)
 				UserAct.PayShould= (UserAct.MealCost_1st+UserAct.MealCost_2nd+UserAct.MealCost_3rd+UserAct.MealCost_4th);
 	      VariableChage(mealtotoal_cost,UserAct.PayShould);
 			}break;
-			case payment_method: /*付款方式*/ //当选择付款方式后可以查询当前的用户选餐的ID,直接发送坐标
+			case payment_method: /*付款方式*/ 
 			{
 				AcountCopy();
 				if(UserAct.PayShould==0) goto loop7;
 				PageChange(Acount_interface+2); //当按下付款后，跳转到另一个页面禁止分数加减
+				//MoveToFisrtMeal();  //当选择付款方式后可以查询当前的用户选餐的ID,直接发送坐标,需要加入待机命令不然不行
 				switch(VariableData[1])
 				{
 					case 0x01:   /*现金支付*/
 					{
 						CurrentPoint =2;
 						PlayMusic(VOICE_3);
-						if(!OpenCashSystem()){};// printf("cash system is erro2");  //关闭现金接受
+						if(!OpenCashSystem()){OpenCashSystem();};// printf("cash system is erro2");  //关闭现金接受
 					}break;
 					case 0x02:   /*银行预付卡*/
 					{
 						CurrentPoint =7;
 						PlayMusic(VOICE_4);
-						if(!CloseCashSystem()){};// printf("cash system is erro3");  //关闭现金接受
+						if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro3");  //关闭现金接受
 					}break;
 					case 0x03:   /*深圳通支付*/
 					{
 						CurrentPoint =8;
 						PlayMusic(VOICE_4);
-						if(!CloseCashSystem()){};//printf("cash system is erro4");  //关闭现金接受			
+						if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro4");  //关闭现金接受			
 					}break;
 					case 0x04:   /*取消*/
 					{
@@ -1236,7 +1237,7 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 							 /*判断是否打印小票*/ 			
             PrintTickFun(&UserAct.PrintTick);
             CloseTIM4();
-            if(!erro_flag) //当有错误的时候不进入出餐界面						
+            if(!erro_record) //当有错误的时候不进入出餐界面						
 						PageChange(Mealout_interface);
 					}break;  
 					default:break;
@@ -1287,7 +1288,7 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 							PassWordLen = 0;		
 							DisplayPassWord(0);//清楚密码显示
 							memset(InputPassWord,0,6);
-						  if(erro_flag!=0) 
+						  if(erro_record!=0) 
 						  {
 							  break;
 						  }							
@@ -1303,7 +1304,7 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 							//进入管理员功能设置，需要加入特定的功能选择
 		           /*进入管理员界面*/
 							 memset(InputPassWord,0,6);
-							 if(erro_flag!=0) 
+							 if(erro_record!=0) //当有错误的时候处理这个
 							 {
 								 PageChange(UserAbonamalRecord_interface);
 								 DisplayUserRecord();
