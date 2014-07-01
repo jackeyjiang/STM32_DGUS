@@ -87,7 +87,7 @@ void _LCD_Enable_RxInit(void)
 
 
 
-#define RX3BUF_SIZE 200				 /*接收FIFO的最大容量*/  
+#define RX3BUF_SIZE 300				 /*接收FIFO的最大容量*/  
 unsigned char RX3_BUFF[RX3BUF_SIZE];	 /*接收FIFO缓冲区数组*/
 unsigned char UART_InpLen =0;        /*接收FIFO内待读取的字节数*/
 unsigned int  RX_IndexR =0;          /*接受FIFO的读指针*/

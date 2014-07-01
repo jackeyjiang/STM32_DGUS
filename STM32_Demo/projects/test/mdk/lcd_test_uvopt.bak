@@ -197,12 +197,35 @@
         <Ww>
           <count>0</count>
           <WinNumber>2</WinNumber>
+<<<<<<< HEAD
           <ItemText>erro_flag</ItemText>
+=======
+          <ItemText>current_page</ItemText>
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>2</WinNumber>
+<<<<<<< HEAD
           <ItemText>erro_record</ItemText>
+=======
+          <ItemText>cmd_page</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>RX3_BUFF</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Rx3DataBuff</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>ntime</ItemText>
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
         </Ww>
       </WatchWindow2>
       <DebugFlag>
@@ -247,10 +270,24 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>50</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>235</TopLine>
       <CurrentLine>250</CurrentLine>
+=======
+<<<<<<< HEAD
+      <ColumnNumber>48</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>28</TopLine>
+      <CurrentLine>47</CurrentLine>
+=======
+      <ColumnNumber>29</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>208</TopLine>
+      <CurrentLine>219</CurrentLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\test_lcd.c</PathWithFileName>
       <FilenameWithoutPath>test_lcd.c</FilenameWithoutPath>
@@ -261,7 +298,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>21</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>302</TopLine>
       <CurrentLine>303</CurrentLine>
@@ -310,10 +347,23 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>21</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>89</TopLine>
       <CurrentLine>90</CurrentLine>
+=======
+<<<<<<< HEAD
+      <ColumnNumber>36</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>40</TopLine>
+=======
+      <ColumnNumber>34</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>39</TopLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+      <CurrentLine>41</CurrentLine>
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\usart\uart3.c</PathWithFileName>
       <FilenameWithoutPath>uart3.c</FilenameWithoutPath>
@@ -396,7 +446,15 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>780</TopLine>
+=======
+<<<<<<< HEAD
+      <TopLine>778</TopLine>
+=======
+      <TopLine>776</TopLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <CurrentLine>781</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\spi_flash\spi_flash.c</PathWithFileName>
@@ -408,10 +466,22 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>1239</TopLine>
       <CurrentLine>1240</CurrentLine>
+=======
+      <TopLine>342</TopLine>
+      <CurrentLine>347</CurrentLine>
+=======
+      <ColumnNumber>29</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>799</TopLine>
+      <CurrentLine>801</CurrentLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\serialscreen\serialscreen.c</PathWithFileName>
       <FilenameWithoutPath>serialscreen.c</FilenameWithoutPath>
@@ -424,7 +494,11 @@
       <Focus>0</Focus>
       <ColumnNumber>11</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>2948</TopLine>
+=======
+      <TopLine>2947</TopLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
       <CurrentLine>2949</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\szt_Gpboc\szt_gpboc.c</PathWithFileName>
@@ -438,7 +512,15 @@
       <Focus>0</Focus>
       <ColumnNumber>44</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>14</TopLine>
+=======
+<<<<<<< HEAD
+      <TopLine>12</TopLine>
+=======
+      <TopLine>10</TopLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <CurrentLine>15</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\bill\bill.c</PathWithFileName>
@@ -478,10 +560,23 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>21</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>14</TopLine>
       <CurrentLine>17</CurrentLine>
+=======
+<<<<<<< HEAD
+      <ColumnNumber>11</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>6</TopLine>
+=======
+      <ColumnNumber>9</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>5</TopLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+      <CurrentLine>9</CurrentLine>
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\delay\delay.c</PathWithFileName>
       <FilenameWithoutPath>delay.c</FilenameWithoutPath>
@@ -536,8 +631,18 @@
       <Focus>0</Focus>
       <ColumnNumber>33</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>348</TopLine>
       <CurrentLine>349</CurrentLine>
+=======
+<<<<<<< HEAD
+      <TopLine>1</TopLine>
+      <CurrentLine>16</CurrentLine>
+=======
+      <TopLine>1157</TopLine>
+      <CurrentLine>1159</CurrentLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\network_handle\network_handle.c</PathWithFileName>
       <FilenameWithoutPath>network_handle.c</FilenameWithoutPath>
@@ -562,10 +667,24 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>392</TopLine>
       <CurrentLine>393</CurrentLine>
+=======
+<<<<<<< HEAD
+      <ColumnNumber>9</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>922</TopLine>
+      <CurrentLine>927</CurrentLine>
+=======
+      <ColumnNumber>4</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>850</TopLine>
+      <CurrentLine>911</CurrentLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\bsp\bsp.c</PathWithFileName>
       <FilenameWithoutPath>bsp.c</FilenameWithoutPath>
@@ -576,10 +695,21 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>37</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>66</TopLine>
       <CurrentLine>67</CurrentLine>
+=======
+<<<<<<< HEAD
+      <ColumnNumber>6</ColumnNumber>
+=======
+      <ColumnNumber>12</ColumnNumber>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>75</TopLine>
+      <CurrentLine>91</CurrentLine>
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\vioce\voice.c</PathWithFileName>
       <FilenameWithoutPath>voice.c</FilenameWithoutPath>
@@ -1166,7 +1296,15 @@
       <Focus>0</Focus>
       <ColumnNumber>16</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>197</TopLine>
+=======
+<<<<<<< HEAD
+      <TopLine>195</TopLine>
+=======
+      <TopLine>193</TopLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <CurrentLine>198</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.c</PathWithFileName>
@@ -1187,7 +1325,15 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>176</TopLine>
+=======
+<<<<<<< HEAD
+      <TopLine>169</TopLine>
+=======
+      <TopLine>172</TopLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <CurrentLine>175</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\arm\startup_stm32f4xx.s</PathWithFileName>
@@ -1208,8 +1354,17 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>204</TopLine>
       <CurrentLine>205</CurrentLine>
+=======
+<<<<<<< HEAD
+      <TopLine>240</TopLine>
+=======
+      <TopLine>238</TopLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+      <CurrentLine>243</CurrentLine>
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c</PathWithFileName>
       <FilenameWithoutPath>system_stm32f4xx.c</FilenameWithoutPath>
@@ -1346,10 +1501,20 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>19</ColumnNumber>
+      <ColumnNumber>27</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
       <TopLine>24</TopLine>
       <CurrentLine>27</CurrentLine>
+=======
+<<<<<<< HEAD
+      <TopLine>134</TopLine>
+      <CurrentLine>138</CurrentLine>
+=======
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\bsp.h</PathWithFileName>
       <FilenameWithoutPath>bsp.h</FilenameWithoutPath>
@@ -1416,10 +1581,17 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>23</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>31</TopLine>
       <CurrentLine>34</CurrentLine>
+=======
+      <ColumnNumber>24</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>35</TopLine>
+      <CurrentLine>39</CurrentLine>
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\MsgHandle.h</PathWithFileName>
       <FilenameWithoutPath>MsgHandle.h</FilenameWithoutPath>
@@ -1486,10 +1658,24 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
       <ColumnNumber>20</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>193</TopLine>
       <CurrentLine>203</CurrentLine>
+=======
+<<<<<<< HEAD
+      <ColumnNumber>20</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>11</TopLine>
+      <CurrentLine>13</CurrentLine>
+=======
+      <ColumnNumber>12</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>188</TopLine>
+      <CurrentLine>193</CurrentLine>
+>>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
+>>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\serialscreen.h</PathWithFileName>
       <FilenameWithoutPath>serialscreen.h</FilenameWithoutPath>

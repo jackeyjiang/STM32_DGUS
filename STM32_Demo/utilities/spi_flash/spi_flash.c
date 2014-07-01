@@ -760,8 +760,8 @@ void  WriteMeal(void) //在初始化时，flash的数据易丢失
    __IO uint32_t DeviceID = 0;
 	unsigned char TempBuffer[FloorMealNum*6]={0};
   /* Initialize the SPI FLASH driver */
-    //SPI_FLASH_Init();
-	  //SPI_FLASH_Init();
+    SPI_FLASH_Init();
+	  SPI_FLASH_Init();
 	  //SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
     /* Perform a write in the Flash followed by a read of the written data */
     /* Erase SPI FLASH Sector to write on */
