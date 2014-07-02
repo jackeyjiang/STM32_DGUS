@@ -73,11 +73,11 @@ void InitVoice(void)
 	GPIO_SetBits(GPIOB, GPIO_Pin_8);
 	GPIO_SetBits(GPIOD, GPIO_Pin_7);
 }
-void PlayMusic( unsigned char Data)
+void PlayMusic(char Data)
 {
    unsigned char SendDataLoop;
    GPIO_ResetBits(GPIOD,GPIO_Pin_7);
-   delay_us(5000);
+   delay_ms(5);
    for(SendDataLoop=0;SendDataLoop<8;SendDataLoop++)
    {
      GPIO_ResetBits(GPIOB,GPIO_Pin_8);
