@@ -203,5 +203,4 @@ void  SPRT(void)
 	}
 	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(SendStc,sizeof(SendStc));//	切纸
-  printf("\r\n");//切纸后换行，以免纸进入缝隙中	
 }

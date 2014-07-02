@@ -36,7 +36,6 @@ int main(void)
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/
 	PageChange(SignInFunction_interface);
 	if(!SignInFunction())       AbnormalHandle(signin_erro); /*网络签到*/
-	ErrRecHandle();          //用户数据断电的数据处理与上传
   SendtoServce();          //上传前七天的数据
 	PageChange(Szt_GpbocAutoCheckIn_interface);
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
@@ -64,6 +63,7 @@ int main(void)
 				if(LinkTime >=5) //长链接出错重发与错误处理
 				{
 <<<<<<< HEAD
+<<<<<<< HEAD
 					if(OrderSendLink()==0)//链接失败直接报错
           {
 						if(OrderSendLink()==0)
@@ -83,6 +83,9 @@ int main(void)
             }
           }
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+					OrderSendLink();  //为1成功，为0失败
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
 					VariableChage(current_temprature,Temperature); //5S一次
 					//ReadPage();不能进行页面查询，我的程序处理方法不适合一帧一帧的解
 				}
@@ -253,11 +256,11 @@ int main(void)
 					}
 					SaveUserData();
 				}
-// 				else if(waitmeal_status == tookkind_meal) //取完一种餐品
-// 				{
-// 					PageChange(Mealout_interface);//不知道需要加些什么
-// 					Current = data_upload;	
-// 				}
+				else if(waitmeal_status == tookkind_meal) //取完一种餐品
+				{
+					PageChange(Mealout_interface);//不知道需要加些什么
+					Current = data_upload;	
+				}
 				else if(waitmeal_status == tookone_meal)  //取完一个餐品
 				{
 					PageChange(Mealout_interface);

@@ -514,7 +514,6 @@ void ClearUserBuffer(void)
 	UserAct.MealCost_4th=0;
 	UserAct.MealID=0;
 	UserAct.Meal_totoal=0;
-	UserAct.Meal_takeout=0;
 	UserAct.PayShould=0;
 	UserAct.PayType=0;
   UserAct.PayForCoins=0;
@@ -1087,7 +1086,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				{
 					UserAct.MealCnt_4th_t= DefineMeal[3].MealCount;
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_4th_t);
-					VariableChage(fish_cnt,UserAct.MealCnt_4th_t);	//改变变量地址数据
+					VariableChage(duck_cost,UserAct.MealCnt_4th_t);	//改变变量地址数据
 				}
 			}break;	
    
@@ -1332,8 +1331,8 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 							 memset(InputPassWord,0,6);
 							 if(erro_record!=0) //当有错误的时候处理这个
 							 {
-								 DisplayUserRecord();
 								 PageChange(UserAbonamalRecord_interface);
+								 DisplayUserRecord();
 							   DisplayPassWord(0);//清楚密码显示
 			           PassWordLen = 0;							 			 
 								 break;
@@ -1360,10 +1359,9 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 	        }break;						
 					case 0x12:/*返回*/
 					{
-						if(erro_record!=0) 
+						if(erro_flag!=0) 
 						{
-						  PageChange(Err_interface);
-							break;
+							 break;
 						}								
 		        PageChange(Menu_interface);
 						DisplayPassWord(0);//清楚密码显示

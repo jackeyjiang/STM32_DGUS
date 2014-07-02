@@ -184,7 +184,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>JL2CM3</Key>
-          <Name>-U17935099 -O14 -S0 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight JTAG-DP") -D00(4BA00477) -L00(4) -N01("Unknown JTAG device") -D01(06413041) -L01(5) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F4xx_1024 -FS08000000 -FL0100000</Name>
+          <Name>-U270676280 -O14 -S0 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight JTAG-DP") -D00(4BA00477) -L00(4) -N01("Unknown JTAG device") -D01(06413041) -L01(5) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F4xx_1024 -FS08000000 -FL0100000</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -271,6 +271,7 @@
       <tvExp>0</tvExp>
       <Focus>0</Focus>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>29</TopLine>
@@ -295,6 +296,12 @@
 >>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>50</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>235</TopLine>
+      <CurrentLine>250</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\test_lcd.c</PathWithFileName>
       <FilenameWithoutPath>test_lcd.c</FilenameWithoutPath>
@@ -307,8 +314,8 @@
       <Focus>0</Focus>
       <ColumnNumber>21</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>63</TopLine>
-      <CurrentLine>64</CurrentLine>
+      <TopLine>302</TopLine>
+      <CurrentLine>303</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\stm32f4xx_it.c</PathWithFileName>
       <FilenameWithoutPath>stm32f4xx_it.c</FilenameWithoutPath>
@@ -355,6 +362,7 @@
       <tvExp>0</tvExp>
       <Focus>0</Focus>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <ColumnNumber>23</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>35</TopLine>
@@ -378,6 +386,12 @@
       <CurrentLine>41</CurrentLine>
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>21</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>89</TopLine>
+      <CurrentLine>90</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\usart\uart3.c</PathWithFileName>
       <FilenameWithoutPath>uart3.c</FilenameWithoutPath>
@@ -418,8 +432,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>58</TopLine>
-      <CurrentLine>59</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\usart\uart6.c</PathWithFileName>
       <FilenameWithoutPath>uart6.c</FilenameWithoutPath>
@@ -444,10 +458,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>12</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>396</TopLine>
-      <CurrentLine>413</CurrentLine>
+      <TopLine>655</TopLine>
+      <CurrentLine>656</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\sd\sd.c</PathWithFileName>
       <FilenameWithoutPath>sd.c</FilenameWithoutPath>
@@ -458,8 +472,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>12</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <TopLine>218</TopLine>
       <CurrentLine>219</CurrentLine>
@@ -475,6 +490,10 @@
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
       <CurrentLine>781</CurrentLine>
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <TopLine>780</TopLine>
+      <CurrentLine>781</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\spi_flash\spi_flash.c</PathWithFileName>
       <FilenameWithoutPath>spi_flash.c</FilenameWithoutPath>
@@ -485,6 +504,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <ColumnNumber>26</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -508,6 +528,12 @@
 >>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>0</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>1239</TopLine>
+      <CurrentLine>1240</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\serialscreen\serialscreen.c</PathWithFileName>
       <FilenameWithoutPath>serialscreen.c</FilenameWithoutPath>
@@ -518,8 +544,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>14</ColumnNumber>
+      <ColumnNumber>11</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <TopLine>2947</TopLine>
       <CurrentLine>2971</CurrentLine>
@@ -531,6 +558,10 @@
 >>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
       <CurrentLine>2949</CurrentLine>
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <TopLine>2948</TopLine>
+      <CurrentLine>2949</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\szt_Gpboc\szt_gpboc.c</PathWithFileName>
       <FilenameWithoutPath>szt_gpboc.c</FilenameWithoutPath>
@@ -563,10 +594,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>20</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>775</TopLine>
-      <CurrentLine>784</CurrentLine>
+      <TopLine>770</TopLine>
+      <CurrentLine>771</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\protocol\protocol.c</PathWithFileName>
       <FilenameWithoutPath>protocol.c</FilenameWithoutPath>
@@ -577,10 +608,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>12</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>94</TopLine>
-      <CurrentLine>118</CurrentLine>
+      <TopLine>89</TopLine>
+      <CurrentLine>90</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\rtc\rtc.c</PathWithFileName>
       <FilenameWithoutPath>rtc.c</FilenameWithoutPath>
@@ -591,6 +622,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -615,6 +647,12 @@
       <CurrentLine>9</CurrentLine>
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>21</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>14</TopLine>
+      <CurrentLine>17</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\delay\delay.c</PathWithFileName>
       <FilenameWithoutPath>delay.c</FilenameWithoutPath>
@@ -653,10 +691,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>24</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>147</TopLine>
-      <CurrentLine>152</CurrentLine>
+      <TopLine>79</TopLine>
+      <CurrentLine>80</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\LedMsgHandle\MsgHandle.c</PathWithFileName>
       <FilenameWithoutPath>MsgHandle.c</FilenameWithoutPath>
@@ -667,8 +705,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>59</ColumnNumber>
+      <ColumnNumber>33</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <TopLine>1</TopLine>
       <CurrentLine>16</CurrentLine>
@@ -686,6 +725,10 @@
 >>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <TopLine>348</TopLine>
+      <CurrentLine>349</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\network_handle\network_handle.c</PathWithFileName>
       <FilenameWithoutPath>network_handle.c</FilenameWithoutPath>
@@ -696,10 +739,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>8</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>153</TopLine>
-      <CurrentLine>154</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\printer\printer.c</PathWithFileName>
       <FilenameWithoutPath>printer.c</FilenameWithoutPath>
@@ -710,6 +753,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <ColumnNumber>7</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -735,6 +779,12 @@
 >>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>0</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>392</TopLine>
+      <CurrentLine>393</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\bsp\bsp.c</PathWithFileName>
       <FilenameWithoutPath>bsp.c</FilenameWithoutPath>
@@ -746,11 +796,15 @@
       <tvExp>0</tvExp>
       <Focus>0</Focus>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <ColumnNumber>49</ColumnNumber>
 =======
 <<<<<<< HEAD
       <ColumnNumber>37</ColumnNumber>
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>37</ColumnNumber>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>66</TopLine>
       <CurrentLine>67</CurrentLine>
@@ -998,10 +1052,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>46</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1038</TopLine>
-      <CurrentLine>1039</CurrentLine>
+      <TopLine>1035</TopLine>
+      <CurrentLine>1036</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rtc.c</PathWithFileName>
       <FilenameWithoutPath>stm32f4xx_rtc.c</FilenameWithoutPath>
@@ -1380,6 +1434,7 @@
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <TopLine>168</TopLine>
 =======
 <<<<<<< HEAD
@@ -1392,6 +1447,9 @@
 >>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <TopLine>176</TopLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <CurrentLine>175</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\arm\startup_stm32f4xx.s</PathWithFileName>
@@ -1560,6 +1618,7 @@
       <tvExp>0</tvExp>
       <Focus>0</Focus>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>72</TopLine>
@@ -1580,6 +1639,12 @@
 >>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>19</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>24</TopLine>
+      <CurrentLine>27</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\bsp.h</PathWithFileName>
       <FilenameWithoutPath>bsp.h</FilenameWithoutPath>
@@ -1647,6 +1712,7 @@
       <tvExp>0</tvExp>
       <Focus>0</Focus>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <ColumnNumber>31</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>31</TopLine>
@@ -1664,6 +1730,12 @@
       <CurrentLine>39</CurrentLine>
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>23</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>31</TopLine>
+      <CurrentLine>34</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\MsgHandle.h</PathWithFileName>
       <FilenameWithoutPath>MsgHandle.h</FilenameWithoutPath>
@@ -1674,10 +1746,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>30</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>89</TopLine>
-      <CurrentLine>90</CurrentLine>
+      <TopLine>79</TopLine>
+      <CurrentLine>81</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\network_handle.h</PathWithFileName>
       <FilenameWithoutPath>network_handle.h</FilenameWithoutPath>
@@ -1718,8 +1790,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>20</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\sd.h</PathWithFileName>
       <FilenameWithoutPath>sd.h</FilenameWithoutPath>
@@ -1730,6 +1802,7 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <ColumnNumber>21</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1755,6 +1828,12 @@
 >>>>>>> 4c1ce3e993a17b0a33aeb4c0dbe8807e0433eb57
 >>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 >>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
+=======
+      <ColumnNumber>20</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>193</TopLine>
+      <CurrentLine>203</CurrentLine>
+>>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\serialscreen.h</PathWithFileName>
       <FilenameWithoutPath>serialscreen.h</FilenameWithoutPath>
@@ -1809,8 +1888,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>15</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\include\vioce.h</PathWithFileName>
       <FilenameWithoutPath>vioce.h</FilenameWithoutPath>

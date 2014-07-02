@@ -138,20 +138,7 @@ void MealArr(unsigned char index)
 				CustomerSel.MealPrice[4]      =	   0x15 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;	 
-	    default :
-			{
- 		  	CustomerSel.MealID[0]		   =   0x00;
-				CustomerSel.MealID[1]		   =   0x00;
-				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x00;
-				/*购买餐品的价格*/
-				CustomerSel.MealPrice[0]      =    0x00 ;
-				CustomerSel.MealPrice[1]      =	   0x00 ;
-				CustomerSel.MealPrice[2]      =	   0x00	;
-				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x00 ;
-				CustomerSel.MealPrice[5]      =	   0x00 ;				
-      }break ;
+	    default : break ;
 	  }	
 /*------购买餐品的数量-----------------*/
 		CustomerSel.MealNo  =  0x01; //取一个餐品上传一次数据
