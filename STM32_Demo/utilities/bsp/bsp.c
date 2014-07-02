@@ -301,7 +301,8 @@ uint8_t WaitMeal(void)
         {
 					PlayMusic(VOICE_8);	
 					MealoutCurrentPointer= 1;
-				}   
+				}
+        //printf("case 0/UserAct.MealID == %d\r\n",UserAct.MealID);				
 			}break;
 			case 1 : /* 发送餐的数目减一*/
 			{			 
@@ -429,44 +430,71 @@ uint8_t WaitMeal(void)
 				UserAct.Meal_takeout++;//取餐数据加
 				VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示
 				MealoutCurrentPointer= 0;
+				//printf("case 5/UserAct.MealID == %d\r\n",UserAct.MealID);
 				if(UserAct.MealID == 0x01)
 				{
 					UserAct.MealCnt_1st--;
-					if(UserAct.MealCnt_1st==0)
+					//if(UserAct.MealCnt_1st==0)
+					if(0)
 					{
 						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
 					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}	
 				}
 				else if(UserAct.MealID == 0x02)
 				{
 					UserAct.MealCnt_2nd--;
-					if(UserAct.MealCnt_2nd==0)
+					//if(UserAct.MealCnt_2nd==0)
+					if(0)
 					{
 						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
-					}					
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
 				}
 				else if(UserAct.MealID == 0x03)
 				{
 					UserAct.MealCnt_3rd--;
-					if(UserAct.MealCnt_3rd==0)
+					//if(UserAct.MealCnt_3rd==0)
+					if(0)
 					{
 						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
-					}			
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
 				}				
 				else if(UserAct.MealID == 0x04)
 				{
 					UserAct.MealCnt_4th--; 	
-					if(UserAct.MealCnt_4th==0)
+					//if(UserAct.MealCnt_4th==0)
+					if(0)
 					{
 						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
-					}		
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
 				}
-				//printf("tookone_meal\r\n");
-				return tookone_meal;
+				else 
+				{
+					printf("tookone_meal erro\r\n");
+        }
 			}
 			default:break;
 	  }
@@ -621,14 +649,15 @@ void AbnormalHandle(uint16_t erro)
 			{
 			  if(UserAct.Meal_totoal!=UserAct.Meal_takeout)//先判断是否还有餐品没有取出
 				{
+					DataUpload(Failed);
+					DisplayAbnormal("E070");
 					PageChange(Err_interface);
-					DisplayAbnormal("E070");					
         }
 				else if(UserAct.MoneyBack>0) //再判断用户未退的钱
 				{
-					PageChange(Err_interface);
+					DataUpload(Failed);
 					DisplayAbnormal("E070");
-          //StatusUploadingFun(0xE070); //状态上送					
+					PageChange(Err_interface);								
 				}
 				else 
 				{
@@ -832,6 +861,10 @@ void AbnormalHandle(uint16_t erro)
 					SaveUserData();	
 					//OnlymachieInit();	//只有机械手出错的时候复位机械手
 				}
+				if(erro_record>=(1<<X_timeout))//如果
+				{
+					erro_record&=0xff00;
+        }
 				erro_record &= ~(1<<erro); //一次只处理一次异常
 				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
 				break;
@@ -895,7 +928,30 @@ void ReadUserData(void)
 	MoneyPayBack_Already_total= RTC_ReadBackupRegister(RTC_BKP_DR18);	
 }
 
-
+  /*******************************************************************************
+ * 函数名称:ErrRecHandle                                                                     
+ * 描    述:错误记录处理                                                              
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年7月2日                                                                    
+ *******************************************************************************/ 
+void ErrRecHandle(void)
+{
+	 ReadUserData();  //需要进行数据处理，判断
+	 if(erro_record!=0) //当有错误记录，需要进行处理
+	 {
+		 //PollAbnormalHandle();
+		 AbnormalHandle(outage_erro);//相当于开机异常处理
+		 erro_record=0;
+	 }
+	 else
+	 {
+		 ClearUserBuffer(); //清除之前读取的数据
+	 }
+   RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);	 	
+}
 
  /*
   PVD ---- 低电压检测                抢占优先级  0      亚优先级 0 		用于保护sd卡
@@ -978,15 +1034,4 @@ void hardfawreInit(void)
 	 }
 	 WriteMeal();  //写入餐品数据
 	 StatisticsTotal(); //后面的程序需要使用  	
-	 ReadUserData();  //需要进行数据处理，判断
-	 if(erro_record!=0) //当有错误记录，需要进行处理
-	 {
-		 PollAbnormalHandle();
-		 //AbnormalHandle(outage_erro);//相当于开机异常处理
-		 //erro_record=0;
-	 }
-	 else
-	 {
-		 ClearUserBuffer(); //清除之前读取的数据
-	 }	
 }														 

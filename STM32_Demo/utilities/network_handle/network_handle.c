@@ -346,7 +346,7 @@ unsigned char  MealComparefunDemo(long Cmd ,unsigned char *p,unsigned long lengh
 {
   uint16_t  CRCValue= 0 ;
 // static  int Bno = 0 ;
-  unsigned char Waittimeout = 100 ;
+  unsigned char Waittimeout = 250 ;
   /*给数组赋值命令*/
   HL_IntToBuffer(Cmd,&p[1]);
   /*数组长度*/
@@ -1320,7 +1320,9 @@ void DataUpload(char takemeal_flag)
 {
 
 	itoa(f_name,TimeDate);	  //把时间转换成字符
+	printf("upload/UserAct.MealID == %d\r\n",UserAct.MealID);
 	MealArr(UserAct.MealID);
+	UserAct.MealID= 0;//数据上传还一次对ID清零，这样就可以避免
 	/*发送取餐数据给服务器*/
   //printf("发送取餐数据给服务器1");
   memset(Record_buffer,0,254);

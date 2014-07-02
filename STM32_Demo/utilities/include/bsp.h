@@ -154,5 +154,6 @@ void SaveUserData(void);
 void ReadUserData(void);
 void AcountCopy(void);
 void PayBackUserMoney(void);
+void ErrRecHandle(void);
 
 #endif

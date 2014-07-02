@@ -133,7 +133,7 @@ void SendLink(void)
 {
   uint8_t Cmd[6]={'P','0','0','0',0x0d,0x0a};
   uint8_t i;
-  
+  //USART_ClearFlag(USART6,USART_FLAG_TC);
   for(i=0;i<6;i++)
   {
     USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
