@@ -645,10 +645,12 @@ void AbnormalHandle(uint16_t erro)
 	erro_flag = erro; //只是在错误处理与判断时需要用到，
 	switch(erro)
 	{
-		case outage_erro:      //断电：只有在开机的时候判断是否有断电的情况发生 
+		case outage_erro:      //断电：只有在开机的时候判断是否有断电的情况发生 ，计算应该退的钱
 			{
 			  if((UserAct.Meal_totoal!=UserAct.Meal_takeout)||(UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
 				{
+					MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//计算总的应该退币的钱
+          UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //应该需要退币的钱	
 					if(UserAct.MealID)DataUpload(Failed);//只有当UserAct.MealID!=0的时候才上传餐品的数据
 					DisplayAbnormal("E070");
 					PageChange(Err_interface);
@@ -876,6 +878,7 @@ void AbnormalHandle(uint16_t erro)
  *******************************************************************************/ 
 void SaveUserData(void)
 {
+	RTC_WriteBackupRegister(RTC_BKP_DR3,  UserAct.MealID);
 	RTC_WriteBackupRegister(RTC_BKP_DR4,  UserAct.MealCnt_1st);
 	RTC_WriteBackupRegister(RTC_BKP_DR5,  UserAct.MealCnt_2nd);
 	RTC_WriteBackupRegister(RTC_BKP_DR6,  UserAct.MealCnt_3rd);
@@ -904,6 +907,7 @@ void SaveUserData(void)
  *******************************************************************************/ 
 void ReadUserData(void)
 {
+	UserAct.MealID= RTC_ReadBackupRegister(RTC_BKP_DR3);
 	UserAct.MealCnt_1st= RTC_ReadBackupRegister(RTC_BKP_DR4);
 	UserAct.MealCnt_2nd= RTC_ReadBackupRegister(RTC_BKP_DR5);
 	UserAct.MealCnt_3rd= RTC_ReadBackupRegister(RTC_BKP_DR6);
