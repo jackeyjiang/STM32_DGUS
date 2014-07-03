@@ -1320,7 +1320,14 @@ void DataUpload(char takemeal_flag)
 {
 
 	itoa(f_name,TimeDate);	  //把时间转换成字符
-	printf("upload/UserAct.MealID == %d\r\n",UserAct.MealID);
+	if(UserAct.MealID==0x00)
+	{
+		while(1)
+		{
+	    printf("upload/UserAct.MealID == %d\r\n",UserAct.MealID);
+			delay_ms(200);
+		}
+	}
 	MealArr(UserAct.MealID);
 	UserAct.MealID= 0;//数据上传还一次对ID清零，这样就可以避免
 	/*发送取餐数据给服务器*/

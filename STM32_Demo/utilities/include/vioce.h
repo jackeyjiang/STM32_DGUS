@@ -15,6 +15,6 @@
 #define VOICE_12   11  //ª∂”≠œ¬¥Œπ‚¡Ÿ
 
 
-void PlayMusic( unsigned char );
+void PlayMusic( unsigned char Data);
 void InitVoice(void);
 #endif

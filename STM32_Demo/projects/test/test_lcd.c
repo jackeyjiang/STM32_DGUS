@@ -230,14 +230,6 @@ int main(void)
 				waitmeal_status= WaitMeal();       
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{
-          UserAct.PayAlready  = 0;
-          UserAct.PayForBills = 0;
-          UserAct.PayForCoins = 0;
-          UserAct.PayForCards = 0;
-          UserAct.Meal_takeout= 0;
-          UserAct.Meal_totoal = 0;
-					//清楚购物车
-					ClearUserBuffer(); 
 					if(UserAct.MoneyBack>0) //出餐完毕如果UserAct.MoneyBack>0 直接进入错误处理
 					{
 						erro_record |= (1<<coinhooperset_empty);
@@ -245,6 +237,8 @@ int main(void)
 					}
 					else
 					{
+						/*无措状态清楚购物车*/
+						ClearUserBuffer(); 
 						/*无错状态进入到售餐界面*/
 						PageChange(Menu_interface);
 					  Current = current_temperature;

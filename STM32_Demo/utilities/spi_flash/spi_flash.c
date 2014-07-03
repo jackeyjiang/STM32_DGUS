@@ -799,13 +799,13 @@ void ClearMealInfo(void)
 }
 void WriteCoins(void)
 {
-  RTC_WriteBackupRegister(RTC_BKP_DR13,CoinsTotoalMessageWriteToFlash.CoinTotoal);
+  RTC_WriteBackupRegister(RTC_BKP_DR19,CoinsTotoalMessageWriteToFlash.CoinTotoal);
 	
 }
 void ReadCoins(void)
 {
 	//SPI_FLASH_BufferRead(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, 2);
-	CoinsTotoalMessageWriteToFlash.CoinTotoal  = RTC_ReadBackupRegister(RTC_BKP_DR13);
+	CoinsTotoalMessageWriteToFlash.CoinTotoal  = RTC_ReadBackupRegister(RTC_BKP_DR19);
 }
 
 /******************* (C) COPYRIGHT 2010 www.armjishu.com *****END OF FILE****/

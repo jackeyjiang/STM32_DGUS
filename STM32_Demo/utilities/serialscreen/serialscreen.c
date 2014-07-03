@@ -496,7 +496,6 @@ void ClearUserBuffer(void)
 	UserAct.Meal_takeout=0;
 	UserAct.PayShould=0;
 	UserAct.PayType=0;
-  UserAct.PayForCoins=0;
   UserAct.PayForCoins=0;           //用户投入的硬币数	
 	UserAct.PayForBills=0;           //用户投入的纸币数
 	UserAct.PayForCards=0;           //用户应经刷卡的数
@@ -762,7 +761,7 @@ void AbnomalMealCntDisp(uint8_t meal_cnt,uint8_t floor)
  * 返    回:void                                                               
  * 修改日期:2014年5月23日                                                                    
  *******************************************************************************/  
-char record_time[20]={"20yy-mm-dd_hh:mm:ss"};
+char record_time[20]={"20yy-mm-dd hh:mm:ss"};
 void DisplayRecordTime(void)
 { 
 	  char temp[30]={0};  //存放串口数据的临时数组  

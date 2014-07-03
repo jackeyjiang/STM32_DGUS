@@ -641,6 +641,7 @@ void PollAbnormalHandle(void)
 uint16_t erro_flag=0;
 void AbnormalHandle(uint16_t erro)
 {	
+	erro_record |= (1<<erro); //在开始异常处理的时候需要用到
 	erro_flag = erro; //只是在错误处理与判断时需要用到，
 	switch(erro)
 	{
@@ -648,7 +649,7 @@ void AbnormalHandle(uint16_t erro)
 			{
 			  if((UserAct.Meal_totoal!=UserAct.Meal_takeout)||(UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
 				{
-					DataUpload(Failed);
+					if(UserAct.MealID)DataUpload(Failed);//只有当UserAct.MealID!=0的时候才上传餐品的数据
 					DisplayAbnormal("E070");
 					PageChange(Err_interface);
         }
