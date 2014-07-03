@@ -1,21 +1,6 @@
 Dependencies for Project 'lcd_test', Target 'lcd_test': (DO NOT MODIFY !)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\test_lcd.c)(0x53B3B8E9)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\test_lcd.o" --omf_browse ".\debug\test_lcd.crf" --depend ".\debug\test_lcd.d")
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-=======
-<<<<<<< HEAD
-F (..\test_lcd.c)(0x53AA7B0C)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\test_lcd.o" --omf_browse ".\debug\test_lcd.crf" --depend ".\debug\test_lcd.d")
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-=======
-F (..\test_lcd.c)(0x53AA61E3)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\test_lcd.o" --omf_browse ".\debug\test_lcd.crf" --depend ".\debug\test_lcd.d")
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\test_lcd.c)(0x53AA7B0C)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\test_lcd.o" --omf_browse ".\debug\test_lcd.crf" --depend ".\debug\test_lcd.d")
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\test_lcd.c)(0x53B40065)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\test_lcd.o" --omf_browse ".\debug\test_lcd.crf" --depend ".\debug\test_lcd.d")
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -51,23 +36,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -98,19 +68,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\stm32f4xx_it.c)(0x53B2103B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\stm32f4xx_it.o" --omf_browse ".\debug\stm32f4xx_it.crf" --depend ".\debug\stm32f4xx_it.d")
-=======
-<<<<<<< HEAD
-F (..\stm32f4xx_it.c)(0x53B12FA3)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\stm32f4xx_it.o" --omf_browse ".\debug\stm32f4xx_it.crf" --depend ".\debug\stm32f4xx_it.d")
-=======
-F (..\stm32f4xx_it.c)(0x53AA61E3)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\stm32f4xx_it.o" --omf_browse ".\debug\stm32f4xx_it.crf" --depend ".\debug\stm32f4xx_it.d")
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\stm32f4xx_it.c)(0x53B12FA3)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\stm32f4xx_it.o" --omf_browse ".\debug\stm32f4xx_it.crf" --depend ".\debug\stm32f4xx_it.d")
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\stm32f4xx_it.c)(0x53B4013B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\stm32f4xx_it.o" --omf_browse ".\debug\stm32f4xx_it.crf" --depend ".\debug\stm32f4xx_it.d")
 I (..\stm32f4xx_it.h)(0x53869960)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
@@ -146,31 +104,10 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x5386995A
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -275,23 +212,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\usart\uart3.c)(0x53B2103B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\uart3.o" --omf_browse ".\debug\uart3.crf" --depend ".\debug\uart3.d")
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\usart\uart3.c)(0x53AA69D8)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\uart3.o" --omf_browse ".\debug\uart3.crf" --depend ".\debug\uart3.d")
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-=======
-F (..\..\..\utilities\usart\uart3.c)(0x53AA632F)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\uart3.o" --omf_browse ".\debug\uart3.crf" --depend ".\debug\uart3.d")
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\usart\uart3.c)(0x53AA69D8)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\uart3.o" --omf_browse ".\debug\uart3.crf" --depend ".\debug\uart3.d")
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\usart\uart3.c)(0x53B3FE99)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\uart3.o" --omf_browse ".\debug\uart3.crf" --depend ".\debug\uart3.d")
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -327,23 +249,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -523,22 +430,8 @@ I (..\..\..\utilities\include\mmc_sd.h)(0x53869960)
 I (..\..\..\utilities\include\sd.h)(0x53869960)
 I (..\..\..\utilities\include\rtc.h)(0x53869960)
 I (..\..\..\utilities\include\printer.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\sd\sd.c)(0x53B3D918)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\sd.o" --omf_browse ".\debug\sd.crf" --depend ".\debug\sd.d")
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-=======
-F (..\..\..\utilities\sd\sd.c)(0x53869960)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\sd.o" --omf_browse ".\debug\sd.crf" --depend ".\debug\sd.d")
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\sd\sd.c)(0x53869960)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\sd.o" --omf_browse ".\debug\sd.crf" --depend ".\debug\sd.d")
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\sd\sd.c)(0x53B3FE99)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\sd.o" --omf_browse ".\debug\sd.crf" --depend ".\debug\sd.d")
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -574,23 +467,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -621,19 +499,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\spi_flash\spi_flash.c)(0x53B2103B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\spi_flash.o" --omf_browse ".\debug\spi_flash.crf" --depend ".\debug\spi_flash.d")
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\spi_flash\spi_flash.c)(0x53AA69D8)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\spi_flash.o" --omf_browse ".\debug\spi_flash.crf" --depend ".\debug\spi_flash.d")
-=======
-F (..\..\..\utilities\spi_flash\spi_flash.c)(0x53AA61E3)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\spi_flash.o" --omf_browse ".\debug\spi_flash.crf" --depend ".\debug\spi_flash.d")
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\spi_flash\spi_flash.c)(0x53AA69D8)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\spi_flash.o" --omf_browse ".\debug\spi_flash.crf" --depend ".\debug\spi_flash.d")
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\spi_flash\spi_flash.c)(0x53B3FE99)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\spi_flash.o" --omf_browse ".\debug\spi_flash.crf" --depend ".\debug\spi_flash.d")
 I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
@@ -675,19 +541,7 @@ I (..\..\..\utilities\include\rtc.h)(0x53869960)
 I (..\..\..\utilities\include\delay.h)(0x53869960)
 I (..\..\..\utilities\include\Mini_hopper.h)(0x53869960)
 I (C:\Keil\ARM\RV31\Inc\stdio.h)(0x4F58357C)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\serialscreen\serialscreen.c)(0x53B3783C)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\serialscreen.o" --omf_browse ".\debug\serialscreen.crf" --depend ".\debug\serialscreen.d")
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\serialscreen\serialscreen.c)(0x53B13A3B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\serialscreen.o" --omf_browse ".\debug\serialscreen.crf" --depend ".\debug\serialscreen.d")
-=======
-F (..\..\..\utilities\serialscreen\serialscreen.c)(0x53AA634A)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\serialscreen.o" --omf_browse ".\debug\serialscreen.crf" --depend ".\debug\serialscreen.d")
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\serialscreen\serialscreen.c)(0x53B13A3B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\serialscreen.o" --omf_browse ".\debug\serialscreen.crf" --depend ".\debug\serialscreen.d")
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\serialscreen\serialscreen.c)(0x53B40342)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\serialscreen.o" --omf_browse ".\debug\serialscreen.crf" --depend ".\debug\serialscreen.d")
 I (C:\Keil\ARM\RV31\Inc\string.h)(0x4F58357C)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
@@ -723,35 +577,11 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x5386995A
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\uart3.h)(0x53869960)
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-=======
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
-I (..\..\..\utilities\include\uart3.h)(0x53869960)
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -780,11 +610,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
-<<<<<<< HEAD
 F (..\..\..\utilities\szt_Gpboc\szt_gpboc.c)(0x53AA7E8A)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\szt_gpboc.o" --omf_browse ".\debug\szt_gpboc.crf" --depend ".\debug\szt_gpboc.d")
-=======
-F (..\..\..\utilities\szt_Gpboc\szt_gpboc.c)(0x53869960)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\szt_gpboc.o" --omf_browse ".\debug\szt_gpboc.crf" --depend ".\debug\szt_gpboc.d")
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -820,31 +646,10 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -909,31 +714,10 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x5386995A
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -964,19 +748,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\protocol\protocol.c)(0x53B372AA)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\protocol.o" --omf_browse ".\debug\protocol.crf" --depend ".\debug\protocol.d")
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\protocol\protocol.c)(0x53AA69D8)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\protocol.o" --omf_browse ".\debug\protocol.crf" --depend ".\debug\protocol.d")
-=======
-F (..\..\..\utilities\protocol\protocol.c)(0x53AA61E3)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\protocol.o" --omf_browse ".\debug\protocol.crf" --depend ".\debug\protocol.d")
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\protocol\protocol.c)(0x53AA69D8)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\protocol.o" --omf_browse ".\debug\protocol.crf" --depend ".\debug\protocol.d")
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\protocol\protocol.c)(0x53B3FE99)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\protocol.o" --omf_browse ".\debug\protocol.crf" --depend ".\debug\protocol.d")
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -1011,31 +783,10 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x5386995A
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -1142,19 +893,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\delay.h)(0x53869960)
 F (..\..\..\utilities\coins\coin.c)(0x53869960)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\coin.o" --omf_browse ".\debug\coin.crf" --depend ".\debug\coin.d")
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -1190,23 +929,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -1238,19 +962,7 @@ I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
 F (..\..\..\utilities\mini_hopper\Mini_hopper.c)(0x53869960)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\mini_hopper.o" --omf_browse ".\debug\mini_hopper.crf" --depend ".\debug\mini_hopper.d")
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -1286,23 +998,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -1333,19 +1030,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\LedMsgHandle\MsgHandle.c)(0x53B2B5DB)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\msghandle.o" --omf_browse ".\debug\msghandle.crf" --depend ".\debug\msghandle.d")
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\LedMsgHandle\MsgHandle.c)(0x53B0D44B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\msghandle.o" --omf_browse ".\debug\msghandle.crf" --depend ".\debug\msghandle.d")
-=======
-F (..\..\..\utilities\LedMsgHandle\MsgHandle.c)(0x53AA2EBD)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\msghandle.o" --omf_browse ".\debug\msghandle.crf" --depend ".\debug\msghandle.d")
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\LedMsgHandle\MsgHandle.c)(0x53B0D44B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\msghandle.o" --omf_browse ".\debug\msghandle.crf" --depend ".\debug\msghandle.d")
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\LedMsgHandle\MsgHandle.c)(0x53B3FE98)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\msghandle.o" --omf_browse ".\debug\msghandle.crf" --depend ".\debug\msghandle.d")
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -1381,27 +1066,9 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-=======
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -1432,19 +1099,7 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\network_handle\network_handle.c)(0x53B3E7DE)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\network_handle.o" --omf_browse ".\debug\network_handle.crf" --depend ".\debug\network_handle.d")
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\network_handle\network_handle.c)(0x53B142A1)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\network_handle.o" --omf_browse ".\debug\network_handle.crf" --depend ".\debug\network_handle.d")
-=======
-F (..\..\..\utilities\network_handle\network_handle.c)(0x53AA601F)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\network_handle.o" --omf_browse ".\debug\network_handle.crf" --depend ".\debug\network_handle.d")
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\network_handle\network_handle.c)(0x53B142A1)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\network_handle.o" --omf_browse ".\debug\network_handle.crf" --depend ".\debug\network_handle.d")
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\network_handle\network_handle.c)(0x53B3FE98)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\network_handle.o" --omf_browse ".\debug\network_handle.crf" --depend ".\debug\network_handle.d")
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -1488,22 +1143,8 @@ I (C:\Keil\ARM\RV31\Inc\stdio.h)(0x4F58357C)
 I (C:\Keil\ARM\RV31\Inc\string.h)(0x4F58357C)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
 I (..\..\..\utilities\include\sd.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\printer\printer.c)(0x53B3BFD4)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\printer.o" --omf_browse ".\debug\printer.crf" --depend ".\debug\printer.d")
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-=======
-F (..\..\..\utilities\printer\printer.c)(0x53869960)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\printer.o" --omf_browse ".\debug\printer.crf" --depend ".\debug\printer.d")
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\printer\printer.c)(0x53869960)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\printer.o" --omf_browse ".\debug\printer.crf" --depend ".\debug\printer.d")
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\printer\printer.c)(0x53B3FE99)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\printer.o" --omf_browse ".\debug\printer.crf" --depend ".\debug\printer.d")
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -1539,23 +1180,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -1586,27 +1212,9 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\bsp\bsp.c)(0x53B3C9BC)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\bsp.o" --omf_browse ".\debug\bsp.crf" --depend ".\debug\bsp.d")
+F (..\..\..\utilities\bsp\bsp.c)(0x53B3FE98)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\bsp.o" --omf_browse ".\debug\bsp.crf" --depend ".\debug\bsp.d")
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\bsp\bsp.c)(0x53B13E7D)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\bsp.o" --omf_browse ".\debug\bsp.crf" --depend ".\debug\bsp.d")
-I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-=======
-F (..\..\..\utilities\bsp\bsp.c)(0x53AA64AA)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\bsp.o" --omf_browse ".\debug\bsp.crf" --depend ".\debug\bsp.d")
-I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\bsp\bsp.c)(0x53B13E7D)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\bsp.o" --omf_browse ".\debug\bsp.crf" --depend ".\debug\bsp.d")
-I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\CMSIS\Include\core_cmInstr.h)(0x4FA9C1FC)
@@ -1641,23 +1249,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -1688,23 +1281,8 @@ I (..\..\..\utilities\include\spi_flash.h)(0x53869960)
 I (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)
 I (..\..\..\utilities\include\network_handle.h)(0x53869960)
 I (..\..\..\utilities\include\uart5.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\vioce\voice.c)(0x53B2103B)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\voice.o" --omf_browse ".\debug\voice.crf" --depend ".\debug\voice.d")
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\vioce\voice.c)(0x53AA6A11)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\voice.o" --omf_browse ".\debug\voice.crf" --depend ".\debug\voice.d")
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-=======
-F (..\..\..\utilities\vioce\voice.c)(0x53AA61E3)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\voice.o" --omf_browse ".\debug\voice.crf" --depend ".\debug\voice.d")
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\vioce\voice.c)(0x53AA6A11)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\voice.o" --omf_browse ".\debug\voice.crf" --depend ".\debug\voice.d")
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\vioce\voice.c)(0x53B3FE99)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\voice.o" --omf_browse ".\debug\voice.crf" --depend ".\debug\voice.d")
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -1812,31 +1390,10 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\timer3.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -2011,19 +1568,7 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 F (..\..\..\utilities\intel_flash\intel_flash.c)(0x53869960)(-c --cpu Cortex-M4 -D__MICROLIB -g -O0 --apcs=interwork -I..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\..\..\utilities\include -I..\..\test -I..\..\..\filesys\ff\src -I..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include -I C:\Keil\ARM\RV31\Inc -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\ST\STM32F4xx -DUSE_STDPERIPH_DRIVER -o ".\debug\intel_flash.o" --omf_browse ".\debug\intel_flash.crf" --depend ".\debug\intel_flash.d")
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\bsp.h)(0x53AA7E62)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\bsp.h)(0x53B40109)
 I (..\..\..\Libraries\CMSIS\ST\STM32F4xx\Include\stm32f4xx.h)(0x53AA64EF)
 I (C:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x53AA64E1)
 I (C:\Keil\ARM\RV31\Inc\stdint.h)(0x4F58357C)
@@ -2059,23 +1604,8 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x538699
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
 I (..\..\..\utilities\include\MsgHandle.h)(0x53869960)
-<<<<<<< HEAD
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53B2103B)
-I (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)
-=======
-<<<<<<< HEAD
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA61E3)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-I (..\..\..\utilities\include\vioce.h)(0x53AA69D8)
-I (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+I (..\..\..\utilities\include\vioce.h)(0x53B3FE98)
+I (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)
 I (..\..\..\utilities\include\protocol.h)(0x53869960)
 I (..\..\..\utilities\include\timer2.h)(0x53869960)
 I (..\..\..\utilities\include\timer4.h)(0x53869960)
@@ -3278,28 +2808,15 @@ I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h)(0x5386995A
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_usart.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h)(0x5386995A)
 I (..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\misc.h)(0x5386995A)
-F (..\readme.txt)(0x53869960)()
+F (..\readme.txt)(0x53B3FE9E)()
 F (..\..\..\utilities\include\uart1.h)(0x53869960)()
 F (..\..\..\utilities\include\uart2.h)(0x53869960)()
 F (..\..\..\utilities\include\uart3.h)(0x53869960)()
 F (..\..\..\utilities\include\uart4.h)(0x53869960)()
 F (..\..\..\utilities\include\uart5.h)(0x53869960)()
 F (..\..\..\utilities\include\uart6.h)(0x53869960)()
-<<<<<<< HEAD
 F (..\..\..\utilities\include\bill.h)(0x53AA6A11)()
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\include\bsp.h)(0x53B3B8E9)()
-=======
-F (..\..\..\utilities\include\bsp.h)(0x53AA7E62)()
-=======
-F (..\..\..\utilities\include\bill.h)(0x53AA2EBD)()
-F (..\..\..\utilities\include\bsp.h)(0x53AA61E3)()
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\include\bsp.h)(0x53AA7E62)()
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\include\bsp.h)(0x53B40109)()
 F (..\..\..\utilities\include\coin.h)(0x53869960)()
 F (..\..\..\utilities\include\delay.h)(0x53869960)()
 F (..\..\..\utilities\include\Mini_hopper.h)(0x53869960)()
@@ -3309,35 +2826,11 @@ F (..\..\..\utilities\include\network_handle.h)(0x53869960)()
 F (..\..\..\utilities\include\printer.h)(0x53869960)()
 F (..\..\..\utilities\include\rtc.h)(0x53869960)()
 F (..\..\..\utilities\include\sd.h)(0x53869960)()
-<<<<<<< HEAD
-<<<<<<< HEAD
-F (..\..\..\utilities\include\serialscreen.h)(0x53B2103B)()
+F (..\..\..\utilities\include\serialscreen.h)(0x53B3FE98)()
 F (..\..\..\utilities\include\spi_flash.h)(0x53869960)()
 F (..\..\..\utilities\include\protocol.h)(0x53869960)()
 F (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)()
-F (..\..\..\utilities\include\vioce.h)(0x53B2103B)()
-=======
-<<<<<<< HEAD
-F (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)()
-F (..\..\..\utilities\include\spi_flash.h)(0x53869960)()
-F (..\..\..\utilities\include\protocol.h)(0x53869960)()
-F (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)()
-F (..\..\..\utilities\include\vioce.h)(0x53AA69D8)()
-=======
-F (..\..\..\utilities\include\serialscreen.h)(0x53AA61E3)()
-F (..\..\..\utilities\include\spi_flash.h)(0x53869960)()
-F (..\..\..\utilities\include\protocol.h)(0x53869960)()
-F (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)()
-F (..\..\..\utilities\include\vioce.h)(0x53AA61E3)()
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-F (..\..\..\utilities\include\serialscreen.h)(0x53AA6FBA)()
-F (..\..\..\utilities\include\spi_flash.h)(0x53869960)()
-F (..\..\..\utilities\include\protocol.h)(0x53869960)()
-F (..\..\..\utilities\include\szt_gpboc.h)(0x53869960)()
-F (..\..\..\utilities\include\vioce.h)(0x53AA69D8)()
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
+F (..\..\..\utilities\include\vioce.h)(0x53B3FE98)()
 F (..\..\..\utilities\include\timer2.h)(0x53869960)()
 F (..\..\..\utilities\include\timer3.h)(0x53869960)()
 F (..\..\..\utilities\include\timer4.h)(0x53869960)()

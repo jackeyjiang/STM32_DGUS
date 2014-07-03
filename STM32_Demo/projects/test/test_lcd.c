@@ -62,17 +62,6 @@ int main(void)
 				}
 				if(LinkTime >=5) //长链接出错重发与错误处理
 				{
-<<<<<<< HEAD
-<<<<<<< HEAD
-					if(OrderSendLink()==0)//链接失败直接报错
-          {
-						if(OrderSendLink()==0)
-						{
-							erro_record |= (1<<SendUR6Erro);
-							Current= erro_hanle;
-            }
-          }  //为1成功，为0失败
-=======
 					if(OrderSendLink()==0)
 					{
 						if(OrderSendLink()==0)
@@ -82,12 +71,7 @@ int main(void)
 							break;
             }
           }
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-					OrderSendLink();  //为1成功，为0失败
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
 					VariableChage(current_temprature,Temperature); //5S一次
-					//ReadPage();不能进行页面查询，我的程序处理方法不适合一帧一帧的解
 				}
 				//显示倒计时,可以更具标记为对选餐倒计时进行更新
 				if(UserAct.MealID)

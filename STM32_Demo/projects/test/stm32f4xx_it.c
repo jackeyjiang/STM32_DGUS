@@ -365,11 +365,7 @@ void PVD_IRQHandler(void)
   if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
  {
      PWR_ClearFlag(PWR_FLAG_PVDO);
-<<<<<<< HEAD
 	   erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
-=======
-	   //erro_record |= (1<<outage_erro);  
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 	   SaveUserData();
      f_close(&fsrc);	   //低电压检测    
  }	

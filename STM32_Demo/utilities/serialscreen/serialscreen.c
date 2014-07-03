@@ -374,22 +374,6 @@ void ReadPage(void)
 		temp[4]=	PIC_ID;	
 		Uart3_Send(temp,sizeof(temp));
 }
- /*******************************************************************************
- * 函数名称:ReadPage                                                                     
- * 描    述:读取当前页,数据处理在DealSeriAceptData中处理                                                           
- *                                                                               
- * 输    入:无                                                                    
- * 输    出:                                                                     
- * 返    回:                                                             
- * 修改日期:2014年6月24日                                                                    
- *******************************************************************************/ 	
-void ReadPage(void)
-{
-		unsigned char temp[6]={0};
-		memcpy(temp,RegisterRead,sizeof(RegisterRead));	
-		temp[4]=	PIC_ID;	
-		Uart3_Send(temp,sizeof(temp));
-}
 
  /*******************************************************************************
  * 函数名称:DispLeftMeal                                                                     
@@ -931,11 +915,7 @@ void RecRegisterValues(char VariableAdress,char *VariableData,char length)
 	if(VariableAdress==PIC_ID)//读取判断当前的页面的ID
 	{
 		current_page =VariableData[length-1];
-<<<<<<< HEAD
 		if(current_page!=pageunitil)
-=======
-		if(current_page!=cmd_page)
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 		{
 			//PageChange(cmd_page);
     }
@@ -1707,11 +1687,7 @@ void DealSeriAceptData(void)
 	unsigned char Rx3DataBuff[10]={0};/*设置一个数组大小，?以免越界(out of bounds),?可变长度数组*/
 	char RegisterData[5]={0};  //寄存器数据数组
 	char VariableData[5]={0};  //变量数据数组
-<<<<<<< HEAD
 	char RegisterLength= 0;   //寄存器数据的长度
-=======
-  char RegisterLength= 0;   //寄存器数据的长度
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 	char VariableLength= 0;   //变量数据的长度
 
 	while(UART3_GetCharsInRxBuf()>=9) //获取缓冲区大小，直至缓冲区无数据,一开始是9
@@ -1740,18 +1716,10 @@ loop:	  if(USART3_GetChar(&temp1)==1)
 		  if(Rx3DataBuff[0]==0x81)  //读寄存器返回命令
 		  {
 			  RegisterAdress =Rx3DataBuff[1];
-<<<<<<< HEAD
 			  for(i=0;i<(length-2);i++)
 			  RegisterData[i]=Rx3DataBuff[2+i];
 				//加入修改相关数据的功能
 				RecRegisterValues(RegisterAdress,RegisterData,RegisterLength);
-=======
-				RegisterLength =Rx3DataBuff[2];
-			  for(i=0;i<(length-3);i++)
-			  RegisterData[i]=Rx3DataBuff[3+i];
-				//加入修改相关数据的功能
-        RecRegisterValues(RegisterAdress,RegisterData,RegisterLength);
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 		  }
 		  else if(Rx3DataBuff[0]==0x83) //读数据存储器返回命令
 		  {
