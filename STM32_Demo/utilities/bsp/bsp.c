@@ -252,7 +252,6 @@ unsigned char  WaitPayMoney(void)
 		CurrentPoint = 0 ;
 		UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 		MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
-    MoneyPayBack_Already_total = UserAct.MoneyBack; //计算应退币的数
 		ClearUserBuffer();//清空用户数据
 		if(UserAct.MoneyBack>0)
 		Current= hpper_out;
@@ -302,7 +301,8 @@ uint8_t WaitMeal(void)
         {
 					PlayMusic(VOICE_8);	
 					MealoutCurrentPointer= 1;
-				}   
+				}
+        //printf("case 0/UserAct.MealID == %d\r\n",UserAct.MealID);				
 			}break;
 			case 1 : /* 发送餐的数目减一*/
 			{			 
@@ -430,44 +430,71 @@ uint8_t WaitMeal(void)
 				UserAct.Meal_takeout++;//取餐数据加
 				VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示
 				MealoutCurrentPointer= 0;
+				//printf("case 5/UserAct.MealID == %d\r\n",UserAct.MealID);
 				if(UserAct.MealID == 0x01)
 				{
 					UserAct.MealCnt_1st--;
-					if(UserAct.MealCnt_1st==0)
+					//if(UserAct.MealCnt_1st==0)
+					if(0)
 					{
 						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
 					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}	
 				}
 				else if(UserAct.MealID == 0x02)
 				{
 					UserAct.MealCnt_2nd--;
-					if(UserAct.MealCnt_2nd==0)
+					//if(UserAct.MealCnt_2nd==0)
+					if(0)
 					{
 						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
-					}					
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
 				}
 				else if(UserAct.MealID == 0x03)
 				{
 					UserAct.MealCnt_3rd--;
-					if(UserAct.MealCnt_3rd==0)
+					//if(UserAct.MealCnt_3rd==0)
+					if(0)
 					{
 						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
-					}			
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
 				}				
 				else if(UserAct.MealID == 0x04)
 				{
 					UserAct.MealCnt_4th--; 	
-					if(UserAct.MealCnt_4th==0)
+					//if(UserAct.MealCnt_4th==0)
+					if(0)
 					{
 						//printf("tookkind_meal\r\n");
 						return tookkind_meal;
-					}		
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
 				}
-				//printf("tookone_meal\r\n");
-				return tookone_meal;
+				else 
+				{
+					printf("tookone_meal erro\r\n");
+        }
 			}
 			default:break;
 	  }
@@ -614,208 +641,202 @@ void PollAbnormalHandle(void)
 uint16_t erro_flag=0;
 void AbnormalHandle(uint16_t erro)
 {	
-	erro_flag = erro;
-	erro_record |= (1<<erro);
+	erro_flag = erro; //只是在错误处理与判断时需要用到，
 	switch(erro)
 	{
 		case outage_erro:      //断电：只有在开机的时候判断是否有断电的情况发生 
 			{
-			  if(UserAct.Meal_totoal!=UserAct.Meal_takeout)//先判断是否还有餐品没有取出
+			  if((UserAct.Meal_totoal!=UserAct.Meal_takeout)||(UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
 				{
-					PageChange(Err_interface);
-					DisplayAbnormal("E070");					
-        }
-				else if(UserAct.MoneyBack>0) //再判断用户未退的钱
-				{
-					PageChange(Err_interface);
+					DataUpload(Failed);
 					DisplayAbnormal("E070");
-          //StatusUploadingFun(0xE070); //状态上送					
-				}
+					PageChange(Err_interface);
+        }
 				else 
 				{
 					erro_record &= ~(1<<erro); //如果需要处理其他异常呢
-					//erro_flag= 0;
+					erro_flag= 0;
 					return;
 				}
 			}break;
 		case sdcard_erro:     //SD卡存储异常
 			{
 	      PlayMusic(VOICE_11);	
-	      PageChange(Err_interface);				
-				DisplayAbnormal("E000");
+        DisplayAbnormal("E000");
+	      PageChange(Err_interface);					
 				StatusUploadingFun(0xE000); //状态上送
 			}break;
 		case billset_erro:    //纸币机异常
 			{
-	      PlayMusic(VOICE_11);	
-	      PageChange(Err_interface);				
-				DisplayAbnormal("E010");
+	      PlayMusic(VOICE_11);	  			
+				DisplayAbnormal("E010"); 
+        PageChange(Err_interface);	
 				StatusUploadingFun(0xE010); //状态上送
 			}break;
 		case coinset_erro:      //投币机
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E020");
 	      PageChange(Err_interface);				
-				DisplayAbnormal("E020");
 				StatusUploadingFun(0xE020); //状态上送
 			}break;
 		case coinhooperset_erro:    //退币机
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E030");
 	      PageChange(Err_interface);				
-				DisplayAbnormal("E030");
 				StatusUploadingFun(0xE030); //状态上送
 				//没有币可退的时候，UserAct.Payback 不为0
 			}break;
 		case coinhooperset_empty:   //找零用光
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E032");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E032");
 				StatusUploadingFun(0xE032); //状态上送
 				//UserAct.MoneyBack
 			}break;
 		case printer_erro:      //打印机异常
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E040");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E040");
 				StatusUploadingFun(0xE040); //状态上送
 			}break;
 		case cardread_erro:     //读卡器异常
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E050");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E050");
 				StatusUploadingFun(0xE050); //状态上送
 			}break;
 		case network_erro:     //网络异常
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E060");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E060");
 			}break;
 		case signin_erro:    //签到异常
 		   {
 	       PlayMusic(VOICE_11);	
-	       PageChange(Err_interface);
-				 DisplayAbnormal("E061");			   
+         DisplayAbnormal("E061");			
+	       PageChange(Err_interface);  
        }break;
 		case powerup_erro:     //开机的用户数据处理，只有在开机的时候才有
 			{
-        PlayMusic(VOICE_11);				
-	      PageChange(Err_interface);
-				DisplayAbnormal("E071");
+        PlayMusic(VOICE_11);	
+        DisplayAbnormal("E071");			
+	      PageChange(Err_interface);	
 			}break;					
 		case X_timeout:        //x轴传感器超时
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E101");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E101");
 				StatusUploadingFun(0xE101); //状态上送
 				DataUpload(Failed);
 			}break;
 		case X_leftlimit:      //马达左动作极限输出
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E102");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E102");
 				StatusUploadingFun(0xE102); //状态上送
 				DataUpload(Failed);
 			}break;
 		case X_rightlimit:     //马达右动作极限输出
 			{
 				DisplayAbnormal("E103");
-	      PlayMusic(VOICE_11);	
+	      PlayMusic(VOICE_11);
+        StatusUploadingFun(0xE103); //状态上送	
 	      PageChange(Err_interface);
-				StatusUploadingFun(0xE103); //状态上送
 				DataUpload(Failed);
 			}break;
 		case mealtake_timeout: //取餐口传感器超时
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E201");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E201");
 				StatusUploadingFun(0xE201); //状态上送
 				DataUpload(Failed);
 			}break;
 		case Y_timeout:        //y轴传感器超时
 			{
-	      PlayMusic(VOICE_11);	
+	      PlayMusic(VOICE_11);
+        DisplayAbnormal("E301");	
 	      PageChange(Err_interface);
-				DisplayAbnormal("E301");
 				StatusUploadingFun(0xE302); //状态上送
 				DataUpload(Failed);
 			}break;
 		case link_timeout:     //链接超时
 			{
-	      PlayMusic(VOICE_11);	
+	      PlayMusic(VOICE_11);
+        DisplayAbnormal("E401");	
 	      PageChange(Err_interface);
-				DisplayAbnormal("E401");
 				StatusUploadingFun(0xE401); //状态上送
 				DataUpload(Failed);
 			}break;
 		case Z_timeout:        //z轴传感器超时
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E501");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E501");
 				StatusUploadingFun(0xE501); //状态上送
 				DataUpload(Failed);
 			}break;
 		case Z_uplimit:        //z轴马达上动作超出
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E502");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E502");
 				StatusUploadingFun(0xE502); //状态上送
 				DataUpload(Failed);
 			}break;
 		case Z_downlimit:      //z马达下动作超出
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E503");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E503");
 				StatusUploadingFun(0xE503); //状态上送
 				DataUpload(Failed);
 			}break;
 		case solenoid_timeout: //电磁阀超时  ???有时有异常
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E601");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E601");
 				StatusUploadingFun(0xE601); //状态上送
 				DataUpload(Failed);
 			}break;
 		case Eeprom_erro:      //eeprom 异常
 			{
 	      PlayMusic(VOICE_11);	
+        DisplayAbnormal("E711");
 	      PageChange(Err_interface);
-				DisplayAbnormal("E711");
 				StatusUploadingFun(0xE711); //状态上送
 				DataUpload(Failed);
 			}break;
 		case SendUR6Erro:      //发送数据异常或超时
 			{
-	      PlayMusic(VOICE_11);	
+	      PlayMusic(VOICE_11);
+        DisplayAbnormal("E801");	
 	      PageChange(Err_interface);
-        DisplayAbnormal("E801");
 				StatusUploadingFun(0xE801); //状态上送
 				DataUpload(Failed);
       }break;
     case GetMealError:     //机械手5秒取不到餐
 			{
-	      PlayMusic(VOICE_11);	
+	      PlayMusic(VOICE_11);
+        DisplayAbnormal("E802");	
 	      PageChange(Err_interface);
-        DisplayAbnormal("E802");
 				StatusUploadingFun(0xE802); //状态上送
 				DataUpload(Failed);
       }break;
     case MealNoAway:       //餐在出餐口20秒还未被取走
 			{
-	      PlayMusic(VOICE_11);	
+	      PlayMusic(VOICE_11);
+        DisplayAbnormal("E803");	
 	      PageChange(Err_interface);
-        DisplayAbnormal("E803");
 				StatusUploadingFun(0xE803); //状态上送
       }break;
 		default:break;
@@ -831,8 +852,11 @@ void AbnormalHandle(uint16_t erro)
 					MoneyPayBack_Already_total=0;
 					ClearUserBuffer();
 					SaveUserData();	
-					//OnlymachieInit();	//只有机械手出错的时候复位机械手
 				}
+				if(erro_record>=(1<<X_timeout))//如果是机械售错误值上传一次数据，对高位取反
+				{
+					erro_record&=~0xFF00;
+        }
 				erro_record &= ~(1<<erro); //一次只处理一次异常
 				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
 				break;
@@ -896,7 +920,30 @@ void ReadUserData(void)
 	MoneyPayBack_Already_total= RTC_ReadBackupRegister(RTC_BKP_DR18);	
 }
 
-
+  /*******************************************************************************
+ * 函数名称:ErrRecHandle                                                                     
+ * 描    述:错误记录处理                                                              
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年7月2日                                                                    
+ *******************************************************************************/ 
+void ErrRecHandle(void)
+{
+	 ReadUserData();  //需要进行数据处理，判断
+	 if(erro_record!=0) //当有错误记录，需要进行处理
+	 {
+		 //PollAbnormalHandle();
+		 AbnormalHandle(outage_erro);//相当于开机异常处理
+		 erro_record=0;
+	 }
+	 else
+	 {
+		 ClearUserBuffer(); //清除之前读取的数据
+	 }
+   RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);	 	
+}
 
  /*
   PVD ---- 低电压检测                抢占优先级  0      亚优先级 0 		用于保护sd卡
@@ -944,14 +991,10 @@ void hardfawreInit(void)
 	 UserAct.PayForCards     = 0;
 	 UserAct.PayAlready      = 0;
    SystemInit();
-<<<<<<< HEAD
-=======
-	 delay_us(10); //上电等待路由器启动
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 	 PVD_Configuration();        //掉电检测初始化 0 , 0
 	 Uart4_Configuration();     //纸币机串口初始化 1, 2
-	 Uart3_Configuration();	    // 串口屏初始化  0 , 3
 	 Uart1_Configuration();	    //打印机串口初始化
+	 Uart3_Configuration();	    // 串口屏初始化  0 , 3
 	 Uart2_Configuration();	    //深圳通、银联卡串口 1 , 0
 	 Uart5_Configuration();		//网络串口初始化 1 , 1
 	 TIM2_Init();		        //电机
@@ -971,27 +1014,10 @@ void hardfawreInit(void)
 	 OpenTIM2();
 	 delay_ms(1000);
 	 PageChange(HardwareInit_interface); //硬件初始化界面
-<<<<<<< HEAD
 	 DisplayRecordTime(); //初始化时获取时间作为异常的时间
-=======
-// 	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
-// 	 WDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
-// 	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
-// 	 IWDG_SetReload(0x0138); // 1S
-// 	 IWDG_Enable();
- 	 OpenTIM2();
-  //PageChange(Logo_interface); //重复一次就可以成功
-   delay_ms(500);//等待设备启动
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
 	 SPI_FLASH_Init();          //Flash初始化
-	// SPI_FLASH_Init();          //重复初始化才行
+	 SPI_FLASH_Init();          //重复初始化才行
    SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品
-<<<<<<< HEAD
-=======
-	 delay_ms(500);//等待设备启动
-	 PageChange(HardwareInit_interface); //硬件初始化界面
-	 //WriteCoins();
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
    ReadCoins();//读取有多少硬币	 
 	 for(i=0;i<90;i++)
 	 {
@@ -1000,31 +1026,4 @@ void hardfawreInit(void)
 	 }
 	 WriteMeal();  //写入餐品数据
 	 StatisticsTotal(); //后面的程序需要使用  	
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	 DisplayRecordTime(); //初始化时获取时间作为异常的时间
-=======
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
-	 ReadUserData();  //需要进行数据处理，判断
-	 if(erro_record!=0) //当有错误记录，需要进行处理
-	 {
-		 PollAbnormalHandle();
-		 //AbnormalHandle(outage_erro);//相当于开机异常处理
-		 //erro_record=0;
-	 }
-	 else
-	 {
-		 ClearUserBuffer(); //清除之前读取的数据
-<<<<<<< HEAD
-<<<<<<< HEAD
-	 }	
-=======
-	 }
-	 RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);	
->>>>>>> 35e400d25fead67c10024aacaf21fe3cec5941b9
->>>>>>> 986fe462503bb400efae865a6d09dff860b462b5
-=======
-	 }	
->>>>>>> parent of 4ed7248... change something but data record and upload is still have bug,logic must be have some problem
 }														 

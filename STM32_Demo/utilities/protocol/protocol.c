@@ -133,7 +133,7 @@ void SendLink(void)
 {
   uint8_t Cmd[6]={'P','0','0','0',0x0d,0x0a};
   uint8_t i;
-  
+  //USART_ClearFlag(USART6,USART_FLAG_TC);
   for(i=0;i<6;i++)
   {
     USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
@@ -494,7 +494,8 @@ uint8_t OrderSendLink(void)
 			machinerec.renack = 0;
 			RetryFre ++;
 			SendLink();			
-		} 	
+		} 
+		
 		if( RetryFre>=3)
 		{
 			LinkTime =0;
@@ -502,8 +503,12 @@ uint8_t OrderSendLink(void)
 			machinerec.renack = 0; 
 			return 0;
 		}
+		
 	}
+	
 }
+
+
 
 /*返回1表示初始化成功，返回0表示初始化失败*/
 uint8_t OrderMachineInit(void)
@@ -516,33 +521,38 @@ uint8_t OrderMachineInit(void)
 	delay_ms(5);
 	while(1)
 	{
-		if(machinerec.reack ==1)	  //ack
+		if( machinerec.reack ==1)	  //ack
 		{
 			LinkTime =0;
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			return 1;
 		}
-		if(LinkTime >1)  //超时
+		
+		if( LinkTime >1)  //超时
 		{
 			LinkTime =0;
 			return 0;
 		}
+		
 		if(machinerec.renack ==1)  //nack
 		{
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			RetryFre ++;
 			MachineInit();			
-		} 	
-		if(RetryFre>=3)
+		} 
+		
+		if( RetryFre>=3)
 		{
 			LinkTime =0;
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			return 0;
 		}
+		
 	}
+	
 }
 
 /*返回1表示发送坐标成功，返回0表示发送坐标失败*/

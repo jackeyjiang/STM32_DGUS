@@ -363,13 +363,12 @@ void PVD_IRQHandler(void)
 {
   EXTI_ClearITPendingBit(EXTI_Line16); 
   if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
- {
-     PWR_ClearFlag(PWR_FLAG_PVDO);
-	   erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
-	   SaveUserData();
-     f_close(&fsrc);	   //低电压检测    
- }	
-
+  {
+    PWR_ClearFlag(PWR_FLAG_PVDO);
+    erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
+    SaveUserData();
+    f_close(&fsrc);	   //低电压检测    
+  }	
 }
 
 

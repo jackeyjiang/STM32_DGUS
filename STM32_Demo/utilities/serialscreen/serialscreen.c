@@ -343,21 +343,16 @@ void DisplayAbnormal(char *abnomal_code)
  * 返    回:void                                                               
  * 修改日期:2014年3月13日                                                                    
  *******************************************************************************/ 	
-char cmd_page= 0;
+char pageunitil= 0;
 void PageChange(char page)
 {
 		unsigned char temp[7]={0};
 		memcpy(temp,RegisterWrite,sizeof(RegisterWrite));	
 		temp[4]=	PIC_ID;	
 	  temp[6]=  page;
-		cmd_page = page;
+		pageunitil = page;
 		Uart3_Send(temp,sizeof(temp));
-    delay_ms(1);//等待屏幕响应可以减少
-    ReadPage();//发送读取页面的参数 
-    delay_ms(1);//等待屏幕响应可以减少
-    ReadPage();//发送读取页面的参数 
-}	
-
+}
  /*******************************************************************************
  * 函数名称:ReadPage                                                                     
  * 描    述:读取当前页,数据处理在DealSeriAceptData中处理                                                           
@@ -498,6 +493,7 @@ void ClearUserBuffer(void)
 	UserAct.MealCost_4th=0;
 	UserAct.MealID=0;
 	UserAct.Meal_totoal=0;
+	UserAct.Meal_takeout=0;
 	UserAct.PayShould=0;
 	UserAct.PayType=0;
   UserAct.PayForCoins=0;
@@ -1066,7 +1062,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				{
 					UserAct.MealCnt_4th_t= DefineMeal[3].MealCount;
 					MealCostDisp(UserAct.MealID,UserAct.MealCnt_4th_t);
-					VariableChage(duck_cost,UserAct.MealCnt_4th_t);	//改变变量地址数据
+					VariableChage(fish_cnt,UserAct.MealCnt_4th_t);	//改变变量地址数据
 				}
 			}break;	
    
@@ -1220,8 +1216,15 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 	          MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
 	          MoneyBack =UserAct.MoneyBack *100 ;  /*需退币退币的临时变量*/
             ClearUserBuffer();
-						UserAct.Cancle= 0x01;
-						Current= hpper_out;
+            if(UserAct.MoneyBack>0) //当有钱需要退的时候，标记用户取消购买，无需退币的时候直接进入温度显示状态
+            {
+              UserAct.Cancle= 0x01;
+						  Current= hpper_out; 
+            }
+            else
+            {              
+              Current= current_temperature; 
+            }
 					}break;
 					default:break;		
 				}					
@@ -1311,8 +1314,8 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 							 memset(InputPassWord,0,6);
 							 if(erro_record!=0) //当有错误的时候处理这个
 							 {
-								 PageChange(UserAbonamalRecord_interface);
 								 DisplayUserRecord();
+								 PageChange(UserAbonamalRecord_interface);
 							   DisplayPassWord(0);//清楚密码显示
 			           PassWordLen = 0;							 			 
 								 break;
@@ -1331,17 +1334,18 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 		        }
 		        else
 		        {
-		          /*密码验证错误，进入密码输入界面*/
-		           PageChange(Password_interface);
-							 DisplayPassWord(0);							
+		          /*密码验证错误，进入密码输入界面*/   
+							 DisplayPassWord(0);	
+               PageChange(Password_interface);						
 			         PassWordLen = 0;
 		        }						
 	        }break;						
 					case 0x12:/*返回*/
 					{
-						if(erro_flag!=0) 
+						if(erro_record!=0) //有错误的时候只能返回到错误界面
 						{
-							 break;
+						  PageChange(Err_interface);
+							break;
 						}								
 		        PageChange(Menu_interface);
 						DisplayPassWord(0);//清楚密码显示
@@ -1361,13 +1365,11 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 						{
 							ClearUserBuffer();
 					    SaveUserData();
-						  //PageChange(Menu_interface);
 							PageChange(Logo_interface);
 						}
    				}break;
 					case 0x02: //返回
 					{
-						erro_flag=1; //清除数据标记
 						PageChange(Err_interface);
 					}break;
           default:break;
@@ -1383,15 +1385,13 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 					}break;
 					case 0x02:  /*餐品设置按钮 应该改为一键清空所有数据 */
 					{
-						//VariableChage(meal_num,0x01);
-						//PageChange(MealInput_interface);
 							for(i=0;i<90;i++)
 	            {
 	              FloorMealMessageWriteToFlash.FlashBuffer[i] = 0 ;
 	            }
 	            WriteMeal();  //写入餐品数据
 							StatisticsTotal(); 
-							DispLeftMeal();//
+							DispLeftMeal();
 					}break;
 					case 0x03:	/*取消键*/
 					{
@@ -1576,7 +1576,6 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 			case temprature_set:
 			{
 				SetTemper(VariableData[1]);
-			//VariableData[1]; 温度变量=VariableData[1];
 			}break;
 			case coins_key:  //按一次退一次
       {
@@ -1678,7 +1677,7 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
  * 修改日期:2014年3月13日                                                                   
  *******************************************************************************/ 	
 void DealSeriAceptData(void)
-{
+ {
 	unsigned char i;
 	unsigned char temp,temp1,length,checkout;
 	char RegisterAdress=0;
@@ -1689,8 +1688,7 @@ void DealSeriAceptData(void)
 	char VariableData[5]={0};  //变量数据数组
 	char RegisterLength= 0;   //寄存器数据的长度
 	char VariableLength= 0;   //变量数据的长度
-
-	while(UART3_GetCharsInRxBuf()>=9) //获取缓冲区大小，直至缓冲区无数据,一开始是9
+	while(UART3_GetCharsInRxBuf()>=9) //获取缓冲区大小，直至缓冲区无数据
 	{	
 		if(USART3_GetChar(&temp)==1)
 		{	
@@ -1731,8 +1729,8 @@ loop:	  if(USART3_GetChar(&temp1)==1)
 			  VariableData[i]=Rx3DataBuff[4+i];
 			  //加入修改变量地址数据的功能
 			  ChangeVariableValues(VariableAdress,VariableData,VariableLength);
-		  }
-	  } 
-	}		
+		   }
+	   } 
+	 }		
 }
 
