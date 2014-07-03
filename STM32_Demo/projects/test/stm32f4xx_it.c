@@ -366,6 +366,13 @@ void PVD_IRQHandler(void)
   {
     PWR_ClearFlag(PWR_FLAG_PVDO);
     erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
+		if(Current == waitfor_money) //当处于付钱状态的时候需要清楚用户的其他数据，除了UserAct.MoneyBack
+		{
+			UserAct.MoneyBack = UserAct.PayAlready;
+			MoneyPayBack_Already_total= UserAct.PayAlready;
+			ClearUserBuffer();
+			UserAct.PayAlready= MoneyPayBack_Already_total;
+    }
     SaveUserData();
     f_close(&fsrc);	   //低电压检测    
   }	

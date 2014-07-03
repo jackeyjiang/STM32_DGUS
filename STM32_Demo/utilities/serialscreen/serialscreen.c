@@ -1362,6 +1362,7 @@ loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is err
 						erro_flag=0; //清除数据标记
 						if(Current==current_temperature)//限定在初始化状态
 						{
+							UserAct.MoneyBack=0;
 							ClearUserBuffer();
 					    SaveUserData();
 							PageChange(Logo_interface);
