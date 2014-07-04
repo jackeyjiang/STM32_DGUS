@@ -373,6 +373,10 @@ void PVD_IRQHandler(void)
 			ClearUserBuffer();
 			UserAct.PayAlready= MoneyPayBack_Already_total;
     }
+    else 
+    {
+      UserAct.MoneyBack =(NewCoinsCnt+CoinsTotoalMessageWriteToFlash.CoinTotoal)-OldCoinsCnt;//通过全局的硬币计数，得到还有多少币未退
+    }
     SaveUserData();
     f_close(&fsrc);	   //低电压检测    
   }	

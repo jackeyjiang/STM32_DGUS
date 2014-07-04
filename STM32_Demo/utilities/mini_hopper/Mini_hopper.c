@@ -119,7 +119,7 @@ uint8_t SendOutN_Coin(int num)
 
  /*******************************************************************************
 * Function Name  : refund_button
-* Description    : 全部退币
+* Description    : 不检测退币吉内是否有币，直接退币
 * Input          : 要退的币数
 * Output         : 未退的币数，修改
 * Return         : 

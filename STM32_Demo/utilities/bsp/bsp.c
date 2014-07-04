@@ -222,9 +222,7 @@ unsigned char  WaitPayMoney(void)
 			UserAct.MoneyBack = UserAct.PayAlready - UserAct.PayShould;	
 			MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
 			UserAct.Meal_totoal= UserAct.MealCnt_4th+UserAct.MealCnt_3rd+UserAct.MealCnt_2nd+UserAct.MealCnt_1st;
-      OldCoinsCnt= UserAct.MoneyBack ; //在这里程序只执行一次
 			VariableChage(mealout_totle,UserAct.Meal_totoal);	
-      NewCoinsCnt= 0; 
 			CloseTIM7();
 			CloseTIM3();
       //将需要打印的数据赋值到相关结构体	

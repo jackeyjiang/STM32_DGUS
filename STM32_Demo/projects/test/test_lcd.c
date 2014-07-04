@@ -123,6 +123,8 @@ int main(void)
 				{					
 					if(UserAct.MoneyBack >0) //需要找币的时候进入
 					{
+            OldCoinsCnt= CoinsTotoalMessageWriteToFlash.CoinTotoal;
+            NewCoinsCnt= UserAct.MoneyBack;
 						coins_time= (UserAct.MoneyBack/10); 
 						cnt_t =  UserAct.MoneyBack%10;		
 						UserAct.MoneyBack= 0;			
@@ -253,10 +255,8 @@ int main(void)
         else if(waitmeal_status == takemeal_erro)
 				{
 					//机械手复位中请等待界面		
-					NewCoinsCnt= 0; 
 					MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//计算总的应该退币的钱
           UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //应该需要退币的钱	
-					OldCoinsCnt= UserAct.MoneyBack;
 					PageChange(Err_interface);
 					UserAct.Cancle= 0x01;
 				  /*如果有币进入退币，如果无币进入错误处理*/
