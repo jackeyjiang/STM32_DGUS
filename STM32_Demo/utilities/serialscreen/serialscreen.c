@@ -1206,15 +1206,16 @@ loop1:	switch(MealID)
 					}break;
 					case 0x04:   /*取消*/
 					{
-loop7:			if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro5");  //关闭现金接受
+loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+	          MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
+	          MoneyBack =UserAct.MoneyBack *100 ;  /*需退币退币的临时变量*/
+            ClearUserBuffer();
+						//UserAct.PayAlready= UserAct.MoneyBack;
+			      if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro5");  //关闭现金接受
             PageChange(Menu_interface);
 						CloseTIM3();
 						CloseTIM7();
 						CurrentPoint = 0 ;
-						UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
-	          MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
-	          MoneyBack =UserAct.MoneyBack *100 ;  /*需退币退币的临时变量*/
-            ClearUserBuffer();
             if(UserAct.MoneyBack>0) //当有钱需要退的时候，标记用户取消购买，无需退币的时候直接进入温度显示状态
             {
               UserAct.Cancle= 0x01;

@@ -151,7 +151,8 @@ void  SPRT(void)
 	unsigned char  p4[]={"脆皮烤鸭  1\t15\t015\r\n"};
 	unsigned char  p5[]={"红烧鱼块  1\t15\t015\r\n"};
 
-  printf("\r\n");//打印回车换行
+  //printf("@\r\n");//打印回车换行
+  //Uart1_Card(huan3,sizeof(huan3)); 
   printf("菜品\t数量\t单价\t金额\r\n"); 	
   RTC_TimeShow();//得到当前的时间
 	COPY(TimeDate,p0,p1);
@@ -202,6 +203,9 @@ void  SPRT(void)
 		printf("支付方式：深圳通支付\r\n");
 	}
 	Uart1_Card(huan3,sizeof(huan3)); 
+	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(SendStc,sizeof(SendStc));//	切纸
-  printf("\r\n");//切纸后换行，以免纸进入缝隙中	
+	Uart1_Card(huan3,sizeof(huan3));
+  printf("1\r\n");//切纸后换行，以免纸进入缝隙中	
+	printf("2\r\n");//切纸后换行，以免纸进入缝隙中	
 }

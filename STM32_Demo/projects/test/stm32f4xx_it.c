@@ -246,7 +246,6 @@ void EXTI15_10_IRQHandler(void)
 	
 	if( EXTI_GetITStatus(EXTI_Line10) != RESET)	
 	{
-		NewCoinsCnt++; //新的硬币机接收个数
 		Coins_cnt++; 
 		CoinsTotoalMessageWriteToFlash.CoinTotoal--;
 	  EXTI_ClearITPendingBit(EXTI_Line10);	
@@ -373,9 +372,9 @@ void PVD_IRQHandler(void)
 			ClearUserBuffer();
 			UserAct.PayAlready= MoneyPayBack_Already_total;
     }
-    else 
+    else if((Current ==hpper_out)||(Current == meal_out))
     {
-      UserAct.MoneyBack =(NewCoinsCnt+CoinsTotoalMessageWriteToFlash.CoinTotoal)-OldCoinsCnt;//通过全局的硬币计数，得到还有多少币未退
+			UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
     }
     SaveUserData();
     f_close(&fsrc);	   //低电压检测    

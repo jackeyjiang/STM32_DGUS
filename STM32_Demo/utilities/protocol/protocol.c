@@ -744,62 +744,62 @@ uint8_t OrderSetTemper(uint8_t inputtemper)
 void OnlymachieInit(void)
 {
   uint8_t temp;
-  uint8_t InitOkflag =0;
+  uint8_t InitOkflag =0; 
   uint8_t mancineinitflag;
+	uint8_t linkflag =0;  //
   
   LinkTime =0;
 	OpenTIM5();
-
-	Usart6Index =0;  //机械手接收数组
-	memset(Usart6Buff,0,6);
-  
+	Usart6Index =0; 
+	memset(Usart6Buff,0,6); 
   machinerec.rerelative = 0;
-  
-  while(1)
-  {
-    temp =0;
-    temp = OrderSendLink();  //为1成功，为0失败
-    if( temp == 1)
-    {
-      mancineinitflag = OrderMachineInit();
-      
-      if(mancineinitflag ==1)  //命令发送成功
-      {
-        LinkTime =0;
-        while(1)
-        {
-          if(Usart6DataFlag ==1)  //与机械手有通迅
-          {
-            manageusart6data();
-          }
-          
-          if(machinerec.rerelative == 1)   //到达待机位置
-          {
-            InitOkflag =1;
-            break;
-          }
-          
-          if(LinkTime >= 60)
-          {
-            //printf("机械手初始化超时\r\n");
-            break;
-          }
-        }
-      }
-    }
-    
-    if(LinkTime >= 60)
-    {
-      //printf("机械手连接超时\r\n");
-      break;
-    }
-    
-    if(InitOkflag ==1 )
-    {
-      //printf(" 机械手初始化成功\r\n");
-      break;
-    }
-   
-  }
-  
+	linkflag = OrderSendLink(); 
+	while(1)
+	{
+		if(linkflag ==1)
+		{
+			while(1)
+			{
+				temp =0;
+				temp = OrderSendLink(); 
+				if( temp == 1)
+				{
+					mancineinitflag = OrderMachineInit();		
+					if(mancineinitflag ==1)
+					{
+						LinkTime =0;
+						while(1)
+						{
+							if(Usart6DataFlag ==1) 
+							{
+								manageusart6data();
+							}
+							if(machinerec.rerelative == 1)
+							{
+								InitOkflag =1;
+								break;
+							}					
+							if(LinkTime >= 60)
+							{
+								break;
+							}
+						}	
+					}
+				}
+				if(LinkTime >= 60)
+				{
+					break;
+				}
+				if(InitOkflag ==1 )
+				{
+					break;
+				}
+			}
+			break;
+		}
+		else
+		{
+			linkflag = OrderSendLink(); 
+		}
+	}  
 }

@@ -3253,7 +3253,7 @@ uint8_t SztDeduct(int32_t money)
   		}
   		else if( flag1 == 0x52 )  //ÖØ²Ù×÷¿Û¿î
   		{
-				loop7:
+				loop11:
   		  Order_SztDeductAgain(money);
 				delay_us(15);
 				temp = 0xff;
@@ -3299,7 +3299,7 @@ uint8_t SztDeduct(int32_t money)
 			tempcount++;
 			if(tempcount <5)
 			{
-				goto loop7;
+				goto loop11;
 			}
 			
 		}

@@ -119,12 +119,12 @@ int main(void)
 			{
 				uint16_t i=0,cnt_t=0;
 			  uint16_t coins_time=0;
+				OldCoinsCnt= CoinsTotoalMessageWriteToFlash.CoinTotoal;
+        NewCoinsCnt= UserAct.MoneyBack;
         if(CoinsTotoalMessageWriteToFlash.CoinTotoal>=UserAct.MoneyBack)	//条件是机内的硬币>应退的币
 				{					
 					if(UserAct.MoneyBack >0) //需要找币的时候进入
 					{
-            OldCoinsCnt= CoinsTotoalMessageWriteToFlash.CoinTotoal;
-            NewCoinsCnt= UserAct.MoneyBack;
 						coins_time= (UserAct.MoneyBack/10); 
 						cnt_t =  UserAct.MoneyBack%10;		
 						UserAct.MoneyBack= 0;			
