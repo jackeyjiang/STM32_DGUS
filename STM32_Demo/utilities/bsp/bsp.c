@@ -644,12 +644,20 @@ void AbnormalHandle(uint16_t erro)
 	switch(erro)
 	{
 		case outage_erro:      //断电：只有在开机的时候判断是否有断电的情况发生 ，计算应该退的钱，还有就是付钱的时候断电
-			{
-			  if((UserAct.Meal_totoal!=UserAct.Meal_takeout)||(UserAct.MoneyBack>0)||(UserAct.PayAlready>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
+			{            /*取餐出错的情况*/              /*退币出错的情况,包含付钱的时候断电*/
+			  if((UserAct.Meal_totoal!=UserAct.Meal_takeout)||(UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
 				{
-					MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//计算总的应该退币的钱
-          UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //应该需要退币的钱	
-					if(UserAct.MealID)DataUpload(Failed);//只有当UserAct.MealID!=0的时候才上传餐品的数据
+          if(UserAct.MealID>0)
+					{
+						if(MoneyBackCnt_Already!=true) //判断取餐状态，shu'fou，以免重复对MoneyPayBack_Already_total和UserAct.MoneyBack重复加
+						{					  
+							MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//计算总的应该退币的钱
+							UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //应该需要退币的钱	
+							MoneyBackCnt_Already=true;
+						}						
+						DataUpload(Failed);//只有当UserAct.MealID!=0的时候才上传餐品的数据
+						SaveUserData();
+					}
 					DisplayAbnormal("E070");
 					PageChange(Err_interface);
         }
@@ -874,8 +882,10 @@ void AbnormalHandle(uint16_t erro)
  * 返    回:void                                                               
  * 修改日期:2014年4月23日    
  *******************************************************************************/ 
+bool MoneyBackCnt_Already=false;
 void SaveUserData(void)
 {
+	RTC_WriteBackupRegister(RTC_BKP_DR2,  MoneyBackCnt_Already);
 	RTC_WriteBackupRegister(RTC_BKP_DR3,  UserAct.MealID);
 	RTC_WriteBackupRegister(RTC_BKP_DR4,  UserAct.MealCnt_1st);
 	RTC_WriteBackupRegister(RTC_BKP_DR5,  UserAct.MealCnt_2nd);
@@ -905,6 +915,7 @@ void SaveUserData(void)
  *******************************************************************************/ 
 void ReadUserData(void)
 {
+	MoneyBackCnt_Already= RTC_ReadBackupRegister(RTC_BKP_DR2);
 	UserAct.MealID= RTC_ReadBackupRegister(RTC_BKP_DR3);
 	UserAct.MealCnt_1st= RTC_ReadBackupRegister(RTC_BKP_DR4);
 	UserAct.MealCnt_2nd= RTC_ReadBackupRegister(RTC_BKP_DR5);
@@ -935,6 +946,7 @@ void ReadUserData(void)
 void ErrRecHandle(void)
 {
 	 ReadUserData();  //需要进行数据处理，判断
+   printf("erro_record = %x",erro_record);
 	 if(erro_record!=0) //当有错误记录，需要进行处理
 	 {
 		 //PollAbnormalHandle();

@@ -135,6 +135,7 @@ extern uint16_t  erro_flag;  //错误状态
 extern int32_t   erro_record;  //错误标记位
 extern uint16_t MoneyPayBack_Already; //上传用的已退币数量值
 extern uint16_t MoneyPayBack_Already_total; //计算总的退币数
+extern bool MoneyBackCnt_Already;
 
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);

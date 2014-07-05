@@ -355,7 +355,7 @@ void TIM7_IRQHandler(void)
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:void                                                               
- * 修改日期:2013年8月28日                                                                    
+ * 修改日期:2014年7月5日                                                                    
  *******************************************************************************/ 
 extern  FIL fsrc;
 void PVD_IRQHandler(void) 
@@ -364,17 +364,27 @@ void PVD_IRQHandler(void)
   if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
   {
     PWR_ClearFlag(PWR_FLAG_PVDO);
-    erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
-		if(Current == waitfor_money) //当处于付钱状态的时候需要清楚用户的其他数据，除了UserAct.MoneyBack
+		if((Current == waitfor_money)&&(UserAct.PayAlready>0)) //当处于付钱状态的时候需要清楚用户的其他数据，除了UserAct.MoneyBack
 		{
+      erro_record |= (1<<outage_erro);  //需要加入，以免还在付钱的时候断电
 			UserAct.MoneyBack = UserAct.PayAlready;
 			MoneyPayBack_Already_total= UserAct.PayAlready;
 			ClearUserBuffer();
 			UserAct.PayAlready= MoneyPayBack_Already_total;
     }
-    else if((Current ==hpper_out)||(Current == meal_out))
+		else if(Current == meal_out)
+		{
+			MoneyBackCnt_Already=false;
+      erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电			
+    }
+    else if(Current ==hpper_out) //不仅在退币状态下统计，也需要在出餐状态统计，是出餐的时候退的币
     {
+      erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
 			UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+    }
+    else if(Current == erro_hanle)
+    {
+      erro_record &= ~(1<<outage_erro);  //需要加入，以免取餐的时候断电 
     }
     SaveUserData();
     f_close(&fsrc);	   //低电压检测    

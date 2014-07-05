@@ -1329,16 +1329,18 @@ void DataUpload(char takemeal_flag)
 		}
 	}
 	MealArr(UserAct.MealID);
-	UserAct.MealID= 0;//数据上传还一次对ID清零，这样就可以避免
 	/*发送取餐数据给服务器*/
-  //printf("发送取餐数据给服务器1");
   memset(Record_buffer,0,254);
 	if(TakeMealsFun(Record_buffer,takemeal_flag) == 0x01) //表示发送失败
 	{
+    UserAct.MealID= 0x00;//数据上传还一次对ID清零，这样就可以知道数据是否上传了
     Sd_Write('n',takemeal_flag);//发送失败
 	}
-	else 
+	else
+  {
+    UserAct.MealID= 0x00;//数据上传还一次对ID清零，这样就可以知道数据是否上传了    
 		Sd_Write('y',takemeal_flag);//改变当前最后两位为N0
+  }
 }	
 
  /*******************************************************************************

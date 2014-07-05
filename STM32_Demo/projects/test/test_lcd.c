@@ -15,7 +15,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "bsp.h"
-uint8_t Current= 0x01;        //状态机变量
+uint8_t Current= 0x00;        //状态机变量
 uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
 uint8_t waitmeal_status=0;    //等待取餐状态
 int32_t erro_record=0x00000000; //错误标记位
@@ -47,6 +47,7 @@ int main(void)
 	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
 	DispLeftMeal();             //显示餐品数据	
 	PageChange(Menu_interface); //显示选餐界面
+	Current= current_temperature;
 	while(1)
   {
 		DealSeriAceptData();
@@ -204,6 +205,7 @@ int main(void)
                 MoneyPayBack_Already = MoneyBack -UserAct.MoneyBack *100 ;  /*已找出的币*/
                 Current= meal_out;//找币错误的时候还是继续出餐
               }
+							SaveUserData();
               break;                
             }              
           }   
@@ -226,6 +228,7 @@ int main(void)
 					erro_record |= (1<<coinhooperset_empty);
 					Current= meal_out; //找币错误的时候还是继续出餐	
 				}
+				SaveUserData();
 			}break;
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{
@@ -257,6 +260,7 @@ int main(void)
 					//机械手复位中请等待界面		
 					MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//计算总的应该退币的钱
           UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //应该需要退币的钱	
+					MoneyBackCnt_Already=true;
 					PageChange(Err_interface);
 					UserAct.Cancle= 0x01;
 				  /*如果有币进入退币，如果无币进入错误处理*/
@@ -274,6 +278,7 @@ int main(void)
 	    {  		
         DataUpload(Success);//根据UserAct.ID 判断需要上传的数据
 			  Current = meal_out;		
+				SaveUserData();
 	    }break ;
       case erro_hanle: /*异常状态处理:需要对程序一直死在错误处理*/
       {
@@ -282,6 +287,7 @@ int main(void)
 				PollAbnormalHandle(); //异常处理 一直处于异常处理程序
 				PageChange(Logo_interface);
 				StatusUploadingFun(0xE800); //处理后返回正常
+				SaveUserData();
         while(1);								
 		  }
 	  }

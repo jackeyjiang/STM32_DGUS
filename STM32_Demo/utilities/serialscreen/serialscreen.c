@@ -1210,7 +1210,7 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 	          MoneyPayBack_Already_total= UserAct.PayAlready; //数据需要记录
 	          MoneyBack =UserAct.MoneyBack *100 ;  /*需退币退币的临时变量*/
             ClearUserBuffer();
-						//UserAct.PayAlready= UserAct.MoneyBack;
+						UserAct.PayAlready= UserAct.MoneyBack;
 			      if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro5");  //关闭现金接受
             PageChange(Menu_interface);
 						CloseTIM3();
