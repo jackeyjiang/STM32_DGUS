@@ -35,7 +35,7 @@
 #define network_erro     0x09 //网络异常
 #define signin_erro      0x0a //签到异常
 #define cardchck_erro    0x0b //深圳通银行卡签到异常
-#define powerup_erro     0x0e //开机的时候需要一个错误标记
+#define upload_erro      0x0e //数据上传的时候突然断电了
 
 #define X_timeout        0x10 //x轴传感器超时
 #define X_leftlimit      0x11 //马达左动作极限输出

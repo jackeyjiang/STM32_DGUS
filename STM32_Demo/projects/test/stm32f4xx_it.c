@@ -372,22 +372,48 @@ void PVD_IRQHandler(void)
 			ClearUserBuffer();
 			UserAct.PayAlready= MoneyPayBack_Already_total;
     }
-		else if(Current == meal_out)
+		else if(Current == meal_out) //取餐的时候断电，没有计算UserAct.MoneyBack,需要计算一次后，就不再计算了，所以加了标记
 		{
 			MoneyBackCnt_Already=false;
-      erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电			
+      erro_record |= (1<<outage_erro);
+      if(OldCoinsCnt!=0)
+			{
+				UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退			
+			}
     }
     else if(Current ==hpper_out) //不仅在退币状态下统计，也需要在出餐状态统计，是出餐的时候退的币
     {
       erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
 			UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
     }
-    else if(Current == erro_hanle)
+    else if(Current == erro_hanle) //如果在Current==erro_record,所需的数据都已经计算完毕了，可以不需要断电记录，清除该标记位，其他的错误标记位还是会被标记
     {
-      erro_record &= ~(1<<outage_erro);  //需要加入，以免取餐的时候断电 
+			if(OldCoinsCnt!=0)
+			{
+			  UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+			}
+      erro_record &= ~(1<<outage_erro); 
+    }
+		else if(Current == current_temperature)
+		{
+			if(OldCoinsCnt!=0)
+			{
+			  UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+			}
+		  if(UserAct.MoneyBack>0)
+				erro_record |= (1<<outage_erro);
+			else
+				erro_record &= ~(1<<outage_erro); 
+    }
+		else if(Current == data_upload) //上传的时候断电
+		{
+			if(UserAct.MealID!=0)
+			{
+				erro_record |= (1<<upload_erro);
+      }
     }
     SaveUserData();
-    f_close(&fsrc);	   //低电压检测    
+    f_close(&fsrc);	  
   }	
 }
 

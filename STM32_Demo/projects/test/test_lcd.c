@@ -37,14 +37,16 @@ int main(void)
 	PageChange(SignInFunction_interface);
 	if(!SignInFunction())       AbnormalHandle(signin_erro); /*网络签到*/
 	ErrRecHandle();          //用户数据断电的数据处理与上传
-  SendtoServce();          //上传前七天的数据
 	PageChange(Szt_GpbocAutoCheckIn_interface);
+  SendtoServce();          //上传前七天的数据
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
 // 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
 // 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	PageChange(Logo_interface);	
-	delay_ms(2000);
-	if(!CloseCashSystem())  AbnormalHandle(billset_erro);	
+	if(!CloseCashSystem())
+	{		
+		if(!CloseCashSystem())AbnormalHandle(billset_erro);	
+	}
 	DispLeftMeal();             //显示餐品数据	
 	PageChange(Menu_interface); //显示选餐界面
 	Current= current_temperature;
@@ -178,6 +180,7 @@ int main(void)
                 else if(UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
                 {
                   UserAct.Cancle= 0x00;
+									UserAct.PayAlready= 0;
                   Current = current_temperature;	
                 }
 								else
@@ -198,6 +201,7 @@ int main(void)
               else if(UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
               {
                 UserAct.Cancle= 0x00;
+								UserAct.PayAlready= 0;
                 Current = current_temperature;	
               }
               else

@@ -1318,15 +1318,16 @@ extern uint8_t Current;
 char mealvariety=0;
 void DataUpload(char takemeal_flag)
 {
-
+  uint8_t cnt_t=0;
 	itoa(f_name,TimeDate);	  //把时间转换成字符
 	if(UserAct.MealID==0x00)
 	{
-		while(1)
+		for(cnt_t=0;cnt_t<10;cnt_t++)
 		{
 	    printf("upload/UserAct.MealID == %d\r\n",UserAct.MealID);
 			delay_ms(200);
 		}
+		while(1);
 	}
 	MealArr(UserAct.MealID);
 	/*发送取餐数据给服务器*/
