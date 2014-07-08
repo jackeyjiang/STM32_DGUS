@@ -18,7 +18,7 @@
 uint8_t Current= 0x00;        //状态机变量
 uint8_t LinkMachineFlag =0;	  //与机械手连接标志，0表示没连接，1表示连接
 uint8_t waitmeal_status=0;    //等待取餐状态
-int32_t erro_record=0x00000000; //错误标记位
+uint32_t erro_record=0x00000000; //错误标记位
 
 uint16_t MoneyPayBack_Already = 0;//需要上传的退币数
 uint16_t MoneyPayBack_Already_total=0; //总的退币数
@@ -39,6 +39,7 @@ int main(void)
 	ErrRecHandle();          //用户数据断电的数据处理与上传
 	PageChange(Szt_GpbocAutoCheckIn_interface);
   SendtoServce();          //上传前七天的数据
+	if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);	
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
 // 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
 // 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
@@ -70,7 +71,7 @@ int main(void)
           {
 						if(OrderSendLink()==0)
 						{
-							erro_record |= (1<<SendUR6Erro);
+							erro_record |= (1<<link_timeout);
 							Current= erro_hanle;
             }
           }  //为1成功，为0失败
@@ -239,6 +240,7 @@ int main(void)
 				waitmeal_status= WaitMeal();       
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{
+					if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);
 					if(UserAct.MoneyBack>0) //出餐完毕如果UserAct.MoneyBack>0 直接进入错误处理
 					{
 						erro_record |= (1<<coinhooperset_empty);
@@ -292,6 +294,7 @@ int main(void)
 				PageChange(Logo_interface);
 				StatusUploadingFun(0xE800); //处理后返回正常
 				SaveUserData();
+				if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);
         while(1);								
 		  }
 	  }

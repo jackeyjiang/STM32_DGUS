@@ -373,12 +373,6 @@ uint8_t WaitMeal(void)
 			{
 				//如果餐品到达取餐口播放语音
 				//如果餐品取出则 跳出子程序进行数据上传  
-				if(LinkTime >120)   //从发出取餐命令后到餐已到达出餐口，最多等待一分钟
-				{
-				  //printf("from send getmeal order to sell door timeout!\r\n");
-					erro_record |= (1<<SendUR6Erro);
-					return takemeal_erro;
-				}
 				if(machinerec.retodoor == 1)   //到达出餐口
 				{
 					machinerec.retodoor = 0;
@@ -636,11 +630,11 @@ void PollAbnormalHandle(void)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
-uint16_t erro_flag=0;
-void AbnormalHandle(uint16_t erro)
+uint32_t erro_flag=0;
+void AbnormalHandle(uint32_t erro)
 {	
 	erro_record |= (1<<erro); //在开始异常处理的时候需要用到
-	printf("erro_record secend is 0x%04X\r\n",erro_record);
+	printf("erro_record2nd 0x%08X\r\n",erro_record);
 	erro_flag = erro; //只是在错误处理与判断时需要用到，
 	switch(erro)
 	{
@@ -784,7 +778,6 @@ void AbnormalHandle(uint16_t erro)
         DisplayAbnormal("E401");	
 	      PageChange(Err_interface);
 				StatusUploadingFun(0xE401); //状态上送
-				DataUpload(Failed);
 			}break;
 		case Z_timeout:        //z轴传感器超时
 			{
@@ -832,6 +825,7 @@ void AbnormalHandle(uint16_t erro)
         DisplayAbnormal("E801");	
 	      PageChange(Err_interface);
 				StatusUploadingFun(0xE801); //状态上送
+				DataUpload(Failed);
       }break;
     case GetMealError:     //机械手5秒取不到餐
 			{
@@ -946,7 +940,7 @@ void ReadUserData(void)
 void ErrRecHandle(void)
 {
 	 ReadUserData();  //需要进行数据处理，判断
-   printf("erro_record first is 0x%04X\r\n",erro_record);
+   printf("erro_record1st 0x%08X\r\n",erro_record);
 	 if(erro_record!=0) //当有错误记录，需要进行处理
 	 {
 		 AbnormalHandle(outage_erro);//相当于开机异常处理
