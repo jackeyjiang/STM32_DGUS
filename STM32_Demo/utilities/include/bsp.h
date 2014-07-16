@@ -36,6 +36,7 @@
 #define signin_erro      0x0a //签到异常
 #define cardchck_erro    0x0b //深圳通银行卡签到异常
 #define upload_erro      0x0e //数据上传的时候突然断电了
+#define arm_limit        0x0f //机械手禁止初始化，标记
 
 #define X_timeout        0x10 //x轴传感器超时
 #define X_leftlimit      0x11 //马达左动作极限输出

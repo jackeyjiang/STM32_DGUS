@@ -376,6 +376,7 @@ void PVD_IRQHandler(void)
 		{
 			MoneyBackCnt_Already=false;
       erro_record |= (1<<outage_erro);
+			erro_record |= (1<<arm_limit);
       if(OldCoinsCnt!=0)
 			{
 				UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退			
@@ -392,7 +393,11 @@ void PVD_IRQHandler(void)
 			{
 			  UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
 			}
-      erro_record &= ~(1<<outage_erro); 
+			if(erro_record>=(1<<X_timeout))  //如果是机械手错误，需要锁定机械手
+			{
+				 erro_record |= (1<<arm_limit);
+			}
+			erro_record &= ~(1<<outage_erro); 
     }
 		else if(Current == current_temperature)
 		{

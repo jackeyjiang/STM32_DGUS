@@ -14,11 +14,11 @@
  *******************************************************************************/
 void Uart1_Card(uint8_t *p,uint8_t sizeData)
 {
-      uint8_t i;		   
+    uint8_t i;		   
 	  for(i=0; i<sizeData; i++)
 	  {
         USART_SendData(USART1, p[i]);//串口1发送一个字符
-		while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);//等待发送完成
+		    while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);//等待发送完成
  	  }
 }								   	
 										
@@ -206,6 +206,6 @@ void  SPRT(void)
 	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(SendStc,sizeof(SendStc));//	切纸
 	Uart1_Card(huan3,sizeof(huan3));
-  printf("1\r\n");//切纸后换行，以免纸进入缝隙中	
-	printf("2\r\n");//切纸后换行，以免纸进入缝隙中	
+  printf("\r\n");//切纸后换行，以免纸进入缝隙中	
+	printf("\r\n");//切纸后换行，以免纸进入缝隙中	
 }

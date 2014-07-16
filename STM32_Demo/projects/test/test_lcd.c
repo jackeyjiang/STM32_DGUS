@@ -31,7 +31,12 @@ int main(void)
 {
 	hardfawreInit(); //硬件初始化
 	PageChange(OnlymachieInit_interface);
-  OnlymachieInit();  //机械手初始化
+	if(erro_record&(1<<arm_limit))
+  {
+		AbnormalHandle(arm_limit);//需要处理数据上传的断电
+	}
+  else 
+		OnlymachieInit();  //机械手初始化
 	PageChange(SignInFunction_interface);
   if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/
 	PageChange(SignInFunction_interface);
@@ -39,7 +44,7 @@ int main(void)
 	ErrRecHandle();          //用户数据断电的数据处理与上传
 	PageChange(Szt_GpbocAutoCheckIn_interface);
   SendtoServce();          //上传前七天的数据
-	if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);	
+//	if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);	
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
 // 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
 // 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
@@ -240,7 +245,7 @@ int main(void)
 				waitmeal_status= WaitMeal();       
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{
-					if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);
+					//if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);
 					if(UserAct.MoneyBack>0) //出餐完毕如果UserAct.MoneyBack>0 直接进入错误处理
 					{
 						erro_record |= (1<<coinhooperset_empty);
@@ -294,7 +299,7 @@ int main(void)
 				PageChange(Logo_interface);
 				StatusUploadingFun(0xE800); //处理后返回正常
 				SaveUserData();
-				if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);
+				//if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);
         while(1);								
 		  }
 	  }

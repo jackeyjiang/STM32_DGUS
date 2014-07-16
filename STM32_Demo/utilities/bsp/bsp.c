@@ -391,14 +391,6 @@ uint8_t WaitMeal(void)
 					machinerec.retodoor = 0;		
 					LinkTime =0;		 
 				}
-				if( LinkTime >=40) //餐在出餐口未被取走，一直等待时间时间大于20s播放语音提示取餐
-				{
-					if(LinkTime%20==0)
-					{
-						PlayMusic(VOICE_10);
-					}
-					LinkTime= 0;
-				}
 				//printf("餐未超过了三分钟还未被取走\r\n");
 				if( machinerec.remealaway == 1) //餐已被取走
 				{
@@ -410,15 +402,21 @@ uint8_t WaitMeal(void)
 				}
 				if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
 			  {
-				//printf("餐在取餐口过了20秒还未被取走\r\n");
-				  PlayMusic(VOICE_10);
-				  machinerec.remealnoaway = 0;
+					if( LinkTime >=40) //餐在出餐口未被取走，一直等待时间时间大于20s播放语音提示取餐
+					{
+						if(LinkTime%20==0)
+						{
+							PlayMusic(VOICE_10);
+						}
+						LinkTime= 0;
+					}					
 				//语音提示“请取走出餐口的餐 "
 				} 
 			}break;			    
 			case 5:     /*对用户数据进行减一*/  //?? 如果需要进行错误退币，需要修该返回值所在范围
 			{
 				//delay_ms(1000);
+				machinerec.remealnoaway = 0;
 				UserAct.Meal_takeout++;//取餐数据加
 				VariableChage(mealout_already,UserAct.Meal_takeout);	//UI显示
 				MealoutCurrentPointer= 0;
@@ -634,7 +632,7 @@ uint32_t erro_flag=0;
 void AbnormalHandle(uint32_t erro)
 {	
 	erro_record |= (1<<erro); //在开始异常处理的时候需要用到
-	printf("erro_record2nd 0x%08X\r\n",erro_record);
+	//printf("erro_record2nd 0x%08X\r\n",erro_record);
 	erro_flag = erro; //只是在错误处理与判断时需要用到，
 	switch(erro)
 	{
@@ -642,6 +640,7 @@ void AbnormalHandle(uint32_t erro)
 			{            /*取餐出错的情况*/              /*退币出错的情况,包含付钱的时候断电*/
 			  if((UserAct.Meal_totoal!=UserAct.Meal_takeout)||(UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
 				{
+					/*这里加上调试信息，查看以上连个条件的数值*/
           if(UserAct.MealID>0)
 					{
 						if(MoneyBackCnt_Already!=true) //判断取餐状态，shu'fou，以免重复对MoneyPayBack_Already_total和UserAct.MoneyBack重复加
@@ -731,7 +730,32 @@ void AbnormalHandle(uint32_t erro)
         DataUpload(Success);
 				erro_record &= ~(1<<upload_erro);
 				return;
-			};					
+			};
+    case arm_limit: //机械手禁止复位
+		  {
+			  if((UserAct.Meal_totoal!=UserAct.Meal_takeout)||(UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
+				{
+					/*这里加上调试信息，查看以上连个条件的数值*/
+          if(UserAct.MealID>0)
+					{
+						if(MoneyBackCnt_Already!=true) //判断取餐状态，shu'fou，以免重复对MoneyPayBack_Already_total和UserAct.MoneyBack重复加
+						{					  
+							MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//计算总的应该退币的钱
+							UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //应该需要退币的钱	
+							MoneyBackCnt_Already=true;
+						}						
+						SaveUserData();
+					}
+					DisplayAbnormal("E100");
+					PageChange(Err_interface);
+        }
+				else 
+				{
+					erro_record &= ~(1<<erro); //如果需要处理其他异常呢
+					erro_flag= 0;
+					return;
+				}				
+      }break;			
 		case X_timeout:        //x轴传感器超时
 			{
 	      PlayMusic(VOICE_11);	
@@ -849,16 +873,21 @@ void AbnormalHandle(uint32_t erro)
 			DealSeriAceptData();
 			if(erro_flag==0)
 			{
-				if(erro) //所有的情况下都需要将数据清零
+				if(erro_record&(1<<arm_limit))
+				{
+          PageChange(OnlymachieInit_interface);					
+					OnlymachieInit(); //机械手的初始化
+				}
+				else
 				{
 					UserAct.MoneyBack=0;
 					MoneyPayBack_Already_total=0;
 					ClearUserBuffer();
-					SaveUserData();	
-				}
+					SaveUserData();						
+        }
 				if(erro_record>=(1<<X_timeout))//如果是机械售错误值上传一次数据，对高位取反
 				{
-					erro_record&=~0xFF00;
+					erro_record&=~0xFFFF0000;
         }
 				erro_record &= ~(1<<erro); //一次只处理一次异常
 				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
@@ -939,8 +968,7 @@ void ReadUserData(void)
  *******************************************************************************/ 
 void ErrRecHandle(void)
 {
-	 ReadUserData();  //需要进行数据处理，判断
-   printf("erro_record1st 0x%08X\r\n",erro_record);
+   //printf("erro_record1st 0x%08X\r\n",erro_record);
 	 if(erro_record!=0) //当有错误记录，需要进行处理
 	 {
 		 AbnormalHandle(outage_erro);//相当于开机异常处理
@@ -1038,6 +1066,7 @@ void hardfawreInit(void)
 	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
 	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
 	 }
-	 WriteMeal();  //写入餐品数据
+	 //WriteMeal();  //写入餐品数据,不需要因为写入餐品的数据需要花费很长世间，如果突然在开机过程突然断电数据就会丢失
 	 StatisticsTotal(); //后面的程序需要使用  	
+	 ReadUserData();  //需要进行数据处理，判断
 }														 
