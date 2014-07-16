@@ -590,7 +590,6 @@ void Sd_Write(char erro_flag,char takeout_flag)
 	 Send_Buf[5] =  ','  ;
 	 CmdLenght = 6 ;
 	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&TID[3],sizeof(TID)-3);	/*终端的TID*/
-	 GetBRWN();
 	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&BRWN[3],sizeof(BRWN)-3);  /*流水号*/
 	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&BNO[3],sizeof(BNO)-3);	/*批次号*/
 	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&DeviceArea[3],sizeof(DeviceArea)-3);  /*终端所在区域编号*/

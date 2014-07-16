@@ -13,7 +13,7 @@
 
 static long Batch = 0x00 ;//交易流水号
 
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x12}; /*终端TID码 10000006*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x14}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
@@ -1158,32 +1158,33 @@ bool SignInFunction(void)
 	  RTC_TimeShow();//获得时间
 	  switch(TimeDate.Minutes)
 		{
+      case 5:
 			case 10:
 //			case 12:
 //			case 14:
-//			case 16:						
+			case 15:						
 //	    case 18:
 //		  case 19:								
 			case 20:
 //			case 22:
-//			case 24:
+			case 25:
 //			case 26:
 //			case 28:
 			case 30:
 //			case 32:
-//			case 34:
+			case 35:
 //			case 36:
 //			case 38:
 			case 40:
 //			case 42:
-//			case 44:
+			case 45:
 //			case 46:
 //			case 48:				
 			case 50:
 //			case 52:
-//			case 54:
+			case 55:
 //			case 56:
-//			case 58:				
+			case 0:				
 			{
 			  if(TimeDate.Senconds==10) //控制多次传输
 			  {
