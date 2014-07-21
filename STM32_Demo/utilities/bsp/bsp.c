@@ -648,7 +648,9 @@ void AbnormalHandle(uint32_t erro)
 							MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//计算总的应该退币的钱
 							UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //应该需要退币的钱	
 							MoneyBackCnt_Already=true;
-						}						
+						}
+						MoneyBack= (MoneyPayBack_Already_total-price_1st)*100;//待测试
+						MoneyPayBack_Already= (MoneyPayBack_Already_total-UserAct.MoneyBack)*100;//待测试
 						DataUpload(Failed);//只有当UserAct.MealID!=0的时候才上传餐品的数据
 						SaveUserData();
 					}

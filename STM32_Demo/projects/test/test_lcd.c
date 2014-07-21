@@ -43,11 +43,13 @@ int main(void)
 	if(!SignInFunction())       AbnormalHandle(signin_erro); /*网络签到*/
 	ErrRecHandle();          //用户数据断电的数据处理与上传
 	PageChange(Szt_GpbocAutoCheckIn_interface);
+	delay_ms(1000);
   SendtoServce();          //上传前七天的数据
 //	if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);	
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
 // 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
 // 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
+	StatusUploadingFun(0xE800); //开机加入正常上传
 	PageChange(Logo_interface);	
 	if(!CloseCashSystem())
 	{		
@@ -159,8 +161,10 @@ int main(void)
 							if(ErrorType ==1)//退币机无币错误,直接进入错误状态
 							{
 								erro_record |= (1<<coinhooperset_empty);	
-								if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
+								if(erro_record>=(1<<X_timeout))//这种情况下是第一次退币成功的情况下 如果是机械手异常，直接进行错误处理
 								{
+									MoneyBack= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th -price_1st)*100; //计算
+									MoneyPayBack_Already= MoneyBack+ price_1st*100- UserAct.MoneyBack*100;												
 									Current = erro_hanle;	
 								}
                 else if(UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
@@ -181,6 +185,8 @@ int main(void)
                 erro_record &= ~(1<<coinhooperset_empty);//退币错误标记位清0 
 								if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
 								{
+									MoneyBack= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th -price_1st)*100; //计算
+									MoneyPayBack_Already= MoneyBack+ price_1st*100- UserAct.MoneyBack*100;											
 									Current = erro_hanle;	
 								}
                 else if(UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
@@ -202,6 +208,8 @@ int main(void)
               erro_record &= ~(1<<coinhooperset_empty);//退币错误标记位清0 
               if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
               {
+								MoneyBack= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th -price_1st)*100; //计算
+								MoneyPayBack_Already= MoneyBack+ price_1st*100- UserAct.MoneyBack*100;										
                 Current = erro_hanle;	
               }
               else if(UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
@@ -231,6 +239,8 @@ int main(void)
 				{ 
 					if(erro_record>=(1<<X_timeout))//如果是机械手异常，直接进行错误处理
 					{
+						MoneyBack= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th -price_1st)*100; //计算
+						MoneyPayBack_Already= 0;						
 						Current = erro_hanle;	
 				    break;
 					}
@@ -276,7 +286,11 @@ int main(void)
 					UserAct.Cancle= 0x01;
 				  /*如果有币进入退币，如果无币进入错误处理*/
 					if(erro_record&(1<<coinhooperset_empty))
+					{
+						MoneyBack= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th -price_1st)*100; //计算
+						MoneyPayBack_Already= 0;
 						Current = erro_hanle;
+					}
           else 
 					{
 					  Current = hpper_out;
