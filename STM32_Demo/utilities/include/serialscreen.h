@@ -29,6 +29,8 @@
 #define OnlymachieInit_interface       0x2A /*机械手初始化界面*/
 #define SignInFunction_interface       0x2B /*网络签到界面*/
 #define Szt_GpbocAutoCheckIn_interface 0x2C /*深圳通签到界面*/
+#define SellMeal_TimeSet_interface     0x2D /*售餐时间设置界面*/
+#define SellMeal_TimeWait_interface    0x2F /*售餐等待界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -165,7 +167,7 @@
 #define sync_column4th_name   0x4800
 #define sync_column1st_number 0x4900
 #define sync_column2nd_number 0x4A00
-#define sync_column3rd_number 0x4B00  
+#define sync_column3rd_number 0x4B00
 #define sync_column4th_number 0X4C00
 
 //用户错误记录界面
@@ -190,6 +192,15 @@
 
 #define record_UserDataTime          0x5F00  //出错时间显示
 
+//售餐时间设置界面
+#define set_sellmeal_hour     0x4E00    //售餐时间设置的小时变量
+#define set_sellmeal_minute   0x4E01    //售餐时间设置的分钟变量
+#define set_sellmeal_key      0x4E02    //售餐时间设置的按键变量
+
+//等待售餐的时间显示界面
+#define wait_sellmeal_hour    0x4E03    //等待售餐显示的小时变量
+#define wait_sellmeal_minute  0x4E04    //等待售餐显示的分钟变量
+
 
 extern const char price_1st;
 extern const char price_2nd;
@@ -198,6 +209,8 @@ extern const char price_4th;
 extern bool cardbalence_cancel_flag;
 extern char record_time[20];
 extern int16_t CoinTotoal_t;
+extern int8_t	selltime_hour,selltime_hour_t;
+extern int8_t	selltime_minute, selltime_minute_t;
 void ClearUserBuffer(void);
 void PageChange(char page);
 void ReadPage(void);
@@ -208,5 +221,6 @@ void VariableChage(uint16_t Variable,uint16_t Value);
 void DisplayAbnormal(char *abnomal_code);
 void VariableChagelong (uint16_t Variable,uint32_t Value);
 void DisplayRecordTime(void);
+void DisplayTimeCutDown(void);
 
 #endif

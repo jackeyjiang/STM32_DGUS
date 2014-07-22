@@ -751,7 +751,26 @@ void AbnomalMealCntDisp(uint8_t meal_cnt,uint8_t floor)
 		for(i=0;i<cnt_t;i++) temp[i+6]=buffer[i]; 
 		Uart3_Sent(temp,sizeof(temp));	
 }
+ /*******************************************************************************
+ * 函数名称:DisplayTimeCutDown                                                                    
+ * 描    述:显示离售餐时间的倒计时                                                            
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年7月22日                                                                    
+ *******************************************************************************/ 
 
+void DisplayTimeCutDown(void)
+{
+	RTC_TimeShow();	//获取当前的时间
+	selltime_hour_t= TimeDate.Hours- selltime_hour;   //对从屏幕获取的时间进行减法
+	selltime_minute_t= TimeDate.Minutes- selltime_minute;
+	VariableChage(wait_sellmeal_hour,selltime_minute_t);
+	VariableChage(wait_sellmeal_minute,selltime_minute_t);
+	WaitTime=60; //60S计时   
+  OpenTIM4(); 
+}
  /*******************************************************************************
  * 函数名称:DisplayRecordTime                                                                     
  * 描    述:显示出错时的错误记录                                                              
@@ -932,6 +951,8 @@ uint8_t  InputPassWord[6]={0};
 bool cardbalence_cancel_flag= false;
 bool mealneed_sync = false;  //餐品同步标记
 int16_t CoinTotoal_t=0; //作为基数 		
+int8_t	selltime_hour= 0,selltime_hour_t=0;
+int8_t	selltime_minute=0, selltime_minute_t=0;
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 {
 	char MealID =0;
@@ -1517,12 +1538,12 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
               SyncMealCntDisp(0xFF,cnt_t); 									 
 						}	
 						//禁止屏幕点击*/
-            ScreenControl(ScreenDisable);
+            //ScreenControl(ScreenDisable);
 						/*餐品同步时尽量避免与服务器断开的情况*/
 						/*不能加入签到函数，直接死掉*/
 						//if(!SignInFunction())  AbnormalHandle(signin_erro);
 						/*上传断网后的数据，供后台实时更新数据*/
-            SendtoServce(); 
+            // SendtoServce(); //不要，因为没有用， 
 						//数据同步子程序
 						MealDataCompareFun();
 						if(MealCompareData.MealCompareTotoal==0xFFFFFFFF) //正确
@@ -1571,6 +1592,10 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 						CurFloor.FloorNum  = 0;	 
 	          PageChange(MealSet_interface);
 					}break;
+					case 0x06: /*售餐设置*/
+					{
+						PageChange(SellMeal_TimeSet_interface);
+					}
 					default:break;	
 				}
 			}break;
@@ -1664,7 +1689,31 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 				myunion.adr[1] =	VariableData[0];
 				CoinTotoal_t   =  myunion.adress;
 				VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+ CoinTotoal_t);//显示机内硬币数			
-			}break;			
+			}break;
+      case set_sellmeal_hour: /*售餐设置的小时*/	
+			{
+				selltime_hour_t= VariableData[1];		
+			}break;				
+			case set_sellmeal_minute:/*售餐设置的分*/	
+			{
+				selltime_minute_t= VariableData[1];				
+      }break;				
+			case set_sellmeal_key: /*售餐设置的按键*/
+			{
+				if(VariableData[1]==0x01) /*确认*/
+				{
+					selltime_hour= selltime_hour_t;
+					selltime_minute= selltime_minute_t;
+					DisplayTimeCutDown();
+					PageChange(SellMeal_TimeWait_interface);
+        }
+				else if(VariableData[1]==0x02) /*返回*/
+				{
+					selltime_hour_t= 0;
+					selltime_minute_t= 0;	
+          PageChange(Data_synchronization);				
+        }
+      }break;
 			  default:break;		
 		}
 }

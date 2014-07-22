@@ -92,7 +92,8 @@ void memcpy_02(char *dest,char *source,char type);
 unsigned char SignInFun(void);
 uint32_t  MealDataCompareFun(void);/*餐品数据对比*/
 unsigned char SignOutFun(void);/*退签*/
-unsigned char StatusUploadingFun(uint16_t erro_status);
+unsigned char StatusUploadingFun(uint16_t erro_status);//状态上送
+unsigned char TemperatureUploadingFun(uint8_t Temperature_t); //温度上送
 unsigned char EchoFun(void);/*回响测试*/
 unsigned char TakeMealsFun(unsigned char *SendBuffer,unsigned char takeout_flag);/*取餐设置*/
 unsigned char MealUploadingFun(void);/*上送餐品数据*/

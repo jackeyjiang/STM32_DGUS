@@ -299,9 +299,26 @@ void TIM4_IRQHandler(void)
 		}  
 		else 
 		{
-			CloseTIM4();
-			if(!erro_record) //当有错误的时候不进入出餐界面
-			PageChange(Mealout_interface);//超时退出进入餐品数量选择界面,出餐的时候花费时间过长只能在中断中执行
+			WaitTime= 60;
+			selltime_minute_t--; //先减分钟
+			if(selltime_minute_t<0)
+			{
+				selltime_minute_t= 60;
+				selltime_hour_t--;//后减小时
+				if(selltime_hour_t<0)
+				{
+					CloseTIM4();
+					PageChange(Menu_interface); //当两个条件都符合要求直接进入售餐
+        }
+				else
+				{
+					VariableChage(wait_sellmeal_hour,selltime_minute_t);
+        }
+      }
+			else
+			{
+				VariableChage(wait_sellmeal_minute,selltime_minute_t);
+			}
 	  }	     
   }
 }
@@ -386,6 +403,10 @@ void PVD_IRQHandler(void)
     {
       erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
 			UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+			if(erro_record>=(1<<X_timeout))  //如果是机械手错误，需要锁定机械手
+			{
+				 erro_record |= (1<<arm_limit);
+			}
     }
     else if(Current == erro_hanle) //如果在Current==erro_record,所需的数据都已经计算完毕了，可以不需要断电记录，清除该标记位，其他的错误标记位还是会被标记
     {

@@ -8,6 +8,7 @@
 #include "string.h"
 #include "MsgHandle.h"
 #include "sd.h"
+#include "uart6.h"
 
 
 
@@ -19,6 +20,7 @@ unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
 unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/
 unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,0xE0,0x10};	   /*终端状态*/
+unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
 unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/
 unsigned char  MAC[8+3]={0xc9,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   /*MAC*/
@@ -717,7 +719,56 @@ unsigned char StatusUploadingFun(uint16_t erro_status)
 
  }
 
+ /*******************************************************************************
+* Function Name  : 状态上传函数		 0X0400
+* Description    :状态函数
+* Input          : void
+* Output         : void
+* Return         : void         ok
+*******************************************************************************/
+unsigned char TemperatureUploadingFun(uint8_t Temperature_t)
+ {
 
+	 unsigned char i = 0 ;
+	 long  Lenght = 0 ,j;
+	 long	 CmdLenght = 0 ;
+	 unsigned char	Send_Buf[400]={0};
+	 char  state_temp[2]={0};  
+	 //sprintf(state_temp,"%x",erro_status); 
+	 mem_set_00(rx1Buf,sizeof(rx1Buf));
+	 /*水流号++*/
+	 Send_Buf[0] =	0x02 ;
+	 Send_Buf[1] =	0x00 ;
+	 Send_Buf[2] =	0x00 ;
+	 Send_Buf[3] =	0x00 ;
+	 Send_Buf[4] =	0x00 ;
+	 CmdLenght = 5 ;
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));	/*终端的TID*/
+	 GetBRWN(); /*得到水流号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));	/*批次号*/ 
+	 
+	 state_temp[0]=Temperature_t;
+	 for(i=0;i<3;i++) 
+	 {
+		 DeviceTemperature[3+i]= state_temp[i];
+	 }
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceTemperature,sizeof(DeviceStatus));  /*终端的状态*/
+	 Send_Buf[CmdLenght] = 0x03  ;
+	 CmdLenght+=0x03;
+	 i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);//0x0400 状态上送
+	 if(i == 0x01)
+	 return 1 ;
+	 Lenght = HL_BufferToInit(&rx1Buf[2]) ;
+	 for(j=0;j<Lenght+7;j++)
+	 {
+  
+ //   printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
+
+	 }
+   return 0 ;
+
+ }
  /*******************************************************************************
 * Function Name  : 回响测试	 0X0700
 * Description    :回响测试
@@ -1188,9 +1239,8 @@ bool SignInFunction(void)
 			{
 			  if(TimeDate.Senconds==10) //控制多次传输
 			  {
-					//需要读取机器的状态
-					//if()
-				  StatusUploadingFun(0xE800); //状态上送
+					TemperatureUploadingFun(Temperature); //温度上传
+				  StatusUploadingFun(0xE800); //状态上送	
 			  }
 			  break;
 			}

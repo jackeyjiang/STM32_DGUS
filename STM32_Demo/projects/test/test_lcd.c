@@ -230,8 +230,6 @@ int main(void)
           else  //无需找币时，直接进入出餐
           {
             Current= meal_out; 
-            WaitTime=5;//5S计时   
-            OpenTIM4(); 
             break;            
           }
         }          
