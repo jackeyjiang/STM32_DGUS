@@ -200,6 +200,7 @@
 //等待售餐的时间显示界面
 #define wait_sellmeal_hour    0x4E03    //等待售餐显示的小时变量
 #define wait_sellmeal_minute  0x4E04    //等待售餐显示的分钟变量
+#define wait_sellmeal_second  0x4E05    //等待售餐显示的秒钟变量
 
 
 extern const char price_1st;
@@ -207,10 +208,13 @@ extern const char price_2nd;
 extern const char price_3rd;
 extern const char price_4th;
 extern bool cardbalence_cancel_flag;
+extern bool sellmeal_flag; 
 extern char record_time[20];
 extern int16_t CoinTotoal_t;
-extern int8_t	selltime_hour,selltime_hour_t;
-extern int8_t	selltime_minute, selltime_minute_t;
+extern int8_t	selltime_hour,selltime_hour_t,selltime_hour_r;
+extern int8_t	selltime_minute, selltime_minute_t,selltime_minute_r;
+extern int8_t  selltime_second_r;
+extern uint32_t sellsecond_remain;
 void ClearUserBuffer(void);
 void PageChange(char page);
 void ReadPage(void);
@@ -222,5 +226,6 @@ void DisplayAbnormal(char *abnomal_code);
 void VariableChagelong (uint16_t Variable,uint32_t Value);
 void DisplayRecordTime(void);
 void DisplayTimeCutDown(void);
+void SetScreenRtc(void);
 
 #endif

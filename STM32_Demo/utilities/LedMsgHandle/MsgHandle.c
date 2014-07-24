@@ -9,6 +9,7 @@ UserSelection UserAct;
 FloorMealMessage FloorMealMessageWriteToFlash;
 CoinsTotoalMessage CoinsTotoalMessageWriteToFlash;
 uint8_t  WaitTime=0;
+uint8_t  WaitMealTime=0;
 
  /*******************************************************************************
  * º¯ÊýÃû³Æ:StatisticsTotal                                                                     

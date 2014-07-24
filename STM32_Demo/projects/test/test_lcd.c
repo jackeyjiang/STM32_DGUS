@@ -26,7 +26,7 @@ uint16_t MoneyPayBack_Already_total=0; //总的退币数
 uint16_t VirtAddVarTab[NB_OF_VAR] = {0x0001, 0x0002, 0x0003,};
 uint16_t VarDataTab[NB_OF_VAR] = {0, 0, 0};
 uint16_t VarValue = 0;
-
+uint32_t sellsecond_remain_old=0;
 int main(void)
 {
 	hardfawreInit(); //硬件初始化
@@ -38,7 +38,10 @@ int main(void)
   else 
 		OnlymachieInit();  //机械手初始化
 	PageChange(SignInFunction_interface);
-  if(!EchoFuntion(RTC_TimeRegulate)) AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/
+  if(!EchoFuntion(RTC_TimeRegulate)) 
+    AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/
+  else
+    SetScreenRtc();/*设置屏幕的RTC*/
 	PageChange(SignInFunction_interface);
 	if(!SignInFunction())       AbnormalHandle(signin_erro); /*网络签到*/
 	ErrRecHandle();          //用户数据断电的数据处理与上传
@@ -66,6 +69,16 @@ int main(void)
 	  {
 	    case current_temperature: /*温度处理函数*/
 			{
+        if(sellsecond_remain!=sellsecond_remain_old)
+        {
+          selltime_hour_r= sellsecond_remain/3600;
+          selltime_minute_r= (sellsecond_remain%3600)/60;
+          selltime_second_r= (sellsecond_remain%3600)%60;
+          VariableChage(wait_sellmeal_hour,selltime_hour_r);
+          VariableChage(wait_sellmeal_minute,selltime_minute_r);
+          VariableChage(wait_sellmeal_second,selltime_second_r);
+          sellsecond_remain_old= sellsecond_remain;
+        }
 				StateSend();
 				if((LinkTime==1)||(LinkTime==2)||(LinkTime==3))
 				{

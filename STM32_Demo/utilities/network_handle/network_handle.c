@@ -20,7 +20,7 @@ unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
 unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/
 unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,0xE0,0x10};	   /*终端状态*/
-unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
+const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
 unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/
 unsigned char  MAC[8+3]={0xc9,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   /*MAC*/
@@ -680,6 +680,8 @@ unsigned char StatusUploadingFun(uint16_t erro_status)
 	 unsigned char i = 0 ;
 	 long  Lenght = 0 ,j;
 	 long	 CmdLenght = 0 ;
+   char Temperature_t=0;
+   char  Temperature_tt[5]={0};
 	 unsigned char	Send_Buf[400]={0};
 	 char  state_temp[2]={0};  
 	 //sprintf(state_temp,"%x",erro_status); 
@@ -703,6 +705,15 @@ unsigned char StatusUploadingFun(uint16_t erro_status)
 		 DeviceStatus[3+i]= state_temp[i];
 	 }
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceStatus,sizeof(DeviceStatus));  /*终端的状态*/
+   Temperature_t= Temperature;
+   state_temp[1]=(Temperature_t&0x00ff);
+	 state_temp[0]=(Temperature_t>>8)&0x00ff;
+   memcpy(Temperature_tt,DeviceTemperature,sizeof(DeviceTemperature));
+	 for(i=0;i<3;i++) 
+	 {
+		 Temperature_tt[3+i]= state_temp[i];
+	 }
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Temperature_tt,sizeof(Temperature_tt));  /*终端的状态*/
 	 Send_Buf[CmdLenght] = 0x03  ;
 	 CmdLenght+=0x03;
 	 i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);//0x0400 状态上送
@@ -733,7 +744,8 @@ unsigned char TemperatureUploadingFun(uint8_t Temperature_t)
 	 long  Lenght = 0 ,j;
 	 long	 CmdLenght = 0 ;
 	 unsigned char	Send_Buf[400]={0};
-	 char  state_temp[2]={0};  
+	 char  state_temp[2]={0};
+   char  Temperature_tt[5]={0};
 	 //sprintf(state_temp,"%x",erro_status); 
 	 mem_set_00(rx1Buf,sizeof(rx1Buf));
 	 /*水流号++*/
@@ -747,13 +759,14 @@ unsigned char TemperatureUploadingFun(uint8_t Temperature_t)
 	 GetBRWN(); /*得到水流号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));	/*批次号*/ 
-	 
-	 state_temp[0]=Temperature_t;
+   state_temp[1]=(Temperature_t&0x00ff);
+	 state_temp[0]=(Temperature_t>>8)&0x00ff;
+   memcpy(Temperature_tt,DeviceTemperature,sizeof(DeviceTemperature));
 	 for(i=0;i<3;i++) 
 	 {
-		 DeviceTemperature[3+i]= state_temp[i];
+		 Temperature_tt[3+i]= state_temp[i];
 	 }
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceTemperature,sizeof(DeviceStatus));  /*终端的状态*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Temperature_tt,sizeof(Temperature_tt));  /*终端的状态*/
 	 Send_Buf[CmdLenght] = 0x03  ;
 	 CmdLenght+=0x03;
 	 i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);//0x0400 状态上送
@@ -1239,7 +1252,7 @@ bool SignInFunction(void)
 			{
 			  if(TimeDate.Senconds==10) //控制多次传输
 			  {
-					TemperatureUploadingFun(Temperature); //温度上传
+					//TemperatureUploadingFun(Temperature); //温度上传
 				  StatusUploadingFun(0xE800); //状态上送	
 			  }
 			  break;

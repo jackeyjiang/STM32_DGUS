@@ -65,6 +65,7 @@ typedef union _FloorMealMessage
 extern 	FloorMealMessage FloorMealMessageWriteToFlash;/*将数据写入flash的结构*/
 extern  FloorAttribute FloorMeal[FloorMealNum], CurFloor;
 extern uint8_t WaitTime ;
+extern uint8_t WaitMealTime ;
 extern int MoneyBack ;
 
 typedef union _CoinsTotoalMessage

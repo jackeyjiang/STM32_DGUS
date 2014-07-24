@@ -293,33 +293,14 @@ void TIM4_IRQHandler(void)
   if(TIM_GetITStatus(TIM4,TIM_IT_Update)!=RESET)
 	{	 
 	  TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-		if(WaitTime > 0)
-		{
-			WaitTime--;
-		}  
-		else 
-		{
-			WaitTime= 60;
-			selltime_minute_t--; //先减分钟
-			if(selltime_minute_t<0)
-			{
-				selltime_minute_t= 60;
-				selltime_hour_t--;//后减小时
-				if(selltime_hour_t<0)
-				{
-					CloseTIM4();
-					PageChange(Menu_interface); //当两个条件都符合要求直接进入售餐
-        }
-				else
-				{
-					VariableChage(wait_sellmeal_hour,selltime_minute_t);
-        }
-      }
-			else
-			{
-				VariableChage(wait_sellmeal_minute,selltime_minute_t);
-			}
-	  }	     
+    if(sellsecond_remain>0)
+    {
+      sellsecond_remain--;
+    }
+    else
+    {
+      CloseTIM4(); 
+    }      
   }
 }
  /*******************************************************************************

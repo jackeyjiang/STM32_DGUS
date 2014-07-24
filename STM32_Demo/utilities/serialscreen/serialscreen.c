@@ -96,6 +96,15 @@ const char ABC[20]={
 							0x40 , 0x00 ,	/*变量存储空间2字节*/
 							0xBA , 0xA0   /*数据*/
               };	
+const unsigned char rtc_write[13]={
+  						FH0 , FH1 , /*帧头2字节 */
+							0x0A , /*长度 包括命令和数据*/	
+							0x80 , /*指定地址开始写入数据串(字数据)到变量存储区*/
+							0x1F , 0x5A ,	/*变量存储空间2字节*/
+							0x00 , 0x00 ,0X00 ,   /*日期*/
+              0X00 ,/*星期*/
+              0x00 , 0x00 ,0x00 /*时间*/
+              };
 #include "stdio.h"
 
 char *mystrcat(char *dest, const char *src, char length)
@@ -369,7 +378,32 @@ void ReadPage(void)
 		temp[4]=	PIC_ID;	
 		Uart3_Send(temp,sizeof(temp));
 }
-
+ /*******************************************************************************
+ * 函数名称:SetScreenRtc                                                                    
+ * 描    述:读取当前页,数据处理在DealSeriAceptData中处理                                                           
+ *                                                                               
+ * 输    入:无                                                                    
+ * 输    出:                                                                     
+ * 返    回:                                                             
+ * 修改日期:2014年6月24日                                                                    
+ *******************************************************************************/ 	
+void SetScreenRtc(void)
+{
+  RTC_TimeTypeDef RTC_TimeStructure;
+  RTC_DateTypeDef RTC_DateStructure;
+  unsigned char temp[13]={0};
+  RTC_GetTime(RTC_Format_BCD, &RTC_TimeStructure);
+	RTC_GetDate(RTC_Format_BCD, &RTC_DateStructure);
+  memcpy(temp,rtc_write,13);
+  temp[6]=  RTC_DateStructure.RTC_Year;
+  temp[7]=  RTC_DateStructure.RTC_Month;
+  temp[8]=  RTC_DateStructure.RTC_Date;
+  temp[9]=  RTC_DateStructure.RTC_WeekDay;
+  temp[10]= RTC_TimeStructure.RTC_Hours;
+  temp[11]= RTC_TimeStructure.RTC_Minutes;
+  temp[12]= RTC_TimeStructure.RTC_Seconds;
+  Uart3_Send(temp,sizeof(temp));
+}
  /*******************************************************************************
  * 函数名称:DispLeftMeal                                                                     
  * 描    述:在菜单选择界面显示各菜品所剩余的                                                           
@@ -760,16 +794,32 @@ void AbnomalMealCntDisp(uint8_t meal_cnt,uint8_t floor)
  * 返    回:void                                                               
  * 修改日期:2014年7月22日                                                                    
  *******************************************************************************/ 
-
+uint32_t sellsecond_remain=0;
 void DisplayTimeCutDown(void)
 {
+  uint32_t sellsecond_totoal=0,realsecond_totoal=0;
 	RTC_TimeShow();	//获取当前的时间
-	selltime_hour_t= TimeDate.Hours- selltime_hour;   //对从屏幕获取的时间进行减法
-	selltime_minute_t= TimeDate.Minutes- selltime_minute;
-	VariableChage(wait_sellmeal_hour,selltime_minute_t);
-	VariableChage(wait_sellmeal_minute,selltime_minute_t);
-	WaitTime=60; //60S计时   
-  OpenTIM4(); 
+  sellsecond_totoal= selltime_hour*3600+selltime_minute*60; //设置售餐的时间换位秒
+  realsecond_totoal= TimeDate.Hours*3600+TimeDate.Minutes*60+TimeDate.Senconds; //当前时间转换为秒
+  if(sellsecond_totoal>realsecond_totoal)  
+  {
+    sellmeal_flag= false;
+    sellsecond_remain = sellsecond_totoal-realsecond_totoal;
+    selltime_hour_r= sellsecond_remain/3600;
+    selltime_minute_r= (sellsecond_remain%3600)/60;
+    selltime_second_r= (sellsecond_remain%3600)%60;
+    VariableChage(wait_sellmeal_hour,selltime_hour_r);
+    VariableChage(wait_sellmeal_minute,selltime_minute_r);
+    VariableChage(wait_sellmeal_second,selltime_second_r);
+    PageChange(SellMeal_TimeWait_interface); 
+    OpenTIM4(); 
+  }
+  else
+  {
+    CloseTIM4();
+    sellmeal_flag= true;
+    PageChange(Menu_interface); 
+  }
 }
  /*******************************************************************************
  * 函数名称:DisplayRecordTime                                                                     
@@ -951,8 +1001,10 @@ uint8_t  InputPassWord[6]={0};
 bool cardbalence_cancel_flag= false;
 bool mealneed_sync = false;  //餐品同步标记
 int16_t CoinTotoal_t=0; //作为基数 		
-int8_t	selltime_hour= 0,selltime_hour_t=0;
-int8_t	selltime_minute=0, selltime_minute_t=0;
+int8_t	selltime_hour= 11,selltime_hour_t=30,selltime_hour_r=0;
+int8_t	selltime_minute=11, selltime_minute_t=30,selltime_minute_r=0;
+int8_t  selltime_second_r=0;
+bool sellmeal_flag = true;
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 {
 	char MealID =0;
@@ -961,7 +1013,6 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 		{
 			case meal_choose: /*主角面用户选择*/
 			{
-        CloseTIM4();
 				switch(VariableData[1])
 				{
 					case 0x01:
@@ -1102,16 +1153,23 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
  					case 0x03:  /*进入购物车*/
 					{
-            PutIntoShopCart();
-						if(UserAct.Meal_totoal>0)
-						{
-							SettleAccounts();
-							CloseTIM3();
-							WaitTimeInit(&WaitTime);
-							OpenTIM7();
-							Current= waitfor_money;//进入读钱界面
-							PlayMusic(VOICE_2);
-						}
+            if(sellmeal_flag)
+            {
+              PutIntoShopCart();
+              SettleAccounts();
+              if(UserAct.Meal_totoal>0)
+              {  
+                CloseTIM3();
+                WaitTimeInit(&WaitTime);
+                OpenTIM7();
+                Current= waitfor_money;//进入读钱界面
+                PlayMusic(VOICE_2);
+              }
+            }
+            else
+            {
+              PageChange(SellMeal_TimeWait_interface);
+            }
 					}break;
 					case 0x04:  /*取消*/
 					{
@@ -1594,8 +1652,14 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 					}break;
 					case 0x06: /*售餐设置*/
 					{
-						PageChange(SellMeal_TimeSet_interface);
-					}
+            VariableChage(set_sellmeal_hour,selltime_hour);
+            VariableChage(set_sellmeal_minute,selltime_minute);  
+						PageChange(SellMeal_TimeSet_interface); 
+					}break;
+          case 0x07: /*餐品对比成功返回*/
+          {
+            PageChange(MealInput_interface);
+          }break;
 					default:break;	
 				}
 			}break;
@@ -1705,7 +1769,6 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 					selltime_hour= selltime_hour_t;
 					selltime_minute= selltime_minute_t;
 					DisplayTimeCutDown();
-					PageChange(SellMeal_TimeWait_interface);
         }
 				else if(VariableData[1]==0x02) /*返回*/
 				{
