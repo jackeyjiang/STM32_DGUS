@@ -3373,24 +3373,24 @@ bool Szt_GpbocAutoCheckIn(void)
 				return false;
 		}
   }  
-  while(1)	 
-  {
-    if( Szt_DiverInitFlag ==0)
- 	  {
- 	    delay_us(500);
- 	    Szt_DiverInitFlag = Szt_CheckIn();
- 	  }
-	  if(Szt_DiverInitFlag == 1)
-	  {
-		  break;
-	  }
-		else 
-		{
-			check_cont++;
-			if(check_cont>1000)
-				return false;
-		}
-  }
+//   while(1)	 
+//   {
+//     if( Szt_DiverInitFlag ==0)
+//  	  {
+//  	    delay_us(500);
+//  	    Szt_DiverInitFlag = Szt_CheckIn();
+//  	  }
+// 	  if(Szt_DiverInitFlag == 1)
+// 	  {
+// 		  break;
+// 	  }
+// 		else 
+// 		{
+// 			check_cont++;
+// 			if(check_cont>1000)
+// 				return false;
+// 		}
+//  }
 	return true;
 }
 

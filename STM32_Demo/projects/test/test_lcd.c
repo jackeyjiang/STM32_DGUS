@@ -78,6 +78,7 @@ int main(void)
           VariableChage(wait_sellmeal_minute,selltime_minute_r);
           VariableChage(wait_sellmeal_second,selltime_second_r);
           sellsecond_remain_old= sellsecond_remain;
+          if(sellsecond_remain==0) PageChange(Menu_interface);
         }
 				StateSend();
 				if((LinkTime==1)||(LinkTime==2)||(LinkTime==3))

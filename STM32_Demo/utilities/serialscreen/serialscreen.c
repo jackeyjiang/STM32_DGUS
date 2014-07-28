@@ -816,6 +816,7 @@ void DisplayTimeCutDown(void)
   }
   else
   {
+    sellsecond_remain=0;
     CloseTIM4();
     sellmeal_flag= true;
     PageChange(Menu_interface); 
@@ -1001,8 +1002,8 @@ uint8_t  InputPassWord[6]={0};
 bool cardbalence_cancel_flag= false;
 bool mealneed_sync = false;  //餐品同步标记
 int16_t CoinTotoal_t=0; //作为基数 		
-int8_t	selltime_hour= 11,selltime_hour_t=30,selltime_hour_r=0;
-int8_t	selltime_minute=11, selltime_minute_t=30,selltime_minute_r=0;
+int8_t	selltime_hour= 11,selltime_hour_t=11,selltime_hour_r=0;
+int8_t	selltime_minute=30, selltime_minute_t=30,selltime_minute_r=0;
 int8_t  selltime_second_r=0;
 bool sellmeal_flag = true;
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
@@ -1274,13 +1275,13 @@ loop1:	switch(MealID)
 					case 0x02:   /*银行预付卡*/
 					{
 						CurrentPoint =7;
-						PlayMusic(VOICE_4);
+						PlayMusic(VOICE_5);
 						if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro3");  //关闭现金接受
 					}break;
 					case 0x03:   /*深圳通支付*/
 					{
 						CurrentPoint =8;
-						PlayMusic(VOICE_4);
+						PlayMusic(VOICE_5);
 						if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro4");  //关闭现金接受			
 					}break;
 					case 0x04:   /*取消*/
@@ -1772,8 +1773,6 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
         }
 				else if(VariableData[1]==0x02) /*返回*/
 				{
-					selltime_hour_t= 0;
-					selltime_minute_t= 0;	
           PageChange(Data_synchronization);				
         }
       }break;
