@@ -146,10 +146,12 @@ void  SPRT(void)
 	unsigned char  huan3[]={0x1b,0x64,0x06};
 	unsigned char  p0[]={"Ó¦ÊÕ:201ÒÑÊÕ:   ÕÒ»Ø:   \r\n"};
 	unsigned char  p1[]={"Ê±¼ä:2013-12-15-12:30:00\r\n"};
-	unsigned char  p2[]={"ºúÂÜ²·³´µ°1\t15\t015\r\n"};
-	unsigned char  p3[]={"Ïã¹½»¬¼¦  1\t15\t015\r\n"};
-	unsigned char  p4[]={"´àÆ¤¿¾Ñ¼  1\t15\t015\r\n"};
-	unsigned char  p5[]={"ºìÉÕÓã¿é  1\t15\t015\r\n"};
+	unsigned char  p2[]={"ÃØÖÆÖíÊÖ·¹  1\t15\t015\r\n"};
+	unsigned char  p3[]={"³±ÊÏÂ±¼¦ÍÈ·¹1\t15\t015\r\n"};
+	unsigned char  p4[]={"ÌØÉ«µ¾ÏãÈâ·¹1\t15\t015\r\n"};
+	unsigned char  p5[]={"ºÚ½·Öí°Ç·¹  1\t15\t015\r\n"};
+  unsigned char  p6[]={"ÆÑÉÕöôÓã·¹  1\t15\t015\r\n"};
+  unsigned char  p7[]={"ÆÑÉÕÇïµ¶Óã·¹1\t15\t015\r\n"};
 
   //printf("@\r\n");//´òÓ¡»Ø³µ»»ÐÐ
   //Uart1_Card(huan3,sizeof(huan3)); 
@@ -158,7 +160,7 @@ void  SPRT(void)
 	COPY(TimeDate,p0,p1);
   if(Print_Struct.P_Number1st>0)
   {	
-		p2[10]= Print_Struct.P_Number1st%10 +'0'; 
+		p2[12]= Print_Struct.P_Number1st%10 +'0'; 
 		p2[15]=UserAct.MealCost_1st/100+'0';
 		p2[16]=UserAct.MealCost_1st%100/10+'0';
 		p2[17]=UserAct.MealCost_1st%100%10+'0';
@@ -166,7 +168,7 @@ void  SPRT(void)
   }
 	if(Print_Struct.P_Number2nd>0)
 	{
-		p3[10]= Print_Struct.P_Number2nd%10 +'0'; 
+		p3[12]= Print_Struct.P_Number2nd%10 +'0'; 
 		p3[15]=UserAct.MealCost_2nd/100+'0';
 		p3[16]=UserAct.MealCost_2nd%100/10+'0';
 		p3[17]=UserAct.MealCost_2nd%100%10+'0';
@@ -174,7 +176,7 @@ void  SPRT(void)
 	}
   if(Print_Struct.P_Number3rd>0)
 	{
-		p4[10]= Print_Struct.P_Number3rd%10 +'0'; 
+		p4[12]= Print_Struct.P_Number3rd%10 +'0'; 
 		p4[15]=UserAct.MealCost_3rd/100+'0';
 		p4[16]=UserAct.MealCost_3rd%100/10+'0';
 		p4[17]=UserAct.MealCost_3rd%100%10+'0';
@@ -182,11 +184,27 @@ void  SPRT(void)
 	}
 	if(Print_Struct.P_Number4th>0)
 	{		
-		p5[10]= Print_Struct.P_Number4th%10 +'0'; 
+		p5[12]= Print_Struct.P_Number4th%10 +'0'; 
 		p5[15]=UserAct.MealCost_4th/100+'0';
 		p5[16]=UserAct.MealCost_4th%100/10+'0';
 		p5[17]=UserAct.MealCost_4th%100%10+'0';
 		printf("%s",p5);
+	} 
+	if(Print_Struct.P_Number5th>0)
+	{		
+		p5[12]= Print_Struct.P_Number5th%10 +'0'; 
+		p5[15]=UserAct.MealCost_5th/100+'0';
+		p5[16]=UserAct.MealCost_5th%100/10+'0';
+		p5[17]=UserAct.MealCost_5th%100%10+'0';
+		printf("%s",p6);
+	} 
+	if(Print_Struct.P_Number6th>0)
+	{		
+		p5[12]= Print_Struct.P_Number6th%10 +'0'; 
+		p5[15]=UserAct.MealCost_6th/100+'0';
+		p5[16]=UserAct.MealCost_6th%100/10+'0';
+		p5[17]=UserAct.MealCost_6th%100%10+'0';
+		printf("%s",p7);
 	} 
   printf("%s",p0);
 	printf("%s",p1);

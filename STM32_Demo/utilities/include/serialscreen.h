@@ -61,11 +61,12 @@
 #define ScreenDisable 0x00
 
 /*剩余菜品变量地址*/
-#define meat     0x0021 /*红萝卜炒肉*/
-#define chicken	 0x0022 /*香菇滑鸡*/
-#define duck     0x0023 /*脆皮烤鸭*/
-#define fish     0x0024 /*红烧鱼块*/
-
+#define meat     0x0020 /*红萝卜炒肉*/
+#define chicken	 0x0021 /*香菇滑鸡*/
+#define duck     0x0022 /*脆皮烤鸭*/
+#define fish     0x0023 /*红烧鱼块*/
+#define pork     0x0024 /*梅菜扣肉*/
+#define cow      0x0025 /*土豆牛腩*/
 /*装填选项,1:放满,2:清空,3:确认,4:取消,5:返回*/
 #define mealinput_choose  0x001A
 
@@ -103,16 +104,16 @@
 #define current_temprature 0x0020
 
 /*付款金额显示*/
-#define  payment_coin  0x0025 //硬币支付金额
-#define  payment_bill  0x0026 //纸币支付金额
-#define  payment_card  0x0027 //刷卡支付金额
+#define  payment_coin  0x002A //硬币支付金额
+#define  payment_bill  0x002B //纸币支付金额
+#define  payment_card  0x002C //刷卡支付金额
 
 /*等待时间*/
-#define  wait_payfor   0x0028 //付款等待时间
+#define  wait_payfor   0x002D //付款等待时间
 
 /*出餐界面变量*/
-#define  mealout_totle  0x002A    //餐品出餐总数
-#define  mealout_already  0x002B  //餐品已出餐总数
+#define  mealout_totle    0x002E    //餐品出餐总数
+#define  mealout_already  0x002F  //餐品已出餐总数
 
 /*购物车显示*/
 #define column1st_name  0x4100  //第一栏商品名

@@ -291,15 +291,15 @@ int main(void)
         else if(waitmeal_status == takemeal_erro)
 				{
 					//机械手复位中请等待界面		
-					MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th);//计算总的应该退币的钱
-          UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th); //应该需要退币的钱	
+					MoneyPayBack_Already_total+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th+UserAct.MealCnt_5th*price_5th+UserAct.MealCnt_6th*price_6th);//计算总的应该退币的钱
+          UserAct.MoneyBack+= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th+UserAct.MealCnt_5th*price_5th+UserAct.MealCnt_6th*price_6th); //应该需要退币的钱	
 					MoneyBackCnt_Already=true;
 					PageChange(Err_interface);
 					UserAct.Cancle= 0x01;
 				  /*如果有币进入退币，如果无币进入错误处理*/
 					if(erro_record&(1<<coinhooperset_empty))
 					{
-						MoneyBack= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th -price_1st)*100; //计算
+						MoneyBack= (UserAct.MealCnt_1st *price_1st+UserAct.MealCnt_2nd *price_2nd+UserAct.MealCnt_3rd *price_3rd+UserAct.MealCnt_4th*price_4th+UserAct.MealCnt_5th*price_5th+UserAct.MealCnt_6th*price_6th -price_1st)*100; //计算
 						MoneyPayBack_Already= 0;
 						Current = erro_hanle;
 					}

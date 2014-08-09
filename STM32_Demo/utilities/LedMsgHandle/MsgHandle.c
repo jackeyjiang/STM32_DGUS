@@ -88,13 +88,13 @@ void MealArr(unsigned char index)
  		    CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x20;
+				CustomerSel.MealID[3]		   =   0x35;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
 				CustomerSel.MealPrice[2]      =	   0x00	;
 				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x15 ;
+				CustomerSel.MealPrice[4]      =	   0x16 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;
       case 0x02 :	/*购买餐品的ID*/
@@ -102,13 +102,13 @@ void MealArr(unsigned char index)
  		    CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x23;
+				CustomerSel.MealID[3]		   =   0x36;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
 				CustomerSel.MealPrice[2]      =	   0x00	;
 				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x15 ;
+				CustomerSel.MealPrice[4]      =	   0x16 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;
       case 0x03 :	/*购买餐品的ID*/
@@ -116,13 +116,13 @@ void MealArr(unsigned char index)
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x26;
+				CustomerSel.MealID[3]		   =   0x37;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
 				CustomerSel.MealPrice[2]      =	   0x00	;
 				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x15 ;
+				CustomerSel.MealPrice[4]      =	   0x16 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;
       case 0x04 :	/*购买餐品的ID*/
@@ -130,15 +130,43 @@ void MealArr(unsigned char index)
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x24;
+				CustomerSel.MealID[3]		   =   0x38;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
 				CustomerSel.MealPrice[2]      =	   0x00	;
 				CustomerSel.MealPrice[3]      =	   0x00 ;
-				CustomerSel.MealPrice[4]      =	   0x15 ;
+				CustomerSel.MealPrice[4]      =	   0x16 ;
 				CustomerSel.MealPrice[5]      =	   0x00 ;
 			}break ;	 
+      case 0x05 :	/*购买餐品的ID*/
+			{
+ 		  	CustomerSel.MealID[0]		   =   0x10;
+				CustomerSel.MealID[1]		   =   0x00;
+				CustomerSel.MealID[2]		   =   0x00;
+				CustomerSel.MealID[3]		   =   0x39;
+				/*购买餐品的价格*/
+				CustomerSel.MealPrice[0]      =    0x00 ;
+				CustomerSel.MealPrice[1]      =	   0x00 ;
+				CustomerSel.MealPrice[2]      =	   0x00	;
+				CustomerSel.MealPrice[3]      =	   0x00 ;
+				CustomerSel.MealPrice[4]      =	   0x18 ;
+				CustomerSel.MealPrice[5]      =	   0x00 ;
+			}break ;	
+      case 0x06 :	/*购买餐品的ID*/
+			{
+ 		  	CustomerSel.MealID[0]		   =   0x10;
+				CustomerSel.MealID[1]		   =   0x00;
+				CustomerSel.MealID[2]		   =   0x00;
+				CustomerSel.MealID[3]		   =   0x40;
+				/*购买餐品的价格*/
+				CustomerSel.MealPrice[0]      =    0x00 ;
+				CustomerSel.MealPrice[1]      =	   0x00 ;
+				CustomerSel.MealPrice[2]      =	   0x00	;
+				CustomerSel.MealPrice[3]      =	   0x00 ;
+				CustomerSel.MealPrice[4]      =	   0x18 ;
+				CustomerSel.MealPrice[5]      =	   0x00 ;
+			}break ;	
 	    default :
 			{
  		  	CustomerSel.MealID[0]		   =   0x00;
@@ -176,6 +204,8 @@ void MealArr(unsigned char index)
 			case 2: PayBill= price_2nd*100;break;
 			case 3: PayBill= price_3rd*100;break;
 			case 4: PayBill= price_4th*100;break;
+			case 5: PayBill= price_5th*100;break;
+			case 6: PayBill= price_6th*100;break;      
 			default:break;
 		}
 	 	/*支付了多少钱*/

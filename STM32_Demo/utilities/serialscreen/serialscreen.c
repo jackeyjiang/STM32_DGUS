@@ -37,10 +37,10 @@ const char    fish_name[12]= {"黑椒猪扒饭"};
 const char    pork_name[12]= {"蒲烧鲷鱼饭"};
 const char     cow_name[14]= {"蒲烧秋刀鱼饭"};
 
-uint8_t Menu_interface= Menu1st_interface;
-uint8_t MealSet_interface= MealSet1st_interface;
-uint8_t sell_type[4]={0x01,0x02,0x03,0x04}; //存储四个菜品的的ID,在签到的时候需要获取的有当前需要显示售卖的哪一个界面和那几个餐品
-uint8_t sell_menu = 0x01; //存储当前售卖的是那个菜单
+uint8_t Menu_interface= Menu2nd_interface;
+uint8_t MealSet_interface= MealSet2nd_interface;
+uint8_t sell_type[4]={0x03,0x04,0x05,0x06}; //存储四个菜品的的ID,在签到的时候需要获取的有当前需要显示售卖的哪一个界面和那几个餐品
+uint8_t sell_menu = 0x02; //存储当前售卖的是那个菜单
 /*将数据16位存储器地址分解为2个8位数据*/
 union ScreenRam
 {
@@ -399,14 +399,14 @@ void DispLeftMeal(void)
 {
 		uint8_t i;
 	  unsigned char temp[8]={0};  //存放串口数据的临时指针
-		for(i=0;i<4;i++)
+		for(i=0;i<MealKindTotoal;i++)
     {		
       memcpy(temp,VariableWrite,sizeof(VariableWrite));
       temp[2]= 5;
       myunion.adress= meat+i; //在基地址推移位置
       temp[4]= myunion.adr[1];
       temp[5]= myunion.adr[0];
-      temp[7]= DefineMeal[sell_type[i]].MealCount;//sell_type[i]存储的是四个菜品的ID
+      temp[7]= DefineMeal[i].MealCount;//sell_type[i]存储的是四个菜品的ID
       Uart3_Send(temp,sizeof(temp));	
 		}
 }
@@ -487,7 +487,7 @@ void MealCostDisp(char meal_id,char meal_count)
 	  unsigned char temp[8]={0};
 	  memcpy(temp,VariableWrite,sizeof(VariableWrite));
 	  temp[2]= 5;
-		temp[5]= (0x32+(meal_id-1)*3); //钱币变量地址
+		temp[5]= (0x31+(meal_id-1)*2); //钱币变量地址
     temp[7]= GetMealPrice(meal_id,meal_count);	
 		Uart3_Send(temp,sizeof(temp));		
 }
@@ -1055,7 +1055,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				switch(VariableData[1])
 				{
 					case 0x01:
-						if(DefineMeal[VariableData[1]-1].MealCount > 0)	   //判断餐品是否大于0
+						if(DefineMeal[0].MealCount > 0)	   //判断餐品是否大于0
 						{
 							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1]; //当前用户选餐的ID
@@ -1068,7 +1068,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
  							MealCostDisp(UserAct.MealID,UserAct.MealCnt_1st_t);//根据用户所选餐品ID号显示合计钱数
 						}break;						
 					case 0x02:
-						if(DefineMeal[VariableData[1]-1].MealCount > 0)	   //判断餐品是否大于0
+						if(DefineMeal[1].MealCount > 0)	   //判断餐品是否大于0
 						{
 							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1];
@@ -1081,7 +1081,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							MealCostDisp(UserAct.MealID,UserAct.MealCnt_2nd_t);//根据用户所选餐品ID号显示合计钱数
 						}break;							
 					case 0x03:
-						if(DefineMeal[VariableData[1]-1].MealCount > 0)	   //判断餐品是否大于0
+						if(DefineMeal[2].MealCount > 0)	   //判断餐品是否大于0
 						{
 							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1];
@@ -1095,7 +1095,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						}break;						
 					case 0x04:
 					{					
-						if(DefineMeal[VariableData[1]-1].MealCount > 0)	   //判断餐品是否大于0
+						if(DefineMeal[3].MealCount > 0)	   //判断餐品是否大于0
 						{
 							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1];
@@ -1109,7 +1109,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						}			
 					}break;
 					case 0x05:
-						if(DefineMeal[VariableData[1]-1].MealCount > 0)	   //判断餐品是否大于0
+						if(DefineMeal[4].MealCount > 0)	   //判断餐品是否大于0
 						{
 							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1];
@@ -1123,7 +1123,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						}break;						
 					case 0x06:
 					{					
-						if(DefineMeal[VariableData[1]-1].MealCount > 0)	   //判断餐品是否大于0
+						if(DefineMeal[5].MealCount > 0)	   //判断餐品是否大于0
 						{
 							PlayMusic(VOICE_1);
 							UserAct.MealID= VariableData[1];
@@ -1135,8 +1135,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 							VariableChage(cow_cnt,0x01);
 							MealCostDisp(UserAct.MealID,UserAct.MealCnt_6th_t);//根据用户所选餐品ID号显示合计钱数
 						}			
-					}break;          
-          
+					}break;           
 					case 0x0F:  /*管理用户键*/
 					{
 						PageChange(Password_interface);
@@ -1608,12 +1607,25 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
           default:break;
 				}					
 			}break;
-			case meal_num:
+			case meal_num: //当改变餐品的编号的时候，需要查找当前的ID
 			{
 				uint8_t cnt_t=0;
-        //查找uint8_t sell_type[4]={0x01,x02,0x03,0x04}; 0x05,0x06 
-        CurFloor.MealID= sell_type[VariableData[1]];
-			  //CurFloor.MealID= VariableData[1];	
+        uint8_t meal_id_t=0,find_flag=0;
+        for(meal_id_t=0;meal_id_t<4;meal_id_t++)
+        {
+          if(sell_type[meal_id_t]==VariableData[1])
+          {
+            find_flag=1;
+            break;
+          }
+        }
+        if(find_flag==1)
+			    CurFloor.MealID= VariableData[1];	//当前的就是餐品的ID
+        else
+        {
+          CurFloor.MealID= sell_type[0]; //当查不到输入的ID与本地的id不匹配则选最小号的ID
+        }
+        VariableChage(meal_num,CurFloor.MealID);		
 				InitSetting();
 				for(cnt_t = 0; cnt_t < FloorMealNum; cnt_t++)  //查找那一层有是空的
 				{
@@ -1792,7 +1804,16 @@ loop7:			UserAct.MoneyBack= UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 			}break;
 			case temprature_set:
 			{
-				SetTemper(VariableData[1]);
+        if(VariableData[1]==0xFF)
+        {
+          PageChange(MealSet_interface);
+          VariableChage(temprature_set,0);
+        }
+        else
+        {
+          SetTemper(VariableData[1]);
+        }
+				
 			}break;
 			case coins_key:  //按一次退一次
       {

@@ -232,10 +232,14 @@ unsigned char  WaitPayMoney(void)
 			Print_Struct.P_Number2nd = UserAct.MealCnt_2nd;
 			Print_Struct.P_Number3rd = UserAct.MealCnt_3rd;
 			Print_Struct.P_Number4th = UserAct.MealCnt_4th;
+			Print_Struct.P_Number5th = UserAct.MealCnt_5th;
+      Print_Struct.P_Number6th = UserAct.MealCnt_6th;
 			Print_Struct.P_Cost1st   = UserAct.MealCost_1st;
 			Print_Struct.P_Cost2nd   = UserAct.MealCost_2nd;
 			Print_Struct.P_Cost3rd   = UserAct.MealCost_3rd;
 			Print_Struct.P_Cost4th   = UserAct.MealCost_4th;
+      Print_Struct.P_Cost5th   = UserAct.MealCost_5th;
+      Print_Struct.P_Cost6th   = UserAct.MealCost_6th;
 			Print_Struct.P_paymoney  = UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards ;
 			Print_Struct.P_PayShould = UserAct.PayShould ;
 			Print_Struct.P_MoneyBack = UserAct.MoneyBack ;
@@ -289,6 +293,14 @@ uint8_t WaitMeal(void)
 				else if(UserAct.MealCnt_4th>0)
 				{
 					UserAct.MealID = 0x04;	
+				}
+				else if(UserAct.MealCnt_5th>0)
+				{
+					UserAct.MealID = 0x05;	
+				}
+				else if(UserAct.MealCnt_6th>0)
+				{
+					UserAct.MealID = 0x06;	
 				}
 				else
 				{	
@@ -483,6 +495,36 @@ uint8_t WaitMeal(void)
 				    return tookone_meal;
 					}						
 				}
+				else if(UserAct.MealID == 0x05)
+				{
+					UserAct.MealCnt_5th--; 	
+					//if(UserAct.MealCnt_5th==0)
+					if(0)
+					{
+						//printf("tookkind_meal\r\n");
+						return tookkind_meal;
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
+				}
+				else if(UserAct.MealID == 0x06)
+				{
+					UserAct.MealCnt_6th--; 	
+					//if(UserAct.MealCnt_6th==0)
+					if(0)
+					{
+						//printf("tookkind_meal\r\n");
+						return tookkind_meal;
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
+				}       
 				else 
 				{
 					printf("tookone_meal erro\r\n");
@@ -1021,7 +1063,7 @@ void hardfawreInit(void)
   uint8_t i, j, k;
 	Uart6_Configuration();   //机械手 1 ,2
  //初始化存放位置数据结构体
-  for(i = 0; i < 4; i++)
+  for(i = 0; i <MealKindTotoal; i++)
 	{
 		DefineMeal[i].MealPrice = 0;
 		DefineMeal[i].MealCount = 0;

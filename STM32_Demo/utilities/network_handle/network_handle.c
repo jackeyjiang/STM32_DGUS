@@ -15,7 +15,7 @@
 
 static long Batch = 0x00 ;//交易流水号
 
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x14}; /*终端TID码 10000006*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
@@ -518,19 +518,19 @@ void StructCopyToBuffer(unsigned char *dest)
   for(j0 = 0; j0 < 4; j0++)
 	{
 	  for(i=0;i<4;i++)
-	  dest[k++]=Meal[sell_type[j0]].MealID[i];
+	  dest[k++]=Meal[sell_type[j0]-1].MealID[i];
 		
 	  for(i=0;i<20;i++)
-	  dest[k++]=Meal[sell_type[j0]].MaelName[i];
+	  dest[k++]=Meal[sell_type[j0]-1].MaelName[i];
 
-		dest[k++]= Meal[sell_type[j0]].MealNum[0]; //第一个数为0
-	  dest[k++]= DefineMeal[sell_type[j0]].MealCount; //第二个数为餐品的数量
-
-	  for(i=0;i<4;i++)
-	  dest[k++]=Meal[sell_type[j0]].MealPreace[i];
+		dest[k++]= Meal[sell_type[j0]-1].MealNum[0]; //第一个数为0
+	  dest[k++]= DefineMeal[sell_type[j0]-1].MealCount; //第二个数为餐品的数量
 
 	  for(i=0;i<4;i++)
-	  dest[k++]=Meal[sell_type[j0]].MealType[i];
+	  dest[k++]=Meal[sell_type[j0]-1].MealPreace[i];
+
+	  for(i=0;i<4;i++)
+	  dest[k++]=Meal[sell_type[j0]-1].MealType[i];
 	}
 }
 
