@@ -1,9 +1,11 @@
 #ifndef __network_handle__h
 #define __network_handle__h
 #include "stdint.h"
+#include "MsgHandle.h"
 
 #define Success 0x01
 #define Failed 0x02
+
 
 extern   unsigned char   F_RX1_Right ;
 extern   uint16_t		  rx1BufIndex ;
@@ -57,7 +59,7 @@ typedef struct
 	const unsigned char MealType[4];
 
 }Meal_struction;
-extern	Meal_struction  	Meal[4];
+extern	Meal_struction  	Meal[MealKindTotoal];
 
 
 /*******************************************

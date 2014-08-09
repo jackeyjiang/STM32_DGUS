@@ -9,6 +9,7 @@
 #include "MsgHandle.h"
 #include "sd.h"
 #include "uart6.h"
+#include "serialscreen.h"
 
 
 
@@ -47,12 +48,14 @@ unsigned char  UpdataFlag[4];
 unsigned char  ACK[4];  //这个是什么?
 unsigned char  WordKeyCipher[11];
 
-Meal_struction Meal[4]={
+Meal_struction Meal[MealKindTotoal]={
 						    /*餐品数量*/	 /*餐品ID*/ 			     /*餐品名字*/				    /*餐品价格*/			     /*餐品类型*/
-								   0x00,0x00,	 0x10,0x00,0x00,0x20,  {"红萝卜炒肉      "},   0x00,0x00,0x15,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x23,  {"香菇滑鸡        "},   0x00,0x00,0x15,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x26,  {"脆皮烧鸭        "},   0x00,0x00,0x15,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x24,  {"红烧鱼块        "},   0x00,0x00,0x15,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x35,  {"秘制猪手饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x36,  {"潮氏卤鸡腿饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x37,  {"特色稻香肉饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x38,  {"黑脚猪扒饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x39,  {"蒲烧鲷鱼饭      "},   0x00,0x00,0x18,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x40,  {"蒲烧秋刀鱼饭    "},   0x00,0x00,0x18,0x00, 	{"C001"},  
 						   };
  unsigned char	Record_buffer[254] = {0} ;
 
@@ -511,23 +514,23 @@ unsigned char  SignInFun(void)
 void StructCopyToBuffer(unsigned char *dest)
 {
   long j0=0,i=0,k=0;
-// 有j0<9改为j0<4 是餐品的数据
+//上传4份餐品的数据
   for(j0 = 0; j0 < 4; j0++)
 	{
 	  for(i=0;i<4;i++)
-	  dest[k++]=Meal[j0].MealID[i];
+	  dest[k++]=Meal[sell_type[j0]].MealID[i];
 		
 	  for(i=0;i<20;i++)
-	  dest[k++]=Meal[j0].MaelName[i];
+	  dest[k++]=Meal[sell_type[j0]].MaelName[i];
 
-		dest[k++]= Meal[j0].MealNum[0]; //第一个数为0
-	  dest[k++]= DefineMeal[j0].MealCount; //第二个数为餐品的数量
-
-	  for(i=0;i<4;i++)
-	  dest[k++]=Meal[j0].MealPreace[i];
+		dest[k++]= Meal[sell_type[j0]].MealNum[0]; //第一个数为0
+	  dest[k++]= DefineMeal[sell_type[j0]].MealCount; //第二个数为餐品的数量
 
 	  for(i=0;i<4;i++)
-	  dest[k++]=Meal[j0].MealType[i];
+	  dest[k++]=Meal[sell_type[j0]].MealPreace[i];
+
+	  for(i=0;i<4;i++)
+	  dest[k++]=Meal[sell_type[j0]].MealType[i];
 	}
 }
 

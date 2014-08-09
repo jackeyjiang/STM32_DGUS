@@ -2,7 +2,8 @@
 #define __MSGHANDLE__
 #include "stdint.h"
 #include "stm32f4xx.h"
-#define FloorMealNum  15				  /*定义有多少个行*/
+#define FloorMealNum    15				  /*定义有多少个行*/
+#define MealKindTotoal  6           /*定义有几个餐品*/
 typedef struct MealAt
 {
     
@@ -10,24 +11,30 @@ typedef struct MealAt
 	uint8_t Position[15][3];   //餐放置的位置
 	uint8_t MealCount;         //餐剩余总数
 	
-}MealAttribute;	  ////定义4个菜系的属性。
+}MealAttribute;	  ////定义单个菜系的属性。
 
-extern MealAttribute DefineMeal[4];	//定义4个菜系
+extern MealAttribute DefineMeal[MealKindTotoal];	//定义6个菜系
 
 typedef struct UserAction
 {
-  uint8_t MealCnt_1st_t;      //用户选择第一份餐品的数量未按下放入购物车键时的临时数量
-	uint8_t MealCnt_2nd_t;      //用户选择第二份餐品的数量未按下放入购物车键时的临时数量
-	uint8_t MealCnt_3rd_t;      //用户选择第三份餐品的数量未按下放入购物车键时的临时数量
-	uint8_t MealCnt_4th_t;      //用户选择第四份餐品的数量未按下放入购物车键时的临时数量	
+  uint8_t MealCnt_1st_t;      //用户选择第一种餐品的数量未按下放入购物车键时的临时数量
+	uint8_t MealCnt_2nd_t;      //用户选择第二种餐品的数量未按下放入购物车键时的临时数量
+	uint8_t MealCnt_3rd_t;      //用户选择第三种餐品的数量未按下放入购物车键时的临时数量
+	uint8_t MealCnt_4th_t;      //用户选择第四种餐品的数量未按下放入购物车键时的临时数量	
+	uint8_t MealCnt_5th_t;      //用户选择第五种餐品的数量未按下放入购物车键时的临时数量	
+	uint8_t MealCnt_6th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	
   uint8_t MealCnt_1st;      //用户选择第一份餐品的数量
 	uint8_t MealCnt_2nd;      //用户选择第二份餐品的数量
 	uint8_t MealCnt_3rd;      //用户选择第三份餐品的数量
 	uint8_t MealCnt_4th;      //用户选择第四份餐品的数量
+	uint8_t MealCnt_5th;      //用户选择第五份餐品的数量
+	uint8_t MealCnt_6th;      //用户选择第六份餐品的数量  
   uint16_t MealCost_1st;    //用户选择第一份餐品的总价
 	uint16_t MealCost_2nd;    //用户选择第二份餐品的总价
 	uint16_t MealCost_3rd;    //用户选择第三份餐品的总价
 	uint16_t MealCost_4th;    //用户选择第四份餐品的总价
+	uint16_t MealCost_5th;    //用户选择第五份餐品的总价
+	uint16_t MealCost_6th;    //用户选择第六份餐品的总价  
 	uint16_t PayShould;        //用户应付款总额
 	uint8_t  MealID;           //用户当前选择的餐品ID
 	uint8_t  Meal_totoal;      //用户选餐的总数

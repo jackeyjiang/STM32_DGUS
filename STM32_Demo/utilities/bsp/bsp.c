@@ -584,7 +584,8 @@ void AcountCopy(void)
 	UserAct.MealCnt_2nd_t= UserAct.MealCnt_2nd;
 	UserAct.MealCnt_3rd_t= UserAct.MealCnt_3rd;
 	UserAct.MealCnt_4th_t= UserAct.MealCnt_4th;
-
+  UserAct.MealCnt_5th_t= UserAct.MealCnt_5th;
+  UserAct.MealCnt_6th_t= UserAct.MealCnt_6th;
 }
 
   /*******************************************************************************

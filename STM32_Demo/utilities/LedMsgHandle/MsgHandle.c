@@ -3,7 +3,7 @@
 #include "serialscreen.h"
 #include "bsp.h"
 
-MealAttribute DefineMeal[4];	//定义4个菜系
+MealAttribute DefineMeal[MealKindTotoal];	//定义6个菜系
 FloorAttribute FloorMeal[FloorMealNum], CurFloor;
 UserSelection UserAct;
 FloorMealMessage FloorMealMessageWriteToFlash;
@@ -23,7 +23,7 @@ uint8_t  WaitMealTime=0;
  void StatisticsTotal(void)
  {	 
     uint8_t i,j;
-		for(j = 0; j < 4; j++)	 //4代表餐ID号
+		for(j = 0; j < MealKindTotoal; j++)	 //4代表餐ID号
 		{
 		    DefineMeal[j].MealCount = 0;
 		    for(i = 0; i < 15; i++)

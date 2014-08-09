@@ -7,30 +7,45 @@
 #define RD_LEN 0x00
 #define ADR 0x00
 
-#define Logo_interface        0x00  /*logo界面*/
-#define Err_interface         0x01  /*错误显示界面*/
-#define Menu_interface        0x02  /*选餐界面*/
-#define Meal1st_interface     0x04  /*红萝卜炒肉主界界面*/
-#define Meal2rd_interface     0x07  /*香菇滑鸡主界界面*/
-#define Meal3ns_interface     0x0A /*脆皮烤鸭主界面*/
-#define Meal4th_interface     0x0D /*红烧鱼块主界面*/
-#define Acount_interface      0x10 /*结算界面*/
-#define TicketPrint_interface 0x13 /*小票打印界面*/
-#define Mealout_interface     0x15 /*出餐界面显示*/
-#define Password_interface    0x16 /*密码输入界面*/
-#define MealSet_interface     0x18 /*放餐设置界面*/
-#define MealInput_interface   0x1A /*放餐数量选择*/
-#define TemperatureSet_interface 0x1C  /*温度设置界面*/
-#define Data_synchronization  0x1E  /*数据同步*/
-#define Coinset_interface     0x22  /*硬币设置*/
-#define Cardbalence_interface 0x25  /*刷卡界面*/
-#define UserAbonamalRecord_interface 0x27 /*异常用户记录界面*/
-#define HardwareInit_interface         0x29 /*硬件初始化界面*/
-#define OnlymachieInit_interface       0x2A /*机械手初始化界面*/
-#define SignInFunction_interface       0x2B /*网络签到界面*/
-#define Szt_GpbocAutoCheckIn_interface 0x2C /*深圳通签到界面*/
-#define SellMeal_TimeSet_interface     0x2D /*售餐时间设置界面*/
-#define SellMeal_TimeWait_interface    0x2F /*售餐等待界面*/
+#define Logo_interface                 0x00  /*logo界面*/
+#define Err_interface                  0x01  /*错误显示界面*/
+#define HardwareInit_interface         0x03  /*硬件初始化界面*/
+#define OnlymachieInit_interface       0x04  /*机械手初始化界面*/
+#define SignInFunction_interface       0x05  /*网络签到界面*/
+#define Szt_GpbocAutoCheckIn_interface 0x06  /*读卡器签到界面*/
+#define SellMeal_TimeSet_interface     0x07  /*售餐时间设置界面*/
+#define SellMeal_TimeWait_interface    0x09  /*售餐等待界面*/
+#define Coinset_interface              0x0B  /*硬币设置*/
+#define MealInput_interface            0x0D  /*放餐数量选择*/
+#define Acount_interface               0x0F  /*结算界面*/
+#define TicketPrint_interface          0x12  /*小票打印界面*/
+#define Mealout_interface              0x14  /*出餐界面显示*/
+#define Password_interface             0x15  /*密码输入界面*/
+#define TemperatureSet_interface       0x17  /*温度设置界面*/
+#define Data_synchronization           0x19  /*数据同步*/
+#define Cardbalence_interface          0x1D  /*刷卡界面*/
+#define UserAbonamalRecord_interface   0x1F  /*异常用户记录界面*/
+
+#define Menu1st_interface              0x21  /*菜单一餐品售卖界面*/
+#define MealSet1st_interface           0x23  /*菜单一餐品设置界面*/
+#define Menu2nd_interface              0x25  /*菜单二餐品售卖界面*/
+#define MealSet2nd_interface           0x27  /*菜单二餐品设置界面*/
+#define Menu3rd_interface              0x29  /*菜单三餐品售卖界面*/
+#define MealSet3rd_interface           0x2b  /*菜单三餐品设置界面*/
+#define Menu4th_interface              0x2d  /*菜单四餐品售卖界面*/
+#define MealSet4th_interface           0x2f  /*菜单四餐品设置界面*/
+#define Menu5th_interface              0x31  /*菜单五餐品售卖界面*/
+#define MealSet5th_interface           0x33  /*菜单五餐品设置界面*/
+
+#define Meal1st_interface              0x35  /*红萝卜炒肉主界面*/
+#define Meal2nd_interface              0x37  /*香菇滑鸡主界面*/
+#define Meal3rd_interface              0x39  /*脆皮烤鸭主界面*/
+#define Meal4th_interface              0x3B  /*红烧鱼块主界面*/
+#define Meal5th_interface              0x3D  /*梅菜扣肉主界面*/
+#define Meal6th_interface              0x3F  /*土豆牛腩主界面*/
+
+
+
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -118,23 +133,25 @@
 /*单页餐品变量显示*/
 //红萝卜炒肉数量选择界面
 #define meat_cnt        0x0030 
-#define meat_prince     0x0031
-#define meat_cost       0x0032
+#define meat_cost       0x0031
 //香菇滑鸡数量选择界面
-#define chicken_cnt     0x0033
-#define chicken_prince  0x0034
-#define chicken_cost    0x0035
+#define chicken_cnt     0x0032
+#define chicken_cost    0x0033
 //脆皮烤鸭数量选择界面
-#define duck_cnt        0x0036
-#define duck_prince     0x0037
-#define duck_cost       0x0038
+#define duck_cnt        0x0034
+#define duck_cost       0x0035
 //红烧鱼块数量选择界面
-#define fish_cnt        0x0039
-#define fish_prince     0x003A
-#define fish_cost       0X003B
+#define fish_cnt        0x0036
+#define fish_cost       0X0037
+//梅菜扣肉数量选择界面
+#define pork_cnt        0x0038
+#define pork_cost       0X0039
+//土豆牛腩
+#define cow_cnt         0x003A
+#define cow_cost        0X003B
 //选餐倒计时
 #define count_dowm      0x003F
-//商品价格
+
 /*餐品装填变量*/
 #define row_1st   0x0011 
 #define row_2nd   0x0012
@@ -202,11 +219,16 @@
 #define wait_sellmeal_minute  0x4E04    //等待售餐显示的分钟变量
 #define wait_sellmeal_second  0x4E05    //等待售餐显示的秒钟变量
 
-
+extern uint8_t sell_type[4];  //存储售餐ID的数据
+extern uint8_t sell_menu;     //售餐的菜单ID
+extern uint8_t Menu_interface;//当前显示的售餐界面
+extern uint8_t Menuset_interface; //当前显示的设餐界面
 extern const char price_1st;
 extern const char price_2nd;
 extern const char price_3rd;
 extern const char price_4th;
+extern const char price_5th;
+extern const char price_6th;
 extern bool cardbalence_cancel_flag;
 extern bool sellmeal_flag; 
 extern char record_time[20];
