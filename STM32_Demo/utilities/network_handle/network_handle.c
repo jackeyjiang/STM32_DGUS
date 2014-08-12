@@ -44,18 +44,19 @@ unsigned char  TNCT[6+3]        ={0xb8,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};
 unsigned char  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};											    /*交易总产品数 d9*/
 unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};							/*总找零金额 d7*/
 unsigned char  TakeMealFlag[3+2]={0xdb,0x00,0x02,0x00,0x00};        /*取餐标志 0x01:成功 0x02:失败 */
-unsigned char  UpdataFlag[4];
-unsigned char  ACK[4];  //这个是什么?
-unsigned char  WordKeyCipher[11];
+unsigned char  UpdataFlag[3+1]={0xc1,0x00,0x01,0x00};               //更新标识
+unsigned char  MenuNo[3+1]= {0xdd,0x00,0x02,0x01};                   /*菜单编号,0x01,0x02,0x03,0x04,0x05（初步）*/
+unsigned char  ACK[3+2]={0xc0,0x00,0x02,0x00,0x00};                 //应答码
+unsigned char  WordKeyCipher[11]={0x0c7,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};//工作密钥
 
 Meal_struction Meal[MealKindTotoal]={
 						    /*餐品数量*/	 /*餐品ID*/ 			     /*餐品名字*/				    /*餐品价格*/			     /*餐品类型*/
-								   0x00,0x00,	 0x10,0x00,0x00,0x35,  {"秘制猪手饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x36,  {"潮氏卤鸡腿饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x37,  {"特色稻香肉饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x38,  {"黑脚猪扒饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
-                   0x00,0x00,	 0x10,0x00,0x00,0x39,  {"蒲烧鲷鱼饭      "},   0x00,0x00,0x18,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x40,  {"蒲烧秋刀鱼饭    "},   0x00,0x00,0x18,0x00, 	{"C001"},  
+								   0x00,0x00,	 0x10,0x00,0x00,0x41,  {"秘制猪手饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x42,  {"潮氏卤鸡腿饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x43,  {"特色稻香肉饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x44,  {"黑椒猪扒饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x45,  {"蒲烧鲷鱼饭      "},   0x00,0x00,0x18,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x46,  {"蒲烧秋刀鱼饭    "},   0x00,0x00,0x18,0x00, 	{"C001"},  
 						   };
  unsigned char	Record_buffer[254] = {0} ;
 
@@ -450,7 +451,7 @@ unsigned char  SignInFun(void)
 //	 printf("\r\nMName: ");
 	 for(i=0;i<23;i++)
 	 {
-	   MName[i] = rx1Buf[i+4];//得到商户
+	   MName[i] = rx1Buf[i+4];//得到商幻
 //	 printf("%x ",MName[i]);
 	 }
 //	 printf("\r\nBNO: ");
@@ -462,19 +463,19 @@ unsigned char  SignInFun(void)
 //	 printf("\r\nAPPVersion: ");
 	 for(i=0;i<11;i++)
 	 {
-	   APPVersion[i] = rx1Buf[i+0x21];//得到批次号
+	   APPVersion[i] = rx1Buf[i+0x21];//得到程序版本号
 //	 printf("%x ",APPVersion[i]);
 	 }
 //	 printf("\r\nParaFileVersion: ");
 	 for(i=0;i<11;i++)
 	 {
-	   ParaFileVersion[i] = rx1Buf[i+0x2c];//得到批次号
+	   ParaFileVersion[i] = rx1Buf[i+0x2c];//得到参数文件版本
 //	 printf("%x ",ParaFileVersion[i]);
 	 }
 	 //printf("\r\nBDataFileVersion: ");
 	 for(i=0;i<11;i++)
 	 {
-	   BDataFileVersion[i] = rx1Buf[i+0x37];//得到批次号
+	   BDataFileVersion[i] = rx1Buf[i+0x37];//业务数据版本文件
 //	 printf("%x ",BDataFileVersion[i]);
 	 }
 //	 printf("\r\nUpdataFlag: ");
@@ -483,25 +484,28 @@ unsigned char  SignInFun(void)
 	   UpdataFlag[i] = rx1Buf[i+0x42];//得到批次号
 //	 printf("%x ",UpdataFlag[i]);
 	 }
-
-//	 printf("\r\nACK: ");
 	 for(i=0;i<4;i++)
+   {
+      MenuNo[i]= rx1Buf[i+0x46];
+   }   
+//	 printf("\r\nACK: ");
+	 for(i=0;i<5;i++)
 	 {
-	   ACK[i] = rx1Buf[i+0x46];//得到
+	   ACK[i] = rx1Buf[i+0x4A];//得到
 //	 printf("%x ",ACK[i]);
 	 }
 //
  //    printf("\r\nWordKeyCipher: ");
 	 for(i=0;i<11;i++)
 	 {
-	   WordKeyCipher[i] = rx1Buf[i+0x4a];//得到批次号
+	   WordKeyCipher[i] = rx1Buf[i+0x4E];//得到工作密文
 //	 printf("%x ",WordKeyCipher[i]);
 	 }
 
 //	 printf("\r\nMAC: ");
    for(i=0;i<11;i++)
 	 {
-	   MAC[i] = rx1Buf[i+0x55];//得到工作密文
+	   MAC[i] = rx1Buf[i+0x59];//
 //	 printf("%x ",MAC[i]);
 	 }
    if(ACK[3]==0x24)
@@ -1387,26 +1391,26 @@ void DataUpload(char takemeal_flag)
 {
   uint8_t cnt_t=0;
 	itoa(f_name,TimeDate);	  //把时间转换成字符
-	if(UserAct.MealID==0x00)
+	if(UserActMessageWriteToFlash.UserAct.MealID==0x00)
 	{
 		for(cnt_t=0;cnt_t<10;cnt_t++)
 		{
-	    printf("upload/UserAct.MealID == %d\r\n",UserAct.MealID);
+	    printf("upload/UserAct.MealID == %d\r\n",UserActMessageWriteToFlash.UserAct.MealID);
 			delay_ms(200);
 		}
 		while(1);
 	}
-	MealArr(UserAct.MealID);
+	MealArr(UserActMessageWriteToFlash.UserAct.MealID);
 	/*发送取餐数据给服务器*/
   memset(Record_buffer,0,254);
 	if(TakeMealsFun(Record_buffer,takemeal_flag) == 0x01) //表示发送失败
 	{
-    UserAct.MealID= 0x00;//数据上传还一次对ID清零，这样就可以知道数据是否上传了
+    UserActMessageWriteToFlash.UserAct.MealID= 0x00;//数据上传还一次对ID清零，这样就可以知道数据是否上传了
     Sd_Write('n',takemeal_flag);//发送失败
 	}
 	else
   {
-    UserAct.MealID= 0x00;//数据上传还一次对ID清零，这样就可以知道数据是否上传了    
+    UserActMessageWriteToFlash.UserAct.MealID= 0x00;//数据上传还一次对ID清零，这样就可以知道数据是否上传了    
 		Sd_Write('y',takemeal_flag);//改变当前最后两位为N0
   }
 }	

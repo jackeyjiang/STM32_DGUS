@@ -64,6 +64,7 @@
 #define SPI_FLASH_CS_HIGH()      GPIO_SetBits(SPI_FLASH_CS_GPIO_PORT, SPI_FLASH_CS_PIN)
 
 /* Exported functions ------------------------------------------------------- */
+
 /*----- High layer function -----*/
 void SPI_FLASH_Init(void);
 void SPI_FLASH_SectorErase(u32 SectorAddr);

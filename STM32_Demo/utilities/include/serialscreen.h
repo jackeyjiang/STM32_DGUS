@@ -101,7 +101,7 @@
 #define temprature_set 0x001F
 
 /*实时温度显示变量*/
-#define current_temprature 0x0020
+#define current_temprature 0x003C
 
 /*付款金额显示*/
 #define  payment_coin  0x002A //硬币支付金额
@@ -221,7 +221,11 @@
 #define wait_sellmeal_second  0x4E05    //等待售餐显示的秒钟变量
 
 extern uint8_t sell_type[4];  //存储售餐ID的数据
-extern uint8_t sell_menu;     //售餐的菜单ID
+extern uint8_t sell_type_1st[4]; 
+extern uint8_t sell_type_2nd[4]; 
+extern uint8_t sell_type_3rd[4]; 
+extern uint8_t sell_type_4th[4]; 
+extern uint8_t sell_type_5th[4];
 extern uint8_t Menu_interface;//当前显示的售餐界面
 extern uint8_t Menuset_interface; //当前显示的设餐界面
 extern const char price_1st;
@@ -250,5 +254,7 @@ void VariableChagelong (uint16_t Variable,uint32_t Value);
 void DisplayRecordTime(void);
 void DisplayTimeCutDown(void);
 void SetScreenRtc(void);
+void MenuChange(uint8_t MenuNO);
+unsigned char GetMealPrice(char meal_type,char count);
 
 #endif

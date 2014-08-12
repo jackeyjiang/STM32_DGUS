@@ -236,8 +236,8 @@ void EXTI15_10_IRQHandler(void)
 		  if(CoinsCount == 2)
 			{
 				CoinsCount = 0;
-				UserAct.PayForCoins++;
-				UserAct.PayAlready++;
+				UserActMessageWriteToFlash.UserAct.PayForCoins++;
+				UserActMessageWriteToFlash.UserAct.PayAlready++;
 				CoinsTotoalMessageWriteToFlash.CoinTotoal++;
 			}
 		}
@@ -362,28 +362,28 @@ void PVD_IRQHandler(void)
   if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
   {
     PWR_ClearFlag(PWR_FLAG_PVDO);
-		if((Current == waitfor_money)&&(UserAct.PayAlready>0)) //当处于付钱状态的时候需要清楚用户的其他数据，除了UserAct.MoneyBack
+		if((Current == waitfor_money)&&(UserActMessageWriteToFlash.UserAct.PayAlready>0)) //当处于付钱状态的时候需要清楚用户的其他数据，除了UserActMessageWriteToFlash.UserAct.MoneyBack
 		{
       erro_record |= (1<<outage_erro);  //需要加入，以免还在付钱的时候断电
-			UserAct.MoneyBack = UserAct.PayAlready;
-			MoneyPayBack_Already_total= UserAct.PayAlready;
+			UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready;
+			MoneyPayBack_Already_total= UserActMessageWriteToFlash.UserAct.PayAlready;
 			ClearUserBuffer();
-			UserAct.PayAlready= MoneyPayBack_Already_total;
+			UserActMessageWriteToFlash.UserAct.PayAlready= MoneyPayBack_Already_total;
     }
-		else if(Current == meal_out) //取餐的时候断电，没有计算UserAct.MoneyBack,需要计算一次后，就不再计算了，所以加了标记
+		else if(Current == meal_out) //取餐的时候断电，没有计算UserActMessageWriteToFlash.UserAct.MoneyBack,需要计算一次后，就不再计算了，所以加了标记
 		{
 			MoneyBackCnt_Already=false;
       erro_record |= (1<<outage_erro);
 			erro_record |= (1<<arm_limit);
       if(OldCoinsCnt!=0)
 			{
-				UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退			
+				UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退			
 			}
     }
     else if(Current ==hpper_out) //不仅在退币状态下统计，也需要在出餐状态统计，是出餐的时候退的币
     {
       erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
-			UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+			UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
 			if(erro_record>=(1<<X_timeout))  //如果是机械手错误，需要锁定机械手
 			{
 				 erro_record |= (1<<arm_limit);
@@ -393,7 +393,7 @@ void PVD_IRQHandler(void)
     {
 			if(OldCoinsCnt!=0)
 			{
-			  UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+			  UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
 			}
 			if(erro_record>=(1<<X_timeout))  //如果是机械手错误，需要锁定机械手
 			{
@@ -405,16 +405,16 @@ void PVD_IRQHandler(void)
 		{
 			if(OldCoinsCnt!=0)
 			{
-			  UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+			  UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
 			}
-		  if(UserAct.MoneyBack>0)
+		  if(UserActMessageWriteToFlash.UserAct.MoneyBack>0)
 				erro_record |= (1<<outage_erro);
 			else
 				erro_record &= ~(1<<outage_erro); 
     }
 		else if(Current == data_upload) //上传的时候断电
 		{
-			if(UserAct.MealID!=0)
+			if(UserActMessageWriteToFlash.UserAct.MealID!=0)
 			{
 				erro_record |= (1<<upload_erro);
       }

@@ -17,40 +17,46 @@ extern MealAttribute DefineMeal[MealKindTotoal];	//定义6个菜系
 
 typedef struct UserAction
 {
-  uint8_t MealCnt_1st_t;      //用户选择第一种餐品的数量未按下放入购物车键时的临时数量
-	uint8_t MealCnt_2nd_t;      //用户选择第二种餐品的数量未按下放入购物车键时的临时数量
-	uint8_t MealCnt_3rd_t;      //用户选择第三种餐品的数量未按下放入购物车键时的临时数量
-	uint8_t MealCnt_4th_t;      //用户选择第四种餐品的数量未按下放入购物车键时的临时数量	
-	uint8_t MealCnt_5th_t;      //用户选择第五种餐品的数量未按下放入购物车键时的临时数量	
-	uint8_t MealCnt_6th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	
-  uint8_t MealCnt_1st;      //用户选择第一份餐品的数量
-	uint8_t MealCnt_2nd;      //用户选择第二份餐品的数量
-	uint8_t MealCnt_3rd;      //用户选择第三份餐品的数量
-	uint8_t MealCnt_4th;      //用户选择第四份餐品的数量
-	uint8_t MealCnt_5th;      //用户选择第五份餐品的数量
-	uint8_t MealCnt_6th;      //用户选择第六份餐品的数量  
-  uint16_t MealCost_1st;    //用户选择第一份餐品的总价
-	uint16_t MealCost_2nd;    //用户选择第二份餐品的总价
-	uint16_t MealCost_3rd;    //用户选择第三份餐品的总价
-	uint16_t MealCost_4th;    //用户选择第四份餐品的总价
-	uint16_t MealCost_5th;    //用户选择第五份餐品的总价
-	uint16_t MealCost_6th;    //用户选择第六份餐品的总价  
-	uint16_t PayShould;        //用户应付款总额
-	uint8_t  MealID;           //用户当前选择的餐品ID
-	uint8_t  Meal_totoal;      //用户选餐的总数
-	uint8_t  Meal_takeout;     //用户已取出的餐品数
-	uint16_t PayForCoins;           //用户投入的硬币数	
-	uint16_t PayForBills;           //用户投入的纸币数
-	uint16_t PayForCards;           //用户应经刷卡的数
-	uint16_t PayAlready;            //用户已经付款总额
-	int16_t  MoneyBack;              //用户找零数  //有符号性避免数量减为0xfffe
-	uint8_t  PrintTick;              //是否打印小票标志
-	uint8_t  PayType ;              //支付方式
-	uint8_t  Cancle;                //用户取消购买
+  uint32_t MealCnt_1st_t;      //用户选择第一种餐品的数量未按下放入购物车键时的临时数量
+	uint32_t MealCnt_2nd_t;      //用户选择第二种餐品的数量未按下放入购物车键时的临时数量
+	uint32_t MealCnt_3rd_t;      //用户选择第三种餐品的数量未按下放入购物车键时的临时数量
+	uint32_t MealCnt_4th_t;      //用户选择第四种餐品的数量未按下放入购物车键时的临时数量	
+	uint32_t MealCnt_5th_t;      //用户选择第五种餐品的数量未按下放入购物车键时的临时数量	
+	uint32_t MealCnt_6th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	
+  uint32_t MealCnt_1st;      //用户选择第一份餐品的数量
+	uint32_t MealCnt_2nd;      //用户选择第二份餐品的数量
+	uint32_t MealCnt_3rd;      //用户选择第三份餐品的数量
+	uint32_t MealCnt_4th;      //用户选择第四份餐品的数量
+	uint32_t MealCnt_5th;      //用户选择第五份餐品的数量
+	uint32_t MealCnt_6th;      //用户选择第六份餐品的数量  
+  uint32_t MealCost_1st;    //用户选择第一份餐品的总价
+	uint32_t MealCost_2nd;    //用户选择第二份餐品的总价
+	uint32_t MealCost_3rd;    //用户选择第三份餐品的总价
+	uint32_t MealCost_4th;    //用户选择第四份餐品的总价
+	uint32_t MealCost_5th;    //用户选择第五份餐品的总价
+	uint32_t MealCost_6th;    //用户选择第六份餐品的总价   
+	uint32_t PayShould;        //用户应付款总额
+	uint32_t  MealID;           //用户当前选择的餐品ID 
+	uint32_t  Meal_totoal;      //用户选餐的总数
+	uint32_t  Meal_takeout;     //用户已取出的餐品数
+	uint32_t PayForCoins;           //用户投入的硬币数	
+	uint32_t PayForBills;           //用户投入的纸币数
+	uint32_t PayForCards;           //用户应经刷卡的数  
+	uint32_t PayAlready;            //用户已经付款总额
+	uint32_t  MoneyBack;              //用户找零数  //有符号性避免数量减为0xfffe
+	uint32_t  PrintTick;              //是否打印小票标志
+	uint32_t  PayType ;              //支付方式
+	uint32_t  Cancle;                //用户取消购买
 }UserSelection;
 
-extern UserSelection UserAct;
+typedef union _UserActMessage
+{
+  UserSelection   UserAct;
+  uint8_t         FlashBuffer[30*4];
+}UserActMessage;
+extern UserActMessage UserActMessageWriteToFlash;//用户数据写入flash
 
+//extern UserSelection UserAct;
 
 typedef struct FloorMeal
 {

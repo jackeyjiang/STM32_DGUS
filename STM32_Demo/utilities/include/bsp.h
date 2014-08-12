@@ -137,6 +137,7 @@ extern uint32_t   erro_record;  //错误标记位
 extern uint16_t MoneyPayBack_Already; //上传用的已退币数量值
 extern uint16_t MoneyPayBack_Already_total; //计算总的退币数
 extern bool MoneyBackCnt_Already;
+extern uint32_t flash_record[18];
 
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);
@@ -148,7 +149,7 @@ void hardfawreInit(void);
 void  WaitTimeInit(uint8_t *Time);
 void StateSend(void);
 void DataUpload(char takemeal_flag);
-void PrintTickFun(unsigned char *PrintTickFlag);
+void PrintTickFun(uint32_t *PrintTickFlag);
 void PowerupAbnormalHandle(int32_t erro_record);
 void AbnormalHandle(uint32_t erro);
 void PollAbnormalHandle(void);

@@ -89,9 +89,9 @@ uint8_t CheckPrintStatus(void)
  *******************************************************************************/
 void COPY(Struct_TD  a,unsigned char *p0,unsigned char *p1)
 {										
-	p0[5]=UserAct.PayShould/100+'0';
-	p0[6]=UserAct.PayShould%100/10+'0';
-	p0[7]=UserAct.PayShould%100%10+'0';
+	p0[5]=UserActMessageWriteToFlash.UserAct.PayShould/100+'0';
+	p0[6]=UserActMessageWriteToFlash.UserAct.PayShould%100/10+'0';
+	p0[7]=UserActMessageWriteToFlash.UserAct.PayShould%100%10+'0';
 
 	p0[13]=Print_Struct.P_paymoney /100+'0';
 	p0[14]=Print_Struct.P_paymoney %100/10+'0';
@@ -161,62 +161,62 @@ void  SPRT(void)
   if(Print_Struct.P_Number1st>0)
   {	
 		p2[12]= Print_Struct.P_Number1st%10 +'0'; 
-		p2[15]=UserAct.MealCost_1st/100+'0';
-		p2[16]=UserAct.MealCost_1st%100/10+'0';
-		p2[17]=UserAct.MealCost_1st%100%10+'0';
+		p2[15]=UserActMessageWriteToFlash.UserAct.MealCost_1st/100+'0';
+		p2[16]=UserActMessageWriteToFlash.UserAct.MealCost_1st%100/10+'0';
+		p2[17]=UserActMessageWriteToFlash.UserAct.MealCost_1st%100%10+'0';
 		printf("%s",p2);
   }
 	if(Print_Struct.P_Number2nd>0)
 	{
 		p3[12]= Print_Struct.P_Number2nd%10 +'0'; 
-		p3[15]=UserAct.MealCost_2nd/100+'0';
-		p3[16]=UserAct.MealCost_2nd%100/10+'0';
-		p3[17]=UserAct.MealCost_2nd%100%10+'0';
+		p3[15]=UserActMessageWriteToFlash.UserAct.MealCost_2nd/100+'0';
+		p3[16]=UserActMessageWriteToFlash.UserAct.MealCost_2nd%100/10+'0';
+		p3[17]=UserActMessageWriteToFlash.UserAct.MealCost_2nd%100%10+'0';
 		printf("%s",p3);
 	}
   if(Print_Struct.P_Number3rd>0)
 	{
 		p4[12]= Print_Struct.P_Number3rd%10 +'0'; 
-		p4[15]=UserAct.MealCost_3rd/100+'0';
-		p4[16]=UserAct.MealCost_3rd%100/10+'0';
-		p4[17]=UserAct.MealCost_3rd%100%10+'0';
+		p4[15]=UserActMessageWriteToFlash.UserAct.MealCost_3rd/100+'0';
+		p4[16]=UserActMessageWriteToFlash.UserAct.MealCost_3rd%100/10+'0';
+		p4[17]=UserActMessageWriteToFlash.UserAct.MealCost_3rd%100%10+'0';
 		printf("%s",p4);
 	}
 	if(Print_Struct.P_Number4th>0)
 	{		
 		p5[12]= Print_Struct.P_Number4th%10 +'0'; 
-		p5[15]=UserAct.MealCost_4th/100+'0';
-		p5[16]=UserAct.MealCost_4th%100/10+'0';
-		p5[17]=UserAct.MealCost_4th%100%10+'0';
+		p5[15]=UserActMessageWriteToFlash.UserAct.MealCost_4th/100+'0';
+		p5[16]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100/10+'0';
+		p5[17]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100%10+'0';
 		printf("%s",p5);
 	} 
 	if(Print_Struct.P_Number5th>0)
 	{		
 		p5[12]= Print_Struct.P_Number5th%10 +'0'; 
-		p5[15]=UserAct.MealCost_5th/100+'0';
-		p5[16]=UserAct.MealCost_5th%100/10+'0';
-		p5[17]=UserAct.MealCost_5th%100%10+'0';
+		p5[15]=UserActMessageWriteToFlash.UserAct.MealCost_5th/100+'0';
+		p5[16]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100/10+'0';
+		p5[17]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100%10+'0';
 		printf("%s",p6);
 	} 
 	if(Print_Struct.P_Number6th>0)
 	{		
 		p5[12]= Print_Struct.P_Number6th%10 +'0'; 
-		p5[15]=UserAct.MealCost_6th/100+'0';
-		p5[16]=UserAct.MealCost_6th%100/10+'0';
-		p5[17]=UserAct.MealCost_6th%100%10+'0';
+		p5[15]=UserActMessageWriteToFlash.UserAct.MealCost_6th/100+'0';
+		p5[16]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100/10+'0';
+		p5[17]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100%10+'0';
 		printf("%s",p7);
 	} 
   printf("%s",p0);
 	printf("%s",p1);
-	if(UserAct.PayType == '2' )
+	if(UserActMessageWriteToFlash.UserAct.PayType == '2' )
 	{
 		 printf("支付方式：银行卡支付\r\n");
 	}
-  if(UserAct.PayType == '1')
+  if(UserActMessageWriteToFlash.UserAct.PayType == '1')
 	{
 		 printf("支付方式：现金支付\r\n");
 	}
-	if(UserAct.PayType == '3')
+	if(UserActMessageWriteToFlash.UserAct.PayType == '3')
 	{
 		printf("支付方式：深圳通支付\r\n");
 	}

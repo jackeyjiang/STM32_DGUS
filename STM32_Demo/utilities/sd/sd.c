@@ -506,31 +506,31 @@ void DataRecord(void)
 {
    char sd_time=0;
 	 RTC_TimeShow();
-	 if(UserAct.MealCnt_1st_t>0)
+	 if(UserActMessageWriteToFlash.UserAct.MealCnt_1st_t>0)
 	 {
-     UserAct.MealID = 0x01;
-		 MealArr(UserAct.MealID);
+     UserActMessageWriteToFlash.UserAct.MealID = 0x01;
+		 MealArr(UserActMessageWriteToFlash.UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
      Sd_Write('N',Success);
 	 }
-	 if(UserAct.MealCnt_2nd_t>0)
+	 if(UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t>0)
 	 {
-     UserAct.MealID = 0x02;
-		 MealArr(UserAct.MealID);
+     UserActMessageWriteToFlash.UserAct.MealID = 0x02;
+		 MealArr(UserActMessageWriteToFlash.UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
      Sd_Write('N',Success);
 	 }
-	 if(UserAct.MealCnt_3rd_t>0)
+	 if(UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t>0)
 	 {
-     UserAct.MealID = 0x03;
-		 MealArr(UserAct.MealID);
+     UserActMessageWriteToFlash.UserAct.MealID = 0x03;
+		 MealArr(UserActMessageWriteToFlash.UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
      Sd_Write('N',Success);
 	 }
-	 if(UserAct.MealCnt_4th_t>0)
+	 if(UserActMessageWriteToFlash.UserAct.MealCnt_4th_t>0)
 	 {
-     UserAct.MealID = 0x04;
-		 MealArr(UserAct.MealID);
+     UserActMessageWriteToFlash.UserAct.MealID = 0x04;
+		 MealArr(UserActMessageWriteToFlash.UserAct.MealID);
 		 itoa(f_name,TimeDate);	  //把时间转换成字符
      Sd_Write('N',Success);
 	 }

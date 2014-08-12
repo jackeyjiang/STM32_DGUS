@@ -41,7 +41,7 @@ extern unsigned char  TNCT[6+3];
 extern unsigned char  TNtype[3+2];
 extern unsigned char  TotalChange[3+6];
 extern unsigned char  TakeMealFlag[3+2];
-
+extern unsigned char  MenuNo[4];
 extern unsigned char  UpdataFlag[4];
 extern unsigned char  WordKeyCipher[11];
 

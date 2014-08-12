@@ -14,6 +14,7 @@
 #include "printer.h"
 #include "delay.h"
 #include "Mini_hopper.h"
+#include "bsp.h"
 #include <stdio.h>
 
 typedef enum 
@@ -806,6 +807,59 @@ void ReadCoins(void)
 {
 	//SPI_FLASH_BufferRead(CoinsTotoalMessageWriteToFlash.CoinsCnt, SPI_FLASH_Sector1, 2);
 	CoinsTotoalMessageWriteToFlash.CoinTotoal  = RTC_ReadBackupRegister(RTC_BKP_DR19);
+}
+
+  /*******************************************************************************
+ * 函数名称:SaveUserData                                                                    
+ * 描    述:掉电保存                                                               
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年4月23日    
+ *******************************************************************************/ 
+uint32_t flash_record[18]={0};
+void SaveUserData(void)
+{
+    unsigned char TempBuffer[120]={0};
+    /* Write Tx_Buffer data to SPI FLASH memory */
+	  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 120);/*参看原始数据*/
+	
+	  SPI_FLASH_SectorErase(FLASH_SectorToErase);
+    SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 , 120);
+    /* Read data from SPI FLASH memory */
+    SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1 , 120);
+
+    /* Check the corectness of written dada */
+    TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, 120);
+		if(TransferStatus1 == FAILED )/*加入可以排错*/
+    {
+	    SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, 120);
+      /* Read data from SPI FLASH memory */
+      SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, 120);
+      /* Check the corectness of written dada */
+      TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, 120);
+    }
+    RTC_WriteBackupRegister(RTC_BKP_DR2,  MoneyBackCnt_Already);
+    RTC_WriteBackupRegister(RTC_BKP_DR3,  erro_record);
+    RTC_WriteBackupRegister(RTC_BKP_DR4,  MoneyPayBack_Already_total);	
+}
+
+  /*******************************************************************************
+ * 函数名称:ReadUserData                                                                    
+ * 描    述:掉电保存                                                               
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年4月23日    
+ *******************************************************************************/ 
+void ReadUserData(void)
+{
+   SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 , 120);
+   MoneyBackCnt_Already      = RTC_ReadBackupRegister(RTC_BKP_DR2);
+   erro_record               = RTC_ReadBackupRegister(RTC_BKP_DR3);
+   MoneyPayBack_Already_total= RTC_ReadBackupRegister(RTC_BKP_DR4); 
 }
 
 /******************* (C) COPYRIGHT 2010 www.armjishu.com *****END OF FILE****/

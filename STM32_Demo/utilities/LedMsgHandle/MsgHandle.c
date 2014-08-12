@@ -4,6 +4,7 @@
 #include "bsp.h"
 
 MealAttribute DefineMeal[MealKindTotoal];	//定义6个菜系
+UserActMessage UserActMessageWriteToFlash;//用户数据写入flash
 FloorAttribute FloorMeal[FloorMealNum], CurFloor;
 UserSelection UserAct;
 FloorMealMessage FloorMealMessageWriteToFlash;
