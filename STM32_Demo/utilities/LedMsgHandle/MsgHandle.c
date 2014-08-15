@@ -89,7 +89,7 @@ void MealArr(unsigned char index)
  		    CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x35;
+				CustomerSel.MealID[3]		   =   0x41;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
@@ -103,7 +103,7 @@ void MealArr(unsigned char index)
  		    CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x36;
+				CustomerSel.MealID[3]		   =   0x42;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
@@ -117,7 +117,7 @@ void MealArr(unsigned char index)
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x37;
+				CustomerSel.MealID[3]		   =   0x43;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
@@ -131,7 +131,7 @@ void MealArr(unsigned char index)
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x38;
+				CustomerSel.MealID[3]		   =   0x44;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
@@ -145,7 +145,7 @@ void MealArr(unsigned char index)
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x39;
+				CustomerSel.MealID[3]		   =   0x45;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
@@ -159,7 +159,7 @@ void MealArr(unsigned char index)
  		  	CustomerSel.MealID[0]		   =   0x10;
 				CustomerSel.MealID[1]		   =   0x00;
 				CustomerSel.MealID[2]		   =   0x00;
-				CustomerSel.MealID[3]		   =   0x40;
+				CustomerSel.MealID[3]		   =   0x46;
 				/*购买餐品的价格*/
 				CustomerSel.MealPrice[0]      =    0x00 ;
 				CustomerSel.MealPrice[1]      =	   0x00 ;
@@ -194,8 +194,8 @@ void MealArr(unsigned char index)
 //	  }
 		
 		/*购买餐品的类型*/
-    CustomerSel.PayType =  UserAct.PayType;  //	UserAct.PayType  ;
-		CustomerSel.MealName	   =  	   index ;
+    CustomerSel.PayType =  UserActMessageWriteToFlash.UserAct.PayType;  //	UserAct.PayType  ;
+		CustomerSel.MealName =  	index ;
 		/*付了多少现金*/
 		//PayBill  =UserAct.PayForBills +*100 ;  /*扩大10倍*/
 		//PayBill  =	(UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards)*100 ;

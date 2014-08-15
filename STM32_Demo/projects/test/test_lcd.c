@@ -31,12 +31,12 @@ int main(void)
 {
 	hardfawreInit(); //硬件初始化
 	PageChange(OnlymachieInit_interface);
-	if(erro_record&(1<<arm_limit))
-  {
-		AbnormalHandle(arm_limit);//需要处理数据上传的断电
-	}
-  else 
-		OnlymachieInit();  //机械手初始化
+// 	if(erro_record&(1<<arm_limit))
+//   {
+// 		AbnormalHandle(arm_limit);//需要处理数据上传的断电
+// 	}
+//   else 
+	OnlymachieInit();  //机械手初始化
 	PageChange(SignInFunction_interface);
   if(!EchoFuntion(RTC_TimeRegulate)) 
     AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/
@@ -44,6 +44,8 @@ int main(void)
     SetScreenRtc();/*设置屏幕的RTC*/
 	PageChange(SignInFunction_interface);
 	if(!SignInFunction())       AbnormalHandle(signin_erro); /*网络签到*/
+  	DispLeftMeal();             //显示餐品数据	
+  MenuChange(MenuNo[3]);      //显示出售哪种菜单
 	ErrRecHandle();          //用户数据断电的数据处理与上传
 	PageChange(Szt_GpbocAutoCheckIn_interface);
 	delay_ms(1000);
@@ -54,13 +56,13 @@ int main(void)
 // 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	StatusUploadingFun(0xE800); //开机加入正常上传
 	PageChange(Logo_interface);	
-// 	if(!CloseCashSystem())
-// 	{		
-// 		if(!CloseCashSystem())AbnormalHandle(billset_erro);	
-// 	}
-	DispLeftMeal();             //显示餐品数据	
-  MenuChange(MenuNo[3]);      //显示出售哪种菜单
+	if(!CloseCashSystem())
+	{		
+		if(!CloseCashSystem())AbnormalHandle(billset_erro);	
+	}
+  delay_ms(200);
 	PageChange(Menu_interface); //显示选餐界面
+  PageChange(Menu_interface); //显示选餐界面
 	Current= current_temperature;
 	while(1)
   {
@@ -79,7 +81,11 @@ int main(void)
           VariableChage(wait_sellmeal_minute,selltime_minute_r);
           VariableChage(wait_sellmeal_second,selltime_second_r);
           sellsecond_remain_old= sellsecond_remain;
-          if(sellsecond_remain==0) PageChange(Menu_interface);
+          if(sellsecond_remain==0) 
+          {
+            PageChange(Menu_interface);
+            sellmeal_flag= true;           
+          }
         }
 				StateSend();
 				if((LinkTime==1)||(LinkTime==2)||(LinkTime==3))
@@ -112,6 +118,19 @@ int main(void)
 						VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
 					}
 				}
+        if(machinerec.redoor ==0) //开门状态
+        { 
+          machinerec.rerelative = 0;
+          PageChange(DoorOpened_interface);//显示开门界面，不能进行任何操作
+        }
+        else if(machinerec.redoor ==1) //关门状态
+        {
+          if(machinerec.rerelative ==1) //当机械手在适当的位置，则切换为售餐界面
+          {
+            PageChange(Menu_interface);
+            machinerec.redoor = 2; //将门的状态改为其他状态
+          }
+        }
 			}break;
 	    case waitfor_money:	 /*等待付钱*/
 			{
@@ -330,14 +349,25 @@ int main(void)
       {
 				//获取当前时间，并显示
 				DisplayRecordTime();
-				PollAbnormalHandle(); //异常处理 一直处于异常处理程序
-				PageChange(Logo_interface);
-				StatusUploadingFun(0xE800); //处理后返回正常
-				SaveUserData();
-				//if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);
-        while(1);								
+        if(erro_record==(1<<coinhooperset_empty))
+        {
+          AbnormalHandle(coinhooperset_empty);
+          PageChange(Menu_interface);
+          StatusUploadingFun(0xE800); //处理后返回正常
+          SaveUserData();
+          Current = current_temperature;
+        }
+        else
+        {
+          PollAbnormalHandle(); //异常处理 一直处于异常处理程序
+          PageChange(Logo_interface);
+          StatusUploadingFun(0xE800); //处理后返回正常
+          SaveUserData();
+          while(1);	         
+        }          
 		  }
 	  }
+
   }
 }
 /**

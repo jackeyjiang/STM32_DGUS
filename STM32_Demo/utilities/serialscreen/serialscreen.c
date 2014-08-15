@@ -378,6 +378,18 @@ void MenuChange(uint8_t MenuNO)
 {
   switch(MenuNO)
   {
+    case 0x00:
+    {
+      uint32_t i_cnt,i=0;
+      PageChange(Menu5th_interface);
+      for(i=0;i<20;i++)
+      {
+        for(i_cnt=0;i_cnt<4;i_cnt++)
+        printf("%x ",MenuNo[i_cnt]);
+        printf("\r\n");
+      }
+      while(1);
+    }break;
     case 0x01:
     {
       Menu_interface= Menu1st_interface;
@@ -1008,7 +1020,7 @@ void DisplayUserRecord(void)
 	
  /*******************************************************************************
  * 函数名称:GetPassWord                                                                     
- * 描    述:原始密码 可以加入修改密码函数                                                               
+ * 描    述:放餐密码                                                            
  *                                                                               
  * 输    入:无                                                                     
  * 输    出:无                                                                     
@@ -1024,7 +1036,15 @@ void GetPassWord(unsigned char *PassWord)
 	PassWord[4] = 1;
 	PassWord[5] = 8;
 }
-
+ /*******************************************************************************
+ * 函数名称:GetAdminPassWord                                                                     
+ * 描    述:硬币退币与装填密码                                                           
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年8月13日                                                                    
+ *******************************************************************************/  
 void GetAdminPassWord(unsigned char *PassWord)
 {
   PassWord[0] = 1;
@@ -1033,6 +1053,24 @@ void GetAdminPassWord(unsigned char *PassWord)
 	PassWord[3] = 4;
 	PassWord[4] = 5;
 	PassWord[5] = 6;
+}
+ /*******************************************************************************
+ * 函数名称:GetUserPassword                                                                     
+ * 描    述:错误记录清楚密码                                                         
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年8月13日                                                                    
+ *******************************************************************************/  
+void GetUserPassWord(unsigned char *PassWord)
+{
+  PassWord[0] = 6;
+	PassWord[1] = 6;
+	PassWord[2] = 6;
+	PassWord[3] = 6;
+	PassWord[4] = 6;
+	PassWord[5] = 6;  
 }
  /*******************************************************************************
  * 函数名称:VerifyPassword                                                                   
@@ -1323,6 +1361,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					{
 						//清空所有的用户数据???
 						ClearUserBuffer();
+            SaveUserData();
 						PageChange(Menu_interface);
 						CloseTIM3();
 						Current= current_temperature;//取消进入空闲程序
@@ -1444,7 +1483,7 @@ loop1:	switch(MealID)
 					case 0x01:   /*现金支付*/
 					{
 						CurrentPoint =2;
-						PlayMusic(VOICE_3);
+            PlayMusic(VOICE_3);
 						if(!OpenCashSystem()){OpenCashSystem();};// printf("cash system is erro2");  //关闭现金接受
 					}break;
 					case 0x02:   /*银行预付卡*/
@@ -1465,6 +1504,7 @@ loop7:			UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlas
 	          MoneyPayBack_Already_total= UserActMessageWriteToFlash.UserAct.PayAlready; //数据需要记录
 	          MoneyBack =UserActMessageWriteToFlash.UserAct.MoneyBack *100 ;  /*需退币退币的临时变量*/
             ClearUserBuffer();
+            SaveUserData();
 						UserActMessageWriteToFlash.UserAct.PayAlready= UserActMessageWriteToFlash.UserAct.MoneyBack; //在退币的时候，如果是取消购买的话，如果UserActMessageWriteToFlash.UserAct.MoneyBack==0，清掉UserActMessageWriteToFlash.UserAct.PayAlready
 			      if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro5");  //关闭现金接受
             PageChange(Menu_interface);
@@ -1494,9 +1534,16 @@ loop7:			UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlas
 				switch(VariableData[1])
 				{
 					case 0x01:   /*打印小票*/
+          {
+            UserActMessageWriteToFlash.UserAct.PrintTick= 0x00000001;
+            PrintTickFun(&UserActMessageWriteToFlash.UserAct.PrintTick);
+            CloseTIM4();
+            if(!erro_record) //当有错误的时候不进入出餐界面						
+						PageChange(Mealout_interface);            
+          }break;
 					case 0x02:   /*不打印小票*/
 					{
-						UserActMessageWriteToFlash.UserAct.PrintTick= VariableData[1];
+						UserActMessageWriteToFlash.UserAct.PrintTick= 0x00000002;
 							 /*判断是否打印小票*/ 			
             PrintTickFun(&UserActMessageWriteToFlash.UserAct.PrintTick);
             CloseTIM4();
@@ -1551,6 +1598,10 @@ loop7:			UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlas
 							PassWordLen = 0;		
 							DisplayPassWord(0);//清楚密码显示
 							memset(InputPassWord,0,6);
+						  if(Current== 0x00) 
+						  {
+							  break;
+						  }              
 						  if(erro_record!=0) 
 						  {
 							  break;
@@ -1559,34 +1610,45 @@ loop7:			UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlas
 		           /*进入餐品放置界面*/
 		           PageChange(MealSet_interface);					 
 							 InitSetting();//清空第一二三列的数据 //对放餐的数据进行初始化
-			         PassWordLen = 0;break;
+			         break;
 		        }
-						GetAdminPassWord(PassWord);
-    	      if(VerifyPassword(PassWord, InputPassWord,6) == 1) //管理员账户
+						GetAdminPassWord(PassWord);//硬币设置密码
+    	      if(VerifyPassword(PassWord, InputPassWord,6) == 1) 
 		        {
-							//进入管理员功能设置，需要加入特定的功能选择
+							//进入管理员功能设置，设置硬币设置界面
 		           /*进入管理员界面*/
-							 memset(InputPassWord,0,6);
-							 if(erro_record!=0) //当有错误的时候处理这个
-							 {
-								 DisplayUserRecord();
-								 PageChange(UserAbonamalRecord_interface);
-							   DisplayPassWord(0);//清楚密码显示
-			           PassWordLen = 0;							 			 
-								 break;
-							 }
-							 else
-							 {					 
-								 VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币总数
-								 VariableChage(coins_input,0);//显示放币数
-								 VariableChage(coins_retain,coins_remain);//保留硬币数
-								 VariableChage(coins_back,0); //显示退币数
-								 PageChange(Coinset_interface);
-								 //当前退币数
-								 DisplayPassWord(0);//清楚密码显示
-								 PassWordLen = 0;break;
-							 }
+							memset(InputPassWord,0,6);	
+              DisplayPassWord(0);//清楚密码显示
+              PassWordLen = 0;
+						  if(Current== 0x00) 
+						  {
+							  break;
+						  }
+						  if(erro_record!=0) 
+						  {
+							  break;
+						  }              
+               VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币总数
+               VariableChage(coins_input,0);//显示放币数
+               VariableChage(coins_retain,coins_remain);//保留硬币数
+               VariableChage(coins_back,0); //显示退币数
+               PageChange(Coinset_interface);
+               //当前退币数
+               break;
 		        }
+            GetUserPassWord(PassWord);   //出错数据显示密码
+            if(VerifyPassword(PassWord, InputPassWord,6) == 1) 
+            {
+               memset(InputPassWord,0,6);
+               DisplayPassWord(0);//清楚密码显示
+               PassWordLen = 0;	
+               if(erro_record!=0)
+               {
+                 DisplayUserRecord();
+                 PageChange(UserAbonamalRecord_interface);
+               }                 
+               break;              
+            }
 		        else
 		        {
 		          /*密码验证错误，进入密码输入界面*/   
@@ -1615,7 +1677,7 @@ loop7:			UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlas
 			  {
 					case 0x01: //清除数据
 					{
-						erro_flag=0; //清除数据标记
+						erro_flag=0; //清除数据标记,数据清除在AbnormalHandle函数里
 						if(Current==current_temperature)//限定在初始化状态
 						{
 							UserActMessageWriteToFlash.UserAct.MoneyBack=0;

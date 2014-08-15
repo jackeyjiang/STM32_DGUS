@@ -9,7 +9,7 @@
 
 #define Logo_interface                 0x00  /*logo界面*/
 #define Err_interface                  0x01  /*错误显示界面*/
-#define HardwareInit_interface         0x03  /*硬件初始化界面*/
+#define DoorOpened_interface           0x03  /*硬件初始化界面*/
 #define OnlymachieInit_interface       0x04  /*机械手初始化界面*/
 #define SignInFunction_interface       0x05  /*网络签到界面*/
 #define Szt_GpbocAutoCheckIn_interface 0x06  /*读卡器签到界面*/

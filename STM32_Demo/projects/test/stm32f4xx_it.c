@@ -275,6 +275,7 @@ void TIM3_IRQHandler(void)
 		{
 			CloseTIM3();
 			ClearUserBuffer();//清空用户数据
+      SaveUserData();
 	  }	     
   }
 }

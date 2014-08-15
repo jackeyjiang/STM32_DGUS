@@ -146,64 +146,82 @@ void  SPRT(void)
 	unsigned char  huan3[]={0x1b,0x64,0x06};
 	unsigned char  p0[]={"Ó¦ÊÕ:201ÒÑÊÕ:   ÕÒ»Ø:   \r\n"};
 	unsigned char  p1[]={"Ê±¼ä:2013-12-15-12:30:00\r\n"};
-	unsigned char  p2[]={"ÃØÖÆÖíÊÖ·¹  1\t15\t015\r\n"};
-	unsigned char  p3[]={"³±ÊÏÂ±¼¦ÍÈ·¹1\t15\t015\r\n"};
-	unsigned char  p4[]={"ÌØÉ«µ¾ÏãÈâ·¹1\t15\t015\r\n"};
-	unsigned char  p5[]={"ºÚ½·Öí°Ç·¹  1\t15\t015\r\n"};
-  unsigned char  p6[]={"ÆÑÉÕöôÓã·¹  1\t15\t015\r\n"};
-  unsigned char  p7[]={"ÆÑÉÕÇïµ¶Óã·¹1\t15\t015\r\n"};
+	unsigned char  p2[]={"ÃØÖÆÖíÊÖ·¹  1\t016\t016\r\n"};
+	unsigned char  p3[]={"³±ÊÏÂ±¼¦ÍÈ·¹1\t016\t016\r\n"};
+	unsigned char  p4[]={"ÌØÉ«µ¾ÏãÈâ·¹1\t016\t016\r\n"};
+	unsigned char  p5[]={"ºÚ½·Öí°Ç·¹  1\t016\t016\r\n"};
+  unsigned char  p6[]={"ÆÑÉÕöôÓã·¹  1\t018\t018\r\n"};
+  unsigned char  p7[]={"ÆÑÉÕÇïµ¶Óã·¹1\t018\t018\r\n"};
 
   //printf("@\r\n");//´òÓ¡»Ø³µ»»ÐÐ
   //Uart1_Card(huan3,sizeof(huan3)); 
-  printf("²ËÆ·\tÊýÁ¿\tµ¥¼Û\t½ð¶î\r\n"); 	
+  printf("²ËÆ·\t   ÊýÁ¿\tµ¥¼Û\t½ð¶î\r\n"); 	
   RTC_TimeShow();//µÃµ½µ±Ç°µÄÊ±¼ä
 	COPY(TimeDate,p0,p1);
   if(Print_Struct.P_Number1st>0)
   {	
 		p2[12]= Print_Struct.P_Number1st%10 +'0'; 
-		p2[15]=UserActMessageWriteToFlash.UserAct.MealCost_1st/100+'0';
-		p2[16]=UserActMessageWriteToFlash.UserAct.MealCost_1st%100/10+'0';
-		p2[17]=UserActMessageWriteToFlash.UserAct.MealCost_1st%100%10+'0';
+		p2[14]= price_1st/100+'0';
+		p2[15]= price_1st%100/10+'0';
+		p2[16]= price_1st%100%10+'0';
+		p2[18]= UserActMessageWriteToFlash.UserAct.MealCost_1st/100+'0';
+		p2[19]= UserActMessageWriteToFlash.UserAct.MealCost_1st%100/10+'0';
+		p2[20]= UserActMessageWriteToFlash.UserAct.MealCost_1st%100%10+'0';  
 		printf("%s",p2);
   }
 	if(Print_Struct.P_Number2nd>0)
 	{
 		p3[12]= Print_Struct.P_Number2nd%10 +'0'; 
-		p3[15]=UserActMessageWriteToFlash.UserAct.MealCost_2nd/100+'0';
-		p3[16]=UserActMessageWriteToFlash.UserAct.MealCost_2nd%100/10+'0';
-		p3[17]=UserActMessageWriteToFlash.UserAct.MealCost_2nd%100%10+'0';
+		p3[14]= price_2nd/100+'0';
+		p3[15]= price_2nd%100/10+'0';
+		p3[16]= price_2nd%100%10+'0';
+		p3[18]= UserActMessageWriteToFlash.UserAct.MealCost_2nd/100+'0';
+		p3[19]= UserActMessageWriteToFlash.UserAct.MealCost_2nd%100/10+'0';
+		p3[20]= UserActMessageWriteToFlash.UserAct.MealCost_2nd%100%10+'0';
 		printf("%s",p3);
 	}
   if(Print_Struct.P_Number3rd>0)
 	{
 		p4[12]= Print_Struct.P_Number3rd%10 +'0'; 
-		p4[15]=UserActMessageWriteToFlash.UserAct.MealCost_3rd/100+'0';
-		p4[16]=UserActMessageWriteToFlash.UserAct.MealCost_3rd%100/10+'0';
-		p4[17]=UserActMessageWriteToFlash.UserAct.MealCost_3rd%100%10+'0';
+		p4[14]= price_3rd/100+'0';
+		p4[15]= price_3rd%100/10+'0';
+		p4[16]= price_3rd%100%10+'0';
+		p4[18]= UserActMessageWriteToFlash.UserAct.MealCost_3rd/100+'0';
+		p4[19]= UserActMessageWriteToFlash.UserAct.MealCost_3rd%100/10+'0';
+		p4[20]= UserActMessageWriteToFlash.UserAct.MealCost_3rd%100%10+'0';
 		printf("%s",p4);
 	}
 	if(Print_Struct.P_Number4th>0)
 	{		
 		p5[12]= Print_Struct.P_Number4th%10 +'0'; 
-		p5[15]=UserActMessageWriteToFlash.UserAct.MealCost_4th/100+'0';
-		p5[16]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100/10+'0';
-		p5[17]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100%10+'0';
+		p5[14]= price_4th/100+'0';
+		p5[15]= price_4th%100/10+'0';
+		p5[16]= price_4th%100%10+'0';
+		p5[18]=UserActMessageWriteToFlash.UserAct.MealCost_4th/100+'0';
+		p5[19]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100/10+'0';
+		p5[20]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100%10+'0';
 		printf("%s",p5);
 	} 
 	if(Print_Struct.P_Number5th>0)
 	{		
-		p5[12]= Print_Struct.P_Number5th%10 +'0'; 
-		p5[15]=UserActMessageWriteToFlash.UserAct.MealCost_5th/100+'0';
-		p5[16]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100/10+'0';
-		p5[17]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100%10+'0';
+		p6[12]= Print_Struct.P_Number5th%10 +'0'; 
+		p6[14]= price_5th/100+'0';
+		p6[15]= price_5th%100/10+'0';
+		p6[16]= price_5th%100%10+'0';
+    p6[18]=UserActMessageWriteToFlash.UserAct.MealCost_5th/100+'0';
+		p6[19]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100/10+'0';
+		p6[20]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100%10+'0';
 		printf("%s",p6);
 	} 
 	if(Print_Struct.P_Number6th>0)
 	{		
-		p5[12]= Print_Struct.P_Number6th%10 +'0'; 
-		p5[15]=UserActMessageWriteToFlash.UserAct.MealCost_6th/100+'0';
-		p5[16]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100/10+'0';
-		p5[17]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100%10+'0';
+		p7[12]= Print_Struct.P_Number6th%10 +'0'; 
+		p7[14]= price_6th/100+'0';
+		p7[15]= price_6th%100/10+'0';
+		p7[16]= price_6th%100%10+'0';
+    p7[18]=UserActMessageWriteToFlash.UserAct.MealCost_6th/100+'0';
+		p7[19]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100/10+'0';
+		p7[20]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100%10+'0';
 		printf("%s",p7);
 	} 
   printf("%s",p0);

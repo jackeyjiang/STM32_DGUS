@@ -86,18 +86,18 @@ void MoveToFisrtMeal(void)
 			
 void PrintTickFun(uint32_t *PrintTickFlag)
 {      
-	if(*PrintTickFlag == 0x01 )
+	if(*PrintTickFlag == 0x00000001 )
 	{
 		 TIM_Cmd(TIM4, DISABLE);
-	 	*PrintTickFlag = 0 ;
+	 	*PrintTickFlag = 0x00000000;
 		/*打印小票的函数*/
 		 SPRT();
 	   TIM_Cmd(TIM4, ENABLE);
 	}	 
-	if(*PrintTickFlag == 0x02 )
+	if(*PrintTickFlag == 0x00000002 )
 	{
 	   TIM_Cmd(TIM4, DISABLE);
-		 *PrintTickFlag = 0;
+		 *PrintTickFlag = 0x00000000;
 		 TIM_Cmd(TIM4, ENABLE);
 	}
 	
@@ -126,18 +126,20 @@ unsigned char  WaitPayMoney(void)
 	  case 1 : 
 	  {
 	    /*显示付款方式，现金，银行卡，深圳通*/
-			if(WaitTime<56)
+			if(WaitTime<50)
 			{
 			  CurrentPoint = 3;
 			  /*支付方式*/			 
-			  UserActMessageWriteToFlash.UserAct.PayType = '1';/* 现金支付*/
+			  UserActMessageWriteToFlash.UserAct.PayType = 0x31;/* 现金支付*/
+        PlayMusic(VOICE_3);
+				if(!OpenCashSystem()){OpenCashSystem();};// printf("cash system is erro2");  //关闭现金接受
 			}
 		}break;    		
 	  case 2:  //由屏幕控制跳转
 	  {
 	    /*跳到选择付款方式界面*/
 			CurrentPoint = 3 ;
-		  UserActMessageWriteToFlash.UserAct.PayType = '1' ;/* 现金支付*/
+		  UserActMessageWriteToFlash.UserAct.PayType = 0x31 ;/* 现金支付*/
 	  }break;	  
 		         
 	  case 3 :  //读钱
@@ -173,7 +175,7 @@ unsigned char  WaitPayMoney(void)
 		{
 			WaitTimeInit(&WaitTime);
 			PageChange(Cardbalence_interface);
-			UserActMessageWriteToFlash.UserAct.PayType = '2' ;/* 银行卡支付*/
+			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* 银行卡支付*/
 			temp1 = 0;
 			temp1 = GpbocDeduct(UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready); //*100;
 			//temp1 = GpbocDeduct(1);
@@ -188,9 +190,9 @@ unsigned char  WaitPayMoney(void)
 			{
 				WaitTimeInit(&WaitTime);
 				PageChange(Acount_interface+2);
-				CurrentPoint = 1;
+				CurrentPoint = 0;
 			  /*支付方式*/			 
-			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;/* 现金支付*/			
+			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;//清空支付方式			
         UART3_ClrRxBuf();
 			}
 	  }break;
@@ -198,7 +200,7 @@ unsigned char  WaitPayMoney(void)
 	  {
 			WaitTimeInit(&WaitTime);
 			PageChange(Cardbalence_interface);
-	    UserActMessageWriteToFlash.UserAct.PayType = '3' ;/* 深圳通支付*/
+	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
 			temp1 = 0;
 			temp1 = SztDeduct(UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready); //*100;
 			if(temp1 == 1)
@@ -213,9 +215,9 @@ unsigned char  WaitPayMoney(void)
 			{
 				WaitTimeInit(&WaitTime);
 				PageChange(Acount_interface+2);
-				CurrentPoint = 1;
+				CurrentPoint = 0;
 			  /*支付方式*/			 
-			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;/* 现金支付*/			
+			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;//清空支付方式
         UART3_ClrRxBuf();
 			}
 		}break;
@@ -248,7 +250,7 @@ unsigned char  WaitPayMoney(void)
 		}
 	  default :break;
   }
-	if(WaitTime==0) 
+	if(WaitTime<=1) 
 	{
     WaitTimeInit(&WaitTime);
 		PageChange(Menu_interface);//超时退出用户餐品数量选择界面
@@ -258,8 +260,24 @@ unsigned char  WaitPayMoney(void)
 		MoneyPayBack_Already_total= UserActMessageWriteToFlash.UserAct.PayAlready; //数据需要记录
 		ClearUserBuffer();//清空用户数据
 		if(UserActMessageWriteToFlash.UserAct.MoneyBack>0)
-		Current= hpper_out;
+		  Current= hpper_out;
+    else
+      Current= current_temperature;
 	}
+  else
+  {
+    if(WaitTime%10==1) 
+    {
+      if(UserActMessageWriteToFlash.UserAct.PayType==0x31)
+      {
+        PlayMusic(VOICE_3);
+      }
+      else
+      {
+        PlayMusic(VOICE_2);
+      }        
+    }    
+  }
   return  Status_Action;
 }												
 
@@ -746,7 +764,6 @@ void AbnormalHandle(uint32_t erro)
         DisplayAbnormal("E032");
 	      PageChange(Err_interface);
 				StatusUploadingFun(0xE032); //状态上送
-				//UserActMessageWriteToFlash.UserAct.MoneyBack
 			}break;
 		case printer_erro:      //打印机异常
 			{
@@ -924,7 +941,7 @@ void AbnormalHandle(uint32_t erro)
 			DealSeriAceptData();
 			if(erro_flag==0)
 			{
-				if(erro_record&(1<<arm_limit))
+				if(erro_record&(1<<arm_limit)) //开机的机械手禁止复位
 				{
           PageChange(OnlymachieInit_interface);					
 					OnlymachieInit(); //机械手的初始化
@@ -938,7 +955,7 @@ void AbnormalHandle(uint32_t erro)
         }
 				if(erro_record>=(1<<X_timeout))//如果是机械售错误值上传一次数据，对高位取反
 				{
-					erro_record&=~0xFFFF0000;
+					erro_record&=~0xFFFF0000; //只显示一次异常
         }
 				erro_record &= ~(1<<erro); //一次只处理一次异常
 				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
@@ -1046,8 +1063,6 @@ void hardfawreInit(void)
 	 IWDG_Enable();
 	 OpenTIM2();
 	 delay_ms(1000);
-	 PageChange(HardwareInit_interface); //硬件初始化界面
-	 DisplayRecordTime(); //初始化时获取时间作为异常的时间
 	 SPI_FLASH_Init();          //Flash初始化
 	 SPI_FLASH_Init();          //重复初始化才行
    SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品

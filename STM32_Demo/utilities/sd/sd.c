@@ -413,7 +413,7 @@ bool ReadDatatoBuffer(void)
 				else
 				{
 					f_close(&fsrc);
-					printf("send to host is erro");//数据上传失败	
+					printf("send to host is erro\r\n");//数据上传失败	
 					return false;
 				}					
 			}

@@ -103,7 +103,7 @@ unsigned char ClearingFun(void);/*Ω·À„√¸¡Ó*/
 //void  EchoFuntion(void (*fptr)(void)) ;
 unsigned char 	Resend(unsigned char *p,long lenght);
 void WriteToSD_data(void);
-void DataUpload(char takemeal_flag);
+void DataUpload(unsigned char takemeal_flag);
 void StateSend(void);
 //void SignInFunction(void);
 void GetBRWN(void);
