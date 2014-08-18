@@ -821,29 +821,26 @@ void ReadCoins(void)
 uint32_t flash_record[18]={0};
 void SaveUserData(void)
 {
-    unsigned char TempBuffer[120]={0};
+    unsigned char TempBuffer[32*4]={0};
     /* Write Tx_Buffer data to SPI FLASH memory */
-    RTC_WriteBackupRegister(RTC_BKP_DR2,  MoneyBackCnt_Already);
     RTC_WriteBackupRegister(RTC_BKP_DR3,  erro_record);
-    RTC_WriteBackupRegister(RTC_BKP_DR4,  MoneyPayBack_Already_total);	
-
-	  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 120);/*参看原始数据*/
-	  TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, 120);
+	  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, 32*4);/*参看原始数据*/
+	  TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, 32*4);
     if(TransferStatus1 == PASSED ) return; //减少flash的写入次数
 	  SPI_FLASH_SectorErase(FLASH_SectorToErase1);
-    SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 , 120);
+    SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 , 32*4);
     /* Read data from SPI FLASH memory */
-    SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1 , 120);
+    SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1 , 32*4);
 
     /* Check the corectness of written dada */
-    TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, 120);
+    TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, 32*4);
 		if(TransferStatus1 == FAILED )/*加入可以排错*/
     {
-	    SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, 120);
+	    SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, 32*4);
       /* Read data from SPI FLASH memory */
-      SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, 120);
+      SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, 32*4);
       /* Check the corectness of written dada */
-      TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, 120);
+      TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, 32*4);
     }
 }
 
@@ -858,10 +855,8 @@ void SaveUserData(void)
  *******************************************************************************/ 
 void ReadUserData(void)
 {   
-   MoneyBackCnt_Already      = RTC_ReadBackupRegister(RTC_BKP_DR2);
-   erro_record               = RTC_ReadBackupRegister(RTC_BKP_DR3);
-   MoneyPayBack_Already_total= RTC_ReadBackupRegister(RTC_BKP_DR4); 
-   SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 , 120);
+   erro_record = RTC_ReadBackupRegister(RTC_BKP_DR3);
+   SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 , 32*4);
 
 }
 

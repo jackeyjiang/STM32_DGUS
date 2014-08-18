@@ -23,40 +23,40 @@ typedef struct UserAction
 	uint32_t MealCnt_4th_t;      //用户选择第四种餐品的数量未按下放入购物车键时的临时数量	
 	uint32_t MealCnt_5th_t;      //用户选择第五种餐品的数量未按下放入购物车键时的临时数量	
 	uint32_t MealCnt_6th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	
-  uint32_t MealCnt_1st;      //用户选择第一份餐品的数量
-	uint32_t MealCnt_2nd;      //用户选择第二份餐品的数量
-	uint32_t MealCnt_3rd;      //用户选择第三份餐品的数量
-	uint32_t MealCnt_4th;      //用户选择第四份餐品的数量
-	uint32_t MealCnt_5th;      //用户选择第五份餐品的数量
-	uint32_t MealCnt_6th;      //用户选择第六份餐品的数量  
-  uint32_t MealCost_1st;    //用户选择第一份餐品的总价
-	uint32_t MealCost_2nd;    //用户选择第二份餐品的总价
-	uint32_t MealCost_3rd;    //用户选择第三份餐品的总价
-	uint32_t MealCost_4th;    //用户选择第四份餐品的总价
-	uint32_t MealCost_5th;    //用户选择第五份餐品的总价
-	uint32_t MealCost_6th;    //用户选择第六份餐品的总价   
-	uint32_t PayShould;        //用户应付款总额
-	uint32_t  MealID;           //用户当前选择的餐品ID 
-	uint32_t  Meal_totoal;      //用户选餐的总数
-	uint32_t  Meal_takeout;     //用户已取出的餐品数
-	uint32_t PayForCoins;           //用户投入的硬币数	
-	uint32_t PayForBills;           //用户投入的纸币数
-	uint32_t PayForCards;           //用户应经刷卡的数  
-	uint32_t PayAlready;            //用户已经付款总额
-	uint32_t  MoneyBack;              //用户找零数  //有符号性避免数量减为0xfffe
-	uint32_t  PrintTick;              //是否打印小票标志
-	uint32_t  PayType ;              //支付方式
-	uint32_t  Cancle;                //用户取消购买
+  uint32_t MealCnt_1st;       //用户选择第一份餐品的数量
+	uint32_t MealCnt_2nd;       //用户选择第二份餐品的数量
+	uint32_t MealCnt_3rd;       //用户选择第三份餐品的数量
+	uint32_t MealCnt_4th;       //用户选择第四份餐品的数量
+	uint32_t MealCnt_5th;       //用户选择第五份餐品的数量
+	uint32_t MealCnt_6th;       //用户选择第六份餐品的数量  
+  uint32_t MealCost_1st;      //用户选择第一份餐品的总价
+	uint32_t MealCost_2nd;      //用户选择第二份餐品的总价
+	uint32_t MealCost_3rd;      //用户选择第三份餐品的总价
+	uint32_t MealCost_4th;      //用户选择第四份餐品的总价
+	uint32_t MealCost_5th;      //用户选择第五份餐品的总价
+	uint32_t MealCost_6th;      //用户选择第六份餐品的总价   
+	uint32_t PayShould;          //用户应付款总额
+	uint32_t MealID;             //用户当前选择的餐品ID 
+	uint32_t Meal_totoal;        //用户选餐的总数
+	uint32_t Meal_takeout;       //用户已取出的餐品数
+	uint32_t PayForCoins;        //用户投入的硬币数	
+	uint32_t PayForBills;        //用户投入的纸币数
+	uint32_t PayForCards;        //用户应经刷卡的数  
+	uint32_t PayAlready;         //用户已经付款总额
+	uint32_t MoneyBack;          //用户付款之后要退的钱，也就是还有多少钱要找个客户
+  uint32_t MoneyBackShould;    //应退钱的显示数据
+  uint32_t MoneyBackAlready;   //已退钱的显示数据
+	uint32_t PrintTick;          //是否打印小票标志
+	uint32_t PayType;            //支付方式
+	uint32_t Cancle;             //用户取消购买
 }UserSelection;
 
 typedef union _UserActMessage
 {
   UserSelection   UserAct;
-  uint8_t         FlashBuffer[30*4];
+  uint8_t         FlashBuffer[32*4];
 }UserActMessage;
 extern UserActMessage UserActMessageWriteToFlash;//用户数据写入flash
-
-//extern UserSelection UserAct;
 
 typedef struct FloorMeal
 {
@@ -68,8 +68,6 @@ typedef struct FloorMeal
 	uint8_t FloorNum;	   //当前是第几层
 }FloorAttribute;
 
-		  
-
 typedef union _FloorMealMessage
 {
   FloorAttribute      FloorMeal[FloorMealNum];
@@ -79,7 +77,8 @@ extern 	FloorMealMessage FloorMealMessageWriteToFlash;/*将数据写入flash的结构*/
 extern  FloorAttribute FloorMeal[FloorMealNum], CurFloor;
 extern uint8_t WaitTime ;
 extern uint8_t WaitMealTime ;
-extern int MoneyBack ;
+extern uint32_t payfor_meal ;
+extern uint32_t MoneyPayBack_Already;
 
 typedef union _CoinsTotoalMessage
 {

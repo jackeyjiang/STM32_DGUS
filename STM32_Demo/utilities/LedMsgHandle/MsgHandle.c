@@ -78,10 +78,11 @@ void InitSetting(void)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
-int MoneyBack = 0; //已找币的数量
+uint32_t payfor_meal = 0;        //单个餐品已付的钱
+uint32_t MoneyPayBack_Already = 0;//需要上传的退币数
 void MealArr(unsigned char index)
 {
-    int PayBill = 0;
+    uint32_t  PayBill=0;
 	  switch(index)
 	  {
       case 0x01 :	/*购买餐品的ID*/
@@ -185,32 +186,11 @@ void MealArr(unsigned char index)
 	  }	
 /*------购买餐品的数量-----------------*/
 		CustomerSel.MealNo  =  0x01; //取一个餐品上传一次数据
-//	  switch(index)
-//	  {
-//			case 1:CustomerSel.MealNo  =  UserAct.MealCnt_1st_t;break;
-//			case 2:CustomerSel.MealNo  =  UserAct.MealCnt_2nd_t;break;
-//			case 3:CustomerSel.MealNo  =  UserAct.MealCnt_3rd_t;break;
-//			case 4:CustomerSel.MealNo  =  UserAct.MealCnt_4th_t;break;
-//	  }
-		
 		/*购买餐品的类型*/
     CustomerSel.PayType =  UserActMessageWriteToFlash.UserAct.PayType;  //	UserAct.PayType  ;
 		CustomerSel.MealName =  	index ;
-		/*付了多少现金*/
-		//PayBill  =UserAct.PayForBills +*100 ;  /*扩大10倍*/
-		//PayBill  =	(UserAct.PayForBills +	UserAct.PayForCoins +UserAct.PayForCards)*100 ;
-	  switch(index) //投币与找零都在第一份餐品中，
-		{
-			case 1: PayBill= price_1st*100;break;
-			case 2: PayBill= price_2nd*100;break;
-			case 3: PayBill= price_3rd*100;break;
-			case 4: PayBill= price_4th*100;break;
-			case 5: PayBill= price_5th*100;break;
-			case 6: PayBill= price_6th*100;break;      
-			default:break;
-		}
 	 	/*支付了多少钱*/
-		PayBill+=MoneyBack; //已付的钱=需找币的钱
+		PayBill= payfor_meal* 100; //已付的钱=需找币的钱+餐品的单价，元转换为分
 		CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
 		CustomerSel.DealBalance[0]      =       CustomerSel.DealBalance[0]/10 *16 +CustomerSel.DealBalance[0]%10 ;   
 		CustomerSel.DealBalance[1]      =	      PayBill / 100000000 %100;
@@ -224,10 +204,10 @@ void MealArr(unsigned char index)
 		CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
 		CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;		
 		//已找币的钱
-	  if(1)//if(CustomerSel.PayType == '1')	/*如果是现金购买*/
+	  if(1)
 	  {
-			//MoneyPayBack_Already = MoneyPayBack_Already_total-UserAct.MoneyBack /*可以把总的退币数上传*/
 		 /*十进制转换成16*/
+      MoneyPayBack_Already= MoneyPayBack_Already*100;
 		  CustomerSel.Change[0]      =	     MoneyPayBack_Already / 10000000000 %100;
 		  CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
 		  CustomerSel.Change[1]      =	     MoneyPayBack_Already / 100000000 %100;
@@ -241,9 +221,8 @@ void MealArr(unsigned char index)
 		  CustomerSel.Change[5]      =	     MoneyPayBack_Already % 100 ;
 		  CustomerSel.Change[5]      =         CustomerSel.Change[5]/10 *16 +CustomerSel.Change[5]%10 ;
 	  }
-		MoneyBack = 0 ;
 		/*购买餐品的剩余份数*/
 		CustomerSel.RemainMealNum[0]  =	 (DefineMeal[index-1].MealCount>>8)&0xff;
 		CustomerSel.RemainMealNum[1]  =	  DefineMeal[index-1].MealCount &0xff;
-		/*购买的类型*/
+    PayBill= 0; payfor_meal=0; MoneyPayBack_Already= 0;
 }

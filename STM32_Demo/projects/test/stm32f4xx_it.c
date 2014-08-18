@@ -367,13 +367,11 @@ void PVD_IRQHandler(void)
 		{
       erro_record |= (1<<outage_erro);  //需要加入，以免还在付钱的时候断电
 			UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready;
-			MoneyPayBack_Already_total= UserActMessageWriteToFlash.UserAct.PayAlready;
+			UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready;
 			ClearUserBuffer();
-			UserActMessageWriteToFlash.UserAct.PayAlready= MoneyPayBack_Already_total;
     }
 		else if(Current == meal_out) //取餐的时候断电，没有计算UserActMessageWriteToFlash.UserAct.MoneyBack,需要计算一次后，就不再计算了，所以加了标记
 		{
-			MoneyBackCnt_Already=false;
       erro_record |= (1<<outage_erro);
 			erro_record |= (1<<arm_limit);
       if(OldCoinsCnt!=0)

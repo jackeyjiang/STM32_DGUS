@@ -15,7 +15,7 @@
 
 static long Batch = 0x00 ;//½»Ò×Á÷Ë®ºÅ
 
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x10}; /*ÖÕ¶ËTIDÂë 10000006*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x13}; /*ÖÕ¶ËTIDÂë 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*½»Ò×Á÷Ë®Ïß*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*Åú´ÎºÅ*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*ÖÕ¶ËËùÔÚÇøÓò±àºÅ*/
@@ -45,8 +45,8 @@ unsigned char  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};											    /*½»Ò
 unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};							/*×ÜÕÒÁã½ð¶î d7*/
 unsigned char  TakeMealFlag[3+2]={0xdb,0x00,0x02,0x00,0x00};        /*È¡²Í±êÖ¾ 0x01:³É¹¦ 0x02:Ê§°Ü */
 unsigned char  UpdataFlag[3+1]={0xc1,0x00,0x01,0x00};               //¸üÐÂ±êÊ¶
-unsigned char  MenuNo[3+1]= {0xdd,0x00,0x02,0x01};                   /*²Ëµ¥±àºÅ,0x01,0x02,0x03,0x04,0x05£¨³õ²½£©*/
-unsigned char  ACK[3+2]={0xc0,0x00,0x02,0x00,0x00};                 //Ó¦´ðÂë
+unsigned char  MenuNo[3+1]= {0xdd,0x00,0x01,0x01};                   /*²Ëµ¥±àºÅ,0x01,0x02,0x03,0x04,0x05£¨³õ²½£©*/
+unsigned char  ACK[3+1]={0xc0,0x00,0x02,0x00};                      //Ó¦´ðÂë
 unsigned char  WordKeyCipher[11]={0xc7,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};//¹¤×÷ÃÜÔ¿
 
 Meal_struction Meal[MealKindTotoal]={
@@ -484,12 +484,15 @@ unsigned char  SignInFun(void)
 	   UpdataFlag[i] = rx1Buf[i+0x42];//µÃµ½Åú´ÎºÅ
 //	 printf("%x ",UpdataFlag[i]);
 	 }
+   printf("MenuNo: \r\n");
 	 for(i=0;i<4;i++)
    {
       MenuNo[i]= rx1Buf[i+0x46];
-   }   
+      printf("%X ",MenuNo[i]);
+   }
+   if(MenuNo[0]!=0xdd)  return 1; 
 //	 printf("\r\nACK: ");
-	 for(i=0;i<5;i++)
+	 for(i=0;i<4;i++)
 	 {
 	   ACK[i] = rx1Buf[i+0x4A];//µÃµ½
 //	 printf("%x ",ACK[i]);
@@ -1386,7 +1389,6 @@ unsigned char HexToChar(unsigned char byTemp)
  * ÐÞ¸ÄÈÕÆÚ:2014Äê4ÔÂ4ÈÕ        ok
  *******************************************************************************/
 extern uint8_t Current;
-char mealvariety=0;
 void DataUpload(unsigned char takemeal_flag)
 {
   uint8_t cnt_t=0;
@@ -1405,14 +1407,14 @@ void DataUpload(unsigned char takemeal_flag)
   memset(Record_buffer,0,254);
 	if(TakeMealsFun(Record_buffer,takemeal_flag) == 0x01) //±íÊ¾·¢ËÍÊ§°Ü
 	{
-    UserActMessageWriteToFlash.UserAct.MealID= 0x00;//Êý¾ÝÉÏ´«»¹Ò»´Î¶ÔIDÇåÁã£¬ÕâÑù¾Í¿ÉÒÔÖªµÀÊý¾ÝÊÇ·ñÉÏ´«ÁË
+
     Sd_Write('n',takemeal_flag);//·¢ËÍÊ§°Ü
 	}
 	else
   {
-    UserActMessageWriteToFlash.UserAct.MealID= 0x00;//Êý¾ÝÉÏ´«»¹Ò»´Î¶ÔIDÇåÁã£¬ÕâÑù¾Í¿ÉÒÔÖªµÀÊý¾ÝÊÇ·ñÉÏ´«ÁË    
 		Sd_Write('y',takemeal_flag);//¸Ä±äµ±Ç°×îºóÁ½Î»ÎªN0
   }
+  UserActMessageWriteToFlash.UserAct.MealID= 0x00;//Êý¾ÝÉÏ´«»¹Ò»´Î¶ÔIDÇåÁã£¬ÕâÑù¾Í¿ÉÒÔÖªµÀÊý¾ÝÊÇ·ñÉÏ´«ÁË
 }	
 
  /*******************************************************************************

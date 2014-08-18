@@ -118,21 +118,22 @@ unsigned char NewCoinsCnt=0;
 unsigned char OldCoinsCnt=0;
 unsigned char  WaitPayMoney(void)
 {
-//	uint8_t temp = 0;
-	uint8_t temp1;
+	uint8_t reduce_money_flag = 0;
+	uint32_t temp1=0,temp2=0;
 	VariableChage(wait_payfor,WaitTime);
   switch(CurrentPoint)
 	{
 	  case 1 : 
 	  {
 	    /*œ‘ æ∏∂øÓ∑Ω Ω£¨œ÷Ω£¨“¯––ø®£¨…Ó€⁄Õ®*/
-			if(WaitTime<50)
+			if(WaitTime<53)
 			{
 			  CurrentPoint = 3;
 			  /*÷ß∏∂∑Ω Ω*/			 
-			  UserActMessageWriteToFlash.UserAct.PayType = 0x31;/* œ÷Ω÷ß∏∂*/
-        PlayMusic(VOICE_3);
-				if(!OpenCashSystem()){OpenCashSystem();};// printf("cash system is erro2");  //πÿ±’œ÷ΩΩ” ‹
+			  //UserActMessageWriteToFlash.UserAct.PayType = 0x31;/* œ÷Ω÷ß∏∂*/
+        //»°œ˚◊‘∂Ø
+        //PlayMusic(VOICE_3);
+				//if(!OpenCashSystem()){OpenCashSystem();};// printf("cash system is erro2");  //πÿ±’œ÷ΩΩ” ‹
 			}
 		}break;    		
 	  case 2:  //”…∆¡ƒªøÿ÷∆Ã¯◊™
@@ -176,10 +177,8 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
 			PageChange(Cardbalence_interface);
 			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* “¯––ø®÷ß∏∂*/
-			temp1 = 0;
-			temp1 = GpbocDeduct(UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready); //*100;
-			//temp1 = GpbocDeduct(1);
-			if(temp1 == 1)
+			reduce_money_flag = GpbocDeduct(UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready); //*100;
+			if(reduce_money_flag == 1)
 			{
 				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
 			  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
@@ -201,12 +200,10 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
 			PageChange(Cardbalence_interface);
 	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* …Ó€⁄Õ®÷ß∏∂*/
-			temp1 = 0;
-			temp1 = SztDeduct(UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready); //*100;
-			if(temp1 == 1)
+			reduce_money_flag = SztDeduct(UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready); //*100;
+			if(reduce_money_flag == 1)
 			{
 				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
-			  //UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould ;
 			  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
 				UART3_ClrRxBuf();
 			  CurrentPoint =6;
@@ -224,11 +221,10 @@ unsigned char  WaitPayMoney(void)
 	  case 9 :  //∏∂øÓ≥…π¶πÿ±’À˘”–µƒ ’“¯œµÕ≥
 		{
 			UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready - UserActMessageWriteToFlash.UserAct.PayShould;	
-			MoneyPayBack_Already_total= UserActMessageWriteToFlash.UserAct.PayAlready; // ˝æ›–Ë“™º«¬º
-			UserActMessageWriteToFlash.UserAct.Meal_totoal= UserActMessageWriteToFlash.UserAct.MealCnt_4th+UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
-			VariableChage(mealout_totle,UserActMessageWriteToFlash.UserAct.Meal_totoal);	
-			CloseTIM7();
-			CloseTIM3();
+			UserActMessageWriteToFlash.UserAct.Meal_totoal = UserActMessageWriteToFlash.UserAct.MealCnt_6th+UserActMessageWriteToFlash.UserAct.MealCnt_5th+UserActMessageWriteToFlash.UserAct.MealCnt_4th
+                                                      +UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
+      UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.MoneyBack; //º«¬º∏∂«Æ÷Æ∫Ûµ⁄“ª¥Œ”¶∏√ÕÀµƒ±“	
+      VariableChage(mealout_totle,UserActMessageWriteToFlash.UserAct.Meal_totoal);	
       //Ω´–Ë“™¥Ú”°µƒ ˝æ›∏≥÷µµΩœ‡πÿΩ·ππÃÂ	
      	Print_Struct.P_Number1st = UserActMessageWriteToFlash.UserAct.MealCnt_1st;
 			Print_Struct.P_Number2nd = UserActMessageWriteToFlash.UserAct.MealCnt_2nd;
@@ -254,11 +250,14 @@ unsigned char  WaitPayMoney(void)
 	{
     WaitTimeInit(&WaitTime);
 		PageChange(Menu_interface);//≥¨ ±ÕÀ≥ˆ”√ªß≤Õ∆∑ ˝¡ø—°‘ÒΩÁ√Ê
-		if(!CloseCashSystem()) {};//printf("cash system is erro6\r\n");  //πÿ±’œ÷ΩΩ” ‹
+		if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro6\r\n");  //πÿ±’œ÷ΩΩ” ‹
 		CurrentPoint = 0 ;
-		UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //≥¨ ±Ω´ ’µΩµƒ«Æ“‘”≤±“µƒ–Œ Ω∑µªπ
-		MoneyPayBack_Already_total= UserActMessageWriteToFlash.UserAct.PayAlready; // ˝æ›–Ë“™º«¬º
+		temp1= UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //≥¨ ±Ω´ ’µΩµƒ«Æ“‘”≤±“µƒ–Œ Ω∑µªπ
+		temp2= UserActMessageWriteToFlash.UserAct.MoneyBackShould= UserActMessageWriteToFlash.UserAct.PayAlready; // ˝æ›–Ë“™º«¬º
 		ClearUserBuffer();//«Âø’”√ªß ˝æ›
+    UserActMessageWriteToFlash.UserAct.MoneyBack= temp1;
+    UserActMessageWriteToFlash.UserAct.MoneyBackShould= temp2;
+    SaveUserData();//±£¥Ê”√ªß ˝æ›  
 		if(UserActMessageWriteToFlash.UserAct.MoneyBack>0)
 		  Current= hpper_out;
     else
@@ -447,7 +446,6 @@ uint8_t WaitMeal(void)
 			}break;			    
 			case 5:     /*∂‘”√ªß ˝æ›Ω¯––ºı“ª*/  //?? »Áπ˚–Ë“™Ω¯––¥ÌŒÛÕÀ±“£¨–Ë“™–ﬁ∏√∑µªÿ÷µÀ˘‘⁄∑∂Œß
 			{
-				//delay_ms(1000);
 				machinerec.remealnoaway = 0;
 				UserActMessageWriteToFlash.UserAct.Meal_takeout++;//»°≤Õ ˝æ›º”
 				VariableChage(mealout_already,UserActMessageWriteToFlash.UserAct.Meal_takeout);	//UIœ‘ æ
@@ -706,16 +704,19 @@ void AbnormalHandle(uint32_t erro)
 					/*’‚¿Ôº”…œµ˜ ‘–≈œ¢£¨≤Èø¥“‘…œ¡¨∏ˆÃıº˛µƒ ˝÷µ*/
           if(UserActMessageWriteToFlash.UserAct.MealID>0)
 					{
-						if(MoneyBackCnt_Already!=true) //≈–∂œ»°≤Õ◊¥Ã¨£¨shu'fou£¨“‘√‚÷ÿ∏¥∂‘MoneyPayBack_Already_total∫ÕUserActMessageWriteToFlash.UserAct.MoneyBack÷ÿ∏¥º”
-						{					  
-							MoneyPayBack_Already_total+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_3rd *price_3rd
-              +UserActMessageWriteToFlash.UserAct.MealCnt_4th*price_4th+UserActMessageWriteToFlash.UserAct.MealCnt_5th*price_5th+UserActMessageWriteToFlash.UserAct.MealCnt_6th*price_6th);//º∆À„◊‹µƒ”¶∏√ÕÀ±“µƒ«Æ
-							UserActMessageWriteToFlash.UserAct.MoneyBack+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_3rd *price_3rd
-              +UserActMessageWriteToFlash.UserAct.MealCnt_4th*price_4th+UserActMessageWriteToFlash.UserAct.MealCnt_5th*price_5th+UserActMessageWriteToFlash.UserAct.MealCnt_6th*price_6th); //”¶∏√–Ë“™ÕÀ±“µƒ«Æ	
-							MoneyBackCnt_Already=true;
-						}
-						MoneyBack= (MoneyPayBack_Already_total-GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1))*100;//¥˝≤‚ ‘
-						MoneyPayBack_Already= (MoneyPayBack_Already_total-UserActMessageWriteToFlash.UserAct.MoneyBack)*100;//¥˝≤‚ ‘
+            //º∆À„◊‹µƒ”¶ÕÀ±“ ˝
+            UserActMessageWriteToFlash.UserAct.MoneyBackShould +=
+                         (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st +UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd
+                         +UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th +UserActMessageWriteToFlash.UserAct.MealCnt_5th* price_5th+ UserActMessageWriteToFlash.UserAct.MealCnt_6th* price_6th);	                         
+					  //º∆À„◊‹µƒŒ¥ÕÀ±“ ˝
+            UserActMessageWriteToFlash.UserAct.MoneyBack +=
+                         (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st +UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd
+                         +UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th +UserActMessageWriteToFlash.UserAct.MealCnt_5th* price_5th+ UserActMessageWriteToFlash.UserAct.MealCnt_6th* price_6th);	 
+            //º∆À„…œ¥´µƒΩª“◊Ω∂Ó
+            payfor_meal =(UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st +UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd
+                         +UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th +UserActMessageWriteToFlash.UserAct.MealCnt_5th* price_5th+ UserActMessageWriteToFlash.UserAct.MealCnt_6th* price_6th);	  
+                        
+						MoneyPayBack_Already= (UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);//º∆À„“—ÕÀ±“µƒ«Æ
 						DataUpload(Failed);//÷ª”–µ±UserActMessageWriteToFlash.UserAct.MealID!=0µƒ ±∫Ú≤≈…œ¥´≤Õ∆∑µƒ ˝æ›
 						SaveUserData();
 					}
@@ -803,15 +804,7 @@ void AbnormalHandle(uint32_t erro)
 				{
 					/*’‚¿Ôº”…œµ˜ ‘–≈œ¢£¨≤Èø¥“‘…œ¡¨∏ˆÃıº˛µƒ ˝÷µ*/
           if(UserActMessageWriteToFlash.UserAct.MealID>0)
-					{
-						if(MoneyBackCnt_Already!=true) //≈–∂œ»°≤Õ◊¥Ã¨£¨shu'fou£¨“‘√‚÷ÿ∏¥∂‘MoneyPayBack_Already_total∫ÕUserActMessageWriteToFlash.UserAct.MoneyBack÷ÿ∏¥º”
-						{					  
-							MoneyPayBack_Already_total+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_3rd *price_3rd
-              +UserActMessageWriteToFlash.UserAct.MealCnt_4th*price_4th+UserActMessageWriteToFlash.UserAct.MealCnt_5th*price_5th+UserActMessageWriteToFlash.UserAct.MealCnt_6th*price_6th);//º∆À„◊‹µƒ”¶∏√ÕÀ±“µƒ«Æ
-							UserActMessageWriteToFlash.UserAct.MoneyBack+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_3rd *price_3rd
-              +UserActMessageWriteToFlash.UserAct.MealCnt_4th*price_4th+UserActMessageWriteToFlash.UserAct.MealCnt_5th*price_5th+UserActMessageWriteToFlash.UserAct.MealCnt_6th*price_6th); //”¶∏√–Ë“™ÕÀ±“µƒ«Æ	
-							MoneyBackCnt_Already=true;
-						}						
+					{					
 						SaveUserData();
 					}
 					DisplayAbnormal("E100");
@@ -936,35 +929,35 @@ void AbnormalHandle(uint32_t erro)
       }break;
 		default:break;
 	}
-		while(1)
-		{
-			DealSeriAceptData();
-			if(erro_flag==0)
-			{
-				if(erro_record&(1<<arm_limit)) //ø™ª˙µƒª˙–µ ÷Ω˚÷π∏¥Œª
-				{
-          PageChange(OnlymachieInit_interface);					
-					OnlymachieInit(); //ª˙–µ ÷µƒ≥ı ºªØ
-				}
-				else
-				{
-					UserActMessageWriteToFlash.UserAct.MoneyBack=0;
-					MoneyPayBack_Already_total=0;
-					ClearUserBuffer();
-					SaveUserData();						
-        }
-				if(erro_record>=(1<<X_timeout))//»Áπ˚ «ª˙–µ €¥ÌŒÛ÷µ…œ¥´“ª¥Œ ˝æ›£¨∂‘∏ﬂŒª»°∑¥
-				{
-					erro_record&=~0xFFFF0000; //÷ªœ‘ æ“ª¥Œ“Ï≥£
-        }
-				erro_record &= ~(1<<erro); //“ª¥Œ÷ª¥¶¿Ì“ª¥Œ“Ï≥£
-				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
-				break;
-			}
-		}
+  SaveUserData(); //¥ÌŒÛ¥¶¿Ì“ª¥Œ ˝æ›±£¥Ê“ª¥Œ
+  while(1)
+  {
+    DealSeriAceptData();
+    if(erro_flag==0)
+    {
+      if(erro_record&(1<<arm_limit)) //ø™ª˙µƒª˙–µ ÷Ω˚÷π∏¥Œª
+      {
+        PageChange(OnlymachieInit_interface);					
+        OnlymachieInit(); //ª˙–µ ÷µƒ≥ı ºªØ
+      }
+      else
+      {
+        UserActMessageWriteToFlash.UserAct.MoneyBack=0;
+        UserActMessageWriteToFlash.UserAct.MoneyBackShould=0;
+        UserActMessageWriteToFlash.UserAct.MoneyBackAlready=0;
+        ClearUserBuffer();
+        SaveUserData();						
+      }
+      if(erro_record>=(1<<X_timeout))//»Áπ˚ «ª˙–µ €¥ÌŒÛ÷µ…œ¥´“ª¥Œ ˝æ›£¨∂‘∏ﬂŒª»°∑¥
+      {
+        erro_record&=~0xFFFF0000; //÷ªœ‘ æ“ª¥Œ“Ï≥£
+      }
+      erro_record &= ~(1<<erro); //“ª¥Œ÷ª¥¶¿Ì“ª¥Œ“Ï≥£
+      RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
+      break;
+    }
+  }
 }
-
-bool MoneyBackCnt_Already=false; //false æÕ «–Ë“™Ω¯––¥¶¿Ì£¨trueæÕ «“—æ≠¥¶¿Ì¡À£¨∂‘≤Ÿ◊˜≥ˆ¥Ìµƒ ˝æ›œ‘ æ¥¶¿Ì£¨“‘√‚÷ÿ∏¥º∆À„
   /*******************************************************************************
  * ∫Ø ˝√˚≥∆:ErrRecHandle                                                                     
  * √Ë     ˆ:¥ÌŒÛº«¬º¥¶¿Ì                                                              
@@ -976,7 +969,6 @@ bool MoneyBackCnt_Already=false; //false æÕ «–Ë“™Ω¯––¥¶¿Ì£¨trueæÕ «“—æ≠¥¶¿Ì¡À£¨∂
  *******************************************************************************/ 
 void ErrRecHandle(void)
 {
-   //printf("erro_record1st 0x%08X\r\n",erro_record);
 	 if(erro_record!=0) //µ±”–¥ÌŒÛº«¬º£¨–Ë“™Ω¯––¥¶¿Ì
 	 {
 		 AbnormalHandle(outage_erro);//œ‡µ±”⁄ø™ª˙“Ï≥£¥¶¿Ì
@@ -1075,7 +1067,7 @@ void hardfawreInit(void)
 	 //WriteMeal();  //–¥»Î≤Õ∆∑ ˝æ›,≤ª–Ë“™“ÚŒ™–¥»Î≤Õ∆∑µƒ ˝æ›–Ë“™ª®∑—∫‹≥§ ¿º‰£¨»Áπ˚Õª»ª‘⁄ø™ª˙π˝≥ÃÕª»ª∂œµÁ ˝æ›æÕª·∂™ ß
 	 StatisticsTotal(); //∫Û√Êµƒ≥Ã–Ú–Ë“™ π”√  	
 	 ReadUserData();  //–Ë“™Ω¯–– ˝æ›¥¶¿Ì£¨≈–∂œ
-   for(i=0;i<120;i++)
+   for(i=0;i<32*4;i++)
 	 {
 	   if(UserActMessageWriteToFlash.FlashBuffer[i] == 0xff)
 	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;

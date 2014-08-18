@@ -380,14 +380,7 @@ void MenuChange(uint8_t MenuNO)
   {
     case 0x00:
     {
-      uint32_t i_cnt,i=0;
-      PageChange(Menu5th_interface);
-      for(i=0;i<20;i++)
-      {
-        for(i_cnt=0;i_cnt<4;i_cnt++)
-        printf("%x ",MenuNo[i_cnt]);
-        printf("\r\n");
-      }
+      PageChange(Logo_interface);
       while(1);
     }break;
     case 0x01:
@@ -593,6 +586,10 @@ void ClearUserBuffer(void)
 	UserActMessageWriteToFlash.UserAct.PayForBills=0;           //用户投入的纸币数
 	UserActMessageWriteToFlash.UserAct.PayForCards=0;           //用户应经刷卡的数
   UserActMessageWriteToFlash.UserAct.PayAlready=0;
+  UserActMessageWriteToFlash.UserAct.MoneyBackShould=0;
+  UserActMessageWriteToFlash.UserAct.MoneyBackAlready=0;
+  UserActMessageWriteToFlash.UserAct.MoneyBack=0;
+  
 }
  /*******************************************************************************
  * 函数名称:PutIntoShopCart                                                                     
@@ -996,6 +993,7 @@ void DisplayUserRecord(void)
 		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_4th,floor);	
 		floor++;
 	}
+	cnt_t++;
 	if(UserActMessageWriteToFlash.UserAct.MealCnt_5th_t>0)
 	{
 		AbnomalMealNameDisp(sell_type[cnt_t],floor);
@@ -1003,19 +1001,21 @@ void DisplayUserRecord(void)
 		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_5th,floor);	
 		floor++;
 	}
+	cnt_t++;
 	if(UserActMessageWriteToFlash.UserAct.MealCnt_6th_t>0)
 	{
 		AbnomalMealNameDisp(sell_type[cnt_t],floor);
 		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_6th_t,floor);
 		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_6th,floor);	
 		floor++;
-	}  
+	}
+  cnt_t=0;  
 		//显示用户已付 和  应退  和 已退
 	VariableChage(record_UserActPayAlready,UserActMessageWriteToFlash.UserAct.PayAlready);
 		//应退的钱 = 总的应该退币的钱
-	VariableChage(record_UserActPayBack,MoneyPayBack_Already_total);
+	VariableChage(record_UserActPayBack,UserActMessageWriteToFlash.UserAct.MoneyBackShould);
 	  //已退的钱 = 总的应该退币的钱- 还未退的钱
-	VariableChage(record_UserActPayBackAlready,MoneyPayBack_Already_total-UserActMessageWriteToFlash.UserAct.MoneyBack);
+	VariableChage(record_UserActPayBackAlready,UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);
 }
 	
  /*******************************************************************************
@@ -1349,6 +1349,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
                 WaitTimeInit(&WaitTime);
                 OpenTIM7();
                 Current= waitfor_money;//进入读钱界面
+                CurrentPoint= 1;       //倒计时60s，打开现金接受
                 PlayMusic(VOICE_2);
               }
             }
@@ -1500,12 +1501,13 @@ loop1:	switch(MealID)
 					}break;
 					case 0x04:   /*取消*/
 					{
-loop7:			UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
-	          MoneyPayBack_Already_total= UserActMessageWriteToFlash.UserAct.PayAlready; //数据需要记录
-	          MoneyBack =UserActMessageWriteToFlash.UserAct.MoneyBack *100 ;  /*需退币退币的临时变量*/
+            uint32_t temp1= 0,temp2= 0;
+loop7:			temp1= UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+	          temp2= UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready; //总的应该退的钱
             ClearUserBuffer();
+            UserActMessageWriteToFlash.UserAct.MoneyBack= temp1;
+            UserActMessageWriteToFlash.UserAct.MoneyBackShould= temp2;
             SaveUserData();
-						UserActMessageWriteToFlash.UserAct.PayAlready= UserActMessageWriteToFlash.UserAct.MoneyBack; //在退币的时候，如果是取消购买的话，如果UserActMessageWriteToFlash.UserAct.MoneyBack==0，清掉UserActMessageWriteToFlash.UserAct.PayAlready
 			      if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro5");  //关闭现金接受
             PageChange(Menu_interface);
 						CloseTIM3();
@@ -1644,7 +1646,8 @@ loop7:			UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlas
                PassWordLen = 0;	
                if(erro_record!=0)
                {
-                 DisplayUserRecord();
+                 if(!((erro_record&1<<arm_limit)||(erro_record&1<<signin_erro)||erro_record&1<<network_erro))
+                   DisplayUserRecord();
                  PageChange(UserAbonamalRecord_interface);
                }                 
                break;              
