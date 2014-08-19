@@ -79,10 +79,15 @@ void InitSetting(void)
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
 uint32_t payfor_meal = 0;        //单个餐品已付的钱
-uint32_t MoneyPayBack_Already = 0;//需要上传的退币数
+
+/*上传的退币数分为两种状态：*/
+uint32_t MoneyPayBack_Already=0;      //数据上传用
+uint32_t MoneyPayBack_Already_1st = 0;//付钱后的找币
+uint32_t MoneyPayBack_Already_2nd = 0;//取餐出错后的找币
 void MealArr(unsigned char index)
 {
     uint32_t  PayBill=0;
+    uint32_t  MoneyPayBack_Already_t=0;
 	  switch(index)
 	  {
       case 0x01 :	/*购买餐品的ID*/
@@ -203,26 +208,25 @@ void MealArr(unsigned char index)
 		CustomerSel.DealBalance[4]      =       CustomerSel.DealBalance[4]/10 *16 +CustomerSel.DealBalance[4]%10 ;
 		CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
 		CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;		
-		//已找币的钱
-	  if(1)
-	  {
-		 /*十进制转换成16*/
-      MoneyPayBack_Already= MoneyPayBack_Already*100;
-		  CustomerSel.Change[0]      =	     MoneyPayBack_Already / 10000000000 %100;
-		  CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
-		  CustomerSel.Change[1]      =	     MoneyPayBack_Already / 100000000 %100;
-		  CustomerSel.Change[1]      =         CustomerSel.Change[1]/10 *16 +CustomerSel.Change[1]%10 ;                              
-		  CustomerSel.Change[2]      =	     MoneyPayBack_Already / 1000000 %100;
-		  CustomerSel.Change[2]      =         CustomerSel.Change[2]/10 *16 +CustomerSel.Change[2]%10 ;
-		  CustomerSel.Change[3]      =	     MoneyPayBack_Already / 10000 %100;
-		  CustomerSel.Change[3]      =         CustomerSel.Change[3]/10 *16 +CustomerSel.Change[3]%10 ;
-		  CustomerSel.Change[4]      =	     MoneyPayBack_Already / 100 %100;
-		  CustomerSel.Change[4]      =         CustomerSel.Change[4]/10 *16 +CustomerSel.Change[4]%10 ;
-		  CustomerSel.Change[5]      =	     MoneyPayBack_Already % 100 ;
-		  CustomerSel.Change[5]      =         CustomerSel.Change[5]/10 *16 +CustomerSel.Change[5]%10 ;
-	  }
+		/*要上传的已找零分析:第一次上传的售后MoneyPayBack_Already_2nd=0；第二次上传的时候MoneyPayBack_Already=0；
+    第一次就取餐失败的时候，MoneyPayBack_Already!=0,MoneyPayBack_Already_2nd!=0,两个相加就是总的退币
+    */
+    MoneyPayBack_Already_t= (MoneyPayBack_Already + MoneyPayBack_Already_2nd) *100;
+    
+    CustomerSel.Change[0]      =	     MoneyPayBack_Already_t / 10000000000 %100;
+    CustomerSel.Change[0]      =         CustomerSel.Change[0]/10 *16 +CustomerSel.Change[0]%10 ;   
+    CustomerSel.Change[1]      =	     MoneyPayBack_Already_t / 100000000 %100;
+    CustomerSel.Change[1]      =         CustomerSel.Change[1]/10 *16 +CustomerSel.Change[1]%10 ;                              
+    CustomerSel.Change[2]      =	     MoneyPayBack_Already_t / 1000000 %100;
+    CustomerSel.Change[2]      =         CustomerSel.Change[2]/10 *16 +CustomerSel.Change[2]%10 ;
+    CustomerSel.Change[3]      =	     MoneyPayBack_Already_t / 10000 %100;
+    CustomerSel.Change[3]      =         CustomerSel.Change[3]/10 *16 +CustomerSel.Change[3]%10 ;
+    CustomerSel.Change[4]      =	     MoneyPayBack_Already_t / 100 %100;
+    CustomerSel.Change[4]      =         CustomerSel.Change[4]/10 *16 +CustomerSel.Change[4]%10 ;
+    CustomerSel.Change[5]      =	     MoneyPayBack_Already_t % 100 ;
+    CustomerSel.Change[5]      =         CustomerSel.Change[5]/10 *16 +CustomerSel.Change[5]%10 ;
 		/*购买餐品的剩余份数*/
 		CustomerSel.RemainMealNum[0]  =	 (DefineMeal[index-1].MealCount>>8)&0xff;
 		CustomerSel.RemainMealNum[1]  =	  DefineMeal[index-1].MealCount &0xff;
-    PayBill= 0; payfor_meal=0; MoneyPayBack_Already= 0;
+    PayBill= 0; payfor_meal=0;MoneyPayBack_Already=0;MoneyPayBack_Already_2nd=0;
 }

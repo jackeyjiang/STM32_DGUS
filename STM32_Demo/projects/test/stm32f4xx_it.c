@@ -359,6 +359,7 @@ void TIM7_IRQHandler(void)
 extern  FIL fsrc;
 void PVD_IRQHandler(void) 
 {
+  uint32_t temp1=0,temp2=0;
   EXTI_ClearITPendingBit(EXTI_Line16); 
   if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
   {
@@ -366,9 +367,11 @@ void PVD_IRQHandler(void)
 		if((Current == waitfor_money)&&(UserActMessageWriteToFlash.UserAct.PayAlready>0)) //当处于付钱状态的时候需要清楚用户的其他数据，除了UserActMessageWriteToFlash.UserAct.MoneyBack
 		{
       erro_record |= (1<<outage_erro);  //需要加入，以免还在付钱的时候断电
-			UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready;
-			UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready;
+			temp1= UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready;
+			temp2= UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready;
 			ClearUserBuffer();
+      UserActMessageWriteToFlash.UserAct.MoneyBack =temp1;
+      UserActMessageWriteToFlash.UserAct.MoneyBackShould= temp2;
     }
 		else if(Current == meal_out) //取餐的时候断电，没有计算UserActMessageWriteToFlash.UserAct.MoneyBack,需要计算一次后，就不再计算了，所以加了标记
 		{
@@ -418,7 +421,8 @@ void PVD_IRQHandler(void)
 				erro_record |= (1<<upload_erro);
       }
     }
-    SaveUserData();
+    RTC_WriteBackupRegister(RTC_BKP_DR3,  erro_record);
+    //SaveUserData();/*时间太长了*/
     f_close(&fsrc);	  
   }	
 }

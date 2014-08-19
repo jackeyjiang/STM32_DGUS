@@ -79,6 +79,8 @@ extern uint8_t WaitTime ;
 extern uint8_t WaitMealTime ;
 extern uint32_t payfor_meal ;
 extern uint32_t MoneyPayBack_Already;
+extern uint32_t MoneyPayBack_Already_1st;
+extern uint32_t MoneyPayBack_Already_2nd;
 
 typedef union _CoinsTotoalMessage
 {

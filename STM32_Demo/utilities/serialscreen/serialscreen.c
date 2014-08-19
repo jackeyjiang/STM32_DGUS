@@ -42,7 +42,7 @@ uint8_t Menu_interface= 0x00;
 uint8_t MealSet_interface= 0x00;
 uint8_t sell_type[4]={0};//存储四个菜品的的ID,在签到的时候需要获取的有当前需要显示售卖的哪一个界面和那几个餐品
 uint8_t sell_type_1st[4]={0x01,0x02,0x03,0x04}; //第一个售餐菜单
-uint8_t sell_type_2nd[4]={0x05,0x06,0x01,0x02}; //第二个售餐菜单
+uint8_t sell_type_2nd[4]={0x05,0x06,0x07,0x08}; //第二个售餐菜单
 uint8_t sell_type_3rd[4]={0x03,0x04,0x05,0x06}; //第三个售餐菜单
 uint8_t sell_type_4th[4]={0x05,0x06,0x01,0x02}; //第四个售餐菜单
 uint8_t sell_type_5th[4]={0x05,0x06,0x01,0x02}; //第五个售餐菜单
@@ -1475,6 +1475,7 @@ loop1:	switch(MealID)
 			}break;
 			case payment_method: /*付款方式*/ 
 			{
+        uint32_t temp1= 0,temp2= 0;
 				AcountCopy();
 				if(UserActMessageWriteToFlash.UserAct.PayShould==0) goto loop7;
 				PageChange(Acount_interface+2); //当按下付款后，跳转到另一个页面禁止分数加减
@@ -1483,6 +1484,7 @@ loop1:	switch(MealID)
 				{
 					case 0x01:   /*现金支付*/
 					{
+            if(cash_limit_flag==true) break; //如果零钱找完，无法进入
 						CurrentPoint =2;
             PlayMusic(VOICE_3);
 						if(!OpenCashSystem()){OpenCashSystem();};// printf("cash system is erro2");  //关闭现金接受
@@ -1501,8 +1503,7 @@ loop1:	switch(MealID)
 					}break;
 					case 0x04:   /*取消*/
 					{
-            uint32_t temp1= 0,temp2= 0;
-loop7:			temp1= UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+	 loop7:		temp1= UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 	          temp2= UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready; //总的应该退的钱
             ClearUserBuffer();
             UserActMessageWriteToFlash.UserAct.MoneyBack= temp1;

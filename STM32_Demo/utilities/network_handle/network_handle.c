@@ -429,87 +429,47 @@ unsigned char  SignInFun(void)
 	Lenght = HL_BufferToInit(&rx1Buf[2]);	 //判断数据长度是否
 	if(Lenght == 0x00)
 	 return  1 ;
-//	 if(rx1Buf[7]!=0x00)/*是否应答命令*/
-//	 return 1 ;
-//     for(j=0;j<Lenght;j++)
-//	 {
-//	  CheckInitReturnUnion.CheckInitReturnBuffer[j]= rx1Buf[j];
-//	  printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-//	 }
-//	 printf("\r\nACK: ");
-//	 for(i=0;i<4;i++)
-//	 {
-//	 ACK[i] = rx1Buf[i+0x46];//得到
-//	 printf("%x ",ACK[i]);
-//	 }
-//	 if(ACK[3]!=0x00)
-//	 {
-//	   return 1 ;
-//	 }
-
-
-//	 printf("\r\nMName: ");
 	 for(i=0;i<23;i++)
 	 {
 	   MName[i] = rx1Buf[i+4];//得到商幻
-//	 printf("%x ",MName[i]);
 	 }
-//	 printf("\r\nBNO: ");
 	 for(i=0;i<3;i++)
 	 {
 	   BNO[i+3] = rx1Buf[i+27+3];//得到批次号
-//	 printf("%x ",BNO[i+3]);
 	 }
-//	 printf("\r\nAPPVersion: ");
 	 for(i=0;i<11;i++)
 	 {
 	   APPVersion[i] = rx1Buf[i+0x21];//得到程序版本号
-//	 printf("%x ",APPVersion[i]);
 	 }
-//	 printf("\r\nParaFileVersion: ");
 	 for(i=0;i<11;i++)
 	 {
 	   ParaFileVersion[i] = rx1Buf[i+0x2c];//得到参数文件版本
-//	 printf("%x ",ParaFileVersion[i]);
 	 }
-	 //printf("\r\nBDataFileVersion: ");
 	 for(i=0;i<11;i++)
 	 {
 	   BDataFileVersion[i] = rx1Buf[i+0x37];//业务数据版本文件
-//	 printf("%x ",BDataFileVersion[i]);
 	 }
-//	 printf("\r\nUpdataFlag: ");
 	 for(i=0;i<4;i++)
 	 {
 	   UpdataFlag[i] = rx1Buf[i+0x42];//得到批次号
-//	 printf("%x ",UpdataFlag[i]);
 	 }
-   printf("MenuNo: \r\n");
 	 for(i=0;i<4;i++)
    {
       MenuNo[i]= rx1Buf[i+0x46];
-      printf("%X ",MenuNo[i]);
+      //printf("%X ",MenuNo[i]);
    }
    if(MenuNo[0]!=0xdd)  return 1; 
-//	 printf("\r\nACK: ");
 	 for(i=0;i<4;i++)
 	 {
 	   ACK[i] = rx1Buf[i+0x4A];//得到
-//	 printf("%x ",ACK[i]);
 	 }
-//
- //    printf("\r\nWordKeyCipher: ");
 	 for(i=0;i<11;i++)
 	 {
 	   WordKeyCipher[i] = rx1Buf[i+0x4E];//得到工作密文
-//	 printf("%x ",WordKeyCipher[i]);
 	 }
-
-//	 printf("\r\nMAC: ");
    for(i=0;i<11;i++)
 	 {
-	   MAC[i] = rx1Buf[i+0x59];//
-//	 printf("%x ",MAC[i]);
+	   MAC[i] = rx1Buf[i+0x59];
 	 }
    if(ACK[3]==0x24)
 	 {
@@ -1512,15 +1472,10 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 MealPrice[3+i]=temp[i];
 	 }	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealPrice,sizeof(MealPrice));			/*餐品价格*/
-	/*付钱的方式*/
-	 //PayType[3] = CustomerSel.PayType ;
 	 SearchSeparator(ReadBuf,SendBuffer,12); //付款方式
 	 StringToHexGroup1(temp,ReadBuf,2);
  	 PayType[3]=temp[0];	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PayType,sizeof(PayType));				/*支付方式*/
-	 /*找零金额*/
-//	 for(i=0;i<6;i++)
-//	 Change[3+i] = CustomerSel.Change[i] ;
 	 SearchSeparator(ReadBuf,SendBuffer,13); //找零金额
 	 StringToHexGroup1(temp,ReadBuf,12); 
    for(i=0;i<6;i++)
@@ -1528,12 +1483,6 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 Change[3+i]=temp[i];
 	 }		 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change)); 			   /*找零金额*/
-	 /*剩余餐品数量*/
-//	 for(i=0;i<2;i++)
-//	 {
-//	  RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
-//    //printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
-//	 }
 	 SearchSeparator(ReadBuf,SendBuffer,14); //剩余餐品数量
 	 StringToHexGroup1(temp,ReadBuf,4); 
    for(i=0;i<4;i++)
@@ -1548,16 +1497,10 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 TakeMealFlag[3+i]=temp[i];
 	 }	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag));  /*取餐标记*/
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
- //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
- //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
- //  if(UserAct.PayType == '3')
- //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
-	 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/	 
 	 Send_Buf[CmdLenght] = 0x03  ;  //包含数据包包尾标识和CRC校验码
 	 CmdLenght+=0x03;
    i = MealComparefunDemo(0x0800,Send_Buf,CmdLenght); //发送数据(取餐交易)
- //mem_copy00(SendBuffer, Send_Buf,CmdLenght);	//把发送的参数传入数组写入SD卡
  /***************************************************************************/
 	 HL_IntToBuffer(CmdLenght,&SendBuffer[1019]);	/*保存数据的长度*/
 
@@ -1566,28 +1509,18 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 	 Lenght = HL_BufferToInit(&rx1Buf[2]) ;
 	 if(Lenght == 0x00)/*判断数据长度*/
 	 return 1 ;
-	 for(j=0;j<Lenght+7;j++)
+	 if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)  //表示正确
 	 {
-
- //   printf("rx1Buf[%d]=%x\r\n",j,rx1Buf[j]);
-
-	  }
-	  if(rx1Buf[0]==0x07 && rx1Buf[1]==0x10)  //表示正确
-	  {
-
 		 if(rx1Buf[7]==0x00)/*是否应答命令*/
 		 {
 			return 0 ;
 		 }
 		 if(rx1Buf[7]==0x24)/*交易流水号（终端流水）重复*/
 		 {
-		  //   Batch ++ ;	/*流水号自加*/
 			return 1 ;
 		 }
-
-	  }
+	 }
    return 0 ;
-
  }
 
 char ReadSdBuff[512]={0};

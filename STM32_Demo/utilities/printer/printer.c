@@ -238,10 +238,12 @@ void  SPRT(void)
 	{
 		printf("支付方式：深圳通支付\r\n");
 	}
+  printf("服务热线：400-0755-677");
 	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(SendStc,sizeof(SendStc));//	切纸
-	Uart1_Card(huan3,sizeof(huan3));
+	Uart1_Card(huan3,sizeof(huan3));  
+  printf("深圳市速来食餐饮管理有限公司\r\n");
   printf("\r\n");//切纸后换行，以免纸进入缝隙中	
 	printf("\r\n");//切纸后换行，以免纸进入缝隙中	
 }

@@ -122,7 +122,7 @@ typedef struct
 
 extern  USART_StatusTypeDef  STATUS ;
 
-
+extern bool   cash_limit_flag;
 extern uint8_t   exitflag;
 extern uint8_t   CoinCountFlag;
 extern uint8_t   TemperatureFlag  ;
