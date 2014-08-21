@@ -3,7 +3,7 @@
 #include "stdint.h"
 #include "stm32f4xx.h"
 #define FloorMealNum    15				  /*定义有多少个行*/
-#define MealKindTotoal  6           /*定义有几个餐品*/
+#define MealKindTotoal  8           /*定义有几个餐品*/
 typedef struct MealAt
 {
     
@@ -15,6 +15,8 @@ typedef struct MealAt
 
 extern MealAttribute DefineMeal[MealKindTotoal];	//定义6个菜系
 
+#define UserActiontotoaDatalSize  41
+
 typedef struct UserAction
 {
   uint32_t MealCnt_1st_t;      //用户选择第一种餐品的数量未按下放入购物车键时的临时数量
@@ -23,18 +25,24 @@ typedef struct UserAction
 	uint32_t MealCnt_4th_t;      //用户选择第四种餐品的数量未按下放入购物车键时的临时数量	
 	uint32_t MealCnt_5th_t;      //用户选择第五种餐品的数量未按下放入购物车键时的临时数量	
 	uint32_t MealCnt_6th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	
+	uint32_t MealCnt_7th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	
+	uint32_t MealCnt_8th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	  
   uint32_t MealCnt_1st;       //用户选择第一份餐品的数量
 	uint32_t MealCnt_2nd;       //用户选择第二份餐品的数量
 	uint32_t MealCnt_3rd;       //用户选择第三份餐品的数量
 	uint32_t MealCnt_4th;       //用户选择第四份餐品的数量
 	uint32_t MealCnt_5th;       //用户选择第五份餐品的数量
 	uint32_t MealCnt_6th;       //用户选择第六份餐品的数量  
+	uint32_t MealCnt_7th;       //用户选择第六份餐品的数量
+	uint32_t MealCnt_8th;       //用户选择第六份餐品的数量    
   uint32_t MealCost_1st;      //用户选择第一份餐品的总价
 	uint32_t MealCost_2nd;      //用户选择第二份餐品的总价
 	uint32_t MealCost_3rd;      //用户选择第三份餐品的总价
 	uint32_t MealCost_4th;      //用户选择第四份餐品的总价
 	uint32_t MealCost_5th;      //用户选择第五份餐品的总价
-	uint32_t MealCost_6th;      //用户选择第六份餐品的总价   
+	uint32_t MealCost_6th;      //用户选择第六份餐品的总价 
+	uint32_t MealCost_7th;      //用户选择第六份餐品的总价 
+	uint32_t MealCost_8th;      //用户选择第六份餐品的总价     
 	uint32_t PayShould;          //用户应付款总额
 	uint32_t MealID;             //用户当前选择的餐品ID 
 	uint32_t Meal_totoal;        //用户选餐的总数
@@ -47,14 +55,17 @@ typedef struct UserAction
   uint32_t MoneyBackShould;    //应退钱的显示数据
   uint32_t MoneyBackAlready;   //已退钱的显示数据
 	uint32_t PrintTick;          //是否打印小票标志
-	uint32_t PayType;            //支付方式
+	uint32_t PayType;            //支付方式                   
 	uint32_t Cancle;             //用户取消购买
+  uint32_t MoneyPayBack_Already ;     //数据上传用                
+  uint32_t MoneyPayBack_Already_1st;  //付钱后的找币    
+  uint32_t MoneyPayBack_Already_2nd;  //取餐出错后的找币           
 }UserSelection;
 
 typedef union _UserActMessage
 {
   UserSelection   UserAct;
-  uint8_t         FlashBuffer[32*4];
+  uint8_t         FlashBuffer[UserActiontotoaDatalSize*4];
 }UserActMessage;
 extern UserActMessage UserActMessageWriteToFlash;//用户数据写入flash
 
@@ -78,9 +89,6 @@ extern  FloorAttribute FloorMeal[FloorMealNum], CurFloor;
 extern uint8_t WaitTime ;
 extern uint8_t WaitMealTime ;
 extern uint32_t payfor_meal ;
-extern uint32_t MoneyPayBack_Already;
-extern uint32_t MoneyPayBack_Already_1st;
-extern uint32_t MoneyPayBack_Already_2nd;
 
 typedef union _CoinsTotoalMessage
 {

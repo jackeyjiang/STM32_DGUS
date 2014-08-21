@@ -43,7 +43,8 @@
 #define Meal4th_interface              0x3B  /*红烧鱼块主界面*/
 #define Meal5th_interface              0x3D  /*梅菜扣肉主界面*/
 #define Meal6th_interface              0x3F  /*土豆牛腩主界面*/
-
+#define Meal7th_interface              0x3F  /*土豆牛腩主界面*/
+#define Meal8th_interface              0x3F  /*土豆牛腩主界面*/
 
 
 
@@ -132,26 +133,32 @@
 #define mealtotoal_cost 0x004F  //总价
 
 /*单页餐品变量显示*/
-//红萝卜炒肉数量选择界面
-#define meat_cnt        0x0030 
-#define meat_cost       0x0031
-//香菇滑鸡数量选择界面
-#define chicken_cnt     0x0032
-#define chicken_cost    0x0033
-//脆皮烤鸭数量选择界面
-#define duck_cnt        0x0034
-#define duck_cost       0x0035
-//红烧鱼块数量选择界面
-#define fish_cnt        0x0036
-#define fish_cost       0X0037
-//梅菜扣肉数量选择界面
-#define pork_cnt        0x0038
-#define pork_cost       0X0039
-//土豆牛腩
-#define cow_cnt         0x003A
-#define cow_cost        0X003B
+//第一份餐品选择界面
+#define meal1st_cnt     0x0030  
+#define meat1st_cost    0x0031   
+//第二份餐品选择界面
+#define meal2nd_cnt     0x0032
+#define meal2nd_cost    0x0033
+//第三份餐品选择界面
+#define meal3rd_cnt     0x0034
+#define meal3rd_cost    0x0035
+//第四份餐品选择界面
+#define meal4th_cnt     0x0036
+#define meal4th_cost    0X0037
+//第五份餐品选择界面
+#define meal5th_cnt     0x0038
+#define meal5h_cost     0X0039
+//第六份餐品选择界面
+#define meal6th_cnt     0x003A
+#define meal6th_cost    0X003B
+//第七份餐品选择界面
+#define meal7th_cnt     0x003C
+#define meal7th_cost    0X003D
+//第八份餐品选择界面
+#define meal8th_cnt     0x003E
+#define meal8th_cost    0X003F
 //选餐倒计时
-#define count_dowm      0x003F
+#define count_dowm      0x0040
 
 /*餐品装填变量*/
 #define row_1st   0x0011 
@@ -234,6 +241,8 @@ extern const char price_3rd;
 extern const char price_4th;
 extern const char price_5th;
 extern const char price_6th;
+extern const char price_7th;
+extern const char price_8th;
 extern bool cardbalence_cancel_flag;
 extern bool sellmeal_flag; 
 extern char record_time[20];
