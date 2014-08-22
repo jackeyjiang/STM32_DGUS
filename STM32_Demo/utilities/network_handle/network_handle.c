@@ -15,13 +15,14 @@
 
 static long Batch = 0x00 ;//交易流水号
 
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x31}; /*终端TID码 10000006*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
 unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/
 unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,0xE0,0x10};	   /*终端状态*/
 const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
+const unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
 unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/
 unsigned char  MAC[8+3]={0xc9,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   /*MAC*/
@@ -57,6 +58,8 @@ Meal_struction Meal[MealKindTotoal]={
 								   0x00,0x00,	 0x10,0x00,0x00,0x44,  {"黑椒猪扒饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
                    0x00,0x00,	 0x10,0x00,0x00,0x45,  {"蒲烧鲷鱼饭      "},   0x00,0x00,0x18,0x00, 	{"C001"},
 								   0x00,0x00,	 0x10,0x00,0x00,0x46,  {"蒲烧秋刀鱼饭    "},   0x00,0x00,0x18,0x00, 	{"C001"},  
+                   0x00,0x00,	 0x10,0x00,0x00,0x47,  {"咖喱鸡扒饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x48,  {"梅菜扣肉饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
 						   };
  unsigned char	Record_buffer[254] = {0} ;
 
@@ -651,7 +654,9 @@ unsigned char StatusUploadingFun(uint16_t erro_status)
 	 long  Lenght = 0 ,j;
 	 long	 CmdLenght = 0 ;
    char Temperature_t=0;
+   char CoinsTotoal_t=0;
    char  Temperature_tt[5]={0};
+   char  CoinsTotoal_tt[5]={0};
 	 unsigned char	Send_Buf[400]={0};
 	 char  state_temp[2]={0};  
 	 //sprintf(state_temp,"%x",erro_status); 
@@ -683,7 +688,16 @@ unsigned char StatusUploadingFun(uint16_t erro_status)
 	 {
 		 Temperature_tt[3+i]= state_temp[i];
 	 }
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Temperature_tt,sizeof(Temperature_tt));  /*终端的状态*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Temperature_tt,sizeof(Temperature_tt));  /*终端的温度*/
+   CoinsTotoal_t =CoinsTotoalMessageWriteToFlash.CoinTotoal;
+   state_temp[1]=(CoinsTotoal_t&0x00ff);
+	 state_temp[0]=(CoinsTotoal_t>>8)&0x00ff;   
+   memcpy(CoinsTotoal_tt,DeviceCoinsTotal,sizeof(DeviceCoinsTotal));  
+	 for(i=0;i<3;i++) 
+	 {
+		 CoinsTotoal_tt[3+i]= state_temp[i];
+	 }
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],CoinsTotoal_tt,sizeof(CoinsTotoal_tt));  /*终端的硬币数*/   
 	 Send_Buf[CmdLenght] = 0x03  ;
 	 CmdLenght+=0x03;
 	 i = MealComparefunDemo(0x0400,Send_Buf,CmdLenght);//0x0400 状态上送

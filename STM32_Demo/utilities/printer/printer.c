@@ -152,7 +152,8 @@ void  SPRT(void)
 	unsigned char  p5[]={"ºÚ½·Öí°Ç·¹  1\t016\t016\r\n"};
   unsigned char  p6[]={"ÆÑÉÕöôÓã·¹  1\t018\t018\r\n"};
   unsigned char  p7[]={"ÆÑÉÕÇïµ¶Óã·¹1\t018\t018\r\n"};
-
+  unsigned char  p8[]={"¿§à¬¼¦°Ç·¹  1\t016\t016\r\n"};
+  unsigned char  p9[]={"Ã·²Ë¿ÛÈâ·¹  1\t016\t016\r\n"};
   //printf("@\r\n");//´òÓ¡»Ø³µ»»ÐÐ
   //Uart1_Card(huan3,sizeof(huan3)); 
   printf("²ËÆ·\t   ÊýÁ¿\tµ¥¼Û\t½ð¶î\r\n"); 	
@@ -223,7 +224,29 @@ void  SPRT(void)
 		p7[19]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100/10+'0';
 		p7[20]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100%10+'0';
 		printf("%s",p7);
-	} 
+	}
+	if(Print_Struct.P_Number7th>0)
+	{		
+		p8[12]= Print_Struct.P_Number7th%10 +'0'; 
+		p8[14]= price_7th/100+'0';
+		p8[15]= price_7th%100/10+'0';
+		p8[16]= price_7th%100%10+'0';
+    p8[18]=UserActMessageWriteToFlash.UserAct.MealCost_7th/100+'0';
+		p8[19]=UserActMessageWriteToFlash.UserAct.MealCost_7th%100/10+'0';
+		p8[20]=UserActMessageWriteToFlash.UserAct.MealCost_7th%100%10+'0';
+		printf("%s",p8);
+	}
+	if(Print_Struct.P_Number8th>0)
+	{		
+		p9[12]= Print_Struct.P_Number8th%10 +'0'; 
+		p9[14]= price_8th/100+'0';
+		p9[15]= price_8th%100/10+'0';
+		p9[16]= price_8th%100%10+'0';
+    p9[18]=UserActMessageWriteToFlash.UserAct.MealCost_8th/100+'0';
+		p9[19]=UserActMessageWriteToFlash.UserAct.MealCost_8th%100/10+'0';
+		p9[20]=UserActMessageWriteToFlash.UserAct.MealCost_8th%100%10+'0';
+		printf("%s",p9);
+	}  
   printf("%s",p0);
 	printf("%s",p1);
 	if(UserActMessageWriteToFlash.UserAct.PayType == '2' )

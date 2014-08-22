@@ -37,14 +37,14 @@
 #define Menu5th_interface              0x31  /*菜单五餐品售卖界面*/
 #define MealSet5th_interface           0x33  /*菜单五餐品设置界面*/
 
-#define Meal1st_interface              0x35  /*红萝卜炒肉主界面*/
-#define Meal2nd_interface              0x37  /*香菇滑鸡主界面*/
-#define Meal3rd_interface              0x39  /*脆皮烤鸭主界面*/
-#define Meal4th_interface              0x3B  /*红烧鱼块主界面*/
-#define Meal5th_interface              0x3D  /*梅菜扣肉主界面*/
-#define Meal6th_interface              0x3F  /*土豆牛腩主界面*/
-#define Meal7th_interface              0x3F  /*土豆牛腩主界面*/
-#define Meal8th_interface              0x3F  /*土豆牛腩主界面*/
+#define Meal1st_interface              0x35  /*餐品一主界面*/
+#define Meal2nd_interface              0x37  /*餐品二主界面*/
+#define Meal3rd_interface              0x39  /*餐品三主界面*/
+#define Meal4th_interface              0x3B  /*餐品四主界面*/
+#define Meal5th_interface              0x3D  /*餐品五主界面*/
+#define Meal6th_interface              0x3F  /*餐品六主界面*/
+#define Meal7th_interface              0x41  /*餐品七主界面*/
+#define Meal8th_interface              0x43  /*餐品八主界面*/
 
 
 

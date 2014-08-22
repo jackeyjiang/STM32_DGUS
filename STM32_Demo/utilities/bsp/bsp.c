@@ -221,8 +221,8 @@ unsigned char  WaitPayMoney(void)
 	  case 9 :  //付款成功关闭所有的收银系统
 		{
 			UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready - UserActMessageWriteToFlash.UserAct.PayShould;	
-			UserActMessageWriteToFlash.UserAct.Meal_totoal = UserActMessageWriteToFlash.UserAct.MealCnt_6th+UserActMessageWriteToFlash.UserAct.MealCnt_5th+UserActMessageWriteToFlash.UserAct.MealCnt_4th
-                                                      +UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
+			UserActMessageWriteToFlash.UserAct.Meal_totoal = UserActMessageWriteToFlash.UserAct.MealCnt_8th+UserActMessageWriteToFlash.UserAct.MealCnt_7th+ UserActMessageWriteToFlash.UserAct.MealCnt_6th+UserActMessageWriteToFlash.UserAct.MealCnt_5th
+                                                      +UserActMessageWriteToFlash.UserAct.MealCnt_4th+UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
       UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.MoneyBack; //记录付钱之后第一次应该退的币	
       VariableChage(mealout_totle,UserActMessageWriteToFlash.UserAct.Meal_totoal);	
       //将需要打印的数据赋值到相关结构体	
@@ -232,12 +232,16 @@ unsigned char  WaitPayMoney(void)
 			Print_Struct.P_Number4th = UserActMessageWriteToFlash.UserAct.MealCnt_4th;
 			Print_Struct.P_Number5th = UserActMessageWriteToFlash.UserAct.MealCnt_5th;
       Print_Struct.P_Number6th = UserActMessageWriteToFlash.UserAct.MealCnt_6th;
+			Print_Struct.P_Number7th = UserActMessageWriteToFlash.UserAct.MealCnt_7th;
+      Print_Struct.P_Number8th = UserActMessageWriteToFlash.UserAct.MealCnt_8th;
 			Print_Struct.P_Cost1st   = UserActMessageWriteToFlash.UserAct.MealCost_1st;
 			Print_Struct.P_Cost2nd   = UserActMessageWriteToFlash.UserAct.MealCost_2nd;
 			Print_Struct.P_Cost3rd   = UserActMessageWriteToFlash.UserAct.MealCost_3rd;
 			Print_Struct.P_Cost4th   = UserActMessageWriteToFlash.UserAct.MealCost_4th;
       Print_Struct.P_Cost5th   = UserActMessageWriteToFlash.UserAct.MealCost_5th;
       Print_Struct.P_Cost6th   = UserActMessageWriteToFlash.UserAct.MealCost_6th;
+      Print_Struct.P_Cost7th   = UserActMessageWriteToFlash.UserAct.MealCost_7th;
+      Print_Struct.P_Cost8th   = UserActMessageWriteToFlash.UserAct.MealCost_8th;
 			Print_Struct.P_paymoney  = UserActMessageWriteToFlash.UserAct.PayForBills +	UserActMessageWriteToFlash.UserAct.PayForCoins +UserActMessageWriteToFlash.UserAct.PayForCards ;
 			Print_Struct.P_PayShould = UserActMessageWriteToFlash.UserAct.PayShould ;
 			Print_Struct.P_MoneyBack = UserActMessageWriteToFlash.UserAct.MoneyBack ;
@@ -318,6 +322,14 @@ uint8_t WaitMeal(void)
 				else if(UserActMessageWriteToFlash.UserAct.MealCnt_6th>0)
 				{
 					UserActMessageWriteToFlash.UserAct.MealID = 0x06;	
+				}
+				else if(UserActMessageWriteToFlash.UserAct.MealCnt_7th>0)
+				{
+					UserActMessageWriteToFlash.UserAct.MealID = 0x07;	
+				}
+				else if(UserActMessageWriteToFlash.UserAct.MealCnt_8th>0)
+				{
+					UserActMessageWriteToFlash.UserAct.MealID = 0x08;	
 				}
 				else
 				{	
@@ -540,7 +552,37 @@ uint8_t WaitMeal(void)
 						//printf("tookone_meal\r\n");
 				    return tookone_meal;
 					}						
-				}       
+				}
+				else if(UserActMessageWriteToFlash.UserAct.MealID == 0x07)
+				{
+					UserActMessageWriteToFlash.UserAct.MealCnt_7th--; 	
+					//if(UserActMessageWriteToFlash.UserAct.MealCnt_6th==0)
+					if(0)
+					{
+						//printf("tookkind_meal\r\n");
+						return tookkind_meal;
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
+				} 
+				else if(UserActMessageWriteToFlash.UserAct.MealID == 0x08)
+				{
+					UserActMessageWriteToFlash.UserAct.MealCnt_8th--; 	
+					//if(UserActMessageWriteToFlash.UserAct.MealCnt_6th==0)
+					if(0)
+					{
+						//printf("tookkind_meal\r\n");
+						return tookkind_meal;
+					}
+					else
+					{
+						//printf("tookone_meal\r\n");
+				    return tookone_meal;
+					}						
+				}         
 				else 
 				{
 					printf("tookone_meal erro\r\n");
@@ -644,6 +686,8 @@ void AcountCopy(void)
 	UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= UserActMessageWriteToFlash.UserAct.MealCnt_4th;
   UserActMessageWriteToFlash.UserAct.MealCnt_5th_t= UserActMessageWriteToFlash.UserAct.MealCnt_5th;
   UserActMessageWriteToFlash.UserAct.MealCnt_6th_t= UserActMessageWriteToFlash.UserAct.MealCnt_6th;
+  UserActMessageWriteToFlash.UserAct.MealCnt_7th_t= UserActMessageWriteToFlash.UserAct.MealCnt_7th;
+  UserActMessageWriteToFlash.UserAct.MealCnt_8th_t= UserActMessageWriteToFlash.UserAct.MealCnt_8th;
 }
 
   /*******************************************************************************
@@ -1067,7 +1111,7 @@ void hardfawreInit(void)
 	 //WriteMeal();  //写入餐品数据,不需要因为写入餐品的数据需要花费很长世间，如果突然在开机过程突然断电数据就会丢失
 	 StatisticsTotal(); //后面的程序需要使用  	
 	 ReadUserData();  //需要进行数据处理，判断
-   for(i=0;i<32*4;i++)
+   for(i=0;i<UserActiontotoaDatalSize*4;i++)
 	 {
 	   if(UserActMessageWriteToFlash.FlashBuffer[i] == 0xff)
 	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;

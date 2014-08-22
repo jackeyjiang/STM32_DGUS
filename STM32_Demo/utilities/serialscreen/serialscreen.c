@@ -765,7 +765,7 @@ void SettleAccounts(void)
 		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_7th; //餐品单总价的赋值
 		Floor++;	
 	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_6th>0)
+	if(UserActMessageWriteToFlash.UserAct.MealCnt_8th>0)
 	{
 		DispMeal[Floor].meal_id= 0x08; //0x01为第四个餐品的ID
 		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_8th; //餐品的数量赋值
@@ -1575,7 +1575,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_5th =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_5th =UserActMessageWriteToFlash.UserAct.MealCnt_5th *price_5th; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_5th); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_4th); //改变单总价
+					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_5th); //改变单总价
 				    }
 				    else
 				    {
@@ -2026,7 +2026,7 @@ loop1:	switch(MealID)
 							 {
 									 /*显示餐品,数量*/									
                   SyncMealNameDisp(sell_type[cnt_t],floor);
-                  SyncMealCntDisp(DefineMeal[cnt_t].MealCount,floor); 
+                  SyncMealCntDisp(DefineMeal[sell_type[cnt_t]-1].MealCount,floor); 
                   floor++;									 
 							 }							 
 						 }
