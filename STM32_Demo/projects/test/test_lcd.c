@@ -49,8 +49,8 @@ int main(void)
   SendtoServce();          //上传前七天的数据
 //	if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);	
 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
-// 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
-// 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
+ 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
+ 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	StatusUploadingFun(0xE800); //开机加入正常上传
 	PageChange(Logo_interface);	
 	if(!CloseCashSystem())
@@ -239,8 +239,8 @@ int main(void)
 								}
                 else if(UserActMessageWriteToFlash.UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
                 {
-                  UserActMessageWriteToFlash.UserAct.Cancle= 0x00;
-									UserActMessageWriteToFlash.UserAct.PayAlready= 0;
+                  ClearUserBuffer();//清空用户数据
+                  SaveUserData();//保存用户数据  
                   Current = current_temperature;	
                 }
 								else /*正常退币，机械手没有错误*/
@@ -275,8 +275,8 @@ int main(void)
               }
               else if(UserActMessageWriteToFlash.UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
               {
-                UserActMessageWriteToFlash.UserAct.Cancle= 0x00;
-								UserActMessageWriteToFlash.UserAct.PayAlready= 0;
+                ClearUserBuffer();//清空用户数据
+                SaveUserData();//保存用户数据  
                 Current = current_temperature;	
               }
               else /*退币成功，机械手没有错误*/
