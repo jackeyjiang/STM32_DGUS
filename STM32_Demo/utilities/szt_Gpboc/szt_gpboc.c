@@ -1732,13 +1732,13 @@ uint8_t ManageSztDeductOnce(void)
 	   //printf("\n深圳通扣款后余额为%ld\n",SztReductInf.EndMoney);
 	   SztReductInf.CardNum = PrintBuf2[36] + (PrintBuf2[37]<<8) + (PrintBuf2[38]<<16) + (PrintBuf2[39]<<24);
 	   //printf("\n深圳通卡号为%d\n",SztReductInf.CardNum);
-	   SztReductInf.TradeNum = PrintBuf2[28] + (PrintBuf2[29]<<8) + (PrintBuf2[30]<<16) + (PrintBuf2[31]<<24);
+	   SztReductInf.TradeNum = PrintBuf2[40] + (PrintBuf2[41]<<8) + (PrintBuf2[42]<<16) + (PrintBuf2[43]<<24);
 	   //printf("\n深圳通本次交易序号为%d\n",SztReductInf.TradeNum);
-	   SztReductInf.TACNum = PrintBuf2[28] + (PrintBuf2[29]<<8) + (PrintBuf2[30]<<16) + (PrintBuf2[31]<<24);
+	   SztReductInf.TACNum = PrintBuf2[44] + (PrintBuf2[45]<<8) + (PrintBuf2[46]<<16) + (PrintBuf2[47]<<24);
 	   //printf("\n深圳通本次交易TAC码为%d\n",SztReductInf.TACNum);
-	   SztReductInf.MachineAmount = PrintBuf2[28] + (PrintBuf2[29]<<8) + (PrintBuf2[30]<<16) + (PrintBuf2[31]<<24);
+	   SztReductInf.MachineAmount = PrintBuf2[48] + (PrintBuf2[49]<<8) + (PrintBuf2[50]<<16) + (PrintBuf2[51]<<24);
 	   //printf("\n设备授权额度为%d\n",SztReductInf.MachineAmount);
-	   SztReductInf.machineNum = PrintBuf2[28] + (PrintBuf2[29]<<8) + (PrintBuf2[30]<<16) + (PrintBuf2[31]<<24);
+	   SztReductInf.machineNum = PrintBuf2[52] + (PrintBuf2[53]<<8) + (PrintBuf2[54]<<16) + (PrintBuf2[55]<<24);
 	   //printf("\n设备终端编号为%d\n",SztReductInf.machineNum);
   	  
   	}
@@ -1778,13 +1778,13 @@ uint8_t ManageSztDeductAgain(void)
 	   //printf("\n深圳通扣款后余额为%ld\n",SztReductInf.EndMoney);
 	   SztReductInf.CardNum = PrintBuf2[36] + (PrintBuf2[37]<<8) + (PrintBuf2[38]<<16) + (PrintBuf2[39]<<24);
 	   //printf("\n深圳通卡号为%d\n",SztReductInf.CardNum);
-	   SztReductInf.TradeNum = PrintBuf2[28] + (PrintBuf2[29]<<8) + (PrintBuf2[30]<<16) + (PrintBuf2[31]<<24);
+	   SztReductInf.TradeNum = PrintBuf2[40] + (PrintBuf2[41]<<8) + (PrintBuf2[42]<<16) + (PrintBuf2[43]<<24);
 	   //printf("\n深圳通本次交易序号为%d\n",SztReductInf.TradeNum);
-	   SztReductInf.TACNum = PrintBuf2[28] + (PrintBuf2[29]<<8) + (PrintBuf2[30]<<16) + (PrintBuf2[31]<<24);
+	   SztReductInf.TACNum = PrintBuf2[44] + (PrintBuf2[45]<<8) + (PrintBuf2[46]<<16) + (PrintBuf2[47]<<24);
 	   //printf("\n深圳通本次交易TAC码为%d\n",SztReductInf.TACNum);
-	   SztReductInf.MachineAmount = PrintBuf2[28] + (PrintBuf2[29]<<8) + (PrintBuf2[30]<<16) + (PrintBuf2[31]<<24);
+	   SztReductInf.MachineAmount = PrintBuf2[48] + (PrintBuf2[49]<<8) + (PrintBuf2[50]<<16) + (PrintBuf2[51]<<24);
 	   //printf("\n设备授权额度为%d\n",SztReductInf.MachineAmount);
-	   SztReductInf.machineNum = PrintBuf2[28] + (PrintBuf2[29]<<8) + (PrintBuf2[30]<<16) + (PrintBuf2[31]<<24);
+	   SztReductInf.machineNum = PrintBuf2[52] + (PrintBuf2[53]<<8) + (PrintBuf2[54]<<16) + (PrintBuf2[55]<<24);
 	   //printf("\n设备终端编号为%d\n",SztReductInf.machineNum);
   	  
   	}

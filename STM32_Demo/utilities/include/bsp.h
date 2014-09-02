@@ -72,7 +72,8 @@
 #include "uart6.h"           //机械手接口
 #include "pvd.h"
 #include "eeprom.h"
-#include "intel_flash.h."
+#include "intel_flash.h"
+#include "MMC_SD.h"
 
 //#include "led.h"				   //led灯
 #include "coin.h"				     //硬币机
@@ -140,6 +141,7 @@ bool CloseCashSystem(void);
 bool OpenCashSystem(void);
 void MoveToFisrtMeal(void);
 bool FindMeal(MealAttribute *DefineMeal); 
+int8_t StrToBCD( uint8_t* pDest,const uint8_t* pSrc, uint8_t destLen);
 unsigned char  WaitPayMoney(void);
 uint8_t WaitMeal(void);
 void hardfawreInit(void);

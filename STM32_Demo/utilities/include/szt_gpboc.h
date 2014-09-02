@@ -234,9 +234,9 @@ typedef struct  __attribute__ ((__packed__))   {
         uint8_t   szCardNo[21];   //传递给上位机时，需要用*屏蔽前6后4之外的位置
         uint8_t   szDate[9];
         uint8_t   szTime[7];
+        uint8_t   szCardUnit[4];  //卡组织：CUP VIS MAS
         uint8_t   szExpDate[5];
         uint8_t   szTellerNo[4];  //操作员
-        uint8_t   szCardUnit[4];  //卡组织：CUP VIS MAS
 
         uint32_t  BkDataLen;      //备份交易数据的长度
         //下面为加密后灾备用的交易数据，上位机使用 ，下位机使用结构体StrucBkData

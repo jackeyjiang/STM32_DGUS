@@ -62,80 +62,78 @@
 #define ScreenDisable 0x00
 
 /*剩余菜品变量地址*/
-#define meat     0x0020 /*红萝卜炒肉*/
-#define chicken	 0x0021 /*香菇滑鸡*/
-#define duck     0x0022 /*脆皮烤鸭*/
-#define fish     0x0023 /*红烧鱼块*/
-#define pork     0x0024 /*梅菜扣肉*/
-#define cow      0x0025 /*土豆牛腩*/
+#define meal1st_left     0x0020 /*第一份菜品剩余的位置*/
+#define meal2nd_left	   0x0021 /*第二份菜品剩余的位置*/
+#define meal3rd_left     0x0022 /*第三份菜品剩余的位置*/
+#define meal4th_left     0x0023 /*第四份菜品剩余的位置*/
+#define meal5th_left     0x0024 /*第五份菜品剩余的位置*/
+#define meal6th_left     0x0025 /*第六份菜品剩余的位置*/
+#define meal7th_left     0x0026 /*第七份菜品剩余的位置*/
+#define meal8th_left     0x0027 /*第八份菜品剩余的位置*/
+//
 /*装填选项,1:放满,2:清空,3:确认,4:取消,5:返回*/
 #define mealinput_choose  0x001A
 
 /*错误代码变量地址*/
-#define err_num  0x0007
+#define err_num           0x0007
 
 /*系统设置,1:温度设置;2:餐品设置*/
-#define admin_set 0x0006
+#define admin_set         0x0006
 
 /*密码长度文本显示*/
-#define password_show 0x0005 
-
-/*错误显剩*/
-#define erro_num    0x4D00 
+#define password_show     0x0005 
 
 /*密码输入变量地址*/
-#define password 0x0004 
+#define password          0x0004 
 
 /*票据打印变量地址,1:是;2:否*/
-#define bill_print     0x0003 
+#define bill_print        0x0003 
 
 /*支付方式变量地址,1:现金支付;2:银行卡支付;3:深圳通支付*/
-#define payment_method  0x0002
+#define payment_method    0x0002
 
 /*选餐界面选项变量地址:单份数量选择*/
-#define mealcnt_choose  0x0001
+#define mealcnt_choose    0x0001
 
 /*主界面选餐界面*/
-#define meal_choose  0x0000
-
-/*温度设置变量*/
-#define temprature_set 0x001F
-
-/*实时温度显示变量*/
-#define current_temprature 0x003C
+#define meal_choose       0x0000
 
 /*付款金额显示*/
-#define  payment_coin  0x002A //硬币支付金额
-#define  payment_bill  0x002B //纸币支付金额
-#define  payment_card  0x002C //刷卡支付金额
-
-/*等待时间*/
-#define  wait_payfor   0x002D //付款等待时间
+#define  payment_coin     0x0500 //硬币支付金额
+#define  payment_bill     0x0501 //纸币支付金额
+#define  payment_card     0x0502 //刷卡支付金额
+#define  wait_payfor      0x0503 //付款等待时间
 
 /*出餐界面变量*/
-#define  mealout_totle    0x002E    //餐品出餐总数
-#define  mealout_already  0x002F  //餐品已出餐总数
+#define  mealout_totle    0x0504 //餐品出餐总数
+#define  mealout_already  0x0505 //餐品已出餐总数
+
+/*错误显示*/
+#define erro_num          0x050A //售餐停止界面
 
 /*购物车显示*/
-#define column1st_name  0x4100  //第一栏商品名
-#define column1st_count 0x0042  //第一栏餐品数量
-#define column1st_cost  0x0043  //第一栏商品总价
-#define column2nd_name  0x4200  //第二栏商品名
-#define column2nd_count 0x0045  //第二栏餐品数量
-#define column2nd_cost  0x0046  //第二栏商品总价
-#define column3rd_name  0x4300  //第三栏商品名
-#define column3rd_count 0x0048  //第三栏餐品数量
-#define column3rd_cost  0x0049  //第三栏商品总价
-#define column4th_name  0x4400  //第四栏商品名
-#define column4th_count 0x004B  //第四栏餐品数量
-#define column4th_cost  0x004C  //第四栏商品总价
+#define column1st_name  0x0100  //第一栏商品名
+#define column1st_count 0x0110  //第一栏餐品数量
+#define column1st_cost  0x0120  //第一栏商品总价
+#define column2nd_name  0x0200  //第二栏商品名
+#define column2nd_count 0x0210  //第二栏餐品数量
+#define column2nd_cost  0x0220  //第二栏商品总价
+#define column3rd_name  0x0300  //第三栏商品名
+#define column3rd_count 0x0310  //第三栏餐品数量
+#define column3rd_cost  0x0320  //第三栏商品总价
+#define column4th_name  0x0400  //第四栏商品名
+#define column4th_count 0x0410  //第四栏餐品数量
+#define column4th_cost  0x0420  //第四栏商品总价
 
-#define mealtotoal_cost 0x004F  //总价
+#define  mealtotoal_cost     0x0506  //总价
+#define  current_temprature  0x0507  //实时温度显示变量
+#define  temprature_set      0x0508  //温度设置变量
+#define  count_dowm          0x0509  //选餐倒计时
 
 /*单页餐品变量显示*/
 //第一份餐品选择界面
 #define meal1st_cnt     0x0030  
-#define meat1st_cost    0x0031   
+#define meal1st_cost    0x0031   
 //第二份餐品选择界面
 #define meal2nd_cnt     0x0032
 #define meal2nd_cost    0x0033
@@ -157,8 +155,6 @@
 //第八份餐品选择界面
 #define meal8th_cnt     0x003E
 #define meal8th_cost    0X003F
-//选餐倒计时
-#define count_dowm      0x0040
 
 /*餐品装填变量*/
 #define row_1st   0x0011 
@@ -175,15 +171,12 @@
 #define coins_key    0x0054 //退币的按键
 
 #define caedbalence_cancel    0x0055  //刷卡取消按键
-
-#define record_clear  0x0056    /*清楚记录按键*/
+#define record_clear          0x0056  //清楚记录按键
 
 //刷卡金额变量
 #define cardbalence_before    0x0060  //刷卡钱余额
-#define amountof_consumption  0x0065 //本次消费金额
+#define amountof_consumption  0x0065  //本次消费金额
 #define cardbalence_after     0x006A  //刷卡后余额
-
-
 
 //同步界面
 #define sync_column1st_name   0x4500
@@ -194,6 +187,16 @@
 #define sync_column2nd_number 0x4A00
 #define sync_column3rd_number 0x4B00
 #define sync_column4th_number 0X4C00
+
+//售餐时间设置界面
+#define set_sellmeal_hour     0x4E00    //售餐时间设置的小时变量
+#define set_sellmeal_minute   0x4E01    //售餐时间设置的分钟变量
+#define set_sellmeal_key      0x4E02    //售餐时间设置的按键变量
+
+//等待售餐的时间显示界面
+#define wait_sellmeal_hour    0x4E03    //等待售餐显示的小时变量
+#define wait_sellmeal_minute  0x4E04    //等待售餐显示的分钟变量
+#define wait_sellmeal_second  0x4E05    //等待售餐显示的秒钟变量
 
 //用户错误记录界面
 #define record_column1st_name   0x5000 //第一栏名字
@@ -217,15 +220,6 @@
 
 #define record_UserDataTime          0x5F00  //出错时间显示
 
-//售餐时间设置界面
-#define set_sellmeal_hour     0x4E00    //售餐时间设置的小时变量
-#define set_sellmeal_minute   0x4E01    //售餐时间设置的分钟变量
-#define set_sellmeal_key      0x4E02    //售餐时间设置的按键变量
-
-//等待售餐的时间显示界面
-#define wait_sellmeal_hour    0x4E03    //等待售餐显示的小时变量
-#define wait_sellmeal_minute  0x4E04    //等待售餐显示的分钟变量
-#define wait_sellmeal_second  0x4E05    //等待售餐显示的秒钟变量
 
 extern uint8_t sell_type[4];  //存储售餐ID的数据
 extern uint8_t sell_type_1st[4]; 

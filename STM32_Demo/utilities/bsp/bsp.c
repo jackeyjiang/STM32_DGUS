@@ -11,7 +11,7 @@
  *******************************************************************************/ 
  void  WaitTimeInit(uint8_t *Time)
  {
-       	*Time = 60;
+    *Time = 99;
  }
  
  
@@ -103,6 +103,81 @@ void PrintTickFun(uint32_t *PrintTickFlag)
 	
 }	
   /*******************************************************************************
+ * 函数名称:StrToBCD                                                                
+ * 描    述:将刷卡的数据读取转换后添加到数组中                                                             
+ *           可以将字符串先转换为Int                                                                    
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:-1：错误 , 返回数组的长度                                                             
+ * 修改日期:2014年9月2日                                                                    
+ *******************************************************************************/ 
+int8_t StrToBCD( uint8_t* pDest,const uint8_t* pSrc, uint8_t destLen)
+{
+   uint8_t i=0;
+   for(i=0;i<destLen;i++)
+   {
+   	if((pSrc[i]<'0')||(pSrc[i]>'9')) 
+	 return -1;
+   }
+   if( destLen/2==0)
+   {
+     for(i=0;i<destLen;i+=2)
+     {
+        pDest[i/2] =(((pSrc[i]-0x30)<<4)|(pSrc[i+1]-0x30));
+     }
+	 return  destLen/2;
+   }
+   else
+   {
+     for(i=0;i<destLen-1;i+=2)
+     {
+        pDest[i/2] =(((pSrc[i]-0x30)<<4)|(pSrc[i+1]-0x30));
+     }
+     pDest[(destLen+1)/2]= (pSrc[i]-0x30)<<4;
+	 return  destLen/2;          
+   }
+}
+
+  /*******************************************************************************
+ * 函数名称:IntToBCD                                                                
+ * 描    述:将刷卡的数据读取转换后添加到数组中                                                             
+ *           将int型的变量转换为BCD数组                                                               
+ * 输    入:int                                                                
+ * 输    出:bcd码的数组                                                                    
+ * 返    回:-1：错误 , 返回数组的长度                                                             
+ * 修改日期:2014年9月2日                                                                    
+ *******************************************************************************/ 
+void IntToBCD( uint8_t* pDes,const uint32_t  iv, uint8_t destLen)
+{
+  uint8_t sv[20]={0};
+  StrToBCD(pDes,sv,sprintf(sv,"%010u",iv));
+}
+  /*******************************************************************************
+ * 函数名称:TrackDateToBuff                                                                
+ * 描    述:将刷卡的数据读取转换后添加到数组中                                                             
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年9月2日                                                                    
+ *******************************************************************************/ 
+void TrackDateToBuff()
+{
+  //银联
+  //UpDeductData.szPosId;
+  //UpDeductData.szMerchantld;
+  //UpDeductData.lTraceNo;
+  //UpDeductData.szCardNo
+  //深圳通
+  //SztReductInf.machineNum;
+  //UpDeductData.szMerchantld;  
+  //SztReductInf.TradeNum;
+  //SztReductInf.CardNum;  
+  //s
+}
+
+
+  /*******************************************************************************
  * 函数名称:WaitPayMoney                                                                     
  * 描    述:等待接收用户投的钱                                                                 
  *                                                                               
@@ -177,7 +252,7 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
 			PageChange(Cardbalence_interface);
 			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* 银行卡支付*/
-			reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready)*100);
+			reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready));//*100
 			if(reduce_money_flag == 1)
 			{
 				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
@@ -200,7 +275,7 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
 			PageChange(Cardbalence_interface);
 	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
-			reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);
+			reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready));//*100
 			if(reduce_money_flag == 1)
 			{
 				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
@@ -1054,7 +1129,6 @@ void ErrRecHandle(void)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
-
 void hardfawreInit(void)
 {
   uint8_t i, j, k;

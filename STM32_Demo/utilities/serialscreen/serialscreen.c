@@ -265,7 +265,7 @@ void MealCntDisp(uint8_t meal_cnt,uint8_t floor)
 	  char temp[20]={0};  //存放串口数据的临时数组
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
 		temp[2]= 13; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-		myunion.adress= column1st_count+floor*3; 
+		myunion.adress= column1st_count+floor*(0x0100); 
 		temp[4]= myunion.adr[1];
 		temp[5]= myunion.adr[0];
     temp[7]= meal_cnt;
@@ -286,7 +286,7 @@ void MealCostDisplay(uint8_t meal_cost,uint8_t floor)
 	  char temp[20]={0};  //存放串口数据的临时数组
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
 		temp[2]= 13; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-		myunion.adress= column1st_cost+floor*3; 
+		myunion.adress= column1st_cost+floor*(0x0100); 
 		temp[4]= myunion.adr[1];
 		temp[5]= myunion.adr[0];
     temp[7]= meal_cost;
@@ -467,7 +467,7 @@ void DispLeftMeal(void)
     {		
       memcpy(temp,VariableWrite,sizeof(VariableWrite));
       temp[2]= 5;
-      myunion.adress= meat+i; //在基地址推移位置
+      myunion.adress= meal1st_left+i; //在基地址推移位置
       temp[4]= myunion.adr[1];
       temp[5]= myunion.adr[0];
       temp[7]= DefineMeal[i].MealCount;//sell_type[i]存储的是四个菜品的ID
@@ -1519,7 +1519,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_1st =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_1st =UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_1st); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_1st); //改变单总价，地址偏移1
+					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_1st); //改变单总价，地址偏移1
 				    }
 				    else
 				    {	
@@ -1533,7 +1533,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_2nd =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_2nd =UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_2nd); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_2nd); //改变单总价
+					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_2nd); //改变单总价
 				    }
 				    else
 				    {
@@ -1547,7 +1547,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_3rd =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_3rd =UserActMessageWriteToFlash.UserAct.MealCnt_3rd *price_3rd; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_3rd); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_3rd); //改变单总价
+					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_3rd); //改变单总价
 				    }
 				    else
 				    {
@@ -1561,7 +1561,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_4th =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_4th =UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_4th); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_4th); //改变单总价
+					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_4th); //改变单总价
 				    }
 				    else
 				    {
@@ -1575,7 +1575,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_5th =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_5th =UserActMessageWriteToFlash.UserAct.MealCnt_5th *price_5th; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_5th); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_5th); //改变单总价
+					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_5th); //改变单总价
 				    }
 				    else
 				    {
@@ -1589,7 +1589,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_6th =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_6th =UserActMessageWriteToFlash.UserAct.MealCnt_6th *price_6th; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_6th); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_6th); //改变单总价
+					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_6th); //改变单总价
 				    }
 				    else
 				    {
@@ -1603,7 +1603,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_7th =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_7th =UserActMessageWriteToFlash.UserAct.MealCnt_7th *price_7th; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_7th); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_7th); //改变单总价
+					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_7th); //改变单总价
 				    }
 				    else
 				    {
@@ -1617,7 +1617,7 @@ loop1:	switch(MealID)
 					    UserActMessageWriteToFlash.UserAct.MealCnt_8th =VariableData[1]; //将改变的值返回到结构体中
 					    UserActMessageWriteToFlash.UserAct.MealCost_8th =UserActMessageWriteToFlash.UserAct.MealCnt_8th *price_8th; //计算单总价
 					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_8th); //改变数量
-					    VariableChage(VariableAdress+1,UserActMessageWriteToFlash.UserAct.MealCost_8th); //改变单总价
+					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_8th); //改变单总价
 				    }
 				    else
 				    {

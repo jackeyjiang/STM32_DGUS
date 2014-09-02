@@ -24,6 +24,7 @@ uint16_t VirtAddVarTab[NB_OF_VAR] = {0x0001, 0x0002, 0x0003,};
 uint16_t VarDataTab[NB_OF_VAR] = {0, 0, 0};
 uint16_t VarValue = 0;
 uint32_t sellsecond_remain_old=0;
+uint8_t cid_data[50]={0};
 int main(void)
 {
 	hardfawreInit(); //硬件初始化
@@ -57,6 +58,7 @@ int main(void)
 	{		
 		if(!CloseCashSystem())AbnormalHandle(billset_erro);	
 	}
+  if(1==SD_GetCID(cid_data)) while(1);//没有插SD卡
   delay_ms(200);
 	PageChange(Menu_interface); //显示选餐界面
   PageChange(Menu_interface); //显示选餐界面
@@ -110,7 +112,7 @@ int main(void)
 						PageChange(Menu_interface);//超时退出用户餐品数量选择界面
 						WaitTimeInit(&WaitTime);
 					}
-					else if(WaitTime!=60)
+					else if(WaitTime!=100)
 					{
 						VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
 					}
@@ -147,12 +149,28 @@ int main(void)
             Current= meal_out;
 					UserActMessageWriteToFlash.UserAct.Meal_takeout= 0;	
           VariableChage(mealout_already,UserActMessageWriteToFlash.UserAct.Meal_takeout);	//UI显示					
-					if(UserActMessageWriteToFlash.UserAct.PayType == '1')
+					if(UserActMessageWriteToFlash.UserAct.PayType == '1') //现金
 					{
 						CloseCoinMachine();			    //关闭投币机	
 						delay_ms(500);
 						if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro1\r\n");  //关闭现金接受
 					}
+// 					else if(UserActMessageWriteToFlash.UserAct.PayType == '2') //银行卡
+//           {
+//             //将刷卡结构体中的数据转换到数组中
+//             
+//             PosDevNum[5+3]=   {0xe0,0x00,0x05,0x00,0x00,0x00,0x00,0x00};                /*刷卡器终端号*/
+//             PosTenantNum[8+3]={0xe1,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
+//             PosBatchNum[7+3]= {0xe2,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
+//             PosUserNum[8+3]=  {0xe3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*用户银行卡号*/                        
+//           }
+//           else if(UserActMessageWriteToFlash.UserAct.PayType == '3') //深圳通
+//           {
+//             PosDevNum[5+3]=   {0xe0,0x00,0x05,0x00,0x00,0x00,0x00,0x00};                /*刷卡器终端号*/
+//             PosTenantNum[8+3]={0xe1,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
+//             PosBatchNum[7+3]= {0xe2,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
+//             PosUserNum[8+3]=  {0xe3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*用户银行卡号*/               
+//           }
 			  }
 				SaveUserData();
 			}break;
@@ -335,6 +353,9 @@ int main(void)
 			}break;
 	    case meal_out:	 /*出餐状态：正在出餐，已出一种餐品，出餐完毕*/
 			{
+        uint8_t meal_kind=0;//餐品种类变量
+        uint8_t meal_empty_cnt=0;
+        uint8_t check_cnt=0;
 				waitmeal_status= WaitMeal();  
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{
@@ -347,10 +368,29 @@ int main(void)
 					{
 						/*无措状态清楚购物车*/
 						ClearUserBuffer(); 
+            SaveUserData();			
 						/*无错状态进入到售餐界面*/
 						PageChange(Menu_interface);
 					  Current = current_temperature;
 					}
+          for(meal_kind=0;meal_kind<MealKindTotoal;meal_kind++)
+          {
+            if(DefineMeal[meal_kind].MealCount==0);
+            ++meal_empty_cnt;
+          }
+          if(meal_empty_cnt==MealKindTotoal)
+          {
+            while(1)
+            {
+              if(1== UpperGpboc()) ++check_cnt; 
+              if(1== SztAutoSend()) ++check_cnt; 
+              if(check_cnt==2)break;
+            }
+          }
+          else
+          {
+            meal_empty_cnt=0;
+          }
 				}
 				else if(waitmeal_status == tookone_meal)  //取完一个餐品
 				{

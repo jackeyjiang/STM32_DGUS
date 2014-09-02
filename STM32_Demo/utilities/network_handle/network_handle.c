@@ -14,15 +14,17 @@
 
 
 static long Batch = 0x00 ;//交易流水号
-
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x13}; /*终端TID码 10000006*/
+__attribute__ ((aligned (4)));
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
 unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/
 unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,0xE0,0x10};	   /*终端状态*/
-const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
-const unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
+// const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
+// const unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
+unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
+unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
 unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/
 unsigned char  MAC[8+3]={0xc9,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   /*MAC*/
@@ -36,18 +38,22 @@ unsigned char  Change[6+3]={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00} ;     
 unsigned char  RemainMealNum[2+3]={0xd8,0x00,0x02,0x00,0x00};  /*剩余餐品数量*/
 unsigned char  MName[20+3]={0xa4,0x00,0x14,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01};             /*商户号MID*/
 unsigned char  APPVersion[8+3]={ 0xc2,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01};       /*应用程序版本*/
-unsigned char  ParaFileVersion[8+3]={0xc3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01};  /*参数文件版本*/
+unsigned char  ParaFileVersion[8+3]={0xc3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01};   /*参数文件版本*/
 unsigned char  BDataFileVersion[8+3]={0xc4,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01};	/*业务数据文件版本*/
 unsigned char  ChechStatus[2+3]={0xab,0x00,0x02,0x00,0x00};                                     /*自检状态*/
 unsigned char  MID[3+3]={ 0xa3,0x00,0x03,0x10,0x00,0x01};                                       /*商户号MID*/
-unsigned char  TTCount[3+2]     ={0xb7,0x00,0x02,0x00,0x00};	                                            /*交易总笔数 */
-unsigned char  TNCT[6+3]        ={0xb8,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};                            /*交易总金额*/
-unsigned char  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};											    /*交易总产品数 d9*/
-unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};							/*总找零金额 d7*/
-unsigned char  TakeMealFlag[3+2]={0xdb,0x00,0x02,0x00,0x00};        /*取餐标志 0x01:成功 0x02:失败 */
-unsigned char  UpdataFlag[3+1]={0xc1,0x00,0x01,0x00};               //更新标识
-unsigned char  MenuNo[3+1]= {0xdd,0x00,0x01,0x01};                   /*菜单编号,0x01,0x02,0x03,0x04,0x05（初步）*/
-unsigned char  ACK[3+1]={0xc0,0x00,0x02,0x00};                      //应答码
+unsigned char  TTCount[3+2]     ={0xb7,0x00,0x02,0x00,0x00};	                                  /*交易总笔数 */
+unsigned char  TNCT[6+3]        ={0xb8,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};                /*交易总金额*/
+unsigned char  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};											        /*交易总产品数 d9*/
+unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};					/*总找零金额 d7*/
+unsigned char  TakeMealFlag[3+2]={0xdb,0x00,0x02,0x00,0x00};                              /*取餐标志 0x01:成功 0x02:失败 */
+unsigned char  PosDevNum[5+3]=   {0xe0,0x00,0x05,0x00,0x00,0x00,0x00,0x00};                  /*刷卡器终端号*/
+unsigned char  PosTenantNum[8+3]={0xe1,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
+unsigned char  PosBatchNum[7+3]= {0xe2,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
+unsigned char  PosUserNum[8+3]=  {0xe3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};  /*用户银行卡号*/
+unsigned char  UpdataFlag[3+1]=  {0xc1,0x00,0x01,0x00};                                     //更新标识
+unsigned char  MenuNo[3+1]= {0xdd,0x00,0x01,0x01};                                        /*菜单编号,0x01,0x02,0x03,0x04,0x05（初步）*/
+unsigned char  ACK[3+1]={0xc0,0x00,0x02,0x00};                                            //应答码
 unsigned char  WordKeyCipher[11]={0xc7,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};//工作密钥
 
 Meal_struction Meal[MealKindTotoal]={
@@ -62,7 +68,7 @@ Meal_struction Meal[MealKindTotoal]={
                    0x00,0x00,	 0x10,0x00,0x00,0x48,  {"梅菜扣肉饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
 						   };
  unsigned char	Record_buffer[254] = {0} ;
-
+__attribute__ ((__packed__));
  /*******************************************************************************
 * Function Name  : GetBRWN
 * Description    : 功能: 得到流水号
@@ -653,12 +659,12 @@ unsigned char StatusUploadingFun(uint16_t erro_status)
 	 unsigned char i = 0 ;
 	 long  Lenght = 0 ,j;
 	 long	 CmdLenght = 0 ;
-   char Temperature_t=0;
-   char CoinsTotoal_t=0;
-   char  Temperature_tt[5]={0};
-   char  CoinsTotoal_tt[5]={0};
-	 unsigned char	Send_Buf[400]={0};
-	 char  state_temp[2]={0};  
+   uint8_t Temperature_t=0;
+   uint16_t CoinsTotoal_t=0;
+   uint8_t  Temperature_tt[5]={0};
+   uint8_t  CoinsTotoal_tt[5]={0};
+	 uint8_t	Send_Buf[400]={0};
+	 uint8_t  state_temp[2]={0};  
 	 //sprintf(state_temp,"%x",erro_status); 
 	 mem_set_00(rx1Buf,sizeof(rx1Buf));
 	 /*水流号++*/
@@ -813,6 +819,7 @@ unsigned char EchoFun(void)
 	 {
 		 //  tmp_yy  = rx1Buf[7]/16*10+rx1Buf[7]%16 ;/*年*/
 		   tmp_yy  = rx1Buf[8]/16*10+rx1Buf[8]%16 ;/*年*/
+       if(tmp_yy<14) return 1 ;// 以免年份出错
 //		   printf("tmp_yy=%d\r\n",tmp_yy);
 		   tmp_m2  = rx1Buf[9]/16*10+rx1Buf[9]%16 ;/*月*/
 //		   printf("tmp_yy=%d\r\n",tmp_m2);
@@ -919,14 +926,14 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer,unsigned char takeout_flag)
 	  RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
     //printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
 	 }
-	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/
-	   TakeMealFlag[4]= takeout_flag;
-	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*取餐标记*/
-	   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
- //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
- //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
- //  if(UserAct.PayType == '3')
- //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/
+   TakeMealFlag[4]= takeout_flag;
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*取餐标记*/   
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*刷卡器终端号*/
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*刷卡器商户号*/   
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*刷卡器交易流水号*/
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*用户银行卡号*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
 
 	 Send_Buf[CmdLenght] = 0x03  ;  //包含数据包包尾标识和CRC校验码
 	 CmdLenght+=0x03;
@@ -1201,6 +1208,7 @@ bool SignInFunction(void)
    * 返    回:void
    * 修改日期:2014年4月4日		ok
    *******************************************************************************/
+  uint32_t statesend_record=0;//用来防止多次传输
   void StateSend(void)
   {
 	  RTC_TimeShow();//获得时间
@@ -1236,8 +1244,12 @@ bool SignInFunction(void)
 			{
 			  if(TimeDate.Senconds==10) //控制多次传输
 			  {
-					//TemperatureUploadingFun(Temperature); //温度上传
-				  StatusUploadingFun(0xE800); //状态上送	
+          StatusUploadingFun(0xE800); //状态上送
+//          if(statesend_record!=TimeDate.Senconds)
+//          {
+//             statesend_record= TimeDate.Senconds;
+//             StatusUploadingFun(0xE800); //状态上送
+//          }  
 			  }
 			  break;
 			}
@@ -1381,7 +1393,6 @@ void DataUpload(unsigned char takemeal_flag)
   memset(Record_buffer,0,254);
 	if(TakeMealsFun(Record_buffer,takemeal_flag) == 0x01) //表示发送失败
 	{
-
     Sd_Write('n',takemeal_flag);//发送失败
 	}
 	else
