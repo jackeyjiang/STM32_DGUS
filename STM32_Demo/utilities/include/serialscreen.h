@@ -15,38 +15,30 @@
 #define Szt_GpbocAutoCheckIn_interface 0x06  /*读卡器签到界面*/
 #define SellMeal_TimeSet_interface     0x07  /*售餐时间设置界面*/
 #define SellMeal_TimeWait_interface    0x09  /*售餐等待界面*/
-#define Coinset_interface              0x0B  /*硬币设置*/
+#define Coinset_interface              0x0B  /*硬币设置*/  
 #define MealInput_interface            0x0D  /*放餐数量选择*/
-#define Acount_interface               0x0F  /*结算界面*/
-#define TicketPrint_interface          0x12  /*小票打印界面*/
-#define Mealout_interface              0x14  /*出餐界面显示*/
-#define Password_interface             0x15  /*密码输入界面*/
-#define TemperatureSet_interface       0x17  /*温度设置界面*/
-#define Data_synchronization           0x19  /*数据同步*/
-#define Cardbalence_interface          0x1D  /*刷卡界面*/
-#define UserAbonamalRecord_interface   0x1F  /*异常用户记录界面*/
+#define MealNumChoose_interface        0x0F  /*餐品份数选择*/        
+#define Acount_interface               0x11  /*结算界面*/
+#define PayWithVip_interface           0x12  /*会员卡结算*/
+#define PayWithBank_interface          0x13  /*银联卡结算*/
+#define PayWithCash_interface          0x14  /*现金结算*/
+#define PayWithSzt_interface           0x15  /*深圳通结算*/ 
+#define TicketPrint_interface          0x17  /*小票打印界面*/
+#define Password_interface             0x19  /*密码输入界面*/
+#define TemperatureSet_interface       0x1B  /*温度设置界面*/
+#define Data_synchronization           0x1D  /*数据同步*/
+#define UserAbonamalRecord_interface   0x21  /*异常用户记录界面*/
 
-#define Menu1st_interface              0x21  /*菜单一餐品售卖界面*/
-#define MealSet1st_interface           0x23  /*菜单一餐品设置界面*/
-#define Menu2nd_interface              0x25  /*菜单二餐品售卖界面*/
-#define MealSet2nd_interface           0x27  /*菜单二餐品设置界面*/
-#define Menu3rd_interface              0x29  /*菜单三餐品售卖界面*/
-#define MealSet3rd_interface           0x2b  /*菜单三餐品设置界面*/
-#define Menu4th_interface              0x2d  /*菜单四餐品售卖界面*/
-#define MealSet4th_interface           0x2f  /*菜单四餐品设置界面*/
-#define Menu5th_interface              0x31  /*菜单五餐品售卖界面*/
-#define MealSet5th_interface           0x33  /*菜单五餐品设置界面*/
-
-#define Meal1st_interface              0x35  /*餐品一主界面*/
-#define Meal2nd_interface              0x37  /*餐品二主界面*/
-#define Meal3rd_interface              0x39  /*餐品三主界面*/
-#define Meal4th_interface              0x3B  /*餐品四主界面*/
-#define Meal5th_interface              0x3D  /*餐品五主界面*/
-#define Meal6th_interface              0x3F  /*餐品六主界面*/
-#define Meal7th_interface              0x41  /*餐品七主界面*/
-#define Meal8th_interface              0x43  /*餐品八主界面*/
-
-
+#define Menu1st_interface              0x23  /*菜单一餐品售卖界面*/
+#define MealSet1st_interface           0x25  /*菜单一餐品设置界面*/
+#define Menu2nd_interface              0x27  /*菜单二餐品售卖界面*/
+#define MealSet2nd_interface           0x29  /*菜单二餐品设置界面*/
+#define Menu3rd_interface              0x2B  /*菜单三餐品售卖界面*/
+#define MealSet3rd_interface           0x2D  /*菜单三餐品设置界面*/
+#define Menu4th_interface              0x2F  /*菜单四餐品售卖界面*/
+#define MealSet4th_interface           0x31  /*菜单四餐品设置界面*/
+#define Menu5th_interface              0x33  /*菜单五餐品售卖界面*/
+#define MealSet5th_interface           0x35  /*菜单五餐品设置界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -130,31 +122,8 @@
 #define  temprature_set      0x0508  //温度设置变量
 #define  count_dowm          0x0509  //选餐倒计时
 
-/*单页餐品变量显示*/
-//第一份餐品选择界面
-#define meal1st_cnt     0x0030  
-#define meal1st_cost    0x0031   
-//第二份餐品选择界面
-#define meal2nd_cnt     0x0032
-#define meal2nd_cost    0x0033
-//第三份餐品选择界面
-#define meal3rd_cnt     0x0034
-#define meal3rd_cost    0x0035
-//第四份餐品选择界面
-#define meal4th_cnt     0x0036
-#define meal4th_cost    0X0037
-//第五份餐品选择界面
-#define meal5th_cnt     0x0038
-#define meal5h_cost     0X0039
-//第六份餐品选择界面
-#define meal6th_cnt     0x003A
-#define meal6th_cost    0X003B
-//第七份餐品选择界面
-#define meal7th_cnt     0x003C
-#define meal7th_cost    0X003D
-//第八份餐品选择界面
-#define meal8th_cnt     0x003E
-#define meal8th_cost    0X003F
+/*所选餐品的数量变量*/
+#define meal_choose_cnt      0x0030  
 
 /*餐品装填变量*/
 #define row_1st   0x0011 

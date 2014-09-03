@@ -89,7 +89,6 @@ void PrintTickFun(uint32_t *PrintTickFlag)
 	if(*PrintTickFlag == 0x00000001 )
 	{
 		 TIM_Cmd(TIM4, DISABLE);
-	 	*PrintTickFlag = 0x00000000;
 		/*打印小票的函数*/
 		 SPRT();
 	   TIM_Cmd(TIM4, ENABLE);
@@ -97,7 +96,6 @@ void PrintTickFun(uint32_t *PrintTickFlag)
 	if(*PrintTickFlag == 0x00000002 )
 	{
 	   TIM_Cmd(TIM4, DISABLE);
-		 *PrintTickFlag = 0x00000000;
 		 TIM_Cmd(TIM4, ENABLE);
 	}
 	
@@ -129,11 +127,11 @@ int8_t StrToBCD( uint8_t* pDest,const uint8_t* pSrc, uint8_t destLen)
    }
    else
    {
-     for(i=0;i<destLen-1;i+=2)
+     pDest[0]= (pSrc[0]-0x30);
+     for(i=1;i<destLen;i+=2)
      {
-        pDest[i/2] =(((pSrc[i]-0x30)<<4)|(pSrc[i+1]-0x30));
+        pDest[(i+1)/2] =(((pSrc[i]-0x30)<<4)|(pSrc[i+1]-0x30));
      }
-     pDest[(destLen+1)/2]= (pSrc[i]-0x30)<<4;
 	 return  destLen/2;          
    }
 }
@@ -161,14 +159,66 @@ void IntToBCD( uint8_t* pDes,const uint32_t  iv, uint8_t destLen)
  * 返    回:void                                                               
  * 修改日期:2014年9月2日                                                                    
  *******************************************************************************/ 
-void TrackDateToBuff()
+void TrackDateToBuff(void)
 {
+  uint8_t i;
+  uint8_t temp_t[10]={0};
+  uint8_t TraceNum[10]={0};
   //银联
+  if(UserActMessageWriteToFlash.UserAct.PayType == '2') //银行卡
+  {
+    for(i=0;i<10;i++)
+      PosDevNum[3+i]=0x00;
+    for(i=0;i<8;i++)
+    {
+      PosDevNum[5+i]=UpDeductData.szPosId[i]; //终端号
+    }
+    for(i=0;i<15;i++)
+    {
+      PosTenantNum[3+i]=UpInitData[0].szMerchantId[i]; //商户号
+    }
+    sprintf(TraceNum,"%10d",UpDeductData.lTraceNo);
+    for(i=0;i<10;i++)
+    {
+      PosBatchNum[3+i]=TraceNum[i];  //流水号
+    }
+    for(i=0;i<17;i++)
+    {
+      PosUserNum[3+i]= UpDeductData.szCardNo[i]; //卡号
+    } 
+  }
   //UpDeductData.szPosId;
-  //UpDeductData.szMerchantld;
+  //UpInitData.szMerchantId;
   //UpDeductData.lTraceNo;
   //UpDeductData.szCardNo
   //深圳通
+  else if(UserActMessageWriteToFlash.UserAct.PayType == '3')
+  {
+    sprintf(temp_t,"%10d",SztReductInf.machineNum);
+    for(i=0;i<9;i++)
+      PosDevNum[4+i]=temp_t[i];  //终端号
+    for(i=0;i<15;i++)
+      PosTenantNum[3+i]=UpDeductData.szPosId[i];  //商户号  
+    sprintf(temp_t,"%10d",SztReductInf.TradeNum);
+    for(i=0;i<10;i++)
+      PosBatchNum[3+i]=TraceNum[i];  //流水号
+    for(i=0;i<17;i++)
+      PosUserNum[3+i]= 0x00;   //清楚数据 
+    sprintf(temp_t,"%10d",SztReductInf.CardNum);
+    for(i=0;i<10;i++)
+      PosUserNum[10+i]= temp_t[i];   //卡号 
+  }    
+  else
+  {
+    for(i=0;i<10;i++)
+      PosDevNum[3+i]=0x00;
+    for(i=0;i<15;i++)
+      PosTenantNum[3+i]=0x00;    
+    for(i=0;i<10;i++)
+      PosBatchNum[3+i]=0x00;
+    for(i=0;i<17;i++)
+      PosUserNum[3+i]= 0x00;     
+  }
   //SztReductInf.machineNum;
   //UpDeductData.szMerchantld;  
   //SztReductInf.TradeNum;
@@ -195,7 +245,7 @@ unsigned char  WaitPayMoney(void)
 {
 	uint8_t reduce_money_flag = 0;
 	uint32_t temp1=0,temp2=0;
-	VariableChage(wait_payfor,WaitTime);
+	//VariableChage(wait_payfor,WaitTime);
   switch(CurrentPoint)
 	{
 	  case 1 : 
@@ -250,7 +300,6 @@ unsigned char  WaitPayMoney(void)
     case 7 :  /*银行卡支付由屏幕控制*/
 		{
 			WaitTimeInit(&WaitTime);
-			PageChange(Cardbalence_interface);
 			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* 银行卡支付*/
 			reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready));//*100
 			if(reduce_money_flag == 1)
@@ -273,7 +322,6 @@ unsigned char  WaitPayMoney(void)
 	  case 8 :/*深圳通支付由屏幕控制*/
 	  {
 			WaitTimeInit(&WaitTime);
-			PageChange(Cardbalence_interface);
 	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
 			reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready));//*100
 			if(reduce_money_flag == 1)

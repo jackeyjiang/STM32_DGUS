@@ -277,13 +277,16 @@ typedef struct  __attribute__ ((__packed__))   {
       uint8_t   ucAcqBankNum; 	   //该签到对应的收单行号，自1计数 **
       uint8_t   ucLogInOK;         //该收单行签到成功了
       uint8_t   ucOper;            //操作员号
-	  uint8_t   ucKeyMode;         //签到所用密钥类型，0x30, 代表双倍长；0x31,代表单倍长
+	    uint8_t   ucKeyMode;         //签到所用密钥类型，0x30, 代表双倍长；0x31,代表单倍长
       uint32_t  lBatchNumber;      /* 批次号*/
       uint8_t   szPosId[9];        /*  POS 终端号         ANS8    */
       uint8_t   szMerchantId[16];   //存储15字符长的商户号 ANS15
 } LOGINLOG_TO_HOST;  //银联批结、签退返回内容解析包
 
-
+extern SztReductInfStr SztReductInf;	//深圳通扣款返回值
+extern TRANSLOG_TO_HOST UpDeductData;	//银联扣款交易内容
+extern SztReductInfStr SztReductInf;	//深圳通扣款返回值
+extern GpbocInitInf UpInitData[10];
 void Uart2_Configuration(void);
 void Open_Szt_Gpboc(void);
 void Close_Szt_Gpboc(void);

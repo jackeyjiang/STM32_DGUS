@@ -400,12 +400,12 @@ bool ReadDatatoBuffer(void)
        break;
 		else 
 		{
-			SearchSeparator(ReadBuf,ReadSdBuff,18);
+			SearchSeparator(ReadBuf,ReadSdBuff,22);
 			if(ReadBuf[0]=='n')
 			{
 				if(TakeMealsFun1(ReadSdBuff)==0) //在第十六个逗号后写Y 255-162=93
 				{
-					indexflag = Index-512+167; //长度要计算120-26  256-120-26=
+					indexflag = Index-512+167+104; //长度要计算120-26  256-120-26=
 					res = f_lseek(&fsrc,indexflag);//偏移Index+1021
 					res = f_write(&fsrc,"y",1, &bw); //写"Y"
 				  f_close(&fsrc);
@@ -636,28 +636,24 @@ void Sd_Write(char erro_flag,char takeout_flag)
 	   RemainMealNum[3+i] = CustomerSel.RemainMealNum[i] ;
     //printf("CustomerSel.RemainMealNum[i]=%d\r\n",CustomerSel.RemainMealNum[i]);
 	 }
-	   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&RemainMealNum[3],sizeof(RemainMealNum)-3);  /*剩余餐品数量*/
-	   TakeMealFlag[4]= takeout_flag;
-	   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&TakeMealFlag[3],sizeof(TakeMealFlag)-3); /*取餐标记*/
-	   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MAC[3],sizeof(MAC)-3);					  /*MAC*/
- //  if(UserAct.PayType == '2' )																		/* 表示如果是刷卡*/
- //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
- //  if(UserAct.PayType == '3')
- //  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],STATUS.PacketData,STATUS.DataLength-17);				 /*记录刷卡信息*/
-	 Send_Buf[CmdLenght] = 0x03  ;
-	 CmdLenght+=0x03;
-   /*对应 --> 高位*/
-	 HL_IntToBuffer(CmdLenght-8,&Send_Buf[3]);
-	 //CRCValue=GetCrc16(&Send_Buf[1],CmdLenght-4);
-	 CRCValue=0x0000;
-	 HL_IntToBuffer(CRCValue,&Send_Buf[CmdLenght-2]); 
-	 Send_Buf[CmdLenght++]=',';
-	 Send_Buf[CmdLenght]=erro_flag;
-//	 Send_Buf[126]='\r';
-//	 Send_Buf[127]='\n';
-	 HextoChar(Rec_Buf,Send_Buf);
-	 Fwriter(Rec_Buf);
-	 memset(Send_Buf,0,100);
+   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&RemainMealNum[3],sizeof(RemainMealNum)-3);  /*剩余餐品数量*/
+   TakeMealFlag[4]= takeout_flag;
+   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&TakeMealFlag[3],sizeof(TakeMealFlag)-3); /*取餐标记*/
+   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosDevNum[3],sizeof(PosDevNum)-3);       /*Pos机设备号*/
+   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosTenantNum[3],sizeof(PosTenantNum)-3); /*pos机商户号*/
+   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosBatchNum[3],sizeof(PosBatchNum)-3);   /*pos刷卡流水号*/
+   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosUserNum[3],sizeof(PosUserNum)-3);     /*刷卡账号*/   
+   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MAC[3],sizeof(MAC)-3);					  /*MAC*/
+   Send_Buf[CmdLenght] = 0x03  ;
+   CmdLenght+=0x03;
+   HL_IntToBuffer(CmdLenght-8,&Send_Buf[3]);
+   CRCValue=0x0000;
+   HL_IntToBuffer(CRCValue,&Send_Buf[CmdLenght-2]); 
+   Send_Buf[CmdLenght++]=',';
+   Send_Buf[CmdLenght]=erro_flag;
+   HextoChar(Rec_Buf,Send_Buf);
+   Fwriter(Rec_Buf);
+   memset(Send_Buf,0,100);
    memset(Rec_Buf,0,512);
 }
 

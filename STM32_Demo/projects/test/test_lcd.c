@@ -101,8 +101,7 @@ int main(void)
 							erro_record |= (1<<link_timeout);
 							Current= erro_hanle;
             }
-          }  //为1成功，为0失败
-					VariableChage(current_temprature,Temperature); //5S一次
+          }
 				}
 				//显示倒计时,可以更具标记为对选餐倒计时进行更新
 				if(UserActMessageWriteToFlash.UserAct.MealID)
@@ -111,10 +110,6 @@ int main(void)
 					{					 
 						PageChange(Menu_interface);//超时退出用户餐品数量选择界面
 						WaitTimeInit(&WaitTime);
-					}
-					else if(WaitTime!=100)
-					{
-						VariableChage(count_dowm,WaitTime); //短小的程序可以在终端中直接进行
 					}
 				}
         if(machinerec.redoor ==0) //开门状态
@@ -142,6 +137,7 @@ int main(void)
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already =0;
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st=0;
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd=0;
+          UserActMessageWriteToFlash.UserAct.PrintTick=0x00000000; //初始为0，可以使打印小票降为一次
 					UserActMessageWriteToFlash.UserAct.Cancle= 0x00; //以免出错
           if(UserActMessageWriteToFlash.UserAct.MoneyBack>0) //当有币要找时进入退币
 					  Current= hpper_out;
@@ -155,22 +151,7 @@ int main(void)
 						delay_ms(500);
 						if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro1\r\n");  //关闭现金接受
 					}
-// 					else if(UserActMessageWriteToFlash.UserAct.PayType == '2') //银行卡
-//           {
-//             //将刷卡结构体中的数据转换到数组中
-//             
-//             PosDevNum[5+3]=   {0xe0,0x00,0x05,0x00,0x00,0x00,0x00,0x00};                /*刷卡器终端号*/
-//             PosTenantNum[8+3]={0xe1,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
-//             PosBatchNum[7+3]= {0xe2,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
-//             PosUserNum[8+3]=  {0xe3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*用户银行卡号*/                        
-//           }
-//           else if(UserActMessageWriteToFlash.UserAct.PayType == '3') //深圳通
-//           {
-//             PosDevNum[5+3]=   {0xe0,0x00,0x05,0x00,0x00,0x00,0x00,0x00};                /*刷卡器终端号*/
-//             PosTenantNum[8+3]={0xe1,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
-//             PosBatchNum[7+3]= {0xe2,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
-//             PosUserNum[8+3]=  {0xe3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*用户银行卡号*/               
-//           }
+          TrackDateToBuff();
 			  }
 				SaveUserData();
 			}break;
@@ -395,7 +376,6 @@ int main(void)
 				else if(waitmeal_status == tookone_meal)  //取完一个餐品
 				{
           payfor_meal+= GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1);
-					PageChange(Mealout_interface);
 					Current = data_upload;					
 				}
         else if(waitmeal_status == takemeal_erro)
@@ -456,7 +436,6 @@ int main(void)
         }          
 		  }
 	  }
-
   }
 }
 /**

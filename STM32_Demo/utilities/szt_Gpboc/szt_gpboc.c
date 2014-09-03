@@ -2882,9 +2882,9 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
   //初次验卡
   UpDeductData.lTransAmount = 0;	  //设扣款初始为0
 
-	VariableChagelong(amountof_consumption,0);
-	VariableChagelong(cardbalence_before,0);
-	VariableChagelong(cardbalence_after,0);
+	//VariableChagelong(amountof_consumption,0);
+	//VariableChagelong(cardbalence_before,0);
+	//VariableChagelong(cardbalence_after,0);
 	
 loop5:	
 	Order_Gpboc_ReadCard();
@@ -2898,7 +2898,7 @@ loop5:
   	FristMoney = UpReadCardData.GpbocMoney;
 // 	    EndMoney = FristMoney;
        //在显示屏上显示刷卡前金额UpReadCardData.GpbocMoney
-    VariableChagelong(cardbalence_before,UpReadCardData.GpbocMoney);	
+    //VariableChagelong(cardbalence_before,UpReadCardData.GpbocMoney);	
     if( FristMoney < money_deduct )
     {
       //printf("\n卡内余额为%ld",FristMoney);
@@ -2919,8 +2919,8 @@ loop5:
 					{
 						//printf("付款成功\r\n");
 						//在显示屏上显示扣款金额与余额，UpDeductData.lTransAmount（扣款），UpDeductData.lCardBalance（余额）
-						VariableChagelong(amountof_consumption,UpDeductData.lTransAmount);
-						VariableChagelong(cardbalence_after,UpDeductData.lCardBalance);	
+						//VariableChagelong(amountof_consumption,UpDeductData.lTransAmount);
+						//VariableChagelong(cardbalence_after,UpDeductData.lCardBalance);	
 						delay_ms(1000);
 						return 1;
 					}
@@ -3221,9 +3221,9 @@ uint8_t SztDeduct(int32_t money)
   SztReductInf.BeginMoney =0;
   SztReductInf.EndMoney =0;
 
-	VariableChagelong(amountof_consumption,0);
-	VariableChagelong(cardbalence_before,0);
-	VariableChagelong(cardbalence_after,0);
+	//VariableChagelong(amountof_consumption,0);
+	//VariableChagelong(cardbalence_before,0);
+	//VariableChagelong(cardbalence_after,0);
 	
 	loop6:
   //初次验卡
@@ -3238,7 +3238,7 @@ uint8_t SztDeduct(int32_t money)
   {
     FristMoney = UpReadCardData.SztMoney;			
     //显示深圳通金额 UpReadCardData.SztMoney
-	  VariableChagelong(cardbalence_before,UpReadCardData.SztMoney);
+	  //VariableChagelong(cardbalence_before,UpReadCardData.SztMoney);
 	  EndMoney = FristMoney;
   	Order_SztDeductOnce(money); //扣款
   	delay_us(15);
@@ -3272,8 +3272,8 @@ uint8_t SztDeduct(int32_t money)
 		{
 	    if( (SztReductInf.BeginMoney - SztReductInf.EndMoney ) == money )
 			{
-				VariableChagelong(amountof_consumption,money);
-				VariableChagelong(cardbalence_after,SztReductInf.EndMoney);	
+				//VariableChagelong(amountof_consumption,money);
+				//VariableChagelong(cardbalence_after,SztReductInf.EndMoney);	
 				//显示深圳通扣款金额与余额，SztReductInf.BeginMoney（扣款前余额），SztReductInf.EndMoney（扣款后余额）
 				delay_ms(1000);
 				return 1;

@@ -44,6 +44,10 @@ extern unsigned char  TakeMealFlag[3+2];
 extern unsigned char  MenuNo[4];
 extern unsigned char  UpdataFlag[4];
 extern unsigned char  WordKeyCipher[11];
+extern unsigned char  PosDevNum[10+3];  //13+18+13+20=64-3*4=
+extern unsigned char  PosTenantNum[15+3];
+extern unsigned char  PosBatchNum[10+3];
+extern unsigned char  PosUserNum[17+3];
 
 /*******************************************
 这个结构体是定义4种餐品的定义

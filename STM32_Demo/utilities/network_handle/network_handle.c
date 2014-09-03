@@ -14,17 +14,17 @@
 
 
 static long Batch = 0x00 ;//交易流水号
-__attribute__ ((aligned (4)));
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码 10000006*/
+//__attribute__ ((aligned (4)));
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x30}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
 unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/
 unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,0xE0,0x10};	   /*终端状态*/
-// const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
-// const unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
-unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
-unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
+const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
+const unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
+//unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
+//unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
 unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/
 unsigned char  MAC[8+3]={0xc9,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   /*MAC*/
@@ -47,10 +47,10 @@ unsigned char  TNCT[6+3]        ={0xb8,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};
 unsigned char  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};											        /*交易总产品数 d9*/
 unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};					/*总找零金额 d7*/
 unsigned char  TakeMealFlag[3+2]={0xdb,0x00,0x02,0x00,0x00};                              /*取餐标志 0x01:成功 0x02:失败 */
-unsigned char  PosDevNum[5+3]=   {0xe0,0x00,0x05,0x00,0x00,0x00,0x00,0x00};                  /*刷卡器终端号*/
-unsigned char  PosTenantNum[8+3]={0xe1,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
-unsigned char  PosBatchNum[7+3]= {0xe2,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
-unsigned char  PosUserNum[8+3]=  {0xe3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};  /*用户银行卡号*/
+unsigned char  PosDevNum[10+3]=   {0xe0,0x00,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};                  /*刷卡器终端号*/
+unsigned char  PosTenantNum[15+3]={0xe1,0x00,0x15,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
+unsigned char  PosBatchNum[10+3]= {0xe2,0x00,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
+unsigned char  PosUserNum[17+3]=  {0xe3,0x00,0x17,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};  /*用户银行卡号*/
 unsigned char  UpdataFlag[3+1]=  {0xc1,0x00,0x01,0x00};                                     //更新标识
 unsigned char  MenuNo[3+1]= {0xdd,0x00,0x01,0x01};                                        /*菜单编号,0x01,0x02,0x03,0x04,0x05（初步）*/
 unsigned char  ACK[3+1]={0xc0,0x00,0x02,0x00};                                            //应答码
@@ -68,7 +68,7 @@ Meal_struction Meal[MealKindTotoal]={
                    0x00,0x00,	 0x10,0x00,0x00,0x48,  {"梅菜扣肉饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
 						   };
  unsigned char	Record_buffer[254] = {0} ;
-__attribute__ ((__packed__));
+//__attribute__ ((__packed__));
  /*******************************************************************************
 * Function Name  : GetBRWN
 * Description    : 功能: 得到流水号
@@ -929,10 +929,10 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer,unsigned char takeout_flag)
    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/
    TakeMealFlag[4]= takeout_flag;
    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*取餐标记*/   
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*刷卡器终端号*/
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*刷卡器商户号*/   
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*刷卡器交易流水号*/
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*用户银行卡号*/
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosDevNum,sizeof(PosDevNum)); /*刷卡器终端号*/
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosTenantNum,sizeof(PosTenantNum)); /*刷卡器商户号*/   
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosBatchNum,sizeof(PosBatchNum)); /*刷卡器交易流水号*/
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosUserNum,sizeof(PosUserNum)); /*用户银行卡号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
 
 	 Send_Buf[CmdLenght] = 0x03  ;  //包含数据包包尾标识和CRC校验码
@@ -989,15 +989,11 @@ unsigned char MealUploadingFun(void)
 	Send_Buf[4] =  0x00 ;
 	CmdLenght = 5 ;
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));  /*终端的TID*/
-
-	  GetBRWN();
+	GetBRWN();
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));  /*流水号*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));  /*批次号*/
   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*终端所在区域编号*/
 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO)); /*终端所在地域编号*/
-	 /*
-	  这里添加没有上传的产品名字
-	 */
   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC)); /*MAC*/
 	Send_Buf[CmdLenght] = 0x03 	;
 	CmdLenght+=0x03;
