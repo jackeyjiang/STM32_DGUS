@@ -1431,7 +1431,6 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						PageChange(Menu_interface);
 						CloseTIM3();
 						Current= current_temperature;//取消进入空闲程序
-						
 					}break;
 					default:break;
 				}
@@ -1572,7 +1571,6 @@ loop1:	switch(MealID)
         uint32_t temp1= 0,temp2= 0;
 				AcountCopy();
 				if(UserActMessageWriteToFlash.UserAct.PayShould==0) goto loop7;
-				PageChange(Acount_interface+2); //当按下付款后，跳转到另一个页面禁止分数加减
 				//MoveToFisrtMeal();  //当选择付款方式后可以查询当前的用户选餐的ID,直接发送坐标,需要加入待机命令不然不行
 				switch(VariableData[1])
 				{
@@ -1601,7 +1599,7 @@ loop1:	switch(MealID)
           case 0x04:   /*会员卡支付*/
           {
           }break;      
-					case 0xFF:   /*取消*/
+					case 0x05:   /*取消*/
 					{
 	 loop7:		temp1= UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 	          temp2= UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready; //总的应该退的钱

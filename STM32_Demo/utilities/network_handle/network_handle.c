@@ -14,17 +14,17 @@
 
 
 static long Batch = 0x00 ;//交易流水号
-//__attribute__ ((aligned (4)));
+__attribute__ ((aligned (4)));
 unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x30}; /*终端TID码 10000006*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
 unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/
 unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,0xE0,0x10};	   /*终端状态*/
-const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
-const unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
-//unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
-//unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
+//const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
+//const unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
+unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
+unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
 unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/
 unsigned char  MAC[8+3]={0xc9,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   /*MAC*/
@@ -47,10 +47,10 @@ unsigned char  TNCT[6+3]        ={0xb8,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};
 unsigned char  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};											        /*交易总产品数 d9*/
 unsigned char  TotalChange[3+6] ={0xd7,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};					/*总找零金额 d7*/
 unsigned char  TakeMealFlag[3+2]={0xdb,0x00,0x02,0x00,0x00};                              /*取餐标志 0x01:成功 0x02:失败 */
-unsigned char  PosDevNum[10+3]=   {0xe0,0x00,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};                  /*刷卡器终端号*/
-unsigned char  PosTenantNum[15+3]={0xe1,0x00,0x15,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
-unsigned char  PosBatchNum[10+3]= {0xe2,0x00,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
-unsigned char  PosUserNum[17+3]=  {0xe3,0x00,0x17,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};  /*用户银行卡号*/
+unsigned char  PosDevNum[10+3]=   {0xe0,0x00,0x0a,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};                  /*刷卡器终端号*/
+unsigned char  PosTenantNum[15+3]={0xe1,0x00,0x0f,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; /*刷卡器商户号*/
+unsigned char  PosBatchNum[10+3]= {0xe2,0x00,0x0a,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};      /*交易流水号*/
+unsigned char  PosUserNum[21+3]=  {0xe3,0x00,0x15,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};  /*用户银行卡号*/
 unsigned char  UpdataFlag[3+1]=  {0xc1,0x00,0x01,0x00};                                     //更新标识
 unsigned char  MenuNo[3+1]= {0xdd,0x00,0x01,0x01};                                        /*菜单编号,0x01,0x02,0x03,0x04,0x05（初步）*/
 unsigned char  ACK[3+1]={0xc0,0x00,0x02,0x00};                                            //应答码
@@ -68,7 +68,7 @@ Meal_struction Meal[MealKindTotoal]={
                    0x00,0x00,	 0x10,0x00,0x00,0x48,  {"梅菜扣肉饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
 						   };
  unsigned char	Record_buffer[254] = {0} ;
-//__attribute__ ((__packed__));
+__attribute__ ((__packed__));
  /*******************************************************************************
 * Function Name  : GetBRWN
 * Description    : 功能: 得到流水号
@@ -928,13 +928,15 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer,unsigned char takeout_flag)
 	 }
    CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/
    TakeMealFlag[4]= takeout_flag;
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*取餐标记*/   
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosDevNum,sizeof(PosDevNum)); /*刷卡器终端号*/
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosTenantNum,sizeof(PosTenantNum)); /*刷卡器商户号*/   
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosBatchNum,sizeof(PosBatchNum)); /*刷卡器交易流水号*/
-   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosUserNum,sizeof(PosUserNum)); /*用户银行卡号*/
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
-
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag)); /*取餐标记*/ 
+   if(UserActMessageWriteToFlash.UserAct.PayType != '1')
+   {     
+     CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosDevNum,PosDevNum[2]+3); /*刷卡器终端号*/
+     CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosTenantNum,PosTenantNum[2]+3); /*刷卡器商户号*/   
+     CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosBatchNum,PosBatchNum[2]+3); /*刷卡器交易流水号*/
+     CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosUserNum,PosUserNum[2]+3); /*用户银行卡号*/
+   }
+   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/
 	 Send_Buf[CmdLenght] = 0x03  ;  //包含数据包包尾标识和CRC校验码
 	 CmdLenght+=0x03;
    i = MealComparefunDemo(0x0800,Send_Buf,CmdLenght); //发送数据(取餐交易)
@@ -1440,10 +1442,7 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));	/*批次号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));  /*终端所在区域编号*/
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO)); /*终端所在地域编号*/
-//	 for(i=0;i<6;i++)
-//	 {
-//	   DealBalance[3+i] = CustomerSel.DealBalance[i] ;
-//	 }
+   
 	 SearchSeparator(ReadBuf,SendBuffer,7); /*交易金额*/
 	 StringToHexGroup1(temp,ReadBuf,12); 
    for(i=0;i<6;i++)
@@ -1451,12 +1450,7 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 DealBalance[3+i]=temp[i];
 	 } 	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DealBalance,sizeof(DealBalance)); /*交易金额(支付金额) */
-
-//	 for(i=0;i<4;i++)
-//	 {
-//	  //这里赋值餐品的ID
-//	   MealID[3+i] = CustomerSel.MealID[i] ; //(10000020)
-//	 }
+   
 	 SearchSeparator(ReadBuf,SendBuffer,8); //餐品ID
 	 StringToHexGroup1(temp,ReadBuf,8); 
    for(i=0;i<4;i++)
@@ -1464,28 +1458,19 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 MealID[3+i]=temp[i];
 	 }	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealID,sizeof(MealID)); /*餐品ID*/
-
-	 /*这里赋值餐品的ID*/
-//	 MealNO[3] = CustomerSel.MealNo;
+   
 	 SearchSeparator(ReadBuf,SendBuffer,9); //餐品数量
 	 StringToHexGroup1(temp,ReadBuf,2);
  	 MealNO[3]=temp[0];
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealNO,sizeof(MealNO)); /*餐品购买数量*/
-
-	  //这里赋值餐品的名字
-//	  for(j=0;j<20;j++)
-//	  MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
+   
 	 SearchSeparator(ReadBuf,SendBuffer,10); //餐品名字
    for(i=0;i<20;i++)
    {
 		 MealName[3+i]=ReadBuf[i];
 	 }	
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));			  /*餐品名字*/
-
-	 /*这里赋值餐品的价格*/
-	 
-//	 for(i=0;i<6;i++)
-//	 MealPrice[3+i] = CustomerSel.MealPrice[i] ;
+   
 	 SearchSeparator(ReadBuf,SendBuffer,11); //餐品价格
 	 StringToHexGroup1(temp,ReadBuf,12); 
    for(i=0;i<6;i++)
@@ -1493,10 +1478,11 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 MealPrice[3+i]=temp[i];
 	 }	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealPrice,sizeof(MealPrice));			/*餐品价格*/
+   
 	 SearchSeparator(ReadBuf,SendBuffer,12); //付款方式
-	 StringToHexGroup1(temp,ReadBuf,2);
- 	 PayType[3]=temp[0];	 
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PayType,sizeof(PayType));				/*支付方式*/
+ 	 PayType[3]=ReadBuf[0];	 
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PayType,PayType[2]+3);				/*支付方式*/
+   
 	 SearchSeparator(ReadBuf,SendBuffer,13); //找零金额
 	 StringToHexGroup1(temp,ReadBuf,12); 
    for(i=0;i<6;i++)
@@ -1504,6 +1490,7 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 Change[3+i]=temp[i];
 	 }		 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Change,sizeof(Change)); 			   /*找零金额*/
+   
 	 SearchSeparator(ReadBuf,SendBuffer,14); //剩余餐品数量
 	 StringToHexGroup1(temp,ReadBuf,4); 
    for(i=0;i<4;i++)
@@ -1511,13 +1498,45 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
 		 RemainMealNum[3+i]=temp[i];
 	 }	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],RemainMealNum,sizeof(RemainMealNum));  /*剩余餐品数量*/
+   
 	 SearchSeparator(ReadBuf,SendBuffer,15); //取餐标记
 	 StringToHexGroup1(temp,ReadBuf,4); 	 
-   for(i=0;i<4;i++)
+   for(i=0;i<2;i++)
    {
 		 TakeMealFlag[3+i]=temp[i];
 	 }	 
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TakeMealFlag,sizeof(TakeMealFlag));  /*取餐标记*/
+   
+   if(PayType[3]!= '1')//现金的时候不上传下面数据
+   {
+     memset(ReadBuf,0,sizeof(ReadBuf));
+     SearchSeparator(ReadBuf,SendBuffer,16); //刷卡器终端号
+     PosDevNum[2]= strlen(ReadBuf);
+     for(i=0;i<PosDevNum[2];i++)
+        PosDevNum[3+i]=ReadBuf[i];  //终端号
+     CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosDevNum,PosDevNum[2]+3);	
+     
+     memset(ReadBuf,0,sizeof(ReadBuf));
+     SearchSeparator(ReadBuf,SendBuffer,17); //刷卡器商号号
+     PosTenantNum[2]= strlen(ReadBuf);   
+     for(i=0;i<PosTenantNum[2];i++)
+        PosTenantNum[3+i]=ReadBuf[i];  //商户号
+     CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosTenantNum,PosTenantNum[2]+3);
+     
+     memset(ReadBuf,0,sizeof(ReadBuf));
+     SearchSeparator(ReadBuf,SendBuffer,18); //刷卡器交易流水号    
+     PosBatchNum[2]= strlen(ReadBuf); 
+     for(i=0;i<PosBatchNum[2];i++)
+        PosBatchNum[3+i]=ReadBuf[i];  //流水号
+     CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosBatchNum,PosBatchNum[2]+3);
+     
+     memset(ReadBuf,0,sizeof(ReadBuf));     
+     SearchSeparator(ReadBuf,SendBuffer,19); //用户卡号
+     PosUserNum[2]= strlen(ReadBuf);  
+     for(i=0;i<PosUserNum[2];i++)
+        PosUserNum[3+i]= ReadBuf[i];   //卡号  
+     CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],PosUserNum,PosUserNum[2]+3);    
+   }  
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MAC,sizeof(MAC));					  /*MAC*/	 
 	 Send_Buf[CmdLenght] = 0x03  ;  //包含数据包包尾标识和CRC校验码
 	 CmdLenght+=0x03;

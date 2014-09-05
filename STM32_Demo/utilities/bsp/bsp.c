@@ -168,21 +168,24 @@ void TrackDateToBuff(void)
   if(UserActMessageWriteToFlash.UserAct.PayType == '2') //银行卡
   {
     for(i=0;i<10;i++)
-      PosDevNum[3+i]=0x00;
-    for(i=0;i<8;i++)
+      PosDevNum[3+i]=0x00; 
+    PosDevNum[2]= strlen(UpDeductData.szPosId);
+    for(i=0;i<PosDevNum[2];i++)
     {
-      PosDevNum[5+i]=UpDeductData.szPosId[i]; //终端号
+      PosDevNum[3+i]= UpDeductData.szPosId[i]; //终端号
     }
-    for(i=0;i<15;i++)
+    PosTenantNum[2]= strlen(UpInitData[0].szMerchantId);
+    for(i=0;i<PosTenantNum[2];i++)
     {
       PosTenantNum[3+i]=UpInitData[0].szMerchantId[i]; //商户号
     }
-    sprintf(TraceNum,"%10d",UpDeductData.lTraceNo);
-    for(i=0;i<10;i++)
+    PosBatchNum[2]= sprintf(TraceNum,"%d",UpDeductData.lTraceNo);
+    for(i=0;i<PosBatchNum[2];i++)
     {
       PosBatchNum[3+i]=TraceNum[i];  //流水号
     }
-    for(i=0;i<17;i++)
+    PosUserNum[2]= strlen(UpDeductData.szCardNo);
+    for(i=0;i<PosUserNum[2];i++)
     {
       PosUserNum[3+i]= UpDeductData.szCardNo[i]; //卡号
     } 
@@ -194,31 +197,22 @@ void TrackDateToBuff(void)
   //深圳通
   else if(UserActMessageWriteToFlash.UserAct.PayType == '3')
   {
-    sprintf(temp_t,"%10d",SztReductInf.machineNum);
-    for(i=0;i<9;i++)
-      PosDevNum[4+i]=temp_t[i];  //终端号
-    for(i=0;i<15;i++)
-      PosTenantNum[3+i]=UpDeductData.szPosId[i];  //商户号  
-    sprintf(temp_t,"%10d",SztReductInf.TradeNum);
-    for(i=0;i<10;i++)
-      PosBatchNum[3+i]=TraceNum[i];  //流水号
-    for(i=0;i<17;i++)
-      PosUserNum[3+i]= 0x00;   //清楚数据 
-    sprintf(temp_t,"%10d",SztReductInf.CardNum);
-    for(i=0;i<10;i++)
-      PosUserNum[10+i]= temp_t[i];   //卡号 
+    PosDevNum[2]= sprintf(temp_t,"%d",SztReductInf.machineNum);
+    for(i=0;i<PosDevNum[2];i++)
+      PosDevNum[3+i]=temp_t[i];  //终端号
+    
+    PosTenantNum[2]= strlen(UpInitData[0].szMerchantId);   
+    for(i=0;i<PosTenantNum[2];i++)
+      PosTenantNum[3+i]=UpInitData[0].szMerchantId[i];  //商户号
+    
+    PosBatchNum[2]= sprintf(temp_t,"%d",SztReductInf.TradeNum);  
+    for(i=0;i<PosBatchNum[2];i++)
+      PosBatchNum[3+i]=temp_t[i];  //流水号
+    
+    PosUserNum[2]= sprintf(temp_t,"%d",SztReductInf.CardNum);    
+    for(i=0;i<PosUserNum[2];i++)
+      PosUserNum[3+i]= temp_t[i];   //卡号 
   }    
-  else
-  {
-    for(i=0;i<10;i++)
-      PosDevNum[3+i]=0x00;
-    for(i=0;i<15;i++)
-      PosTenantNum[3+i]=0x00;    
-    for(i=0;i<10;i++)
-      PosBatchNum[3+i]=0x00;
-    for(i=0;i<17;i++)
-      PosUserNum[3+i]= 0x00;     
-  }
   //SztReductInf.machineNum;
   //UpDeductData.szMerchantld;  
   //SztReductInf.TradeNum;
@@ -312,7 +306,6 @@ unsigned char  WaitPayMoney(void)
 			else
 			{
 				WaitTimeInit(&WaitTime);
-				PageChange(Acount_interface+2);
 				CurrentPoint = 0;
 			  /*支付方式*/			 
 			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;//清空支付方式			
@@ -334,7 +327,6 @@ unsigned char  WaitPayMoney(void)
 			else
 			{
 				WaitTimeInit(&WaitTime);
-				PageChange(Acount_interface+2);
 				CurrentPoint = 0;
 			  /*支付方式*/			 
 			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;//清空支付方式

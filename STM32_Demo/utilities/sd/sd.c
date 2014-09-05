@@ -349,7 +349,7 @@ char  Fread(unsigned char *p)
       }
 		  Index += 512 ; //偏移512
 		  // printf("Index = %d \r\n",Index);
-	    if(res!=FR_OK ||fsrc.fsize < Index ) //fsrc.fsize是文件大小，这里判断文件大小之前是if(res!=FR_OK ||fsrc.fsize <=Index )
+	    if(res!=FR_OK ||fsrc.fsize <=Index ) //fsrc.fsize是文件大小，这里判断文件大小之前是if(res!=FR_OK ||fsrc.fsize <=Index )
 	    {
 //	      f_close(&fsrc);????
 //      f_mount(0, NULL);
@@ -393,6 +393,7 @@ bool ReadDatatoBuffer(void)
 {
   unsigned char DelteFlag = 0 ;//用来标记是否全部上传了数据的函数
 	unsigned int  Times  = 0  ;
+  uint32_t  x_y_status=0;
 	uint32_t  indexflag = 0;
 	for(Times = 0 ;Times <1000 ;Times++)
 	{
@@ -400,12 +401,12 @@ bool ReadDatatoBuffer(void)
        break;
 		else 
 		{
-			SearchSeparator(ReadBuf,ReadSdBuff,22);
+			x_y_status= SearchSeparator(ReadBuf,ReadSdBuff,22);
 			if(ReadBuf[0]=='n')
 			{
 				if(TakeMealsFun1(ReadSdBuff)==0) //在第十六个逗号后写Y 255-162=93
 				{
-					indexflag = Index-512+167+104; //长度要计算120-26  256-120-26=
+					indexflag = Index-512+x_y_status; //长度要计算120-26  256-120-26=
 					res = f_lseek(&fsrc,indexflag);//偏移Index+1021
 					res = f_write(&fsrc,"y",1, &bw); //写"Y"
 				  f_close(&fsrc);
@@ -560,13 +561,15 @@ void HextoChar(char *destbuff,char *buffer)
    }   
    else
    {
-		 if(temp!=9)
+		 if((temp==9)||(temp==11)||(temp==15)||(temp==16)||(temp==17)||(temp==18))
 		 {
-			 destbuff[j++] = index[(buffer[i]&0xf0)>>4];
-			 destbuff[j++] = index[(buffer[i]&0x0f)];
+       destbuff[j++]=buffer[i];	
 		 }
 		 else
-		   destbuff[j++]=buffer[i];
+     { 		 
+       destbuff[j++] = index[(buffer[i]&0xf0)>>4];
+			 destbuff[j++] = index[(buffer[i]&0x0f)];
+     }
    }
    i++;
   }
@@ -575,7 +578,7 @@ void HextoChar(char *destbuff,char *buffer)
 }
 
 
-char Send_Buf[103] ={0};
+char Send_Buf[160] ={0};
 char Rec_Buf[512]={0};
 void Sd_Write(char erro_flag,char takeout_flag)
 {
@@ -613,7 +616,7 @@ void Sd_Write(char erro_flag,char takeout_flag)
 
 	  //这里赋值餐品的名字
 	 for(j=0;j<20;j++)
-	  MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
+	   MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
     /*餐品名字无法好好处理*/
 	  
 	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MealName[3],sizeof(MealName)-3);			  /*餐品名字*/
@@ -639,10 +642,20 @@ void Sd_Write(char erro_flag,char takeout_flag)
    CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&RemainMealNum[3],sizeof(RemainMealNum)-3);  /*剩余餐品数量*/
    TakeMealFlag[4]= takeout_flag;
    CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&TakeMealFlag[3],sizeof(TakeMealFlag)-3); /*取餐标记*/
-   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosDevNum[3],sizeof(PosDevNum)-3);       /*Pos机设备号*/
-   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosTenantNum[3],sizeof(PosTenantNum)-3); /*pos机商户号*/
-   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosBatchNum[3],sizeof(PosBatchNum)-3);   /*pos刷卡流水号*/
-   CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosUserNum[3],sizeof(PosUserNum)-3);     /*刷卡账号*/   
+   if(UserActMessageWriteToFlash.UserAct.PayType != '1')
+   {     
+     CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosDevNum[3],PosDevNum[2]); /*刷卡器终端号*/
+     CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosTenantNum[3],PosTenantNum[2]); /*刷卡器商户号*/   
+     CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosBatchNum[3],PosBatchNum[2]); /*刷卡器交易流水号*/
+     CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&PosUserNum[3],PosUserNum[2]); /*用户银行卡号*/
+   }
+   else  /*现金支付没有*/
+   {
+     Send_Buf[CmdLenght++]=',';
+     Send_Buf[CmdLenght++]=',';
+     Send_Buf[CmdLenght++]=',';
+     Send_Buf[CmdLenght++]=',';
+   }
    CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MAC[3],sizeof(MAC)-3);					  /*MAC*/
    Send_Buf[CmdLenght] = 0x03  ;
    CmdLenght+=0x03;
@@ -653,7 +666,7 @@ void Sd_Write(char erro_flag,char takeout_flag)
    Send_Buf[CmdLenght]=erro_flag;
    HextoChar(Rec_Buf,Send_Buf);
    Fwriter(Rec_Buf);
-   memset(Send_Buf,0,100);
+   memset(Send_Buf,0,160);
    memset(Rec_Buf,0,512);
 }
 
@@ -691,14 +704,14 @@ char *myitoa(int num,char *str,int radix)
 }
   /*******************************************************************************
  * 函数名称:SearchSeparator                                                                     
- * 描    述:获取第n 个后的数据                                                      
+ * 描    述:获取第n 个','后的数据                                                      
  *                                                                               
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:void                                                               
  * 修改日期:2014年4月19日                                                                    
  *******************************************************************************/ 
-void SearchSeparator(char *dest,char *souce,int Separator)
+uint32_t SearchSeparator(char *dest,char *souce,int Separator)
 {
 	char temp=0;
 	int SeparatorCnt=0;
@@ -713,8 +726,8 @@ void SearchSeparator(char *dest,char *souce,int Separator)
 		else if(SeparatorCnt== Separator-1)
 		{
 			dest[j++]=temp;
-			if(Separator==18)
-				break;
+			if(Separator==22)
+				return i;//返回逗号的地址
 		}
 		if(SeparatorCnt==Separator)
 		{
