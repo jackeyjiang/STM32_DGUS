@@ -25,32 +25,7 @@ typedef struct DispMeal
 DispMealStuct DispMeal[4]={0};
 
 char price=0;
-const char price_1st= 16;
-const char price_2nd= 16;
-const char price_3rd= 16;
-const char price_4th= 16;
-const char price_5th= 18;
-const char price_6th= 18;
-const char price_7th= 16;
-const char price_8th= 16;
 
-const char    mealname_1st[12]= {"秘制猪手饭"}; 
-const char    mealname_2nd[14]= {"潮氏卤鸡腿饭"};
-const char    mealname_3rd[14]= {"特色稻香肉饭"};
-const char    mealname_4th[12]= {"黑椒猪扒饭"};
-const char    mealname_5th[12]= {"蒲烧鲷鱼饭"};
-const char    mealname_6th[14]= {"蒲烧秋刀鱼饭"};
-const char    mealname_7th[12]= {"咖喱鸡扒饭"};
-const char    mealname_8th[12]= {"梅菜扣肉饭"};
-
-uint8_t Menu_interface= 0x00;
-uint8_t MealSet_interface= 0x00;
-uint8_t sell_type[4]={0};//存储四个菜品的的ID,在签到的时候需要获取的有当前需要显示售卖的哪一个界面和那几个餐品
-uint8_t sell_type_1st[4]={0x01,0x02,0x03,0x04}; //第一个售餐菜单
-uint8_t sell_type_2nd[4]={0x05,0x06,0x07,0x08}; //第二个售餐菜单
-uint8_t sell_type_3rd[4]={0x03,0x04,0x05,0x06}; //第三个售餐菜单
-uint8_t sell_type_4th[4]={0x05,0x06,0x01,0x02}; //第四个售餐菜单
-uint8_t sell_type_5th[4]={0x05,0x06,0x01,0x02}; //第五个售餐菜单
 /*将数据16位存储器地址分解为2个8位数据*/
 union ScreenRam
 {
@@ -345,7 +320,7 @@ void DisplayAbnormal(char *abnomal_code)
  * 返    回:void                                                               
  * 修改日期:2014年3月13日                                                                    
  *******************************************************************************/ 	
-char pageunitil= 0;
+uint8_t pageunitil= 0;
 void PageChange(char page)
 {
 		unsigned char temp[7]={0};
@@ -1309,6 +1284,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 			}break;      				
 			case meal_choose_cnt: /*当前餐品的份数选择*/
 			{
+        pageunitil = MealNumChoose1_interface;
 				if(VariableData[1]<= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount)	//设置餐品选择的上限
 				{
 					switch(UserActMessageWriteToFlash.UserAct.MealID)
@@ -1408,6 +1384,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
             {
               PutIntoShopCart();
               SettleAccounts();
+              AcountCopy();
               if(UserActMessageWriteToFlash.UserAct.Meal_totoal>0)
               {  
                 CloseTIM3();
@@ -1569,9 +1546,7 @@ loop1:	switch(MealID)
 			case payment_method: /*付款方式*/ 
 			{
         uint32_t temp1= 0,temp2= 0;
-				AcountCopy();
 				if(UserActMessageWriteToFlash.UserAct.PayShould==0) goto loop7;
-				//MoveToFisrtMeal();  //当选择付款方式后可以查询当前的用户选餐的ID,直接发送坐标,需要加入待机命令不然不行
 				switch(VariableData[1])
 				{
 					case 0x01:   /*现金支付*/
@@ -1585,7 +1560,6 @@ loop1:	switch(MealID)
 					case 0x02:   /*银行预付卡*/
 					{
 						CurrentPoint =7;
-            PageChange(PayWithBank_interface);
 						PlayMusic(VOICE_5);
 						if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro3");  //关闭现金接受
 					}break;
@@ -1593,7 +1567,6 @@ loop1:	switch(MealID)
 					{
 						CurrentPoint =8;
 						PlayMusic(VOICE_5);
-            PageChange(PayWithSzt_interface);
 						if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro4");  //关闭现金接受			
 					}break;
           case 0x04:   /*会员卡支付*/
@@ -1624,7 +1597,12 @@ loop1:	switch(MealID)
 					}break;
 					default:break;		
 				}					
-			}break;	
+			}break;
+			case caedbalence_cancel:/*刷卡取消*/
+			{
+				PageChange(Acount_interface);
+				cardbalence_cancel_flag=true;
+			}break;      
 			case bill_print:
 			{
 				switch(VariableData[1])
@@ -1835,7 +1813,7 @@ loop1:	switch(MealID)
 			    CurFloor.MealID= VariableData[1];	//当前的就是餐品的ID
         else
         {
-          CurFloor.MealID= sell_type[0]; //当查不到输入的ID与本地的id不匹配则选最小号的ID
+          CurFloor.MealID= sell_type[3]; //当查不到输入的ID与本地的id不匹配则选最小号的ID
         }
         VariableChage(meal_num,CurFloor.MealID);		
 				InitSetting();

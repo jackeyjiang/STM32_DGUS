@@ -2866,7 +2866,6 @@ uint8_t OnlyReadGpbocCard(void)
 }
 
 
-
 /*银联卡消费,返回0表示扣款失败；返回1表示扣款正确*/
 uint8_t GpbocDeduct(uint32_t money_deduct)
 {
@@ -2875,16 +2874,12 @@ uint8_t GpbocDeduct(uint32_t money_deduct)
   uint8_t result2 =0;
   int32_t FristMoney=0;
 	uint8_t cnt_t=0,i=0;
-//   int32_t EndMoney=0;
-//   int32_t FactMoney;
-  //TRANSLOG_TO_HOST saveDeductIfn;
-
   //初次验卡
   UpDeductData.lTransAmount = 0;	  //设扣款初始为0
 
-	//VariableChagelong(amountof_consumption,0);
-	//VariableChagelong(cardbalence_before,0);
-	//VariableChagelong(cardbalence_after,0);
+	VariableChagelong(amountof_consumption,0);
+	VariableChagelong(cardbalence_before,0);
+	VariableChagelong(cardbalence_after,0);
 	
 loop5:	
 	Order_Gpboc_ReadCard();
@@ -2896,13 +2891,12 @@ loop5:
   if( result1 == 0x01)          //验卡成功
   {
   	FristMoney = UpReadCardData.GpbocMoney;
-// 	    EndMoney = FristMoney;
-       //在显示屏上显示刷卡前金额UpReadCardData.GpbocMoney
-    //VariableChagelong(cardbalence_before,UpReadCardData.GpbocMoney);	
+    //在显示屏上显示刷卡前金额UpReadCardData.GpbocMoney
+    VariableChagelong(cardbalence_before,UpReadCardData.GpbocMoney);	
     if( FristMoney < money_deduct )
     {
-      //printf("\n卡内余额为%ld",FristMoney);
       //printf("卡内余额不足，请先充值\r\n");
+      PlayMusic(VOICE_6);
       return 0;
     }
     else
@@ -2919,8 +2913,8 @@ loop5:
 					{
 						//printf("付款成功\r\n");
 						//在显示屏上显示扣款金额与余额，UpDeductData.lTransAmount（扣款），UpDeductData.lCardBalance（余额）
-						//VariableChagelong(amountof_consumption,UpDeductData.lTransAmount);
-						//VariableChagelong(cardbalence_after,UpDeductData.lCardBalance);	
+						VariableChagelong(amountof_consumption,UpDeductData.lTransAmount);
+						VariableChagelong(cardbalence_after,UpDeductData.lCardBalance);	
 						delay_ms(1000);
 						return 1;
 					}
@@ -2942,13 +2936,13 @@ loop5:
 			cardbalence_cancel_flag=false;
 			return 0;
 		}
-	  if(cnt_t<15)
+	  if(cnt_t<30)
 			goto loop5;
     return 0;
   }
 	return 0;
  }
-
+ 
 /*上送银联数据，成功上送返回1，失败返回0*/
 uint8_t UpperGpboc(void)
 {
@@ -3221,9 +3215,9 @@ uint8_t SztDeduct(int32_t money)
   SztReductInf.BeginMoney =0;
   SztReductInf.EndMoney =0;
 
-	//VariableChagelong(amountof_consumption,0);
-	//VariableChagelong(cardbalence_before,0);
-	//VariableChagelong(cardbalence_after,0);
+	VariableChagelong(amountof_consumption,0);
+	VariableChagelong(cardbalence_before,0);
+	VariableChagelong(cardbalence_after,0);
 	
 	loop6:
   //初次验卡
@@ -3238,7 +3232,7 @@ uint8_t SztDeduct(int32_t money)
   {
     FristMoney = UpReadCardData.SztMoney;			
     //显示深圳通金额 UpReadCardData.SztMoney
-	  //VariableChagelong(cardbalence_before,UpReadCardData.SztMoney);
+	  VariableChagelong(cardbalence_before,UpReadCardData.SztMoney);
 	  EndMoney = FristMoney;
   	Order_SztDeductOnce(money); //扣款
   	delay_us(15);
@@ -3272,8 +3266,8 @@ uint8_t SztDeduct(int32_t money)
 		{
 	    if( (SztReductInf.BeginMoney - SztReductInf.EndMoney ) == money )
 			{
-				//VariableChagelong(amountof_consumption,money);
-				//VariableChagelong(cardbalence_after,SztReductInf.EndMoney);	
+				VariableChagelong(amountof_consumption,money);
+				VariableChagelong(cardbalence_after,SztReductInf.EndMoney);	
 				//显示深圳通扣款金额与余额，SztReductInf.BeginMoney（扣款前余额），SztReductInf.EndMoney（扣款后余额）
 				delay_ms(1000);
 				return 1;
@@ -3297,7 +3291,7 @@ uint8_t SztDeduct(int32_t money)
 		else
 		{
 			tempcount++;
-			if(tempcount <5)
+			if(tempcount <10)
 			{
 				goto loop11;
 			}
@@ -3325,9 +3319,6 @@ uint8_t SztDeduct(int32_t money)
 	}
   return endflag; 
 }
-
-
-
 
 
 /*深圳通上传数据，上传成功返回1，失败返回0*/

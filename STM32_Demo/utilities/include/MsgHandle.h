@@ -13,7 +13,7 @@ typedef struct MealAt
 	
 }MealAttribute;	  ////定义单个菜系的属性。
 
-extern MealAttribute DefineMeal[MealKindTotoal];	//定义6个菜系
+extern MealAttribute DefineMeal[MealKindTotoal];	//定义8个菜系
 
 #define UserActiontotoaDatalSize  41
 

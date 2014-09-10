@@ -331,25 +331,10 @@ char  Fread(unsigned char *p)
 			//	printf("Index = %d \r\n",res);
 		  res = f_read(&fsrc,p,512, &rd);//读取512字节的数据到Buffer,rd 存储的是读到的字节数
 			//	printf("Index = %d \r\n",res);
-//				if(1)
-//				//if(Resend(Buffer,Lenght) == 0x00)
-//				{
-//					indexflag = Index+1021 ;
-//					res = f_lseek(&fsrc,indexflag);//偏移Index+1021
-//          res = f_write(&fsrc,"Yes",3, &rd); //写"Yes"
-//				  f_close(&fsrc);
-//        }
-//				else
-//				{
-//					*p =  0x01 ;
-//					res = f_lseek(&fsrc,1000);
-//					res = f_write(&fsrc,"Uncomplete",10, &rd);
-//					f_close(&fsrc);
-//        }
       }
 		  Index += 512 ; //偏移512
 		  // printf("Index = %d \r\n",Index);
-	    if(res!=FR_OK ||fsrc.fsize <=Index ) //fsrc.fsize是文件大小，这里判断文件大小之前是if(res!=FR_OK ||fsrc.fsize <=Index )
+	    if(res!=FR_OK ||fsrc.fsize <Index ) //fsrc.fsize是文件大小，这里判断文件大小之前是if(res!=FR_OK ||fsrc.fsize <=Index )
 	    {
 //	      f_close(&fsrc);????
 //      f_mount(0, NULL);
@@ -616,7 +601,7 @@ void Sd_Write(char erro_flag,char takeout_flag)
 
 	  //这里赋值餐品的名字
 	 for(j=0;j<20;j++)
-	   MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
+	   MealName[3+j]=Meal[CustomerSel.MealName-1].MealName[j];
     /*餐品名字无法好好处理*/
 	  
 	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MealName[3],sizeof(MealName)-3);			  /*餐品名字*/

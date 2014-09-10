@@ -11,7 +11,7 @@
  *******************************************************************************/ 
  void  WaitTimeInit(uint8_t *Time)
  {
-    *Time = 99;
+    *Time = 120;
  }
  
  
@@ -269,19 +269,20 @@ unsigned char  WaitPayMoney(void)
 		  {
 			  UserActMessageWriteToFlash.UserAct.PayAlready  += UserPayMoney;
 			  UserActMessageWriteToFlash.UserAct.PayForBills += UserPayMoney;	
-				VariableChage(payment_bill,UserActMessageWriteToFlash.UserAct.PayForBills);
+				//VariableChage(payment_bill,UserActMessageWriteToFlash.UserAct.PayForBills);
 			  UserPayMoney = 0 ;
 		  }
 			CurrentPoint = 5 ;
 		}break;    					
 	  case 5 ://显示接收了多少硬币	
 	  {
-		  VariableChage(payment_coin,UserActMessageWriteToFlash.UserAct.PayForCoins);	
-		  VariableChage(payment_card,UserActMessageWriteToFlash.UserAct.PayForCards); 
+		  //VariableChage(payment_coin,UserActMessageWriteToFlash.UserAct.PayForCoins);	
+		  //VariableChage(payment_card,UserActMessageWriteToFlash.UserAct.PayForCards); 
 			CurrentPoint = 6;
 		}break;		    
 	  case 6 : //统计钱数
     {
+      VariableChage(payment_coin,UserActMessageWriteToFlash.UserAct.PayAlready);	 
 	    if(UserActMessageWriteToFlash.UserAct.PayAlready +UserActMessageWriteToFlash.UserAct.PayForCards>=UserActMessageWriteToFlash.UserAct.PayShould)		//投的钱大于等于要付的钱
 		  {     
 		    CurrentPoint = 9;	             
@@ -294,6 +295,7 @@ unsigned char  WaitPayMoney(void)
     case 7 :  /*银行卡支付由屏幕控制*/
 		{
 			WaitTimeInit(&WaitTime);
+      PageChange(SwipingCard_interface);
 			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* 银行卡支付*/
 			reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready));//*100
 			if(reduce_money_flag == 1)
@@ -306,6 +308,7 @@ unsigned char  WaitPayMoney(void)
 			else
 			{
 				WaitTimeInit(&WaitTime);
+				PageChange(Acount_interface);
 				CurrentPoint = 0;
 			  /*支付方式*/			 
 			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;//清空支付方式			
@@ -315,6 +318,7 @@ unsigned char  WaitPayMoney(void)
 	  case 8 :/*深圳通支付由屏幕控制*/
 	  {
 			WaitTimeInit(&WaitTime);
+      PageChange(SwipingCard_interface);
 	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
 			reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready));//*100
 			if(reduce_money_flag == 1)
@@ -327,6 +331,7 @@ unsigned char  WaitPayMoney(void)
 			else
 			{
 				WaitTimeInit(&WaitTime);
+				PageChange(Acount_interface);
 				CurrentPoint = 0;
 			  /*支付方式*/			 
 			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;//清空支付方式
@@ -384,7 +389,7 @@ unsigned char  WaitPayMoney(void)
 	}
   else
   {
-    if(WaitTime%10==1) 
+    if(WaitTime%5==1) 
     {
       if(UserActMessageWriteToFlash.UserAct.PayType==0x31)
       {
@@ -1206,11 +1211,11 @@ void hardfawreInit(void)
    InitMiniGPIO() ;		   //退币器始化	 
 	 InitVoice();             //语音初始化
 	 MyRTC_Init();              //RTC初始化
-	 //IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
-	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
-	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
-	 IWDG_SetReload(0x0138); // 1S
-	 IWDG_Enable();
+	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
+// 	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
+// 	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
+// 	 IWDG_SetReload(0x0138); // 1S
+// 	 IWDG_Enable();
 	 OpenTIM2();
 	 delay_ms(1000);
 	 SPI_FLASH_Init();          //Flash初始化

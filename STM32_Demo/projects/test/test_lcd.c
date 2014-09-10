@@ -58,7 +58,7 @@ int main(void)
 	{		
 		if(!CloseCashSystem())AbnormalHandle(billset_erro);	
 	}
-  if(1==SD_GetCID(cid_data)) while(1);//没有插SD卡
+  if(1==SD_GetCID(cid_data)) AbnormalHandle(sdcard_erro);	//SD卡检测
   delay_ms(200);
 	PageChange(Menu_interface); //显示选餐界面
   PageChange(Menu_interface); //显示选餐界面
@@ -111,6 +111,14 @@ int main(void)
 						PageChange(Menu_interface);//超时退出用户餐品数量选择界面
 						WaitTimeInit(&WaitTime);
 					}
+          else
+          {
+            if(WaitTime%5==1) 
+            {
+              if(pageunitil!=MealNumChoose_interface)
+                PlayMusic(VOICE_1);      
+            }             
+          }
 				}
         if(machinerec.redoor ==0) //开门状态
         { 
@@ -138,6 +146,14 @@ int main(void)
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st=0;
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd=0;
           UserActMessageWriteToFlash.UserAct.PrintTick=0x00000000; //初始为0，可以使打印小票降为一次
+/*------------------------------强行答应小票开头----------------------------------------*/
+          if(UserActMessageWriteToFlash.UserAct.PrintTick==0x00000000)
+          {
+            UserActMessageWriteToFlash.UserAct.PrintTick= 0x00000001;
+            PrintTickFun(&UserActMessageWriteToFlash.UserAct.PrintTick);
+            CloseTIM4();
+          }
+/*------------------------------强行答应小票结尾----------------------------------------*/
 					UserActMessageWriteToFlash.UserAct.Cancle= 0x00; //以免出错
           if(UserActMessageWriteToFlash.UserAct.MoneyBack>0) //当有币要找时进入退币
 					  Current= hpper_out;

@@ -9,7 +9,7 @@
 
 #define Logo_interface                 0x00  /*logo界面*/
 #define Err_interface                  0x01  /*错误显示界面*/
-#define DoorOpened_interface           0x03  /*门打开界面*/
+#define DoorOpened_interface           0x03  /*关门提示界面*/
 #define OnlymachieInit_interface       0x04  /*机械手初始化界面*/
 #define SignInFunction_interface       0x05  /*网络签到界面*/
 #define Szt_GpbocAutoCheckIn_interface 0x06  /*读卡器签到界面*/
@@ -17,28 +17,30 @@
 #define SellMeal_TimeWait_interface    0x09  /*售餐等待界面*/
 #define Coinset_interface              0x0B  /*硬币设置*/  
 #define MealInput_interface            0x0D  /*放餐数量选择*/
-#define MealNumChoose_interface        0x0F  /*餐品份数选择*/        
-#define Acount_interface               0x11  /*结算界面*/
-#define PayWithVip_interface           0x12  /*会员卡结算*/
-#define PayWithBank_interface          0x13  /*银联卡结算*/
-#define PayWithCash_interface          0x14  /*现金结算*/
-#define PayWithSzt_interface           0x15  /*深圳通结算*/ 
-#define TicketPrint_interface          0x17  /*小票打印界面*/
-#define Password_interface             0x19  /*密码输入界面*/
-#define TemperatureSet_interface       0x1B  /*温度设置界面*/
-#define Data_synchronization           0x1D  /*数据同步*/
-#define UserAbonamalRecord_interface   0x21  /*异常用户记录界面*/
+#define MealNumChoose_interface        0x0F  /*餐品份数选择*/ 
+#define MealNumChoose1_interface       0x10  /*选了一份*/
+#define MealNumChoose2_interface       0x11  /*选了二份*/
+#define MealNumChoose3_interface       0x12  /*选了三份*/
+#define Acount_interface               0x14  /*结算界面*/
+#define PayWithVip_interface           0x15  /*会员卡结算*/
+#define SwipingCard_interface          0x16  /*刷卡界面*/
+#define PayWithCash_interface          0x17  /*现金结算*/
+#define TicketPrint_interface          0x1A  /*小票打印界面*/
+#define Password_interface             0x1C  /*密码输入界面*/
+#define TemperatureSet_interface       0x1E  /*温度设置界面*/
+#define Data_synchronization           0x20  /*数据同步*/
+#define UserAbonamalRecord_interface   0x24  /*异常用户记录界面*/
 
-#define Menu1st_interface              0x23  /*菜单一餐品售卖界面*/
-#define MealSet1st_interface           0x25  /*菜单一餐品设置界面*/
-#define Menu2nd_interface              0x27  /*菜单二餐品售卖界面*/
-#define MealSet2nd_interface           0x29  /*菜单二餐品设置界面*/
-#define Menu3rd_interface              0x2B  /*菜单三餐品售卖界面*/
-#define MealSet3rd_interface           0x2D  /*菜单三餐品设置界面*/
-#define Menu4th_interface              0x2F  /*菜单四餐品售卖界面*/
-#define MealSet4th_interface           0x31  /*菜单四餐品设置界面*/
-#define Menu5th_interface              0x33  /*菜单五餐品售卖界面*/
-#define MealSet5th_interface           0x35  /*菜单五餐品设置界面*/
+#define Menu1st_interface              0x26  /*菜单一餐品售卖界面*/
+#define MealSet1st_interface           0x28  /*菜单一餐品设置界面*/
+#define Menu2nd_interface              0x2A  /*菜单二餐品售卖界面*/
+#define MealSet2nd_interface           0x2C  /*菜单二餐品设置界面*/
+#define Menu3rd_interface              0x2E  /*菜单三餐品售卖界面*/
+#define MealSet3rd_interface           0x30  /*菜单三餐品设置界面*/
+#define Menu4th_interface              0x32  /*菜单四餐品售卖界面*/
+#define MealSet4th_interface           0x34  /*菜单四餐品设置界面*/
+#define Menu5th_interface              0x36  /*菜单五餐品售卖界面*/
+#define MealSet5th_interface           0x38  /*菜单五餐品设置界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -91,7 +93,7 @@
 #define meal_choose       0x0000
 
 /*付款金额显示*/
-#define  payment_coin     0x0500 //硬币支付金额
+#define  payment_coin     0x0500 //硬币支付金额 /*已付多少钱*/
 #define  payment_bill     0x0501 //纸币支付金额
 #define  payment_card     0x0502 //刷卡支付金额
 #define  wait_payfor      0x0503 //付款等待时间
@@ -189,26 +191,10 @@
 
 #define record_UserDataTime          0x5F00  //出错时间显示
 
-
-extern uint8_t sell_type[4];  //存储售餐ID的数据
-extern uint8_t sell_type_1st[4]; 
-extern uint8_t sell_type_2nd[4]; 
-extern uint8_t sell_type_3rd[4]; 
-extern uint8_t sell_type_4th[4]; 
-extern uint8_t sell_type_5th[4];
-extern uint8_t Menu_interface;//当前显示的售餐界面
-extern uint8_t Menuset_interface; //当前显示的设餐界面
-extern const char price_1st;
-extern const char price_2nd;
-extern const char price_3rd;
-extern const char price_4th;
-extern const char price_5th;
-extern const char price_6th;
-extern const char price_7th;
-extern const char price_8th;
 extern bool cardbalence_cancel_flag;
 extern bool sellmeal_flag; 
 extern char record_time[20];
+extern uint8_t pageunitil;
 extern int16_t CoinTotoal_t;
 extern int8_t	selltime_hour,selltime_hour_t,selltime_hour_r;
 extern int8_t	selltime_minute, selltime_minute_t,selltime_minute_r;

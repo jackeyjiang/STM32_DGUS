@@ -11,21 +11,17 @@
 #include "uart6.h"
 #include "serialscreen.h"
 
-
-
 static long Batch = 0x00 ;//交易流水号
-__attribute__ ((aligned (4)));
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x30}; /*终端TID码 10000006*/
+__attribute__ ((aligned (4)))
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x13}; /*终端TID码：可修改*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
-unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号*/
-unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号*/
-unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号*/
+unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号：可修改*/
+unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号：可修改*/
+unsigned char  DeviceAreaNO[4+3]={0xad,0x00,0x04,0x17,0x03,0x02,0x07};   /*终端所在地域编号：可修改*/
 unsigned char  DeviceStatus[2+3]={0xae,0x00,0x02,0xE0,0x10};	   /*终端状态*/
-//const unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
-//const unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
 unsigned char  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
 unsigned char  DeviceCoinsTotal[2+3]={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
-unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};       /*交易日期*/
+unsigned char  DealData[7]={0xa9,0x00,0x04,0x00,0x00,0x00,0x00};     /*交易日期*/
 unsigned char  DealTime[6]={0xaa,0x00,0x03,0x00,0x00,0x00};       /*交易时间*/
 unsigned char  MAC[8+3]={0xc9,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   /*MAC*/
 unsigned char  DealBalance[6+3]={0xb0,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};    /*交易金额*/
@@ -56,19 +52,50 @@ unsigned char  MenuNo[3+1]= {0xdd,0x00,0x01,0x01};                              
 unsigned char  ACK[3+1]={0xc0,0x00,0x02,0x00};                                            //应答码
 unsigned char  WordKeyCipher[11]={0xc7,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};//工作密钥
 
+/*与后台进行数据交换的结构体：可修改*/
 Meal_struction Meal[MealKindTotoal]={
 						    /*餐品数量*/	 /*餐品ID*/ 			     /*餐品名字*/				    /*餐品价格*/			     /*餐品类型*/
 								   0x00,0x00,	 0x10,0x00,0x00,0x41,  {"秘制猪手饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x42,  {"潮氏卤鸡腿饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x42,  {"潮氏卤鸡腿饭    "},   0x00,0x00,0x20,0x00, 	{"C001"},
 								   0x00,0x00,	 0x10,0x00,0x00,0x43,  {"特色稻香肉饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
 								   0x00,0x00,	 0x10,0x00,0x00,0x44,  {"黑椒猪扒饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
-                   0x00,0x00,	 0x10,0x00,0x00,0x45,  {"蒲烧鲷鱼饭      "},   0x00,0x00,0x18,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x46,  {"蒲烧秋刀鱼饭    "},   0x00,0x00,0x18,0x00, 	{"C001"},  
-                   0x00,0x00,	 0x10,0x00,0x00,0x47,  {"咖喱鸡扒饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x45,  {"蒲烧鲷鱼饭      "},   0x00,0x00,0x20,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x46,  {"蒲烧秋刀鱼饭    "},   0x00,0x00,0x20,0x00, 	{"C001"},  
+                   0x00,0x00,	 0x10,0x00,0x00,0x47,  {"咖喱鸡扒饭      "},   0x00,0x00,0x20,0x00, 	{"C001"},
                    0x00,0x00,	 0x10,0x00,0x00,0x48,  {"梅菜扣肉饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
 						   };
- unsigned char	Record_buffer[254] = {0} ;
-__attribute__ ((__packed__));
+unsigned char	Record_buffer[254] = {0} ;
+__attribute__ ((aligned (1)))
+#define Discount  10  //定义折扣10折(不打折),5折(半价),0折(不要钱)
+
+const char price_1st= 16*Discount/10; 
+const char price_2nd= 20*Discount/10;
+const char price_3rd= 16*Discount/10;
+const char price_4th= 16*Discount/10;
+const char price_5th= 20*Discount/10;
+const char price_6th= 20*Discount/10;
+const char price_7th= 20*Discount/10;
+const char price_8th= 16*Discount/10;
+
+/*屏幕显示的餐品名称*/
+const char    mealname_1st[12]= {"秘制猪手饭"}; 
+const char    mealname_2nd[14]= {"潮氏卤鸡腿饭"};
+const char    mealname_3rd[14]= {"特色稻香肉饭"};
+const char    mealname_4th[12]= {"黑椒猪扒饭"};
+const char    mealname_5th[12]= {"蒲烧鲷鱼饭"};
+const char    mealname_6th[14]= {"蒲烧秋刀鱼饭"};
+const char    mealname_7th[12]= {"咖喱鸡扒饭"};
+const char    mealname_8th[12]= {"梅菜扣肉饭"};
+
+uint8_t Menu_interface= 0x00;
+uint8_t MealSet_interface= 0x00;
+uint8_t sell_type[4]={0};//存储四个菜品的的ID,在签到的时候需要获取的有当前需要显示售卖的哪一个界面和那几个餐品
+/*与后台对应，套餐结构体装套餐所存的餐品ID，四个*/
+uint8_t sell_type_1st[4]={0x01,0x02,0x03,0x04}; //第一个售餐菜单
+uint8_t sell_type_2nd[4]={0x05,0x06,0x07,0x02}; //第二个售餐菜单
+uint8_t sell_type_3rd[4]={0x03,0x04,0x05,0x06}; //第三个售餐菜单
+uint8_t sell_type_4th[4]={0x05,0x06,0x01,0x02}; //第四个售餐菜单
+uint8_t sell_type_5th[4]={0x05,0x06,0x01,0x02}; //第五个售餐菜单
  /*******************************************************************************
 * Function Name  : GetBRWN
 * Description    : 功能: 得到流水号
@@ -497,7 +524,7 @@ void StructCopyToBuffer(unsigned char *dest)
 	  dest[k++]=Meal[sell_type[j0]-1].MealID[i];
 		
 	  for(i=0;i<20;i++)
-	  dest[k++]=Meal[sell_type[j0]-1].MaelName[i];
+	  dest[k++]=Meal[sell_type[j0]-1].MealName[i];
 
 		dest[k++]= Meal[sell_type[j0]-1].MealNum[0]; //第一个数为0
 	  dest[k++]= DefineMeal[sell_type[j0]-1].MealCount; //第二个数为餐品的数量
@@ -785,7 +812,7 @@ unsigned char EchoFun(void)
  	unsigned char i = 0 ;
 	long  Lenght = 0 ,j;
 	long 	CmdLenght = 0 ;
-	unsigned char 	  Send_Buf[400];
+	unsigned char 	  Send_Buf[100];
 	mem_set_00(rx1Buf,sizeof(rx1Buf));
     /*水流号++*/
 	Send_Buf[0] =  0x02 ;
@@ -903,10 +930,10 @@ unsigned char TakeMealsFun(unsigned char *SendBuffer,unsigned char takeout_flag)
 	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealNO,sizeof(MealNO)); /*餐品购买数量*/
 
 	  //这里赋值餐品的名字
-	  for(j=0;j<20;j++)
-	  MealName[3+j]=Meal[CustomerSel.MealName-1].MaelName[j];
+	 for(j=0;j<20;j++)
+	   MealName[3+j]=Meal[CustomerSel.MealName-1].MealName[j];
 
-	  CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));			  /*餐品名字*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));			  /*餐品名字*/
 
 	 /*这里赋值餐品的价格*/
 	 for(i=0;i<6;i++)
@@ -1469,7 +1496,7 @@ unsigned char TakeMealsFun1(unsigned char *SendBuffer)
    {
 		 MealName[3+i]=ReadBuf[i];
 	 }	
-	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName));			  /*餐品名字*/
+	 CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],MealName,sizeof(MealName)); /*餐品名字*/
    
 	 SearchSeparator(ReadBuf,SendBuffer,11); //餐品价格
 	 StringToHexGroup1(temp,ReadBuf,12); 
