@@ -13,7 +13,7 @@
 
 static long Batch = 0x00 ;//交易流水号
 __attribute__ ((aligned (4)))
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x13}; /*终端TID码：可修改*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码：可修改*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号：可修改*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号：可修改*/
@@ -55,18 +55,19 @@ unsigned char  WordKeyCipher[11]={0xc7,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0
 /*与后台进行数据交换的结构体：可修改*/
 Meal_struction Meal[MealKindTotoal]={
 						    /*餐品数量*/	 /*餐品ID*/ 			     /*餐品名字*/				    /*餐品价格*/			     /*餐品类型*/
-								   0x00,0x00,	 0x10,0x00,0x00,0x41,  {"秘制猪手饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x42,  {"潮氏卤鸡腿饭    "},   0x00,0x00,0x20,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x43,  {"特色稻香肉饭    "},   0x00,0x00,0x16,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x44,  {"黑椒猪扒饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
-                   0x00,0x00,	 0x10,0x00,0x00,0x45,  {"蒲烧鲷鱼饭      "},   0x00,0x00,0x20,0x00, 	{"C001"},
-								   0x00,0x00,	 0x10,0x00,0x00,0x46,  {"蒲烧秋刀鱼饭    "},   0x00,0x00,0x20,0x00, 	{"C001"},  
-                   0x00,0x00,	 0x10,0x00,0x00,0x47,  {"咖喱鸡扒饭      "},   0x00,0x00,0x20,0x00, 	{"C001"},
-                   0x00,0x00,	 0x10,0x00,0x00,0x48,  {"梅菜扣肉饭      "},   0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x41,  {"秘制猪手饭      "},   0x00,0x00,0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x42,  {"潮氏卤鸡腿饭    "},   0x00,0x00,0x00,0x00,0x20,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x43,  {"特色稻香肉饭    "},   0x00,0x00,0x00,0x00,0x16,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x44,  {"黑椒猪扒饭      "},   0x00,0x00,0x00,0x00,0x16,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x45,  {"蒲烧鲷鱼饭      "},   0x00,0x00,0x00,0x00,0x20,0x00, 	{"C001"},
+								   0x00,0x00,	 0x10,0x00,0x00,0x46,  {"蒲烧秋刀鱼饭    "},   0x00,0x00,0x00,0x00,0x20,0x00, 	{"C001"},  
+                   0x00,0x00,	 0x10,0x00,0x00,0x47,  {"咖喱鸡扒饭      "},   0x00,0x00,0x00,0x00,0x20,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x48,  {"梅菜扣肉饭      "},   0x00,0x00,0x00,0x00,0x16,0x00, 	{"C001"},
 						   };
 unsigned char	Record_buffer[254] = {0} ;
 __attribute__ ((aligned (1)))
-#define Discount  10  //定义折扣10折(不打折),5折(半价),0折(不要钱)
+
+const uint8_t Discount =10;  //定义折扣10折(不打折),5折(半价),0折(不要钱)
 
 const char price_1st= 16*Discount/10; 
 const char price_2nd= 20*Discount/10;
@@ -517,7 +518,7 @@ unsigned char  SignInFun(void)
 void StructCopyToBuffer(unsigned char *dest)
 {
   long j0=0,i=0,k=0;
-//上传4份餐品的数据
+//上传4份餐品的数据 4*(4+20+2+4+4)
   for(j0 = 0; j0 < 4; j0++)
 	{
 	  for(i=0;i<4;i++)
@@ -529,8 +530,8 @@ void StructCopyToBuffer(unsigned char *dest)
 		dest[k++]= Meal[sell_type[j0]-1].MealNum[0]; //第一个数为0
 	  dest[k++]= DefineMeal[sell_type[j0]-1].MealCount; //第二个数为餐品的数量
 
-	  for(i=0;i<4;i++)
-	  dest[k++]=Meal[sell_type[j0]-1].MealPreace[i];
+	  for(i=2;i<6;i++) /*需要修改一下*/
+	  dest[k++]=Meal[sell_type[j0]-1].MealPrice[i];
 
 	  for(i=0;i<4;i++)
 	  dest[k++]=Meal[sell_type[j0]-1].MealType[i];
@@ -549,7 +550,86 @@ unsigned char k = 0 ;
 MealCompareDataStruct MealCompareData;
 uint32_t  MealDataCompareFun(void)
 {
-  
+//   
+//  	unsigned char i= 0 ;
+//   long  Lenght = 0 ,j;
+// //	unsigned char MealID = 0 ;
+// 	long  CmdLenght = 0 ;
+// 	unsigned char status = 0 ;
+// 	unsigned char Send_Buf[400];
+// 	unsigned char TempBuffer[37*4]={0};
+// 	unsigned char Buffer[36*4]={0};
+// 	mem_set_00(rx1Buf,sizeof(rx1Buf));
+
+// 	Send_Buf[0] =  0x02 ;
+// 	Send_Buf[1] =  0x00 ;
+// 	Send_Buf[2] =  0x00 ;
+// 	Send_Buf[3] =  0x00 ;
+// 	Send_Buf[4] =  0x00 ;
+// 	CmdLenght = 5 ;
+// 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],TID,sizeof(TID));  /*终端的TID*/
+// 	GetBRWN(); /*得到水流号*/
+//   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BRWN,sizeof(BRWN));                   /*交易流水线*/
+//   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],BNO,sizeof(BNO));                     /*批次号*/
+//   CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceArea,sizeof(DeviceArea));       /*终端所在区域编号*/
+// 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],DeviceAreaNO,sizeof(DeviceAreaNO));   /*终端所在地域编号*/
+//  	Send_Buf[CmdLenght] =  0xbc ;	 //T  餐品数据对比， 数据域采用TVL格式
+// 	Send_Buf[CmdLenght+1] =  0x00 ;	 //L 数据长度
+// 	Send_Buf[CmdLenght+2] =  36*4 ;	  //V 数据内容
+// 	CmdLenght += 3;
+// 	StructCopyToBuffer(Buffer);
+// 	CmdLenght +=mem_copy00(&Send_Buf[CmdLenght],Buffer,sizeof(Buffer));
+
+// 	Send_Buf[CmdLenght] = 0x03 	;
+// 	CmdLenght+=0x03;
+
+// 	/*发送命令*/
+//   i = MealComparefunDemo(0x0200,Send_Buf,CmdLenght);
+
+// /***************************************************************************/
+//   MealCompareData.MealCompareTotoal= 0; 
+//     /*单片是否成功*/
+// 	if(i==0x01) //超时
+// 	{		
+// 		return MealCompareData.MealCompareTotoal; 
+// 	}
+// 	
+// 	Lenght = HL_BufferToInit(&rx1Buf[2]);		//得到数据长度
+// 	GetData(&ReturnData.Lenght[0],rx1Buf,Lenght,0xc0);	  /*返回状态*/
+// 	
+//  	//printf("Status=%x\r\n",ReturnData.Lenght[0]);
+
+// 	if(ReturnData.Lenght[0] == 0x00 )
+// 	{
+// 		MealCompareData.MealCompareTotoal= 0xFFFFFFFF;	
+// 	    return MealCompareData.MealCompareTotoal;	 /*数据正确*/
+// 	} 
+// 	if(ReturnData.Lenght[0] == 0x24 )
+// 	{
+// 		MealCompareData.MealCompareTotoal= 0xFFFFFFFF;	
+// 	    return MealCompareData.MealCompareTotoal;	 /*数据正确*/
+// 	}
+// 	CmdLenght = GetData(TempBuffer,rx1Buf,Lenght,0xBC);/*餐品对比*/
+//   //printf("StatusCmdLenght=%x\r\n",CmdLenght);
+// 	if(CmdLenght>36)
+// 	{
+// 	  //status  = CmdLenght / 37  ;
+// 		for(i=0;i<4;i++)
+// 		{
+// 			if(rx1Buf[47+i*36]==0x04)   //餐品对比标志
+// 			{
+// 				MealCompareData.MealComparePart[i]=0xFF;  //144-36/3  108/3=36
+// 			}					
+// 			else
+// 			{
+// 				MealCompareData.MealComparePart[i]=rx1Buf[36+i*36];
+// 		  }				
+// 		}
+// 		return MealCompareData.MealCompareTotoal ;/*餐品对比信息*/
+// 	}
+//   MealCompareData.MealCompareTotoal=0;
+//   return MealCompareData.MealCompareTotoal;
+// }
  	unsigned char i= 0 ;
   long  Lenght = 0 ,j;
 //	unsigned char MealID = 0 ;
@@ -629,7 +709,6 @@ uint32_t  MealDataCompareFun(void)
   MealCompareData.MealCompareTotoal=0;
   return MealCompareData.MealCompareTotoal;
 }
-
 
 
 /*******************************************************************************

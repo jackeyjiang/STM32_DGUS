@@ -563,7 +563,7 @@ void HextoChar(char *destbuff,char *buffer)
 }
 
 
-char Send_Buf[160] ={0};
+char Send_Buf[256] ={0};
 char Rec_Buf[512]={0};
 void Sd_Write(char erro_flag,char takeout_flag)
 {
@@ -651,7 +651,7 @@ void Sd_Write(char erro_flag,char takeout_flag)
    Send_Buf[CmdLenght]=erro_flag;
    HextoChar(Rec_Buf,Send_Buf);
    Fwriter(Rec_Buf);
-   memset(Send_Buf,0,160);
+   memset(Send_Buf,0,256);
    memset(Rec_Buf,0,512);
 }
 

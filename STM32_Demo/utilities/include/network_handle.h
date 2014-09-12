@@ -12,6 +12,7 @@ extern   uint16_t		  rx1BufIndex ;
 extern   uint8_t		  F_RX1_VAILD ;
 extern   long  		    CrcValue ;
 extern   uint8_t		  F_RX1_SYNC ;
+extern   const uint8_t     Discount ;
 
 extern unsigned char  TID[7];
 extern unsigned char  BRWN[7+3];
@@ -59,7 +60,7 @@ typedef struct
   const unsigned char MealNum[2]; //将无用的数据放在结构体的头，有些数据就不会改变
 	const unsigned char MealID[4];
 	const unsigned char MealName[20];
-	const unsigned char MealPreace[4];
+	const unsigned char MealPrice[6];
 	const unsigned char MealType[4];
 
 }Meal_struction;

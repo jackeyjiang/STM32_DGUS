@@ -162,93 +162,94 @@ void  SPRT(void)
   if(Print_Struct.P_Number1st>0)
   {	
 		p2[12]= Print_Struct.P_Number1st%10 +'0'; 
-		p2[14]= price_1st/100+'0';
-		p2[15]= price_1st%100/10+'0';
-		p2[16]= price_1st%100%10+'0';
-		p2[18]= UserActMessageWriteToFlash.UserAct.MealCost_1st/100+'0';
-		p2[19]= UserActMessageWriteToFlash.UserAct.MealCost_1st%100/10+'0';
-		p2[20]= UserActMessageWriteToFlash.UserAct.MealCost_1st%100%10+'0';  
+		p2[14]= (price_1st*10/Discount)/100+'0';
+		p2[15]= (price_1st*10/Discount)%100/10+'0';
+		p2[16]= (price_1st*10/Discount)%100%10+'0';
+		p2[18]= (UserActMessageWriteToFlash.UserAct.MealCost_1st*10/Discount)/100+'0';
+		p2[19]= (UserActMessageWriteToFlash.UserAct.MealCost_1st*10/Discount)%100/10+'0';
+		p2[20]= (UserActMessageWriteToFlash.UserAct.MealCost_1st*10/Discount)%100%10+'0';  
 		printf("%s",p2);
   }
 	if(Print_Struct.P_Number2nd>0)
 	{
 		p3[12]= Print_Struct.P_Number2nd%10 +'0'; 
-		p3[14]= price_2nd/100+'0';
-		p3[15]= price_2nd%100/10+'0';
-		p3[16]= price_2nd%100%10+'0';
-		p3[18]= UserActMessageWriteToFlash.UserAct.MealCost_2nd/100+'0';
-		p3[19]= UserActMessageWriteToFlash.UserAct.MealCost_2nd%100/10+'0';
-		p3[20]= UserActMessageWriteToFlash.UserAct.MealCost_2nd%100%10+'0';
+		p3[14]= (price_2nd*10/Discount)/100+'0';
+		p3[15]= (price_2nd*10/Discount)%100/10+'0';
+		p3[16]= (price_2nd*10/Discount)%100%10+'0';
+		p3[18]= (UserActMessageWriteToFlash.UserAct.MealCost_2nd*10/Discount)/100+'0';
+		p3[19]= (UserActMessageWriteToFlash.UserAct.MealCost_2nd*10/Discount)%100/10+'0';
+		p3[20]= (UserActMessageWriteToFlash.UserAct.MealCost_2nd*10/Discount)%100%10+'0';
 		printf("%s",p3);
 	}
   if(Print_Struct.P_Number3rd>0)
 	{
 		p4[12]= Print_Struct.P_Number3rd%10 +'0'; 
-		p4[14]= price_3rd/100+'0';
-		p4[15]= price_3rd%100/10+'0';
-		p4[16]= price_3rd%100%10+'0';
-		p4[18]= UserActMessageWriteToFlash.UserAct.MealCost_3rd/100+'0';
-		p4[19]= UserActMessageWriteToFlash.UserAct.MealCost_3rd%100/10+'0';
-		p4[20]= UserActMessageWriteToFlash.UserAct.MealCost_3rd%100%10+'0';
+		p4[14]= (price_3rd*10/Discount)/100+'0';
+		p4[15]= (price_3rd*10/Discount)%100/10+'0';
+		p4[16]= (price_3rd*10/Discount)%100%10+'0';
+		p4[18]= (UserActMessageWriteToFlash.UserAct.MealCost_3rd*10/Discount)/100+'0';
+		p4[19]= (UserActMessageWriteToFlash.UserAct.MealCost_3rd*10/Discount)%100/10+'0';
+		p4[20]= (UserActMessageWriteToFlash.UserAct.MealCost_3rd*10/Discount)%100%10+'0';
 		printf("%s",p4);
 	}
 	if(Print_Struct.P_Number4th>0)
 	{		
 		p5[12]= Print_Struct.P_Number4th%10 +'0'; 
-		p5[14]= price_4th/100+'0';
-		p5[15]= price_4th%100/10+'0';
-		p5[16]= price_4th%100%10+'0';
-		p5[18]=UserActMessageWriteToFlash.UserAct.MealCost_4th/100+'0';
-		p5[19]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100/10+'0';
-		p5[20]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100%10+'0';
+		p5[14]= (price_4th*10/Discount)/100+'0';
+		p5[15]= (price_4th*10/Discount)%100/10+'0';
+		p5[16]= (price_4th*10/Discount)%100%10+'0';
+		p5[18]= (UserActMessageWriteToFlash.UserAct.MealCost_4th*10/Discount)/100+'0';
+		p5[19]= (UserActMessageWriteToFlash.UserAct.MealCost_4th*10/Discount)%100/10+'0';
+		p5[20]= (UserActMessageWriteToFlash.UserAct.MealCost_4th*10/Discount)%100%10+'0';
 		printf("%s",p5);
 	} 
 	if(Print_Struct.P_Number5th>0)
 	{		
 		p6[12]= Print_Struct.P_Number5th%10 +'0'; 
-		p6[14]= price_5th/100+'0';
-		p6[15]= price_5th%100/10+'0';
-		p6[16]= price_5th%100%10+'0';
-    p6[18]=UserActMessageWriteToFlash.UserAct.MealCost_5th/100+'0';
-		p6[19]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100/10+'0';
-		p6[20]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100%10+'0';
+		p6[14]= (price_5th*10/Discount)/100+'0';
+		p6[15]= (price_5th*10/Discount)%100/10+'0';
+		p6[16]= (price_5th*10/Discount)%100%10+'0';
+    p6[18]= (UserActMessageWriteToFlash.UserAct.MealCost_5th*10/Discount)/100+'0';
+		p6[19]= (UserActMessageWriteToFlash.UserAct.MealCost_5th*10/Discount)%100/10+'0';
+		p6[20]= (UserActMessageWriteToFlash.UserAct.MealCost_5th*10/Discount)%100%10+'0';
 		printf("%s",p6);
 	} 
 	if(Print_Struct.P_Number6th>0)
 	{		
 		p7[12]= Print_Struct.P_Number6th%10 +'0'; 
-		p7[14]= price_6th/100+'0';
-		p7[15]= price_6th%100/10+'0';
-		p7[16]= price_6th%100%10+'0';
-    p7[18]=UserActMessageWriteToFlash.UserAct.MealCost_6th/100+'0';
-		p7[19]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100/10+'0';
-		p7[20]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100%10+'0';
+		p7[14]= (price_6th*10/Discount)/100+'0';
+		p7[15]= (price_6th*10/Discount)%100/10+'0';
+		p7[16]= (price_6th*10/Discount)%100%10+'0';
+    p7[18]= (UserActMessageWriteToFlash.UserAct.MealCost_6th*10/Discount)/100+'0';
+		p7[19]= (UserActMessageWriteToFlash.UserAct.MealCost_6th*10/Discount)%100/10+'0';
+		p7[20]= (UserActMessageWriteToFlash.UserAct.MealCost_6th*10/Discount)%100%10+'0';
 		printf("%s",p7);
 	}
 	if(Print_Struct.P_Number7th>0)
 	{		
 		p8[12]= Print_Struct.P_Number7th%10 +'0'; 
-		p8[14]= price_7th/100+'0';
-		p8[15]= price_7th%100/10+'0';
-		p8[16]= price_7th%100%10+'0';
-    p8[18]=UserActMessageWriteToFlash.UserAct.MealCost_7th/100+'0';
-		p8[19]=UserActMessageWriteToFlash.UserAct.MealCost_7th%100/10+'0';
-		p8[20]=UserActMessageWriteToFlash.UserAct.MealCost_7th%100%10+'0';
+		p8[14]= (price_7th*10/Discount)/100+'0';
+		p8[15]= (price_7th*10/Discount)%100/10+'0';
+		p8[16]= (price_7th*10/Discount)%100%10+'0';
+    p8[18]= (UserActMessageWriteToFlash.UserAct.MealCost_7th*10/Discount)/100+'0';
+		p8[19]= (UserActMessageWriteToFlash.UserAct.MealCost_7th*10/Discount)%100/10+'0';
+		p8[20]= (UserActMessageWriteToFlash.UserAct.MealCost_7th*10/Discount)%100%10+'0';
 		printf("%s",p8);
 	}
 	if(Print_Struct.P_Number8th>0)
 	{		
 		p9[12]= Print_Struct.P_Number8th%10 +'0'; 
-		p9[14]= price_8th/100+'0';
-		p9[15]= price_8th%100/10+'0';
-		p9[16]= price_8th%100%10+'0';
-    p9[18]=UserActMessageWriteToFlash.UserAct.MealCost_8th/100+'0';
-		p9[19]=UserActMessageWriteToFlash.UserAct.MealCost_8th%100/10+'0';
-		p9[20]=UserActMessageWriteToFlash.UserAct.MealCost_8th%100%10+'0';
+		p9[14]= (price_8th*10/Discount)/100+'0';
+		p9[15]= (price_8th*10/Discount)%100/10+'0';
+		p9[16]= (price_8th*10/Discount)%100%10+'0';
+    p9[18]= (UserActMessageWriteToFlash.UserAct.MealCost_8th*10/Discount)/100+'0';
+		p9[19]= (UserActMessageWriteToFlash.UserAct.MealCost_8th*10/Discount)%100/10+'0';
+		p9[20]= (UserActMessageWriteToFlash.UserAct.MealCost_8th*10/Discount)%100%10+'0';
 		printf("%s",p9);
 	}  
   printf("%s",p0);
 	printf("%s",p1);
+  printf("折扣信息：五折\r\n");
 	if(UserActMessageWriteToFlash.UserAct.PayType == '2' )
 	{
 		 printf("支付方式：银行卡支付\r\n");

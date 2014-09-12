@@ -1803,19 +1803,16 @@ loop1:	switch(MealID)
         uint8_t meal_id_t=0,find_flag=0;
         for(meal_id_t=0;meal_id_t<4;meal_id_t++)
         {
-          if(sell_type[meal_id_t]==VariableData[1])
-          {
+          if(sell_type[VariableData[1]-1]==sell_type[meal_id_t]);            
             find_flag=1;
             break;
-          }
         }
         if(find_flag==1)
-			    CurFloor.MealID= VariableData[1];	//当前的就是餐品的ID
+			    CurFloor.MealID= sell_type[VariableData[1]-1];	//当前的就是餐品的ID
         else
         {
-          CurFloor.MealID= sell_type[3]; //当查不到输入的ID与本地的id不匹配则选最小号的ID
-        }
-        VariableChage(meal_num,CurFloor.MealID);		
+          CurFloor.MealID= sell_type[0]; //当查不到输入的ID与本地的id不匹配则选最小号的ID
+        }	
 				InitSetting();
 				for(cnt_t = 0; cnt_t < FloorMealNum; cnt_t++)  //查找那一层有是空的
 				{

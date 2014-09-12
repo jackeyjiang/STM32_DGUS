@@ -29,7 +29,7 @@ int main(void)
 {
 	hardfawreInit(); //硬件初始化
 	PageChange(OnlymachieInit_interface);
-	if(erro_record&(1<<arm_limit))
+	if(erro_record&(1<<arm_limit)) 
   {
 		AbnormalHandle(arm_limit);//需要处理数据上传的断电
 	}
@@ -115,8 +115,10 @@ int main(void)
           {
             if(WaitTime%5==1) 
             {
-              if(pageunitil!=MealNumChoose_interface)
-                PlayMusic(VOICE_1);      
+              if(pageunitil==MealNumChoose_interface)
+              {
+                if(sellmeal_flag) PlayMusic(VOICE_1); //只有当在可以售餐的时候播放声音     
+              }                
             }             
           }
 				}
@@ -130,6 +132,7 @@ int main(void)
           if(machinerec.rerelative ==1) //当机械手在适当的位置，则切换为售餐界面
           {
             PageChange(Menu_interface);
+            //PageChange(pageunitil); /*这个可以有，直接转到当前页面*/
             machinerec.redoor = 2; //将门的状态改为其他状态
           }
         }
@@ -146,14 +149,14 @@ int main(void)
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st=0;
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd=0;
           UserActMessageWriteToFlash.UserAct.PrintTick=0x00000000; //初始为0，可以使打印小票降为一次
-/*------------------------------强行答应小票开头----------------------------------------*/
+/*------------------------------强行答应小票开头----------------------------------------
           if(UserActMessageWriteToFlash.UserAct.PrintTick==0x00000000)
           {
             UserActMessageWriteToFlash.UserAct.PrintTick= 0x00000001;
             PrintTickFun(&UserActMessageWriteToFlash.UserAct.PrintTick);
             CloseTIM4();
           }
-/*------------------------------强行答应小票结尾----------------------------------------*/
+--------------------------------强行答应小票结尾----------------------------------------*/
 					UserActMessageWriteToFlash.UserAct.Cancle= 0x00; //以免出错
           if(UserActMessageWriteToFlash.UserAct.MoneyBack>0) //当有币要找时进入退币
 					  Current= hpper_out;

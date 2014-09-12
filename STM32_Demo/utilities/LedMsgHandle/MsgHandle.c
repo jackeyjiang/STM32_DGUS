@@ -12,6 +12,36 @@ CoinsTotoalMessage CoinsTotoalMessageWriteToFlash;
 uint8_t  WaitTime=0;
 uint8_t  WaitMealTime=0;
 
+/**
+  * @brief  Converts a 2 digit decimal to BCD format.
+  * @param  Value: Byte to be converted.
+  * @retval Converted byte
+  */
+static uint8_t RTC_ByteToBcd2(uint8_t Value)
+{
+  uint8_t bcdhigh = 0;
+  
+  while (Value >= 10)
+  {
+    bcdhigh++;
+    Value -= 10;
+  }
+  
+  return  ((uint8_t)(bcdhigh << 4) | Value);
+}
+
+/**
+  * @brief  Convert from 2 digit BCD to Binary.
+  * @param  Value: BCD value to be converted.
+  * @retval Converted word
+  */
+static uint8_t RTC_Bcd2ToByte(uint8_t Value)
+{
+  uint8_t tmp = 0;
+  tmp = ((uint8_t)(Value & (uint8_t)0xF0) >> (uint8_t)0x4) * 10;
+  return (tmp + (Value & (uint8_t)0x0F));
+}
+
  /*******************************************************************************
  * 函数名称:StatisticsTotal                                                                     
  * 描    述:统计数目                                                                   
@@ -84,9 +114,12 @@ void MealArr(unsigned char index)
 {
     uint32_t  PayBill=0;
     uint32_t  MoneyPayBack_Already_t=0;
+    uint8_t   MealPrice_t=0;
 /*-------匹配ID和价格------------------------*/
     memcpy(CustomerSel.MealID,Meal[index-1].MealID,4);
-    memcpy(CustomerSel.MealPrice,Meal[index-1].MealPreace,4);					
+    memcpy(CustomerSel.MealPrice,Meal[index-1].MealPrice,6);
+    MealPrice_t= RTC_Bcd2ToByte(CustomerSel.MealPrice[4]);  //1.先转换为bin  
+    CustomerSel.MealPrice[4]= RTC_ByteToBcd2(MealPrice_t*Discount/10); //2.将bin码X折扣，然后转换为BCD 
 /*------购买餐品的数量-----------------*/
 		CustomerSel.MealNo  =  0x01; //取一个餐品上传一次数据
 		/*购买餐品的类型*/
