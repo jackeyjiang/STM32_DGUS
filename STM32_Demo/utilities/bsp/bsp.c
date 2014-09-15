@@ -785,8 +785,8 @@ void ClearingFuntion(void)
 	if(TimeDate.Hours == 5 || TimeDate.Hours == 19)
 	{
 	  // 结算命令 ；
-	      ClearingFun();	  //后台结算命令
-		 // BankFlashCard_Upload(); //数据上送	 不是退签
+	  //   ClearingFun();	  //后台结算命令
+		// BankFlashCard_Upload(); //数据上送	 不是退签
 	}		 		 
 }
   /*******************************************************************************
@@ -1211,11 +1211,11 @@ void hardfawreInit(void)
    InitMiniGPIO() ;		   //退币器始化	 
 	 InitVoice();             //语音初始化
 	 MyRTC_Init();              //RTC初始化
-	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
-// 	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
-// 	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
-// 	 IWDG_SetReload(0x0138); // 1S
-// 	 IWDG_Enable();
+//	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
+	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
+	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
+	 IWDG_SetReload(0x0138); // 1S
+	 IWDG_Enable();
 	 OpenTIM2();
 	 delay_ms(1000);
 	 SPI_FLASH_Init();          //Flash初始化

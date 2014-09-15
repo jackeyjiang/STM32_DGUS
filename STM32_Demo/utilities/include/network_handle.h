@@ -92,11 +92,11 @@ extern unsigned char  F_RX1_Right;
 extern unsigned char  rx1Buf[512];	  //发送数据给服务器，服务器返回数据存在这个buffer
 
 extern uint8_t sell_type[4];  //存储售餐ID的数据
-extern uint8_t sell_type_1st[4]; 
-extern uint8_t sell_type_2nd[4]; 
-extern uint8_t sell_type_3rd[4]; 
-extern uint8_t sell_type_4th[4]; 
-extern uint8_t sell_type_5th[4];
+extern const uint8_t sell_type_1st[4]; 
+extern const uint8_t sell_type_2nd[4]; 
+extern const uint8_t sell_type_3rd[4]; 
+extern const uint8_t sell_type_4th[4]; 
+extern const uint8_t sell_type_5th[4];
 extern uint8_t Menu_interface;//当前显示的售餐界面
 extern uint8_t Menuset_interface; //当前显示的设餐界面
 extern uint8_t Menu_interface;
@@ -110,12 +110,12 @@ extern const char price_6th;
 extern const char price_7th;
 extern const char price_8th;
 extern const char    mealname_1st[12]; 
-extern const char    mealname_2nd[14];
-extern const char    mealname_3rd[14];
+extern const char    mealname_2nd[12];
+extern const char    mealname_3rd[18];
 extern const char    mealname_4th[12];
 extern const char    mealname_5th[12];
 extern const char    mealname_6th[14];
-extern const char    mealname_7th[12];
+extern const char    mealname_7th[10];
 extern const char    mealname_8th[12];
 
 uint16_t mem_copy01(unsigned char *dest, const unsigned char *source, const long s_len);
