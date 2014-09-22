@@ -194,79 +194,8 @@ void ScreenControl(char cmd)
 		temp[5]= cmd ;	//0x00 关闭
 		Uart3_Send(temp,sizeof(temp));	
 }	
- /*******************************************************************************
- * 函数名称:MealNameDisp                                                                  
- * 描    述:显示餐品名称                                                          
- *           根据ID 显示名称 ，根据floor 改变现实变量的地址                                                                    
- * 输    入:meal_id ,floor                                                               
- * 输    出:无                                                                     
- * 返    回:void                                                               
- * 修改日期:2014年3月13日                                                                    
- *******************************************************************************/ 							
-void MealNameDisp(uint8_t meal_id,uint8_t floor)							
-{
-	  char temp[30]={0};  //存放串口数据的临时数组
-		memcpy(temp,VariableWrite,sizeof(VariableWrite));
-		temp[2]= 17; //0x83 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-		myunion.adress= column1st_name+floor*(0x0100); 
-		temp[4]= myunion.adr[1];
-		temp[5]= myunion.adr[0];
-		switch(meal_id)
-		{
-			case 0x00:break;
-			case 0x01:mystrcat(temp,mealname_1st,12);break;	
-			case 0x02:mystrcat(temp,mealname_2nd,14);break;		
-			case 0x03:mystrcat(temp,mealname_3rd,14);break;	
-			case 0x04:mystrcat(temp,mealname_4th,12);break;
-			case 0x05:mystrcat(temp,mealname_5th,12);break;
-			case 0x06:mystrcat(temp,mealname_6th,14);break;      
-			case 0x07:mystrcat(temp,mealname_7th,12);break;
-			case 0x08:mystrcat(temp,mealname_8th,12);break;     
-			default:break;			
-		}
-		Uart3_Sent(temp,sizeof(temp));	
-}
- /*******************************************************************************
- * 函数名称:MealCntDisp                                                                 
- * 描    述:显示餐品数量                                                          
- *           更具floor 改变变量 ，meal_cnt 是要现实的数量                                                                    
- * 输    入:meal_id                                                                
- * 输    出:无                                                                     
- * 返    回:void                                                               
- * 修改日期:2014年3月13日                                                                    
- *******************************************************************************/ 							
-void MealCntDisp(uint8_t meal_cnt,uint8_t floor)							
-{
-	  char temp[20]={0};  //存放串口数据的临时数组
-		memcpy(temp,VariableWrite,sizeof(VariableWrite));
-		temp[2]= 13; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-		myunion.adress= column1st_count+floor*(0x0100); 
-		temp[4]= myunion.adr[1];
-		temp[5]= myunion.adr[0];
-    temp[7]= meal_cnt;
-		Uart3_Sent(temp,sizeof(temp));	
-}
+ 
 
- /*******************************************************************************
- * 函数名称:MealCostDisplay                                                                
- * 描    述:显示餐品数量                                                          
- *           更具floor 改变变量 ，meal_cnt 是要现实的数量                                                                    
- * 输    入:meal_id                                                                
- * 输    出:无                                                                     
- * 返    回:void                                                               
- * 修改日期:2014年3月13日                                                                    
- *******************************************************************************/ 							
-void MealCostDisplay(uint8_t meal_cost,uint8_t floor)							
-{
-	  char temp[20]={0};  //存放串口数据的临时数组
-		memcpy(temp,VariableWrite,sizeof(VariableWrite));
-		temp[2]= 13; //0x83 0x00 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-		myunion.adress= column1st_cost+floor*(0x0100); 
-		temp[4]= myunion.adr[1];
-		temp[5]= myunion.adr[0];
-    temp[7]= meal_cost;
-		Uart3_Sent(temp,sizeof(temp));	
-}
  /*******************************************************************************
  * 函数名称:DisplayPassWord                                                                 
  * 描    述:显示密码长度以*表示                                                     
@@ -438,15 +367,15 @@ void DispLeftMeal(void)
 {
 		uint8_t i;
 	  unsigned char temp[8]={0};  //存放串口数据的临时指针
-		for(i=0;i<MealKindTotoal;i++)
-    {		
+		for(i=0;i<4;i++)
+		{
       memcpy(temp,VariableWrite,sizeof(VariableWrite));
       temp[2]= 5;
       myunion.adress= meal1st_left+i; //在基地址推移位置
       temp[4]= myunion.adr[1];
-      temp[5]= myunion.adr[0];
-      temp[7]= DefineMeal[i].MealCount;//sell_type[i]存储的是四个菜品的ID
-      Uart3_Send(temp,sizeof(temp));	
+      temp[5]= myunion.adr[0];	
+      temp[7]= DefineMeal[sell_type[i]-1].MealCount;//sell_type[i]存储的是四个菜品的ID			
+			Uart3_Send(temp,sizeof(temp));	
 		}
 }
  /*******************************************************************************
@@ -550,6 +479,10 @@ void MealCostDisp(char meal_id,char meal_count)
  *******************************************************************************/ 
 void ClearUserBuffer(void)
 {
+	UserActMessageWriteToFlash.UserAct.MealType_1st=0;
+	UserActMessageWriteToFlash.UserAct.MealType_2nd=0;
+	UserActMessageWriteToFlash.UserAct.MealType_3rd=0;
+	UserActMessageWriteToFlash.UserAct.MealType_4th=0;
 	UserActMessageWriteToFlash.UserAct.MealCnt_1st=0;
 	UserActMessageWriteToFlash.UserAct.MealCnt_1st_t=0;
 	UserActMessageWriteToFlash.UserAct.MealCnt_2nd=0;
@@ -558,22 +491,10 @@ void ClearUserBuffer(void)
 	UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t=0;
 	UserActMessageWriteToFlash.UserAct.MealCnt_4th=0;
 	UserActMessageWriteToFlash.UserAct.MealCnt_4th_t=0;
-	UserActMessageWriteToFlash.UserAct.MealCnt_5th=0;
-	UserActMessageWriteToFlash.UserAct.MealCnt_5th_t=0;
-	UserActMessageWriteToFlash.UserAct.MealCnt_6th=0;
-	UserActMessageWriteToFlash.UserAct.MealCnt_6th_t=0;
-	UserActMessageWriteToFlash.UserAct.MealCnt_7th=0;
-	UserActMessageWriteToFlash.UserAct.MealCnt_7th_t=0;
-	UserActMessageWriteToFlash.UserAct.MealCnt_8th=0;
-	UserActMessageWriteToFlash.UserAct.MealCnt_8th_t=0;   
 	UserActMessageWriteToFlash.UserAct.MealCost_1st=0;
 	UserActMessageWriteToFlash.UserAct.MealCost_2nd=0;
 	UserActMessageWriteToFlash.UserAct.MealCost_3rd=0;
 	UserActMessageWriteToFlash.UserAct.MealCost_4th=0;
-	UserActMessageWriteToFlash.UserAct.MealCost_5th=0;
-	UserActMessageWriteToFlash.UserAct.MealCost_6th=0;  
-  UserActMessageWriteToFlash.UserAct.MealCost_7th=0;  
-  UserActMessageWriteToFlash.UserAct.MealCost_8th=0; 
 	UserActMessageWriteToFlash.UserAct.MealID=0;
 	UserActMessageWriteToFlash.UserAct.Meal_totoal=0;
 	UserActMessageWriteToFlash.UserAct.Meal_takeout=0;
@@ -601,53 +522,20 @@ void ClearUserBuffer(void)
  *******************************************************************************/ 
 void PutIntoShopCart(void)
 {
-	switch(UserActMessageWriteToFlash.UserAct.MealID)
-	{
-		case 0x01:
-		{
-			UserActMessageWriteToFlash.UserAct.MealCnt_1st= UserActMessageWriteToFlash.UserAct.MealCnt_1st_t;
-			UserActMessageWriteToFlash.UserAct.MealCost_1st = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,UserActMessageWriteToFlash.UserAct.MealCnt_1st);
-		}break;
-		case 0x02:
-		{
-			UserActMessageWriteToFlash.UserAct.MealCnt_2nd=UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t;
-			UserActMessageWriteToFlash.UserAct.MealCost_2nd = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,UserActMessageWriteToFlash.UserAct.MealCnt_2nd);
-		}break;
-		case 0x03:
-		{
-			UserActMessageWriteToFlash.UserAct.MealCnt_3rd=UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t;
-			UserActMessageWriteToFlash.UserAct.MealCost_3rd = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,UserActMessageWriteToFlash.UserAct.MealCnt_3rd);
-		}break;
-		case 0x04:
-		{
-			UserActMessageWriteToFlash.UserAct.MealCnt_4th=UserActMessageWriteToFlash.UserAct.MealCnt_4th_t;
-			UserActMessageWriteToFlash.UserAct.MealCost_4th = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,UserActMessageWriteToFlash.UserAct.MealCnt_4th);
-		}break;
-		case 0x05:
-		{
-			UserActMessageWriteToFlash.UserAct.MealCnt_5th=UserActMessageWriteToFlash.UserAct.MealCnt_5th_t;
-			UserActMessageWriteToFlash.UserAct.MealCost_5th = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,UserActMessageWriteToFlash.UserAct.MealCnt_5th);
-		}break;
-		case 0x06:
-		{
-			UserActMessageWriteToFlash.UserAct.MealCnt_6th=UserActMessageWriteToFlash.UserAct.MealCnt_6th_t;
-			UserActMessageWriteToFlash.UserAct.MealCost_6th = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,UserActMessageWriteToFlash.UserAct.MealCnt_6th);
-		}break;
-		case 0x07:
-		{
-			UserActMessageWriteToFlash.UserAct.MealCnt_7th=UserActMessageWriteToFlash.UserAct.MealCnt_7th_t;
-			UserActMessageWriteToFlash.UserAct.MealCost_7th = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,UserActMessageWriteToFlash.UserAct.MealCnt_7th);
-		}break;
-		case 0x08:
-		{
-			UserActMessageWriteToFlash.UserAct.MealCnt_8th=UserActMessageWriteToFlash.UserAct.MealCnt_8th_t;
-			UserActMessageWriteToFlash.UserAct.MealCost_8th = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,UserActMessageWriteToFlash.UserAct.MealCnt_8th);
-		}break;
-		default:break;	
-	}
-	//PageChange((UserActMessageWriteToFlash.UserAct.MealID-1)*3+6); //不知道这个是否出问题???
-	UserActMessageWriteToFlash.UserAct.Meal_totoal= UserActMessageWriteToFlash.UserAct.MealCost_8th+UserActMessageWriteToFlash.UserAct.MealCnt_7th+UserActMessageWriteToFlash.UserAct.MealCost_6th+UserActMessageWriteToFlash.UserAct.MealCnt_5th+
-                                                  +UserActMessageWriteToFlash.UserAct.MealCost_4th+UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
+
+  UserActMessageWriteToFlash.UserAct.MealCnt_1st= UserActMessageWriteToFlash.UserAct.MealCnt_1st_t;
+  UserActMessageWriteToFlash.UserAct.MealCost_1st = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealType_1st,UserActMessageWriteToFlash.UserAct.MealCnt_1st);
+
+  UserActMessageWriteToFlash.UserAct.MealCnt_2nd=UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t;
+  UserActMessageWriteToFlash.UserAct.MealCost_2nd = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealType_2nd,UserActMessageWriteToFlash.UserAct.MealCnt_2nd);
+
+  UserActMessageWriteToFlash.UserAct.MealCnt_3rd=UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t;
+  UserActMessageWriteToFlash.UserAct.MealCost_3rd = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealType_3rd,UserActMessageWriteToFlash.UserAct.MealCnt_3rd);
+
+  UserActMessageWriteToFlash.UserAct.MealCnt_4th=UserActMessageWriteToFlash.UserAct.MealCnt_4th_t;
+  UserActMessageWriteToFlash.UserAct.MealCost_4th = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealType_4th,UserActMessageWriteToFlash.UserAct.MealCnt_4th);
+
+	UserActMessageWriteToFlash.UserAct.Meal_totoal= +UserActMessageWriteToFlash.UserAct.MealCost_4th+UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
 }	
 
  /*******************************************************************************
@@ -661,102 +549,16 @@ void PutIntoShopCart(void)
 char Floor= 0; //作为有商品种类的层数
 void SettleAccounts(void)
 {
-	uint8_t tempcnt=0;
-	//清除屏幕显示数据
-  for(tempcnt=0;tempcnt<4;tempcnt++)
-	{
-		MealNameDisp(Null,tempcnt);
-		MealCntDisp(Null,tempcnt);//显示数量
-		MealCostDisplay(Null,tempcnt);//显示单总价 有两个重复		
-	}
-  for(Floor=0;Floor<4;Floor++)
-	{
-		DispMeal[Floor].meal_id= 0x00; //0x01为第一个餐品的ID
-		DispMeal[Floor].meal_cnt= 0x00; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= 0x00; //餐品单总价的赋值
-	}
-	Floor= 0;
-	tempcnt=0; /*计数清零*/
   PageChange(Acount_interface);//结算界面
-	//在这里做标记 current = payformoney
   //显示硬币数
 	VariableChage(payment_coin,UserActMessageWriteToFlash.UserAct.PayForCoins);
   //显示纸币数
 	VariableChage(payment_bill,UserActMessageWriteToFlash.UserAct.PayForBills);
   //刷卡数
 	VariableChage(payment_card,UserActMessageWriteToFlash.UserAct.PayForCards);
-  //显示等待时间
-	VariableChage(wait_payfor,60);
 	OpenTIM7();
 	//程序显示部分
-	Floor= 0; //每次进一次结账界面就需要从新写入数据
-	
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_1st>0)
-	{
-		DispMeal[Floor].meal_id= 0x01; //0x01为第一个餐品的ID
-		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_1st; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_1st; //餐品单总价的赋值
-		Floor++;
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_2nd>0)
-	{
-		DispMeal[Floor].meal_id= 0x02; //0x02为第二个餐品的ID
-		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_2nd; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_2nd; //餐品单总价的赋值
-		Floor++;
-	}		
-  if(UserActMessageWriteToFlash.UserAct.MealCnt_3rd>0)
-	{
-		DispMeal[Floor].meal_id= 0x03; //0x03为第三个餐品的ID
-		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_3rd; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_3rd; //餐品单总价的赋值
-		Floor++;		
-	}		
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_4th>0)
-	{
-		DispMeal[Floor].meal_id= 0x04; //0x01为第四个餐品的ID
-		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_4th; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_4th; //餐品单总价的赋值
-		Floor++;	
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_5th>0)
-	{
-		DispMeal[Floor].meal_id= 0x05; //0x01为第四个餐品的ID
-		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_5th; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_5th; //餐品单总价的赋值
-		Floor++;	
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_6th>0)
-	{
-		DispMeal[Floor].meal_id= 0x06; //0x01为第四个餐品的ID
-		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_6th; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_6th; //餐品单总价的赋值
-		Floor++;	
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_7th>0)
-	{
-		DispMeal[Floor].meal_id= 0x07; //0x01为第四个餐品的ID
-		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_7th; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_7th; //餐品单总价的赋值
-		Floor++;	
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_8th>0)
-	{
-		DispMeal[Floor].meal_id= 0x08; //0x01为第四个餐品的ID
-		DispMeal[Floor].meal_cnt= UserActMessageWriteToFlash.UserAct.MealCnt_8th; //餐品的数量赋值
-		DispMeal[Floor].meal_cost= UserActMessageWriteToFlash.UserAct.MealCost_8th; //餐品单总价的赋值
-		Floor++;	
-	}
-	//加入显示的部分：从第一栏开始到第四栏
-	for(tempcnt=0;tempcnt<Floor;tempcnt++)
-	{
-		MealNameDisp(DispMeal[tempcnt].meal_id,tempcnt);//显示菜名  
-		MealCntDisp(DispMeal[tempcnt].meal_cnt,tempcnt);//显示数量
-		MealCostDisplay(DispMeal[tempcnt].meal_cost,tempcnt);//显示单总价 有两个重复
-	}
-  if(Floor>4) while(1);/*如果用户选择的餐品大于4个直接报错*/
-	UserActMessageWriteToFlash.UserAct.PayShould= (UserActMessageWriteToFlash.UserAct.MealCost_1st+UserActMessageWriteToFlash.UserAct.MealCost_2nd+UserActMessageWriteToFlash.UserAct.MealCost_3rd+UserActMessageWriteToFlash.UserAct.MealCost_4th
-                                                +UserActMessageWriteToFlash.UserAct.MealCost_5th+UserActMessageWriteToFlash.UserAct.MealCost_6th+UserActMessageWriteToFlash.UserAct.MealCost_7th+UserActMessageWriteToFlash.UserAct.MealCost_8th);
+	UserActMessageWriteToFlash.UserAct.PayShould= UserActMessageWriteToFlash.UserAct.MealCost_1st+UserActMessageWriteToFlash.UserAct.MealCost_2nd+UserActMessageWriteToFlash.UserAct.MealCost_3rd+UserActMessageWriteToFlash.UserAct.MealCost_4th;
 	VariableChage(mealtotoal_cost,UserActMessageWriteToFlash.UserAct.PayShould);
 }
 
@@ -993,58 +795,30 @@ void DisplayUserRecord(void)
 	floor=0; //复原
 	if(UserActMessageWriteToFlash.UserAct.MealCnt_1st_t>0)  
 	{
-		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealCnt_1st_t,floor);
+		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealType_1st,floor);
 		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_1st_t,floor);
 		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_1st,floor);		
 		floor++;
 	}
 	if(UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t>0)
 	{
-		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t,floor);
+		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealType_2nd,floor);
 		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t,floor);
 		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_2nd,floor);	
 		floor++;
 	}
 	if(UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t>0)
 	{
-		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t,floor);
+		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealType_3rd,floor);
 		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t,floor);
 		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_3rd,floor);	
 		floor++;
 	}
 	if(UserActMessageWriteToFlash.UserAct.MealCnt_4th_t>0)
 	{
-		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealCnt_4th_t,floor);
+		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealType_4th,floor);
 		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_4th_t,floor);
 		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_4th,floor);	
-		floor++;
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_5th_t>0)
-	{
-		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealCnt_5th_t,floor);
-		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_5th_t,floor);
-		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_5th,floor);	
-		floor++;
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_6th_t>0)
-	{
-		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealCnt_6th_t,floor);
-		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_6th_t,floor);
-		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_6th,floor);	
-		floor++;
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_7th_t>0)
-	{
-		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealCnt_7th_t,floor);
-		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_7th_t,floor);
-		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_7th,floor);	
-		floor++;
-	}
-	if(UserActMessageWriteToFlash.UserAct.MealCnt_8th_t>0)
-	{
-		AbnomalMealNameDisp(UserActMessageWriteToFlash.UserAct.MealCnt_8th_t,floor);
-		AbnomalMealCnttDisp(UserActMessageWriteToFlash.UserAct.MealCnt_8th_t,floor);
-		AbnomalMealCntDisp(UserActMessageWriteToFlash.UserAct.MealCnt_8th,floor);	
 		floor++;
 	}
 		//显示用户已付 和  应退  和 已退
@@ -1173,198 +947,44 @@ int8_t  selltime_second_r=0;
 bool sellmeal_flag = true;
 void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 {
-	char MealID =0;
 	uint8_t i= 0,j=0;
 	  switch (VariableAdress)
 		{
 			case meal_choose: /*主角面用户选择*/
-			{
-				switch(VariableData[1])
+			{ 
+				//如果是按的是管理用户按键的话，直接弹出密码对话框，break
+				if(VariableData[1]==0x0f) 
 				{
-					case 0x01:
-						if(DefineMeal[0].MealCount > 0)	   //判断餐品是否大于0
-						{
-							PlayMusic(VOICE_1);
-							UserActMessageWriteToFlash.UserAct.MealID= VariableData[1]; //当前用户选餐的ID
-							UserActMessageWriteToFlash.UserAct.MealCnt_1st_t= 1;//设置默认分数为 1							
-							WaitTimeInit(&WaitTime);
-							OpenTIM3();
-							PageChange(MealNumChoose_interface);//显示相应界面
-						}break;						
-					case 0x02:
-						if(DefineMeal[1].MealCount > 0)	   //判断餐品是否大于0
-						{
-							PlayMusic(VOICE_1);
-							UserActMessageWriteToFlash.UserAct.MealID= VariableData[1];
-							UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t= 1;//设置默认分数为 1
-							WaitTimeInit(&WaitTime);
-							OpenTIM3();							
-							PageChange(MealNumChoose_interface);//显示相应界面	
-						}break;							
-					case 0x03:
-						if(DefineMeal[2].MealCount > 0)	   //判断餐品是否大于0
-						{
-							PlayMusic(VOICE_1);
-							UserActMessageWriteToFlash.UserAct.MealID= VariableData[1];
-							UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t= 1;//设置默认分数为 1
-							WaitTimeInit(&WaitTime);
-							OpenTIM3();							
-							PageChange(MealNumChoose_interface);//显示相应界面	
-						}break;						
-					case 0x04:
-					{					
-						if(DefineMeal[3].MealCount > 0)	   //判断餐品是否大于0
-						{
-							PlayMusic(VOICE_1);
-							UserActMessageWriteToFlash.UserAct.MealID= VariableData[1];
-							UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= 1;//设置默认分数为 1
-							WaitTimeInit(&WaitTime);							
-							OpenTIM3();	
-							PageChange(MealNumChoose_interface);//显示相应界面	
-						}			
-					}break;
-					case 0x05:
-						if(DefineMeal[4].MealCount > 0)	   //判断餐品是否大于0
-						{
-							PlayMusic(VOICE_1);
-							UserActMessageWriteToFlash.UserAct.MealID= VariableData[1];
-							UserActMessageWriteToFlash.UserAct.MealCnt_5th_t= 1;//设置默认分数为 1
-							WaitTimeInit(&WaitTime);
-							OpenTIM3();							
-							PageChange(MealNumChoose_interface);//显示相应界面	
-						}break;						
-					case 0x06:
-					{					
-						if(DefineMeal[5].MealCount > 0)	   //判断餐品是否大于0
-						{
-							PlayMusic(VOICE_1);
-							UserActMessageWriteToFlash.UserAct.MealID= VariableData[1];
-							UserActMessageWriteToFlash.UserAct.MealCnt_6th_t= 1;//设置默认分数为 1
-							WaitTimeInit(&WaitTime);							
-							OpenTIM3();	
-							PageChange(MealNumChoose_interface);//显示相应界面	
-						}			
-					}break;   
-					case 0x07:
-					{					
-						if(DefineMeal[6].MealCount > 0)	   //判断餐品是否大于0
-						{
-							PlayMusic(VOICE_1);
-							UserActMessageWriteToFlash.UserAct.MealID= VariableData[1];
-							UserActMessageWriteToFlash.UserAct.MealCnt_7th_t= 1;//设置默认分数为 1
-							WaitTimeInit(&WaitTime);							
-							OpenTIM3();	
-							PageChange(MealNumChoose_interface);//显示相应界面	
-						}			
-					}break;  
-					case 0x08:
-					{					
-						if(DefineMeal[7].MealCount > 0)	   //判断餐品是否大于0
-						{
-							PlayMusic(VOICE_1);
-							UserActMessageWriteToFlash.UserAct.MealID= VariableData[1];
-							UserActMessageWriteToFlash.UserAct.MealCnt_8th_t= 1;//设置默认分数为 1
-							WaitTimeInit(&WaitTime);							
-							OpenTIM3();	
-							PageChange(MealNumChoose_interface);//显示相应界面	
-						}			
-					}break;            
-					case 0x0F:  /*管理用户键*/
-					{
-						PageChange(Password_interface);
-					}break;
-					default:break;
-				}
+					PageChange(Password_interface); 
+					break;
+				}	
+				//在这里根据四个按键的返回值，结合套餐判断是哪一个ID
+				else
+				{
+          //需要加入当没有餐品的时候，不跳入选餐界面
+				  UserActMessageWriteToFlash.UserAct.MealID= sell_type[VariableData[1]-1];
+          if(DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount > 0)	   //判断餐品是否大于0
+          {
+            SearchMeal(UserActMessageWriteToFlash.UserAct.MealID ,1); 
+            WaitTimeInit(&WaitTime);
+            OpenTIM3();
+            PageChange(MealNumChoose_interface);//显示相应界面
+            PlayMusic(VOICE_1);
+				  }
+        }
 			}break;      				
 			case meal_choose_cnt: /*当前餐品的份数选择*/
 			{
-        pageunitil = MealNumChoose1_interface;
+        //pageunitil = MealNumChoose_interface;
 				if(VariableData[1]<= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount)	//设置餐品选择的上限
 				{
           PageChange(MealNumChoose_interface+VariableData[1]); //切换到选了几个餐品
-					switch(UserActMessageWriteToFlash.UserAct.MealID)
-          {
-            case 0x01:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_1st_t= VariableData[1];
-            }break;
-            case 0x02:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t= VariableData[1];
-            }break;
-            case 0x03:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t= VariableData[1];
-            }break;
-            case 0x04:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= VariableData[1];
-            }break;
-            case 0x05:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_5th_t= VariableData[1];
-            }break;
-            case 0x06:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_6th_t= VariableData[1];
-            }break;
-            case 0x07:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_7th_t= VariableData[1];
-            }break;
-            case 0x08:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_8th_t= VariableData[1];
-            }break; 
-            default:break;            
-          }
+					SearchMeal(UserActMessageWriteToFlash.UserAct.MealID ,VariableData[1]); //查找当前的餐品ID是否在用户已选的餐品中			
 				}
 				else
 				{
-					switch(UserActMessageWriteToFlash.UserAct.MealID)
-          {
-            case 0x01:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_1st_t= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount;
-              PageChange(MealNumChoose_interface+UserActMessageWriteToFlash.UserAct.MealCnt_1st_t); //切换到选了几个餐品
-            }break;
-            case 0x02:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount;
-              PageChange(MealNumChoose_interface+UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t); //切换到选了几个餐品
-            }break;
-            case 0x03:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount;
-              PageChange(MealNumChoose_interface+UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t); //切换到选了几个餐品              
-            }break;
-            case 0x04:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount;
-              PageChange(MealNumChoose_interface+UserActMessageWriteToFlash.UserAct.MealCnt_4th_t); //切换到选了几个餐品              
-            }break;
-            case 0x05:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_5th_t= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount;
-              PageChange(MealNumChoose_interface+UserActMessageWriteToFlash.UserAct.MealCnt_5th_t); //切换到选了几个餐品             
-            }break;
-            case 0x06:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_6th_t= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount;
-              PageChange(MealNumChoose_interface+UserActMessageWriteToFlash.UserAct.MealCnt_6th_t); //切换到选了几个餐品
-            }break;
-            case 0x07:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_7th_t= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount;
-              PageChange(MealNumChoose_interface+UserActMessageWriteToFlash.UserAct.MealCnt_7th_t); //切换到选了几个餐品
-            }break;
-            case 0x08:
-            {
-              UserActMessageWriteToFlash.UserAct.MealCnt_8th_t= DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount;
-              PageChange(MealNumChoose_interface+UserActMessageWriteToFlash.UserAct.MealCnt_8th_t); //切换到选了几个餐品
-            }break; 
-            default:break;  
-          }            
+					PageChange(MealNumChoose_interface+ DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount); //切换到选了几个餐品
+					SearchMeal(UserActMessageWriteToFlash.UserAct.MealID ,DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount); //查找当前的餐品ID是否在用户已选的餐品中			          
 				}	 						 
 			}break;     
       case mealcnt_choose:/*单页选择按钮*/
@@ -1377,7 +997,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
 					case 0x02:  /*继续选餐*/
 					{
-            PutIntoShopCart();
+            PutIntoShopCart(); //需要修改
 						PageChange(Menu_interface);
 						WaitTimeInit(&WaitTime);
 					}break;
@@ -1414,137 +1034,6 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
 					default:break;
 				}
-			}break;
-			/*改变四栏中餐品的数量*/
-			/*需要餐品的ID和行号:column1st_count, MealID*/
-			case column1st_count:MealID= DispMeal[0].meal_id;goto loop1;
-			case column2nd_count:MealID= DispMeal[1].meal_id;goto loop1;
-			case column3rd_count:MealID= DispMeal[2].meal_id;goto loop1;
-			case column4th_count:MealID= DispMeal[3].meal_id;goto loop1;
-			{
-loop1:	switch(MealID)
-				{
-					case 0x00:
-					{
-						VariableChage(VariableAdress,0); //维持原来所选的数量
-					}break;
-					case 0x01:
-					{
-					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//当用户选择数量小于或等于存货时
-				    {
-					    UserActMessageWriteToFlash.UserAct.MealCnt_1st =VariableData[1]; //将改变的值返回到结构体中
-					    UserActMessageWriteToFlash.UserAct.MealCost_1st =UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st; //计算单总价
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_1st); //改变数量
-					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_1st); //改变单总价，地址偏移1
-				    }
-				    else
-				    {	
-							VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_1st); //维持原来所选的数量
-				    }					
-					}break;
-					case 0x02:
-					{
-					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
-				    {
-					    UserActMessageWriteToFlash.UserAct.MealCnt_2nd =VariableData[1]; //将改变的值返回到结构体中
-					    UserActMessageWriteToFlash.UserAct.MealCost_2nd =UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd; //计算单总价
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_2nd); //改变数量
-					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_2nd); //改变单总价
-				    }
-				    else
-				    {
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_2nd); //维持原来所选的数量
-				    }									
-					}break;
-					case 0x03:
-					{
-					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
-				    {
-					    UserActMessageWriteToFlash.UserAct.MealCnt_3rd =VariableData[1]; //将改变的值返回到结构体中
-					    UserActMessageWriteToFlash.UserAct.MealCost_3rd =UserActMessageWriteToFlash.UserAct.MealCnt_3rd *price_3rd; //计算单总价
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_3rd); //改变数量
-					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_3rd); //改变单总价
-				    }
-				    else
-				    {
-					     VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_3rd); //维持原来所选的数量
-				    }							
-					}break;
-					case 0x04:
-					{
-					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
-				    {
-					    UserActMessageWriteToFlash.UserAct.MealCnt_4th =VariableData[1]; //将改变的值返回到结构体中
-					    UserActMessageWriteToFlash.UserAct.MealCost_4th =UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th; //计算单总价
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_4th); //改变数量
-					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_4th); //改变单总价
-				    }
-				    else
-				    {
-					     VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_4th); //维持原来所选的数量
-				    }							
-					}break;
-					case 0x05:
-					{
-					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
-				    {
-					    UserActMessageWriteToFlash.UserAct.MealCnt_5th =VariableData[1]; //将改变的值返回到结构体中
-					    UserActMessageWriteToFlash.UserAct.MealCost_5th =UserActMessageWriteToFlash.UserAct.MealCnt_5th *price_5th; //计算单总价
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_5th); //改变数量
-					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_5th); //改变单总价
-				    }
-				    else
-				    {
-					     VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_5th); //维持原来所选的数量
-				    }							
-					}break;
-					case 0x06:
-					{
-					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
-				    {
-					    UserActMessageWriteToFlash.UserAct.MealCnt_6th =VariableData[1]; //将改变的值返回到结构体中
-					    UserActMessageWriteToFlash.UserAct.MealCost_6th =UserActMessageWriteToFlash.UserAct.MealCnt_6th *price_6th; //计算单总价
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_6th); //改变数量
-					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_6th); //改变单总价
-				    }
-				    else
-				    {
-					     VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_6th); //维持原来所选的数量
-				    }							
-					}break; 
-					case 0x07:
-					{
-					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
-				    {
-					    UserActMessageWriteToFlash.UserAct.MealCnt_7th =VariableData[1]; //将改变的值返回到结构体中
-					    UserActMessageWriteToFlash.UserAct.MealCost_7th =UserActMessageWriteToFlash.UserAct.MealCnt_7th *price_7th; //计算单总价
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_7th); //改变数量
-					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_7th); //改变单总价
-				    }
-				    else
-				    {
-					     VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_7th); //维持原来所选的数量
-				    }							
-					}break;  
-					case 0x08:
-					{
-					  if(VariableData[1]<=DefineMeal[MealID-1].MealCount)//还是要判断数量
-				    {
-					    UserActMessageWriteToFlash.UserAct.MealCnt_8th =VariableData[1]; //将改变的值返回到结构体中
-					    UserActMessageWriteToFlash.UserAct.MealCost_8th =UserActMessageWriteToFlash.UserAct.MealCnt_8th *price_8th; //计算单总价
-					    VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_8th); //改变数量
-					    VariableChage(VariableAdress+(0x0010),UserActMessageWriteToFlash.UserAct.MealCost_8th); //改变单总价
-				    }
-				    else
-				    {
-					     VariableChage(VariableAdress,UserActMessageWriteToFlash.UserAct.MealCnt_8th); //维持原来所选的数量
-				    }							
-					}break;            
-					default:break;						
-				}
-				UserActMessageWriteToFlash.UserAct.PayShould= (UserActMessageWriteToFlash.UserAct.MealCost_1st+UserActMessageWriteToFlash.UserAct.MealCost_2nd+UserActMessageWriteToFlash.UserAct.MealCost_3rd+UserActMessageWriteToFlash.UserAct.MealCost_4th
-                                                      +UserActMessageWriteToFlash.UserAct.MealCost_5th+UserActMessageWriteToFlash.UserAct.MealCost_6th+UserActMessageWriteToFlash.UserAct.MealCost_7th+UserActMessageWriteToFlash.UserAct.MealCost_8th);
-	      VariableChage(mealtotoal_cost,UserActMessageWriteToFlash.UserAct.PayShould);
 			}break;
 			case payment_method: /*付款方式*/ 
 			{
@@ -1603,7 +1092,6 @@ loop1:	switch(MealID)
 			}break;
 			case caedbalence_cancel:/*刷卡取消*/
 			{
-				PageChange(Acount_interface);
 				cardbalence_cancel_flag=true;
 			}break;      
 			case bill_print:

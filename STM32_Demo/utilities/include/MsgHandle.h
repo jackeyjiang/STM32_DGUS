@@ -15,34 +15,26 @@ typedef struct MealAt
 
 extern MealAttribute DefineMeal[MealKindTotoal];	//定义8个菜系
 
-#define UserActiontotoaDatalSize  41
-
+#define UserActiontotoaDatalSize  33
+/*思路：满足很多餐品的*/
 typedef struct UserAction
 {
+	uint32_t MealType_1st;       //用户选择第一份餐品的ID
+	uint32_t MealType_2nd;       //用户选择第二份餐品的ID
+	uint32_t MealType_3rd;       //用户选择第三份餐品的ID
+	uint32_t MealType_4th;       //用户选择第四份餐品的ID
   uint32_t MealCnt_1st_t;      //用户选择第一种餐品的数量未按下放入购物车键时的临时数量
 	uint32_t MealCnt_2nd_t;      //用户选择第二种餐品的数量未按下放入购物车键时的临时数量
 	uint32_t MealCnt_3rd_t;      //用户选择第三种餐品的数量未按下放入购物车键时的临时数量
 	uint32_t MealCnt_4th_t;      //用户选择第四种餐品的数量未按下放入购物车键时的临时数量	
-	uint32_t MealCnt_5th_t;      //用户选择第五种餐品的数量未按下放入购物车键时的临时数量	
-	uint32_t MealCnt_6th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	
-	uint32_t MealCnt_7th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	
-	uint32_t MealCnt_8th_t;      //用户选择第六种餐品的数量未按下放入购物车键时的临时数量	  
   uint32_t MealCnt_1st;       //用户选择第一份餐品的数量
 	uint32_t MealCnt_2nd;       //用户选择第二份餐品的数量
 	uint32_t MealCnt_3rd;       //用户选择第三份餐品的数量
-	uint32_t MealCnt_4th;       //用户选择第四份餐品的数量
-	uint32_t MealCnt_5th;       //用户选择第五份餐品的数量
-	uint32_t MealCnt_6th;       //用户选择第六份餐品的数量  
-	uint32_t MealCnt_7th;       //用户选择第六份餐品的数量
-	uint32_t MealCnt_8th;       //用户选择第六份餐品的数量    
+	uint32_t MealCnt_4th;       //用户选择第四份餐品的数量  
   uint32_t MealCost_1st;      //用户选择第一份餐品的总价
 	uint32_t MealCost_2nd;      //用户选择第二份餐品的总价
 	uint32_t MealCost_3rd;      //用户选择第三份餐品的总价
 	uint32_t MealCost_4th;      //用户选择第四份餐品的总价
-	uint32_t MealCost_5th;      //用户选择第五份餐品的总价
-	uint32_t MealCost_6th;      //用户选择第六份餐品的总价 
-	uint32_t MealCost_7th;      //用户选择第六份餐品的总价 
-	uint32_t MealCost_8th;      //用户选择第六份餐品的总价     
 	uint32_t PayShould;          //用户应付款总额
 	uint32_t MealID;             //用户当前选择的餐品ID 
 	uint32_t Meal_totoal;        //用户选餐的总数
@@ -108,5 +100,6 @@ extern MealCompareDataStruct MealCompareData; /*餐品对比数据显示*/
 void StatisticsTotal(void);
 void MealArr(unsigned char index);
 void InitSetting(void);
+bool SearchMeal(uint32_t MealID ,uint32_t MealNum);
 
 #endif

@@ -64,7 +64,7 @@ typedef struct
 	const unsigned char MealType[4];
 
 }Meal_struction;
-extern	Meal_struction  	Meal[MealKindTotoal];
+extern	const Meal_struction  	Meal[MealKindTotoal];
 
 
 /*******************************************

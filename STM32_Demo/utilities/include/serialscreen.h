@@ -56,14 +56,10 @@
 #define ScreenDisable 0x00
 
 /*剩余菜品变量地址*/
-#define meal1st_left     0x0020 /*第一份菜品剩余的位置*/
-#define meal2nd_left	   0x0021 /*第二份菜品剩余的位置*/
-#define meal3rd_left     0x0022 /*第三份菜品剩余的位置*/
-#define meal4th_left     0x0023 /*第四份菜品剩余的位置*/
-#define meal5th_left     0x0024 /*第五份菜品剩余的位置*/
-#define meal6th_left     0x0025 /*第六份菜品剩余的位置*/
-#define meal7th_left     0x0026 /*第七份菜品剩余的位置*/
-#define meal8th_left     0x0027 /*第八份菜品剩余的位置*/
+#define meal1st_left     0x0021 /*第一份菜品剩余的位置*/
+#define meal2nd_left	   0x0022 /*第二份菜品剩余的位置*/
+#define meal3rd_left     0x0023 /*第三份菜品剩余的位置*/
+#define meal4th_left     0x0024 /*第四份菜品剩余的位置*/
 //
 /*装填选项,1:放满,2:清空,3:确认,4:取消,5:返回*/
 #define mealinput_choose  0x001A
@@ -105,19 +101,6 @@
 /*错误显示*/
 #define erro_num          0x050A //售餐停止界面
 
-/*购物车显示*/
-#define column1st_name  0x0100  //第一栏商品名
-#define column1st_count 0x0110  //第一栏餐品数量
-#define column1st_cost  0x0120  //第一栏商品总价
-#define column2nd_name  0x0200  //第二栏商品名
-#define column2nd_count 0x0210  //第二栏餐品数量
-#define column2nd_cost  0x0220  //第二栏商品总价
-#define column3rd_name  0x0300  //第三栏商品名
-#define column3rd_count 0x0310  //第三栏餐品数量
-#define column3rd_cost  0x0320  //第三栏商品总价
-#define column4th_name  0x0400  //第四栏商品名
-#define column4th_count 0x0410  //第四栏餐品数量
-#define column4th_cost  0x0420  //第四栏商品总价
 
 #define  mealtotoal_cost     0x0506  //总价
 #define  current_temprature  0x0507  //实时温度显示变量

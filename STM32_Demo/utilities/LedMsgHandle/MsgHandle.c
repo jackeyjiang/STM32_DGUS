@@ -99,6 +99,66 @@ void InitSetting(void)
 	VariableChage(row_2nd,CurFloor.SCount);
 	VariableChage(row_3rd,CurFloor.TCount);
 }
+
+ /*******************************************************************************
+ * 函数名称:SearchMeal                                                                    
+ * 描    述:查找当前的餐品ID是否在用户已选的餐品中 ，并将用户选择的餐品数和ID填入用户选择的结构体中                                                                
+ *                                                                               
+ * 输    入:当前餐品的ID， 当前餐品的数量                                                                
+ * 输    出:无                                                                     
+ * 返    回:false:错误  true:争取                                                               
+ * 修改日期:2014年9月19日                                                                    
+ *******************************************************************************/ 
+bool SearchMeal(uint32_t MealID ,uint32_t MealNum)
+{
+	/*如果有则赋值相关的餐品ID的数量*/
+  if(UserActMessageWriteToFlash.UserAct.MealType_1st== UserActMessageWriteToFlash.UserAct.MealID)
+	{
+		UserActMessageWriteToFlash.UserAct.MealCnt_1st_t= MealNum;
+	}
+	else if(UserActMessageWriteToFlash.UserAct.MealType_2nd== UserActMessageWriteToFlash.UserAct.MealID)
+	{
+		UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t= MealNum;
+	}
+	else if(UserActMessageWriteToFlash.UserAct.MealType_3rd== UserActMessageWriteToFlash.UserAct.MealID)
+	{
+		UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t= MealNum;
+	}
+	else if(UserActMessageWriteToFlash.UserAct.MealType_4th== UserActMessageWriteToFlash.UserAct.MealID)
+	{
+		UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= MealNum;
+	}
+	/*如果没有则查找那一栏的餐品为空*/
+  else
+	{
+		if(UserActMessageWriteToFlash.UserAct.MealType_1st== 0) //如果第一个ID为空的话，直接将ID赋值给
+		{
+			UserActMessageWriteToFlash.UserAct.MealType_1st= MealID;
+			UserActMessageWriteToFlash.UserAct.MealCnt_1st_t= MealNum;
+		}
+		else if(UserActMessageWriteToFlash.UserAct.MealType_2nd== 0)
+		{
+			UserActMessageWriteToFlash.UserAct.MealType_2nd= MealID;
+			UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t= MealNum;
+		}
+		else if(UserActMessageWriteToFlash.UserAct.MealType_3rd== 0)
+		{
+			UserActMessageWriteToFlash.UserAct.MealType_3rd= MealID;
+			UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t= MealNum;
+		}
+		else if(UserActMessageWriteToFlash.UserAct.MealType_4th== 0)
+		{
+			UserActMessageWriteToFlash.UserAct.MealType_4th= MealID;
+			UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= MealNum;
+		}
+		else
+    {
+			return false; //错误
+		}			
+	}
+	return true; //正确
+}
+
  /*******************************************************************************
  * 函数名称:MealArr                                                                     
  * 描    述: 餐品的属性                                                                 

@@ -12,7 +12,7 @@
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/
-void Uart1_Card(uint8_t *p,uint8_t sizeData)
+void Uart1_Card(const uint8_t *p,uint8_t sizeData)
 {
     uint8_t i;		   
 	  for(i=0; i<sizeData; i++)
@@ -22,24 +22,28 @@ void Uart1_Card(uint8_t *p,uint8_t sizeData)
  	  }
 }								   	
 										
- unsigned char PrintInitCmd[]={0x1b,0x40}; //打印机初始化
- unsigned char SetEntryPrintCHinese[]={0x1c,0x26};	  //进入汉子打印模式
- const unsigned char SetExitPrintCHinese[]={0x1c,0x2e};	  //退出打印模式
- unsigned char PrintMessage0[]    ={" 深圳菲莫斯智能智能餐饮有限公司"};	  //退出打印模式
- unsigned char PrintMessage1[]    ={"菜品     数量     单价     金额"};	  //退出打印模式
- unsigned char PrintMessagename0[]={"胡萝卜炒蛋   数量   单价   金额"};	  //退出打印模式
- unsigned char PrintMessagename1[]={"香菇滑鸡     数量   单价   金额"};	  //退出打印模式
- unsigned char PrintMessagename2[]={"脆皮烤鸭     数量   单价   金额"};	  //退出打印模式
- unsigned char PrintMessagename3[]={"红烧鱼块     数量   单价   金额"};	  //退出打印模式
- unsigned char PrintMessage2[]    ={"刷卡：             现金：       "};	  //退出打印模式
- unsigned char PrintMessage3[]    ={"应收：             找回：       "};	  //退出打印模式
- unsigned char PrintMessage4[]    ={"刷卡：             应收：       "};	  //退出打印模式
- unsigned char PrintMessage5[]    ={"     谢谢惠顾，请保留电脑小票   "};	  //退出打印模式
- unsigned char PrintMessage6[]    ={"          欢迎下次惠顾          "};	  //退出打印模式
- unsigned char PrintMessage7[]    ={"   时间：2013.08.12 12:30       "};	  //退出打印模式
- unsigned char PrintMessage8[]    ={"   电话：0755-XXXXXXXXX         "};	  //退出打印模式
 
 
+/*  样张
+ 菜品       数量  单价  单总价
+胡萝卜炒肉    1    15     15
+香菇滑鸡      1    20     20
+红烧鱼块      1    25     25
+脆皮烤鸭      1    30     30
+付款方式：银行卡支付/深圳通支付/现金支付
+应收:90  已收:100  找回:10
+时间:2014-04-16 23:19
+*/
+
+const uint8_t PrintInitCmd[2]={0x1b,0x40};          //打印机初始化
+const uint8_t SetEntryPrintCHinese[2]={0x1c,0x26};	//进入汉子打印模式
+const uint8_t SetExitPrintCHinese[2]={0x1c,0x2e};	  //退出打印模式
+const uint8_t SendStc[3]={0x1d,0x56,0x01};		      //切纸命令
+const uint8_t huan3[3]={0x1b,0x64,0x06};            //换三行
+
+unsigned char  p0[28]={"应收:201已收:   找回:   \r\n"};
+unsigned char  p1[28]={"时间:2013-12-15-12:30:00\r\n"};
+unsigned char  p2[32]={"              1     20    20 \r\n"};
  /*******************************************************************************
  * 函数名称:CheckPrintStatus                                                                     
  * 描    述:检查打印机的状态是否有纸张                                                                   
@@ -51,8 +55,8 @@ void Uart1_Card(uint8_t *p,uint8_t sizeData)
  *******************************************************************************/
 uint8_t CheckPrintStatus(void)
 {
-  uint8_t Cmd[]={0x10,0x04,0x04};
   uint8_t CurrentPoint = 0;
+	uint8_t Cmd[3]={0x10,0x04,0x04};
   switch(CurrentPoint)
   {
     case 0:
@@ -116,137 +120,127 @@ void COPY(Struct_TD  a,unsigned char *p0,unsigned char *p1)
 	p1[22] = a.Senconds / 10+'0';
   p1[23] = a.Senconds % 10+'0';
 }
-
  /*******************************************************************************
- * 函数名称:CheckPrintStatus                                                                     
- * 描    述:检查打印机的状态是否有纸张                                                                   
+ * 函数名称:SearchPrintMealID
+ * 描    述:查找ID，并赋值给p2, 赋值                                                             
  *                                                                               
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:unsigned char                                                               
- * 修改日期:2013年8月28日 
+ * 修改日期:2014年9月19日 
+ *******************************************************************************/
+void SearchPrintMealID(uint8_t MealID)
+{
+	/*如果有则赋值相关的餐品ID的数量*/
+		switch(MealID)
+		{
+			case 0x00:break;
+			case 0x01:
+			{
+				memcpy(p2,mealname_1st,10);
+			}break;	
+			case 0x02:
+			{
+				memcpy(p2,mealname_2nd,10);
+			}break;	
+			case 0x03:
+			{
+				memcpy(p2,mealname_3rd,14);
+			}break;	
+			case 0x04:
+			{
+				memcpy(p2,mealname_4th,10);
+			}break;	
+			case 0x05:
+			{
+				memcpy(p2,mealname_5th,10);
+			}break;	
+			case 0x06:
+			{
+				memcpy(p2,mealname_6th,12);
+			}break;	    
+			case 0x07:
+			{
+				memcpy(p2,mealname_7th,8);
+			}break;	
+			case 0x08:
+			{
+				memcpy(p2,mealname_8th,10);
+			}break;	
+			default:break;			
+		}
+}
+	
 
-
- 菜品       数量  单价  单总价
-胡萝卜炒肉    1    15     15
-香菇滑鸡      1    20     20
-红烧鱼块      1    25     25
-脆皮烤鸭      1    30     30
-付款方式：银行卡支付/深圳通支付/现金支付
-应收:90  已收:100  找回:10
-时间:2014-04-16 23:19
-
+ /*******************************************************************************
+ * 函数名称:SPRT                                                                     
+ * 描    述:打印用户的小票                                                                
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:unsigned char                                                               
+ * 修改日期:2014年9月19日 
  *******************************************************************************/
 
-
- P_stuction Print_Struct;
+P_stuction Print_Struct;
 void  SPRT(void)
 {
-  unsigned char   SendStc[3]={0x1d,0x56,0x01};		//切纸命令
-	unsigned char  huan3[]={0x1b,0x64,0x06};
-	unsigned char  p0[]={"应收:201已收:   找回:   \r\n"};
-	unsigned char  p1[]={"时间:2013-12-15-12:30:00\r\n"};
-	unsigned char  p2[]={"秘制猪手饭  1\t016\t016\r\n"};
-	unsigned char  p3[]={"卤香鸡腿饭  1\t016\t016\r\n"};
-	unsigned char  p4[]={"红萝卜炒肉饭1\t016\t016\r\n"};
-	unsigned char  p5[]={"黑椒猪扒饭  1\t016\t016\r\n"};
-  unsigned char  p6[]={"蒲烧鲷鱼饭  1\t018\t018\r\n"};
-  unsigned char  p7[]={"蒲烧秋刀鱼饭1\t018\t018\r\n"};
-  unsigned char  p8[]={"咖喱鸡饭    1\t016\t016\r\n"};
-  unsigned char  p9[]={"梅菜扣肉饭  1\t016\t016\r\n"};
-  //printf("@\r\n");//打印回车换行
-  //Uart1_Card(huan3,sizeof(huan3)); 
-  printf("菜品\t   数量\t单价\t金额\r\n"); 	
+	char num_t[10]={0};
   RTC_TimeShow();//得到当前的时间
 	COPY(TimeDate,p0,p1);
-  if(Print_Struct.P_Number1st>0)
-  {	
-		p2[12]= Print_Struct.P_Number1st%10 +'0'; 
-		p2[14]= price_1st/100+'0';
-		p2[15]= price_1st%100/10+'0';
-		p2[16]= price_1st%100%10+'0';
-		p2[18]= UserActMessageWriteToFlash.UserAct.MealCost_1st/100+'0';
-		p2[19]= UserActMessageWriteToFlash.UserAct.MealCost_1st%100/10+'0';
-		p2[20]= UserActMessageWriteToFlash.UserAct.MealCost_1st%100%10+'0';  
+/*--------------打票机初始化----------------------/
+  Uart1_Card(PrintInitCmd,sizeof(PrintInitCmd));
+  Uart1_Card(SetEntryPrintCHinese,sizeof(SetEntryPrintCHinese));
+/--------------打票机可以使用--------------------*/
+  printf("菜品         数量  单价  金额\r\n");
+	if(Print_Struct.P_Number1st>0)
+  {
+    memset(p2,0x20,34-4);
+	  SearchPrintMealID(Print_Struct.P_Type1st);
+		sprintf(num_t,"%1d",Print_Struct.P_Number1st);
+		memcpy(p2+14,num_t,1);
+		sprintf(num_t,"%2d",price_1st);
+		memcpy(p2+20,num_t,2);
+    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_1st);
+		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
   }
 	if(Print_Struct.P_Number2nd>0)
 	{
-		p3[12]= Print_Struct.P_Number2nd%10 +'0'; 
-		p3[14]= price_2nd/100+'0';
-		p3[15]= price_2nd%100/10+'0';
-		p3[16]= price_2nd%100%10+'0';
-		p3[18]= UserActMessageWriteToFlash.UserAct.MealCost_2nd/100+'0';
-		p3[19]= UserActMessageWriteToFlash.UserAct.MealCost_2nd%100/10+'0';
-		p3[20]= UserActMessageWriteToFlash.UserAct.MealCost_2nd%100%10+'0';
-		printf("%s",p3);
+    memset(p2,0x20,34-4);
+	  SearchPrintMealID(Print_Struct.P_Type2nd);
+		sprintf(num_t,"%1d",Print_Struct.P_Number2nd);
+		memcpy(p2+14,num_t,1);
+		sprintf(num_t,"%2d",price_2nd);
+		memcpy(p2+20,num_t,2);
+    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_2nd);
+		memcpy(p2+24,num_t,3);
+		printf("%s",p2);
 	}
   if(Print_Struct.P_Number3rd>0)
 	{
-		p4[12]= Print_Struct.P_Number3rd%10 +'0'; 
-		p4[14]= price_3rd/100+'0';
-		p4[15]= price_3rd%100/10+'0';
-		p4[16]= price_3rd%100%10+'0';
-		p4[18]= UserActMessageWriteToFlash.UserAct.MealCost_3rd/100+'0';
-		p4[19]= UserActMessageWriteToFlash.UserAct.MealCost_3rd%100/10+'0';
-		p4[20]= UserActMessageWriteToFlash.UserAct.MealCost_3rd%100%10+'0';
-		printf("%s",p4);
+    memset(p2,0x20,34-4);
+	  SearchPrintMealID(Print_Struct.P_Type3rd);
+		sprintf(num_t,"%1d",Print_Struct.P_Number3rd);
+		memcpy(p2+14,num_t,1);
+		sprintf(num_t,"%2d",price_3rd);
+		memcpy(p2+20,num_t,2);
+    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_3rd);
+		memcpy(p2+24,num_t,3);
+		printf("%s",p2);
 	}
 	if(Print_Struct.P_Number4th>0)
-	{		
-		p5[12]= Print_Struct.P_Number4th%10 +'0'; 
-		p5[14]= price_4th/100+'0';
-		p5[15]= price_4th%100/10+'0';
-		p5[16]= price_4th%100%10+'0';
-		p5[18]=UserActMessageWriteToFlash.UserAct.MealCost_4th/100+'0';
-		p5[19]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100/10+'0';
-		p5[20]=UserActMessageWriteToFlash.UserAct.MealCost_4th%100%10+'0';
-		printf("%s",p5);
+	{	
+    memset(p2,0x20,34-4);    
+	  SearchPrintMealID(Print_Struct.P_Type4th);
+		sprintf(num_t,"%1d",Print_Struct.P_Number4th);
+		memcpy(p2+14,num_t,1);
+		sprintf(num_t,"%2d",price_4th);
+		memcpy(p2+20,num_t,2);
+    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_4th);
+		memcpy(p2+24,num_t,3);
+		printf("%s",p2);
 	} 
-	if(Print_Struct.P_Number5th>0)
-	{		
-		p6[12]= Print_Struct.P_Number5th%10 +'0'; 
-		p6[14]= price_5th/100+'0';
-		p6[15]= price_5th%100/10+'0';
-		p6[16]= price_5th%100%10+'0';
-    p6[18]=UserActMessageWriteToFlash.UserAct.MealCost_5th/100+'0';
-		p6[19]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100/10+'0';
-		p6[20]=UserActMessageWriteToFlash.UserAct.MealCost_5th%100%10+'0';
-		printf("%s",p6);
-	} 
-	if(Print_Struct.P_Number6th>0)
-	{		
-		p7[12]= Print_Struct.P_Number6th%10 +'0'; 
-		p7[14]= price_6th/100+'0';
-		p7[15]= price_6th%100/10+'0';
-		p7[16]= price_6th%100%10+'0';
-    p7[18]=UserActMessageWriteToFlash.UserAct.MealCost_6th/100+'0';
-		p7[19]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100/10+'0';
-		p7[20]=UserActMessageWriteToFlash.UserAct.MealCost_6th%100%10+'0';
-		printf("%s",p7);
-	}
-	if(Print_Struct.P_Number7th>0)
-	{		
-		p8[12]= Print_Struct.P_Number7th%10 +'0'; 
-		p8[14]= price_7th/100+'0';
-		p8[15]= price_7th%100/10+'0';
-		p8[16]= price_7th%100%10+'0';
-    p8[18]=UserActMessageWriteToFlash.UserAct.MealCost_7th/100+'0';
-		p8[19]=UserActMessageWriteToFlash.UserAct.MealCost_7th%100/10+'0';
-		p8[20]=UserActMessageWriteToFlash.UserAct.MealCost_7th%100%10+'0';
-		printf("%s",p8);
-	}
-	if(Print_Struct.P_Number8th>0)
-	{		
-		p9[12]= Print_Struct.P_Number8th%10 +'0'; 
-		p9[14]= price_8th/100+'0';
-		p9[15]= price_8th%100/10+'0';
-		p9[16]= price_8th%100%10+'0';
-    p9[18]=UserActMessageWriteToFlash.UserAct.MealCost_8th/100+'0';
-		p9[19]=UserActMessageWriteToFlash.UserAct.MealCost_8th%100/10+'0';
-		p9[20]=UserActMessageWriteToFlash.UserAct.MealCost_8th%100%10+'0';
-		printf("%s",p9);
-	}  
   printf("%s",p0);
 	printf("%s",p1);
 	if(UserActMessageWriteToFlash.UserAct.PayType == '2' )
@@ -261,12 +255,12 @@ void  SPRT(void)
 	{
 		printf("支付方式：深圳通支付\r\n");
 	}
-  printf("服务热线：400-0755-677");
+  printf("服务热线：400-0755-677\r\n");
 	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(SendStc,sizeof(SendStc));//	切纸
 	Uart1_Card(huan3,sizeof(huan3));  
-  printf("深圳市速来食餐饮管理有限公司\r\n");
+  printf("深圳市速来食餐饮管理有限公司r\n");
   printf("\r\n");//切纸后换行，以免纸进入缝隙中	
 	printf("\r\n");//切纸后换行，以免纸进入缝隙中	
 }

@@ -2934,6 +2934,7 @@ loop5:
 		if(cardbalence_cancel_flag)
 		{
 			cardbalence_cancel_flag=false;
+      PageChange(Acount_interface);
 			return 0;
 		}
 	  if(cnt_t<30)
