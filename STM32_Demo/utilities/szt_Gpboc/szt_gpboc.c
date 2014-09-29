@@ -2934,7 +2934,6 @@ loop5:
 		if(cardbalence_cancel_flag)
 		{
 			cardbalence_cancel_flag=false;
-      PageChange(Acount_interface);
 			return 0;
 		}
 	  if(cnt_t<30)
@@ -3229,83 +3228,77 @@ uint8_t SztDeduct(int32_t money)
   {
   	flag0 = ManageGpbocReadCard();
   }
-  if(flag0 == 0x01) //成功
+  if(flag0 == 0x01) //读卡成功
   {
     FristMoney = UpReadCardData.SztMoney;			
     //显示深圳通金额 UpReadCardData.SztMoney
 	  VariableChagelong(cardbalence_before,UpReadCardData.SztMoney);
-	  EndMoney = FristMoney;
-  	Order_SztDeductOnce(money); //扣款
-  	delay_us(15);
-  	temp = 0xff;
-  	temp = ManageReOrderType(); 
-  	if(temp == R_SztDeductOnce)
-  	{
-  	  flag1 = ManageSztDeductOnce();
-  		if( flag1 == 1)
-  		{
-  		  flag3 = 1;
-  		}
-  		else if( flag1 == 0x52 )  //重操作扣款
-  		{
-				loop11:
-  		  Order_SztDeductAgain(money);
-				delay_us(15);
-				temp = 0xff;
-				temp = ManageSztDeductAgain();
-				if( temp == R_SztDeductAgain )
-				{
-					flag2 = ManageSztDeductAgain();
-					if( flag2 == 1)
-					{
-						flag3 = 1;
-					}
-				}
-  		}
-	  }
-		if( flag3 == 1) 
+	  //EndMoney = FristMoney;
+		if(UpReadCardData.SztMoney < money)// 余额不足
 		{
-	    if( (SztReductInf.BeginMoney - SztReductInf.EndMoney ) == money )
-			{
-				VariableChagelong(amountof_consumption,money);
-				VariableChagelong(cardbalence_after,SztReductInf.EndMoney);	
-				//显示深圳通扣款金额与余额，SztReductInf.BeginMoney（扣款前余额），SztReductInf.EndMoney（扣款后余额）
-				delay_ms(1000);
-				return 1;
-			}
-			else
-		  {
-			  //再次验卡
-				Order_Gpboc_ReadCard();
-				temp = 0xff;
-				temp = ManageReOrderType();
-				if(temp == R_GpbocReadCard)
-				{
-					flag4 = ManageGpbocReadCard();
-				}
-				if(flag4 == 0x01)
-				{
-					EndMoney= UpReadCardData.SztMoney;
-				}
-			}
-	  }
-		else
-		{
-			tempcount++;
-			if(tempcount <10)
-			{
-				goto loop11;
-			}
 			
 		}
-		if( (flag4 == 0x01) &&(flag3 == 0x01))
+		else
 		{
-			TrueMoney = FristMoney - EndMoney;
-			if( TrueMoney == money)
+//			printf("深圳通初次扣款操作\r\n");
+			Order_SztDeductOnce(money); //扣款
+			delay_us(15);
+				loop11:
+			temp = 0xff;
+			temp = ManageReOrderType(); 
+			if(temp == R_SztDeductOnce) //初次扣款
 			{
-				endflag = 1;
+				flag1 = ManageSztDeductOnce();
+				if( flag1 == 1) //扣款成功
+				{
+					flag3 = 1;
+				}
+				else if( flag1 == 0x52 )  //重操作扣款
+				{
+//					loop11:
+//					printf("扣款重操作\r\n");
+					Order_SztDeductAgain(money);
+					delay_us(15);
+					temp = 0xff;
+					temp = ManageSztDeductAgain();
+					if( temp == R_SztDeductAgain )
+					{
+						flag2 = ManageSztDeductAgain();
+						if( flag2 == 1)
+						{
+							flag3 = 1;
+						}
+					}
+				}
+				
+				if(flag3 ==1)  //扣款成功
+				{
+					VariableChagelong(amountof_consumption,money);  //显示扣款金额
+					VariableChagelong(cardbalence_after,SztReductInf.EndMoney);  //显示扣款后余额
+					delay_ms(1000);
+					return 1;
+				}
+				else
+				{
+	//        tempcount++;
+	//  			if(tempcount <10)
+	//  			{
+	//  				goto loop11;
+	//  			}
+				}
 			}
-		}
+			else			
+			{
+				tempcount++;
+				if(tempcount <10)
+				{
+					goto loop11;
+				}
+			}
+  	
+      //
+      
+	  }
   }
 	else
 	{

@@ -403,6 +403,7 @@ unsigned char  WaitPayMoney(void)
 uint8_t WaitMeal(void)
 {
 	uint8_t MealoutCurrentPointer=0;
+  uint8_t takemeal_timecnt=0;
   //static unsigned char Cmd[20]={0x05, 0x31, 0x30, 0x30, 0x31, 0x30 ,0x30, 0x36, 0x34, 0x30, 0x30, 0x30, 0x34, 0x4D, 0x31, 0x35, 0x43, 0x03, 0x0D ,0x0A};
 	uint8_t temp;
 	do
@@ -518,6 +519,8 @@ uint8_t WaitMeal(void)
 				if(machinerec.retodoor == 1)   //到达出餐口
 				{
 					machinerec.retodoor = 0;
+          LinkTime =0;	
+          takemeal_timecnt=1;
 					//播放请取餐语音
 					PlayMusic(VOICE_9);
 				}
@@ -527,11 +530,6 @@ uint8_t WaitMeal(void)
 					//printf("取餐5秒了还未取到餐\r\n");	 
 					erro_record |= (1<<GetMealError);
 					return takemeal_erro;
-				}
-				if(machinerec.retodoor == 1) //到达出餐口
-				{
-					machinerec.retodoor = 0;		
-					LinkTime =0;		 
 				}
 				//printf("餐未超过了三分钟还未被取走\r\n");
 				if( machinerec.remealaway == 1) //餐已被取走
@@ -544,15 +542,27 @@ uint8_t WaitMeal(void)
 				}
 				if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
 			  {
-					if( LinkTime >=40) //餐在出餐口未被取走，一直等待时间时间大于20s播放语音提示取餐
+					if( LinkTime >=20) //餐在出餐口未被取走，一直等待时间时间大于20s播放语音提示取餐
 					{
-						if(LinkTime%20==0)
-						{
-							PlayMusic(VOICE_10);
-						}
+						PlayMusic(VOICE_10);
 						LinkTime= 0;
-					}					
-				//语音提示“请取走出餐口的餐 "
+					}
+        }					
+				if(takemeal_timecnt==1) //如果没有收到过了20S餐盒没有被取走则从到达出餐口的位置计时
+				{
+          if(LinkTime >=20)
+					{
+						erro_record |= (1<<MealNoAway);
+					  return takemeal_erro;
+					}
+				}	
+				else   //从发送完取餐命令计时
+				{
+          if(LinkTime>60)
+					{
+						erro_record |= (1<<GetMealError);
+					  return takemeal_erro;	
+					}						
 				} 
 			}break;			    
 			case 5:     /*对用户数据进行减一*/  //?? 如果需要进行错误退币，需要修该返回值所在范围
@@ -794,6 +804,14 @@ void AbnormalHandle(uint32_t erro)
             payfor_meal =(UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st+ UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd+ UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th);  
                         
 						UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already= (UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);//计算已退币的钱（需要处理，要两次退币的数据）
+            
+              //显示用户已付 和  应退  和 已退
+            VariableChage(record_UserActPayAlready,UserActMessageWriteToFlash.UserAct.PayAlready);
+              //应退的钱 = 总的应该退币的钱
+            VariableChage(record_UserActPayBack,UserActMessageWriteToFlash.UserAct.MoneyBackShould);
+              //已退的钱 = 总的应该退币的钱- 还未退的钱
+            VariableChage(record_UserActPayBackAlready,UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);            
+                      
 						DataUpload(Failed);//只有当UserActMessageWriteToFlash.UserAct.MealID!=0的时候才上传餐品的数据
 						SaveUserData();
 					}
@@ -981,7 +999,7 @@ void AbnormalHandle(uint32_t erro)
 				StatusUploadingFun(0xE711); //状态上送
 				DataUpload(Failed);
 			}break;
-		case SendUR6Erro:      //发送数据异常或超时
+		case SendUR6Erro:      //机械手串口通讯超时
 			{
 	      PlayMusic(VOICE_11);
         DisplayAbnormal("E801");	
@@ -1016,6 +1034,8 @@ void AbnormalHandle(uint32_t erro)
       {
         PageChange(OnlymachieInit_interface);					
         OnlymachieInit(); //机械手的初始化
+        erro_record &= ~(1<<arm_limit);
+        RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
       }
       else
       {

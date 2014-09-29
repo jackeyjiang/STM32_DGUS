@@ -34,7 +34,10 @@ int main(void)
 		AbnormalHandle(arm_limit);//需要处理数据上传的断电
 	}
   else 
+  {
+    delay_ms(1000);    //延时优化机械手复位
 	  OnlymachieInit();  //机械手初始化
+  }
 	PageChange(SignInFunction_interface);
   if(!EchoFuntion(RTC_TimeRegulate)) 
     AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/
@@ -352,7 +355,8 @@ int main(void)
 			{
         uint8_t meal_kind=0;//餐品种类变量
         uint8_t meal_empty_cnt=0;
-        uint8_t check_cnt=0;
+        uint8_t check_cnt=0; //刷卡器上传计数
+        uint8_t check_cnt_t=0;
 				waitmeal_status= WaitMeal();  
 			  if(waitmeal_status == takeafter_meal) //出餐完毕
 				{
@@ -381,7 +385,13 @@ int main(void)
             {
               if(1== UpperGpboc()) ++check_cnt; 
               if(1== SztAutoSend()) ++check_cnt; 
-              if(check_cnt==2)break;
+              check_cnt_t++;
+              if((check_cnt_t>10)||(check_cnt>=2))//超时退出主循环 成功退出主循环
+              {
+                check_cnt=0;
+                check_cnt_t=0;
+                break; 
+              }
             }
           }
           else

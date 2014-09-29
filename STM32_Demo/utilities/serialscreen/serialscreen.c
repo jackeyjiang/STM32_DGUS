@@ -25,6 +25,7 @@ typedef struct DispMeal
 DispMealStuct DispMeal[4]={0};
 
 char price=0;
+char temprature_old=0;
 
 /*将数据16位存储器地址分解为2个8位数据*/
 union ScreenRam
@@ -843,9 +844,9 @@ void GetPassWord(unsigned char *PassWord)
   PassWord[0] = 5;
 	PassWord[1] = 1;
 	PassWord[2] = 8;
-	PassWord[3] = 5;
-	PassWord[4] = 1;
-	PassWord[5] = 8;
+	PassWord[3] = 2;
+	PassWord[4] = 0;
+	PassWord[5] = 7;
 }
  /*******************************************************************************
  * 函数名称:GetAdminPassWord                                                                     
@@ -858,12 +859,12 @@ void GetPassWord(unsigned char *PassWord)
  *******************************************************************************/  
 void GetAdminPassWord(unsigned char *PassWord)
 {
-  PassWord[0] = 1;
-	PassWord[1] = 2;
-	PassWord[2] = 3;
-	PassWord[3] = 4;
-	PassWord[4] = 5;
-	PassWord[5] = 6;
+  PassWord[0] = 0x01;
+	PassWord[1] = 0x08;
+	PassWord[2] = 0x04;
+	PassWord[3] = 0x07;
+	PassWord[4] = 0x05;
+	PassWord[5] = 0x0b;
 }
  /*******************************************************************************
  * 函数名称:GetUserPassword                                                                     
@@ -877,10 +878,10 @@ void GetAdminPassWord(unsigned char *PassWord)
 void GetUserPassWord(unsigned char *PassWord)
 {
   PassWord[0] = 6;
-	PassWord[1] = 6;
+	PassWord[1] = 1;
 	PassWord[2] = 6;
 	PassWord[3] = 6;
-	PassWord[4] = 6;
+	PassWord[4] = 1;
 	PassWord[5] = 6;  
 }
  /*******************************************************************************
@@ -1210,6 +1211,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
                PassWordLen = 0;	
                if(erro_record!=0)
                {
+                 /*当*/
                  if(!((erro_record&1<<arm_limit)||(erro_record&1<<signin_erro)||erro_record&1<<network_erro))
                    DisplayUserRecord();
                  PageChange(UserAbonamalRecord_interface);
@@ -1290,20 +1292,8 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 			}break;
 			case meal_num: //当改变餐品的编号的时候，需要查找当前的ID
 			{
-				uint8_t cnt_t=0;
-        uint8_t meal_id_t=0,find_flag=0;
-        for(meal_id_t=0;meal_id_t<4;meal_id_t++)
-        {
-          if(sell_type[VariableData[1]-1]==sell_type[meal_id_t]);            
-            find_flag=1;
-            break;
-        }
-        if(find_flag==1)
-			    CurFloor.MealID= sell_type[VariableData[1]-1];	//当前的就是餐品的ID
-        else
-        {
-          CurFloor.MealID= sell_type[0]; //当查不到输入的ID与本地的id不匹配则选最小号的ID
-        }	
+				uint8_t cnt_t= 0;
+			  CurFloor.MealID= sell_type[VariableData[1]-1];	//当前的就是餐品的ID
 				InitSetting();
 				for(cnt_t = 0; cnt_t < FloorMealNum; cnt_t++)  //查找那一层有是空的
 				{
@@ -1408,7 +1398,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						uint8_t cnt_t=0,floor=0;
 						for(cnt_t=0x00;cnt_t<0x04;cnt_t++)
 						{
-							/*显示餐品,数量*/									
+							/*显示餐品,数量,清空显示*/									
               SyncMealNameDisp(0,cnt_t);
               SyncMealCntDisp(0xFF,cnt_t); 									 
 						}	
@@ -1420,7 +1410,11 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						/*上传断网后的数据，供后台实时更新数据*/
             // SendtoServce(); //不要，因为没有用， 
 						//数据同步子程序
-						MealDataCompareFun();
+						if(0==MealDataCompareFun()) /*同步超时返回，不显示对比数据*/      
+            {
+              PageChange(Data_synchronization+2);
+              break;        
+            }
 						if(MealCompareData.MealCompareTotoal==0xFFFFFFFF) //正确
 						 {
 							 mealneed_sync = false;
@@ -1485,11 +1479,13 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
         if(VariableData[1]==0xFF)
         {
           PageChange(MealSet_interface);
-          VariableChage(temprature_set,0);
+          VariableChage(temprature_set,temprature_old);
         }
         else
         {
           SetTemper(VariableData[1]);
+          temprature_old= VariableData[1];    
+          if(VariableData[1]==99)  VariableChage(temprature_set,temprature_old);  //显示当前的温度   
         }
 				
 			}break;

@@ -41,8 +41,8 @@ const uint8_t SetExitPrintCHinese[2]={0x1c,0x2e};	  //退出打印模式
 const uint8_t SendStc[3]={0x1d,0x56,0x01};		      //切纸命令
 const uint8_t huan3[3]={0x1b,0x64,0x06};            //换三行
 
-unsigned char  p0[28]={"应收:201已收:   找回:   \r\n"};
-unsigned char  p1[28]={"时间:2013-12-15-12:30:00\r\n"};
+unsigned char  p0[32]={"应收:    已收:    找回:   \r\n"};
+unsigned char  p1[28]={"时间:2013-12-15 12:30:00\r\n"};
 unsigned char  p2[32]={"              1     20    20 \r\n"};
  /*******************************************************************************
  * 函数名称:CheckPrintStatus                                                                     
@@ -91,34 +91,31 @@ uint8_t CheckPrintStatus(void)
  * 返    回:无                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/
-void COPY(Struct_TD  a,unsigned char *p0,unsigned char *p1)
-{										
-	p0[5]=UserActMessageWriteToFlash.UserAct.PayShould/100+'0';
-	p0[6]=UserActMessageWriteToFlash.UserAct.PayShould%100/10+'0';
-	p0[7]=UserActMessageWriteToFlash.UserAct.PayShould%100%10+'0';
-
-	p0[13]=Print_Struct.P_paymoney /100+'0';
-	p0[14]=Print_Struct.P_paymoney %100/10+'0';
-	p0[15]=Print_Struct.P_paymoney %100%10+'0';
-
-	p0[21]=Print_Struct.P_MoneyBack/100+'0';
-	p0[22]=Print_Struct.P_MoneyBack%100/10+'0';
-	p0[23]=Print_Struct.P_MoneyBack%100%10+'0';
+void COPY(Struct_TD  a,unsigned char *p10,unsigned char *p11)
+{
+  char temp[10]={0};
+  char length=0;
+  length=sprintf(temp,"%d",UserActMessageWriteToFlash.UserAct.PayShould);
+  memcpy(p10+5,temp,length);
+  length=sprintf(temp,"%d",Print_Struct.P_paymoney);
+  memcpy(p10+14,temp,length);
+  length=sprintf(temp,"%1d",Print_Struct.P_MoneyBack);
+  memcpy(p10+23,temp,length);
 			
-	p1[5]  ='2';
-	p1[6] = '0';
-	p1[7] = a.Year     / 10+'0';
-	p1[8] = a.Year     % 10+'0';
-	p1[10] = a.Month    / 10+'0';
-	p1[11] = a.Month    % 10+'0';
-	p1[13] = a.Date     / 10+'0';
-	p1[14] = a.Date     % 10+'0';
-	p1[16] = a.Hours    / 10+'0';
-	p1[17] = a.Hours    % 10+'0';
-	p1[19] = a.Minutes  / 10+'0';
-	p1[20] = a.Minutes  % 10+'0';
-	p1[22] = a.Senconds / 10+'0';
-  p1[23] = a.Senconds % 10+'0';
+	p11[5]  ='2';
+	p11[6] = '0';
+	p11[7] = a.Year     / 10+'0';
+	p11[8] = a.Year     % 10+'0';
+	p11[10] = a.Month    / 10+'0';
+	p11[11] = a.Month    % 10+'0';
+	p11[13] = a.Date     / 10+'0';
+	p11[14] = a.Date     % 10+'0';
+	p11[16] = a.Hours    / 10+'0';
+	p11[17] = a.Hours    % 10+'0';
+	p11[19] = a.Minutes  / 10+'0';
+	p11[20] = a.Minutes  % 10+'0';
+	p11[22] = a.Senconds / 10+'0';
+  p11[23] = a.Senconds % 10+'0';
 }
  /*******************************************************************************
  * 函数名称:SearchPrintMealID
@@ -199,9 +196,9 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type1st);
 		sprintf(num_t,"%1d",Print_Struct.P_Number1st);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",price_1st);
+		sprintf(num_t,"%2d",price_1st*10/Discount);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_1st);
+    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_1st*10/Discount);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
   }
@@ -211,10 +208,10 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type2nd);
 		sprintf(num_t,"%1d",Print_Struct.P_Number2nd);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",price_2nd);
+		sprintf(num_t,"%2d",price_2nd*10/Discount);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_2nd);
-		memcpy(p2+24,num_t,3);
+    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_2nd*10/Discount);
+		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
   if(Print_Struct.P_Number3rd>0)
@@ -223,10 +220,10 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type3rd);
 		sprintf(num_t,"%1d",Print_Struct.P_Number3rd);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",price_3rd);
+		sprintf(num_t,"%2d",price_3rd*10/Discount);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_3rd);
-		memcpy(p2+24,num_t,3);
+    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_3rd*10/Discount);
+		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
 	if(Print_Struct.P_Number4th>0)
@@ -235,12 +232,13 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type4th);
 		sprintf(num_t,"%1d",Print_Struct.P_Number4th);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",price_4th);
+		sprintf(num_t,"%2d",price_4th*10/Discount);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_4th);
-		memcpy(p2+24,num_t,3);
+    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_4th*10/Discount);
+		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
-	} 
+	}
+  printf("优惠信息:%d折\r\n",Discount);  
   printf("%s",p0);
 	printf("%s",p1);
 	if(UserActMessageWriteToFlash.UserAct.PayType == '2' )
@@ -260,7 +258,7 @@ void  SPRT(void)
 	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(SendStc,sizeof(SendStc));//	切纸
 	Uart1_Card(huan3,sizeof(huan3));  
-  printf("深圳市速来食餐饮管理有限公司r\n");
+  printf("深圳市速来食餐饮管理有限公司\r\n");
   printf("\r\n");//切纸后换行，以免纸进入缝隙中	
 	printf("\r\n");//切纸后换行，以免纸进入缝隙中	
 }

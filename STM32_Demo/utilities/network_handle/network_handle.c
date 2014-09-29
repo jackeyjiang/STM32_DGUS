@@ -50,7 +50,7 @@ unsigned char  UpdataFlag[3+1]=  {0xc1,0x00,0x01,0x00};                         
 unsigned char  MenuNo[3+1]= {0xdd,0x00,0x01,0x01};                                        /*菜单编号,0x01,0x02,0x03,0x04,0x05（初步）*/
 unsigned char  ACK[3+1]={0xc0,0x00,0x02,0x00};                                            //应答码
 unsigned char  WordKeyCipher[11]={0xc7,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};//工作密钥
-
+__attribute__ ((aligned (1)))
 /*与后台进行数据交换的结构体：可修改*/
 const Meal_struction Meal[MealKindTotoal]={
 						    /*餐品数量*/	 /*餐品ID*/ 			     /*餐品名字*/				    /*餐品价格*/			     /*餐品类型*/
@@ -64,11 +64,10 @@ const Meal_struction Meal[MealKindTotoal]={
                    0x00,0x00,	 0x10,0x00,0x00,0x48,  {"梅菜扣肉饭      "},   0x00,0x00,0x00,0x00,0x20,0x00, 	{"C001"},
 						   };
 unsigned char	Record_buffer[254] = {0} ;
-__attribute__ ((aligned (1)))
 
 const uint8_t  DeviceTemperature[2+3]={0xdc,0x00,0x02,0x00,0x00};	   /*设备温度，最后的一个字节为温度*/
 const uint8_t  DeviceCoinsTotal[2+3] ={0xde,0x00,0x02,0x00,0x00};	   /*机内硬币数，后两个字节存储的是机内*/
-const uint8_t  Discount =10;  //定义折扣10折(不打折),5折(半价),0折(不要钱)
+const uint8_t  Discount =5;  //定义折扣10折(不打折),5折(半价),0折(不要钱)
 
 const char price_1st= 20*Discount/10; 
 const char price_2nd= 20*Discount/10;
@@ -95,7 +94,7 @@ uint8_t sell_type[4]={0};//存储四个菜品的的ID,在签到的时候需要获取的有当前需要显
 /*与后台对应，套餐结构体装套餐所存的餐品ID，四个*/
 const uint8_t sell_type_1st[4]={0x01,0x02,0x03,0x05}; //第一个售餐菜单
 const uint8_t sell_type_2nd[4]={0x03,0x05,0x07,0x08}; //第二个售餐菜单
-const uint8_t sell_type_3rd[4]={0x01,0x02,0x07,0x08}; //第三个售餐菜单
+const uint8_t sell_type_3rd[4]={0x01,0x02,0x05,0x08}; //第三个售餐菜单
 const uint8_t sell_type_4th[4]={0x05,0x06,0x01,0x02}; //第四个售餐菜单
 const uint8_t sell_type_5th[4]={0x05,0x06,0x01,0x02}; //第五个售餐菜单
  /*******************************************************************************
