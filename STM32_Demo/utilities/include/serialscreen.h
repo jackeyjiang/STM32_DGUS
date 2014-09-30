@@ -123,6 +123,7 @@
 #define coins_retain 0x0052 //保留硬币数量
 #define coins_back	 0x0053 //当前退币数量
 #define coins_key    0x0054 //退币的按键
+#define coins_clear  0x0057 //清楚总计硬币隐蔽按键
 
 #define caedbalence_cancel    0x0055  //刷卡取消按键
 #define record_clear          0x0056  //清楚记录按键

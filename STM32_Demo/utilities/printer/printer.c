@@ -41,7 +41,7 @@ const uint8_t SetExitPrintCHinese[2]={0x1c,0x2e};	  //退出打印模式
 const uint8_t SendStc[3]={0x1d,0x56,0x01};		      //切纸命令
 const uint8_t huan3[3]={0x1b,0x64,0x06};            //换三行
 
-unsigned char  p0[32]={"应收:    已收:    找回:   \r\n"};
+unsigned char  p0[36]={0};
 unsigned char  p1[28]={"时间:2013-12-15 12:30:00\r\n"};
 unsigned char  p2[32]={"              1     20    20 \r\n"};
  /*******************************************************************************
@@ -94,13 +94,15 @@ uint8_t CheckPrintStatus(void)
 void COPY(Struct_TD  a,unsigned char *p10,unsigned char *p11)
 {
   char temp[10]={0};
-  char length=0;
-  length=sprintf(temp,"%d",UserActMessageWriteToFlash.UserAct.PayShould);
-  memcpy(p10+5,temp,length);
-  length=sprintf(temp,"%d",Print_Struct.P_paymoney);
-  memcpy(p10+14,temp,length);
-  length=sprintf(temp,"%1d",Print_Struct.P_MoneyBack);
-  memcpy(p10+23,temp,length);
+  char length=0,length_totoal=0;
+  length=sprintf(temp,"应付:%0d元 ",UserActMessageWriteToFlash.UserAct.PayShould);
+  memcpy(p10,temp,length);
+  length_totoal+=length;
+  length=sprintf(temp,"已付:%0d元 ",Print_Struct.P_paymoney);
+  memcpy(p10+length_totoal,temp,length);
+  length_totoal+=length;
+  length=sprintf(temp,"找回:%0d元\r\n",Print_Struct.P_MoneyBack);
+  memcpy(p10+length_totoal,temp,length);
 			
 	p11[5]  ='2';
 	p11[6] = '0';
@@ -198,7 +200,7 @@ void  SPRT(void)
 		memcpy(p2+14,num_t,1);
 		sprintf(num_t,"%2d",price_1st*10/Discount);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_1st*10/Discount);
+    sprintf(num_t,"%3d",Print_Struct.P_Cost1st*10/Discount);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
   }
@@ -210,7 +212,7 @@ void  SPRT(void)
 		memcpy(p2+14,num_t,1);
 		sprintf(num_t,"%2d",price_2nd*10/Discount);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_2nd*10/Discount);
+    sprintf(num_t,"%3d",Print_Struct.P_Cost2nd*10/Discount);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
@@ -222,7 +224,7 @@ void  SPRT(void)
 		memcpy(p2+14,num_t,1);
 		sprintf(num_t,"%2d",price_3rd*10/Discount);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_3rd*10/Discount);
+    sprintf(num_t,"%3d",Print_Struct.P_Cost3rd*10/Discount);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
@@ -234,7 +236,7 @@ void  SPRT(void)
 		memcpy(p2+14,num_t,1);
 		sprintf(num_t,"%2d",price_4th*10/Discount);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",UserActMessageWriteToFlash.UserAct.MealCost_4th*10/Discount);
+    sprintf(num_t,"%3d",Print_Struct.P_Cost4th*10/Discount);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}

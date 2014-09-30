@@ -88,15 +88,12 @@ void PrintTickFun(uint32_t *PrintTickFlag)
 {      
 	if(*PrintTickFlag == 0x00000001 )
 	{
-		 TIM_Cmd(TIM4, DISABLE);
 		/*打印小票的函数*/
 		 SPRT();
-	   TIM_Cmd(TIM4, ENABLE);
 	}	 
 	if(*PrintTickFlag == 0x00000002 )
 	{
-	   TIM_Cmd(TIM4, DISABLE);
-		 TIM_Cmd(TIM4, ENABLE);
+    /*不打印*/
 	}
 	
 }	
@@ -542,7 +539,7 @@ uint8_t WaitMeal(void)
 				}
 				if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
 			  {
-					if( LinkTime >=20) //餐在出餐口未被取走，一直等待时间时间大于20s播放语音提示取餐
+					if( LinkTime >=25) //餐在出餐口未被取走，一直等待时间时间大于20s播放语音提示取餐
 					{
 						PlayMusic(VOICE_10);
 						LinkTime= 0;
@@ -550,8 +547,12 @@ uint8_t WaitMeal(void)
         }					
 				if(takemeal_timecnt==1) //如果没有收到过了20S餐盒没有被取走则从到达出餐口的位置计时
 				{
-          if(LinkTime >=20)
+          if(LinkTime >=25)
 					{
+            if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_1st)UserActMessageWriteToFlash.UserAct.MealCnt_1st--;
+            else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_2nd)UserActMessageWriteToFlash.UserAct.MealCnt_2nd--;
+            else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_3rd)UserActMessageWriteToFlash.UserAct.MealCnt_3rd--;
+            else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_4th)UserActMessageWriteToFlash.UserAct.MealCnt_4th--;
 						erro_record |= (1<<MealNoAway);
 					  return takemeal_erro;
 					}
@@ -1021,6 +1022,7 @@ void AbnormalHandle(uint32_t erro)
         DisplayAbnormal("E803");	
 	      PageChange(Err_interface);
 				StatusUploadingFun(0xE803); //状态上送
+        DataUpload(Success);
       }break;
 		default:break;
 	}
@@ -1137,7 +1139,7 @@ void hardfawreInit(void)
 	 Uart5_Configuration();		//网络串口初始化 1 , 1
 	 TIM2_Init();		        //电机
 	 TIM3_Init();		        //餐品数量选择倒计时
-	 TIM4_Init();		        //打印倒计时5S
+	 TIM4_Init();		        //售餐倒计时
 	 TIM5_Init();		        //机械手倒计时
 	 TIM7_Init();				    //购物车界面倒计时
    InitCoins();		        //投币机初始化

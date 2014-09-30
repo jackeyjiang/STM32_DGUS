@@ -937,6 +937,7 @@ void RecRegisterValues(char VariableAdress,char *VariableData,char length)
  *******************************************************************************/ 
 char meal1st_cnt_t= 0,chicken_cnt_t= 0,duck_cnt_t= 0,fish_cnt_t= 0; /*临时数量*/
 uint8_t  PassWordLen=0;	//密码的长度为0
+uint8_t  clear_cnt=0; //清楚硬币数计数
 uint8_t  PassWord[6]={0};
 uint8_t  InputPassWord[6]={0};
 bool cardbalence_cancel_flag= false;
@@ -1565,17 +1566,34 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				}
 				else if(VariableData[1] == 0x03) /*返回*/
 				{
+          clear_cnt=0;
 					StopRefond();
 					PageChange(Menu_interface);
 				}
 			}break;	
-      case 	coins_input: /*将要将放置的硬币与总数联合起来*/
+      case coins_input: /*将要将放置的硬币与总数联合起来*/
       {
         myunion.adr[0] =	VariableData[1];
 				myunion.adr[1] =	VariableData[0];
 				CoinTotoal_t   =  myunion.adress;
 				VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+ CoinTotoal_t);//显示机内硬币数			
 			}break;
+      case coins_clear: /*清除硬币计数*/
+      {
+        if(VariableData[1]==0x01)
+        {
+          clear_cnt++;
+          if(clear_cnt>5)
+          {
+            clear_cnt=0;
+            CoinTotoal_t  =  0;
+            CoinsTotoalMessageWriteToFlash.CoinTotoal = 0;
+            VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+ CoinTotoal_t);//显示机内硬币数	        
+            VariableChage(coins_input,CoinsTotoalMessageWriteToFlash.CoinTotoal+ CoinTotoal_t); //将增加的硬币数清零
+            WriteCoins();
+          }
+        }
+      }break;
       case set_sellmeal_hour: /*售餐设置的小时*/	
 			{
 				selltime_hour_t= VariableData[1];		
