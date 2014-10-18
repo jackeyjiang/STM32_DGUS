@@ -381,6 +381,7 @@ int main(void)
           }
           if(meal_empty_cnt==MealKindTotoal)
           {
+            PageChange(Menu_interface+1);//显示售罄界面
             while(1)
             {
               if(1== UpperGpboc()) ++check_cnt; 

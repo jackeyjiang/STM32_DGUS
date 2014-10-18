@@ -109,6 +109,8 @@ extern const char price_5th;
 extern const char price_6th;
 extern const char price_7th;
 extern const char price_8th;
+extern const char price_9th;
+extern const char price_10th;
 extern const char    mealname_1st[12]; 
 extern const char    mealname_2nd[12];
 extern const char    mealname_3rd[18];
@@ -117,6 +119,8 @@ extern const char    mealname_5th[12];
 extern const char    mealname_6th[14];
 extern const char    mealname_7th[10];
 extern const char    mealname_8th[12];
+extern const char    mealname_9th[12];
+extern const char    mealname_10th[12];
 
 uint16_t mem_copy01(unsigned char *dest, const unsigned char *source, const long s_len);
 uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len);

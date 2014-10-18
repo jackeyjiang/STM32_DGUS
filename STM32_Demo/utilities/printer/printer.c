@@ -166,6 +166,14 @@ void SearchPrintMealID(uint8_t MealID)
 			{
 				memcpy(p2,mealname_8th,10);
 			}break;	
+			case 0x09:
+			{
+				memcpy(p2,mealname_9th,10);
+			}break;
+			case 0x0A:
+			{
+				memcpy(p2,mealname_10th,10);
+			}break;	
 			default:break;			
 		}
 }
@@ -240,7 +248,7 @@ void  SPRT(void)
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
-  printf("优惠信息:%d折\r\n",Discount);  
+  //printf("优惠信息:%d折\r\n",Discount);  
   printf("%s",p0);
 	printf("%s",p1);
 	if(UserActMessageWriteToFlash.UserAct.PayType == '2' )

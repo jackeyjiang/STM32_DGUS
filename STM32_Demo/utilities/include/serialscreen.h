@@ -32,15 +32,15 @@
 #define UserAbonamalRecord_interface   0x24  /*异常用户记录界面*/
 
 #define Menu1st_interface              0x26  /*菜单一餐品售卖界面*/
-#define MealSet1st_interface           0x28  /*菜单一餐品设置界面*/
-#define Menu2nd_interface              0x2A  /*菜单二餐品售卖界面*/
-#define MealSet2nd_interface           0x2C  /*菜单二餐品设置界面*/
-#define Menu3rd_interface              0x2E  /*菜单三餐品售卖界面*/
-#define MealSet3rd_interface           0x30  /*菜单三餐品设置界面*/
-#define Menu4th_interface              0x32  /*菜单四餐品售卖界面*/
-#define MealSet4th_interface           0x34  /*菜单四餐品设置界面*/
-#define Menu5th_interface              0x36  /*菜单五餐品售卖界面*/
-#define MealSet5th_interface           0x38  /*菜单五餐品设置界面*/
+#define MealSet1st_interface           0x29  /*菜单一餐品设置界面*/
+#define Menu2nd_interface              0x2B  /*菜单二餐品售卖界面*/
+#define MealSet2nd_interface           0x2E  /*菜单二餐品设置界面*/
+#define Menu3rd_interface              0x30  /*菜单三餐品售卖界面*/
+#define MealSet3rd_interface           0x33  /*菜单三餐品设置界面*/
+#define Menu4th_interface              0x35  /*菜单四餐品售卖界面*/
+#define MealSet4th_interface           0x38  /*菜单四餐品设置界面*/
+#define Menu5th_interface              0x3A  /*菜单五餐品售卖界面*/
+#define MealSet5th_interface           0x3D  /*菜单五餐品设置界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/

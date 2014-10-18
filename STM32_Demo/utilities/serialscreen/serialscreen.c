@@ -445,7 +445,14 @@ unsigned char GetMealPrice(char meal_type,char count)
 		{
       price= price_8th*count;
 		}break;
-    
+		case 0x09:
+		{
+      price= price_8th*count;
+		}break;
+		case 0x0a:
+		{
+      price= price_8th*count;
+		}break;    
 		default:break;
 	}
 	return price;
@@ -591,6 +598,8 @@ void SyncMealNameDisp(uint8_t meal_id,uint8_t floor)
 			case 0x06:mystrcat(temp,mealname_6th,14);break;
 			case 0x07:mystrcat(temp,mealname_7th,12);break;
 			case 0x08:mystrcat(temp,mealname_8th,12);break;      
+      case 0x09:mystrcat(temp,mealname_9th,12);break;   
+      case 0x0A:mystrcat(temp,mealname_10th,12);break;   
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -647,7 +656,9 @@ void AbnomalMealNameDisp(uint8_t meal_id,uint8_t floor)
 			case 0x05:mystrcat(temp,mealname_5th,12);break;
 			case 0x06:mystrcat(temp,mealname_6th,14);break;
 			case 0x07:mystrcat(temp,mealname_7th,12);break;
-			case 0x08:mystrcat(temp,mealname_8th,12);break;      
+			case 0x08:mystrcat(temp,mealname_8th,12);break;  
+			case 0x09:mystrcat(temp,mealname_9th,12);break;   
+			case 0x0A:mystrcat(temp,mealname_10th,12);break;         
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -967,7 +978,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				  UserActMessageWriteToFlash.UserAct.MealID= sell_type[VariableData[1]-1];
           if(DefineMeal[UserActMessageWriteToFlash.UserAct.MealID-1].MealCount > 0)	   //判断餐品是否大于0
           {
-            SearchMeal(UserActMessageWriteToFlash.UserAct.MealID ,1); 
+            SearchMeal(UserActMessageWriteToFlash.UserAct.MealID ,1); //没有份数的缺省值，不选择的话不录入1
             WaitTimeInit(&WaitTime);
             OpenTIM3();
             PageChange(MealNumChoose_interface);//显示相应界面
