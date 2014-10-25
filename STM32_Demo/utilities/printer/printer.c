@@ -174,6 +174,34 @@ void SearchPrintMealID(uint8_t MealID)
 			{
 				memcpy(p2,mealname_10th,10);
 			}break;	
+			case 0x0B:
+			{
+				memcpy(p2,mealname_11th,10);
+			}break;	
+			case 0x0C:
+			{
+				memcpy(p2,mealname_12th,10);
+			}break;	
+      case 0x0D:
+			{
+				memcpy(p2,mealname_13th,10);
+			}break;	
+      case 0x0E:
+			{
+				memcpy(p2,mealname_14th,8);
+			}break;	
+      case 0x0F:
+			{
+				memcpy(p2,mealname_15th,8);
+			}break;	
+      case 0x10:
+			{
+				memcpy(p2,mealname_16th,10);
+			}break;	
+      case 0x11:
+			{
+				memcpy(p2,mealname_17th,10);
+			}break;	
 			default:break;			
 		}
 }
@@ -206,7 +234,7 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type1st);
 		sprintf(num_t,"%1d",Print_Struct.P_Number1st);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",price_1st*10/Discount);
+		sprintf(num_t,"%2d",Print_Struct.P_Price1st*10/Discount);
 		memcpy(p2+20,num_t,2);
     sprintf(num_t,"%3d",Print_Struct.P_Cost1st*10/Discount);
 		memcpy(p2+25,num_t,3);
@@ -218,7 +246,7 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type2nd);
 		sprintf(num_t,"%1d",Print_Struct.P_Number2nd);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",price_2nd*10/Discount);
+		sprintf(num_t,"%2d",Print_Struct.P_Price2nd*10/Discount);
 		memcpy(p2+20,num_t,2);
     sprintf(num_t,"%3d",Print_Struct.P_Cost2nd*10/Discount);
 		memcpy(p2+25,num_t,3);
@@ -230,7 +258,7 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type3rd);
 		sprintf(num_t,"%1d",Print_Struct.P_Number3rd);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",price_3rd*10/Discount);
+		sprintf(num_t,"%2d",Print_Struct.P_Price3rd*10/Discount);
 		memcpy(p2+20,num_t,2);
     sprintf(num_t,"%3d",Print_Struct.P_Cost3rd*10/Discount);
 		memcpy(p2+25,num_t,3);
@@ -242,7 +270,7 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type4th);
 		sprintf(num_t,"%1d",Print_Struct.P_Number4th);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",price_4th*10/Discount);
+		sprintf(num_t,"%2d",Print_Struct.P_Price4th*10/Discount);
 		memcpy(p2+20,num_t,2);
     sprintf(num_t,"%3d",Print_Struct.P_Cost4th*10/Discount);
 		memcpy(p2+25,num_t,3);

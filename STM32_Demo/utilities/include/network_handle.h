@@ -97,6 +97,7 @@ extern const uint8_t sell_type_2nd[4];
 extern const uint8_t sell_type_3rd[4]; 
 extern const uint8_t sell_type_4th[4]; 
 extern const uint8_t sell_type_5th[4];
+extern const uint8_t sell_type_6th[4];
 extern uint8_t Menu_interface;//当前显示的售餐界面
 extern uint8_t Menuset_interface; //当前显示的设餐界面
 extern uint8_t Menu_interface;
@@ -111,6 +112,13 @@ extern const char price_7th;
 extern const char price_8th;
 extern const char price_9th;
 extern const char price_10th;
+extern const char price_11th;
+extern const char price_12th;
+extern const char price_13th;
+extern const char price_14th;
+extern const char price_15th;
+extern const char price_16th;
+extern const char price_17th;
 extern const char    mealname_1st[12]; 
 extern const char    mealname_2nd[12];
 extern const char    mealname_3rd[18];
@@ -121,6 +129,13 @@ extern const char    mealname_7th[10];
 extern const char    mealname_8th[12];
 extern const char    mealname_9th[12];
 extern const char    mealname_10th[12];
+extern const char    mealname_11th[12];
+extern const char    mealname_12th[12];
+extern const char    mealname_13th[12];
+extern const char    mealname_14th[10];
+extern const char    mealname_15th[10];
+extern const char    mealname_16th[12];
+extern const char    mealname_17th[12];
 
 uint16_t mem_copy01(unsigned char *dest, const unsigned char *source, const long s_len);
 uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len);

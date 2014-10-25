@@ -3,7 +3,7 @@
 #include "stdint.h"
 #include "stm32f4xx.h"
 #define FloorMealNum    15				   /*定义有多少个行*/
-#define MealKindTotoal  10           /*定义有几个餐品*/
+#define MealKindTotoal  17           /*定义有几个餐品*/
 typedef struct MealAt
 {
     
@@ -13,9 +13,9 @@ typedef struct MealAt
 	
 }MealAttribute;	  ////定义单个菜系的属性。
 
-extern MealAttribute DefineMeal[MealKindTotoal];	//定义8个菜系
+extern MealAttribute DefineMeal[MealKindTotoal];	//定义MealKindTotoal个菜系
 
-#define UserActiontotoaDatalSize  33
+#define UserActiontotoaDatalSize  37
 /*思路：满足很多餐品的*/
 typedef struct UserAction
 {
@@ -27,10 +27,14 @@ typedef struct UserAction
 	uint32_t MealCnt_2nd_t;      //用户选择第二种餐品的数量未按下放入购物车键时的临时数量
 	uint32_t MealCnt_3rd_t;      //用户选择第三种餐品的数量未按下放入购物车键时的临时数量
 	uint32_t MealCnt_4th_t;      //用户选择第四种餐品的数量未按下放入购物车键时的临时数量	
-  uint32_t MealCnt_1st;       //用户选择第一份餐品的数量
-	uint32_t MealCnt_2nd;       //用户选择第二份餐品的数量
-	uint32_t MealCnt_3rd;       //用户选择第三份餐品的数量
-	uint32_t MealCnt_4th;       //用户选择第四份餐品的数量  
+  uint32_t MealCnt_1st;        //用户选择第一份餐品的数量
+	uint32_t MealCnt_2nd;        //用户选择第二份餐品的数量
+	uint32_t MealCnt_3rd;        //用户选择第三份餐品的数量
+	uint32_t MealCnt_4th;        //用户选择第四份餐品的数量
+  uint32_t MealPrice_1st;      //用户选择第一份餐品的单价
+	uint32_t MealPrice_2nd;      //用户选择第二份餐品的单价
+	uint32_t MealPrice_3rd;      //用户选择第三份餐品的单价
+	uint32_t MealPrice_4th;      //用户选择第四份餐品的单价   
   uint32_t MealCost_1st;      //用户选择第一份餐品的总价
 	uint32_t MealCost_2nd;      //用户选择第二份餐品的总价
 	uint32_t MealCost_3rd;      //用户选择第三份餐品的总价

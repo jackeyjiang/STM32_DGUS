@@ -13,6 +13,10 @@ typedef struct
 	 unsigned char  P_Number2nd;     /*第二餐品购买的分数*/
 	 unsigned char  P_Number3rd;     /*第三餐品购买的分数*/
 	 unsigned char  P_Number4th;     /*第四餐品购买的分数*/
+   unsigned char  P_Price1st;       /*第一份购买的餐品单总价*/
+	 unsigned char  P_Price2nd;       /*第二份购买的餐品单总价*/
+	 unsigned char  P_Price3rd;       /*第三份购买的餐品单总价*/
+	 unsigned char  P_Price4th;       /*第四份购买的餐品单总价*/  
    unsigned char  P_Cost1st;       /*第一份购买的餐品单总价*/
 	 unsigned char  P_Cost2nd;       /*第二份购买的餐品单总价*/
 	 unsigned char  P_Cost3rd;       /*第三份购买的餐品单总价*/

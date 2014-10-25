@@ -325,6 +325,12 @@ void MenuChange(uint8_t MenuNO)
       MealSet_interface= MealSet5th_interface;   
       memcpy(sell_type,sell_type_5th,4);     
     }break; 
+    case 0x06:
+    {
+      Menu_interface= Menu6th_interface;
+      MealSet_interface= MealSet6th_interface;   
+      memcpy(sell_type,sell_type_6th,4);     
+    }break; 
     default:break;    
   }
 }
@@ -447,11 +453,39 @@ unsigned char GetMealPrice(char meal_type,char count)
 		}break;
 		case 0x09:
 		{
-      price= price_8th*count;
+      price= price_9th*count;
 		}break;
 		case 0x0a:
 		{
-      price= price_8th*count;
+      price= price_10th*count;
+		}break;    
+		case 0x0b:
+		{
+      price= price_11th*count;
+		}break;
+		case 0x0c:
+		{
+      price= price_12th*count;
+		}break;   
+		case 0x0d:
+		{
+      price= price_13th*count;
+		}break;
+		case 0x0e:
+		{
+      price= price_14th*count;
+		}break;   
+		case 0x0f:
+		{
+      price= price_15th*count;
+		}break;
+		case 0x10:
+		{
+      price= price_16th*count;
+		}break;
+		case 0x11:
+		{
+      price= price_17th*count;
 		}break;    
 		default:break;
 	}
@@ -499,6 +533,10 @@ void ClearUserBuffer(void)
 	UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t=0;
 	UserActMessageWriteToFlash.UserAct.MealCnt_4th=0;
 	UserActMessageWriteToFlash.UserAct.MealCnt_4th_t=0;
+	UserActMessageWriteToFlash.UserAct.MealPrice_1st=0;
+	UserActMessageWriteToFlash.UserAct.MealPrice_2nd=0;
+	UserActMessageWriteToFlash.UserAct.MealPrice_3rd=0;
+	UserActMessageWriteToFlash.UserAct.MealPrice_4th=0;   
 	UserActMessageWriteToFlash.UserAct.MealCost_1st=0;
 	UserActMessageWriteToFlash.UserAct.MealCost_2nd=0;
 	UserActMessageWriteToFlash.UserAct.MealCost_3rd=0;
@@ -599,7 +637,14 @@ void SyncMealNameDisp(uint8_t meal_id,uint8_t floor)
 			case 0x07:mystrcat(temp,mealname_7th,12);break;
 			case 0x08:mystrcat(temp,mealname_8th,12);break;      
       case 0x09:mystrcat(temp,mealname_9th,12);break;   
-      case 0x0A:mystrcat(temp,mealname_10th,12);break;   
+      case 0x0A:mystrcat(temp,mealname_10th,12);break; 
+      case 0x0B:mystrcat(temp,mealname_11th,12);break; 
+      case 0x0C:mystrcat(temp,mealname_12th,12);break; 
+      case 0x0D:mystrcat(temp,mealname_13th,12);break; 
+      case 0x0E:mystrcat(temp,mealname_14th,12);break; 
+      case 0x0F:mystrcat(temp,mealname_15th,12);break; 
+      case 0x10:mystrcat(temp,mealname_16th,12);break; 
+      case 0x11:mystrcat(temp,mealname_17th,12);break;      
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -658,7 +703,14 @@ void AbnomalMealNameDisp(uint8_t meal_id,uint8_t floor)
 			case 0x07:mystrcat(temp,mealname_7th,12);break;
 			case 0x08:mystrcat(temp,mealname_8th,12);break;  
 			case 0x09:mystrcat(temp,mealname_9th,12);break;   
-			case 0x0A:mystrcat(temp,mealname_10th,12);break;         
+			case 0x0A:mystrcat(temp,mealname_10th,12);break;  
+      case 0x0B:mystrcat(temp,mealname_11th,12);break; 
+      case 0x0C:mystrcat(temp,mealname_12th,12);break; 
+      case 0x0D:mystrcat(temp,mealname_13th,12);break; 
+      case 0x0E:mystrcat(temp,mealname_14th,12);break; 
+      case 0x0F:mystrcat(temp,mealname_15th,12);break; 
+      case 0x10:mystrcat(temp,mealname_16th,12);break; 
+      case 0x11:mystrcat(temp,mealname_17th,12);break;        
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	

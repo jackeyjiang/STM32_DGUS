@@ -220,8 +220,9 @@ int main(void)
                   UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd= UserActMessageWriteToFlash.UserAct.MoneyBackAlready- UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st;
                   
                  //需要上传交易金额 = 就是没有出的餐品的总价+
-                  payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st +UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th);
-                                		           
+                   payfor_meal+=(UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
+                                +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);
+                                  	                                 		           
 									Current = erro_hanle;	
 								}
                 else if(UserActMessageWriteToFlash.UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
@@ -254,7 +255,8 @@ int main(void)
                  //计算第二次退了多少币
                   UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd= UserActMessageWriteToFlash.UserAct.MoneyBackAlready- UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st;
                  //需要上传交易金额 = 就是没有出的餐品的总价+(未上传的钱币数)
-                   payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st +UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd+ UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th);	          
+                   payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
+                                 +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);	          
 									Current = erro_hanle;	
 								}
                 else if(UserActMessageWriteToFlash.UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
@@ -289,8 +291,8 @@ int main(void)
                //计算第二次退了多少币
                 UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd= UserActMessageWriteToFlash.UserAct.MoneyBackAlready- UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st;
                //需要上传交易金额 = 就是没有出的餐品的总价+（没有上传的钱的数）
-                payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st +UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd+ UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th);	         
-                Current = erro_hanle;	
+                payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
+                              +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);	                 Current = erro_hanle;	
               }
               else if(UserActMessageWriteToFlash.UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
               {
@@ -335,7 +337,8 @@ int main(void)
            //计算第二次退了多少币
             UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd= UserActMessageWriteToFlash.UserAct.MoneyBackAlready- UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st;                       
            //需要上传交易金额 = 就是没有出的餐品的总价
-            payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st *price_1st+ UserActMessageWriteToFlash.UserAct.MealCnt_2nd *price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd+ UserActMessageWriteToFlash.UserAct.MealCnt_4th *price_4th);         
+            payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
+                          +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);	                 
             Current = erro_hanle;	
 					}
           else
@@ -382,6 +385,7 @@ int main(void)
           if(meal_empty_cnt==MealKindTotoal)
           {
             PageChange(Menu_interface+1);//显示售罄界面
+            SendtoServce(); //当售完餐品后，需要在之前没有上传的数据上传
             while(1)
             {
               if(1== UpperGpboc()) ++check_cnt; 
@@ -408,16 +412,19 @@ int main(void)
         else if(waitmeal_status == takemeal_erro)
 				{
 					//计算总的应退币数	
-				  UserActMessageWriteToFlash.UserAct.MoneyBackShould+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st* price_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd* price_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_3rd* price_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th* price_4th);
+				  UserActMessageWriteToFlash.UserAct.MoneyBackShould+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
+                                                               +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);
           //计算还有多少币没有退
-          UserActMessageWriteToFlash.UserAct.MoneyBack+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st* price_1st+ UserActMessageWriteToFlash.UserAct.MealCnt_2nd* price_2nd+ UserActMessageWriteToFlash.UserAct.MealCnt_3rd *price_3rd+ UserActMessageWriteToFlash.UserAct.MealCnt_4th* price_4th);
+          UserActMessageWriteToFlash.UserAct.MoneyBack+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
+                          +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);
 					PageChange(Err_interface);
 					UserActMessageWriteToFlash.UserAct.Cancle= 0x01;
 				  /*如果有币进入退币，如果无币进入错误处理*/
 					if(erro_record&(1<<coinhooperset_empty))
 					{
             //计算要上传的交易金额
-						payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st* price_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd* price_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_3rd *price_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*price_4th);          
+            payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
+                          +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);	              
             //计算要上传的已退币的金额不变
             UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd= UserActMessageWriteToFlash.UserAct.MoneyBackAlready- UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st;
             /*总的需要上传的币*/  /*之前未被上传的应退的币*/        /*计算新增的应退的币*/                                                                                                         

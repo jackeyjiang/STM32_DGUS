@@ -115,18 +115,22 @@ bool SearchMeal(uint32_t MealID ,uint32_t MealNum)
   if(UserActMessageWriteToFlash.UserAct.MealType_1st== UserActMessageWriteToFlash.UserAct.MealID)
 	{
 		UserActMessageWriteToFlash.UserAct.MealCnt_1st_t= MealNum;
+    UserActMessageWriteToFlash.UserAct.MealPrice_1st=GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1); //获取当前餐品的价格
 	}
 	else if(UserActMessageWriteToFlash.UserAct.MealType_2nd== UserActMessageWriteToFlash.UserAct.MealID)
 	{
 		UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t= MealNum;
+    UserActMessageWriteToFlash.UserAct.MealPrice_2nd=GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1);
 	}
 	else if(UserActMessageWriteToFlash.UserAct.MealType_3rd== UserActMessageWriteToFlash.UserAct.MealID)
 	{
 		UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t= MealNum;
+    UserActMessageWriteToFlash.UserAct.MealPrice_3rd=GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1);    
 	}
 	else if(UserActMessageWriteToFlash.UserAct.MealType_4th== UserActMessageWriteToFlash.UserAct.MealID)
 	{
 		UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= MealNum;
+    UserActMessageWriteToFlash.UserAct.MealPrice_4th=GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1);
 	}
 	/*如果没有则查找那一栏的餐品为空*/
   else
@@ -135,21 +139,25 @@ bool SearchMeal(uint32_t MealID ,uint32_t MealNum)
 		{
 			UserActMessageWriteToFlash.UserAct.MealType_1st= MealID;
 			UserActMessageWriteToFlash.UserAct.MealCnt_1st_t= MealNum;
+      UserActMessageWriteToFlash.UserAct.MealPrice_1st=GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1);
 		}
 		else if(UserActMessageWriteToFlash.UserAct.MealType_2nd== 0)
 		{
 			UserActMessageWriteToFlash.UserAct.MealType_2nd= MealID;
 			UserActMessageWriteToFlash.UserAct.MealCnt_2nd_t= MealNum;
+      UserActMessageWriteToFlash.UserAct.MealPrice_2nd=GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1);
 		}
 		else if(UserActMessageWriteToFlash.UserAct.MealType_3rd== 0)
 		{
 			UserActMessageWriteToFlash.UserAct.MealType_3rd= MealID;
 			UserActMessageWriteToFlash.UserAct.MealCnt_3rd_t= MealNum;
+      UserActMessageWriteToFlash.UserAct.MealPrice_3rd=GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1);
 		}
 		else if(UserActMessageWriteToFlash.UserAct.MealType_4th== 0)
 		{
 			UserActMessageWriteToFlash.UserAct.MealType_4th= MealID;
 			UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= MealNum;
+      UserActMessageWriteToFlash.UserAct.MealPrice_4th=GetMealPrice(UserActMessageWriteToFlash.UserAct.MealID,1);
 		}
 		else
     {
