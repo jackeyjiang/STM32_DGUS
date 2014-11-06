@@ -644,7 +644,7 @@ void SyncMealNameDisp(uint8_t meal_id,uint8_t floor)
       case 0x0E:mystrcat(temp,mealname_14th,12);break; 
       case 0x0F:mystrcat(temp,mealname_15th,12);break; 
       case 0x10:mystrcat(temp,mealname_16th,12);break; 
-      case 0x11:mystrcat(temp,mealname_17th,12);break;      
+      case 0x11:mystrcat(temp,mealname_17th,14);break;      
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -710,7 +710,7 @@ void AbnomalMealNameDisp(uint8_t meal_id,uint8_t floor)
       case 0x0E:mystrcat(temp,mealname_14th,12);break; 
       case 0x0F:mystrcat(temp,mealname_15th,12);break; 
       case 0x10:mystrcat(temp,mealname_16th,12);break; 
-      case 0x11:mystrcat(temp,mealname_17th,12);break;        
+      case 0x11:mystrcat(temp,mealname_17th,14);break;        
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	

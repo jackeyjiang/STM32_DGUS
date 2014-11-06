@@ -188,11 +188,11 @@ void SearchPrintMealID(uint8_t MealID)
 			}break;	
       case 0x0E:
 			{
-				memcpy(p2,mealname_14th,8);
+				memcpy(p2,mealname_14th,10);
 			}break;	
       case 0x0F:
 			{
-				memcpy(p2,mealname_15th,8);
+				memcpy(p2,mealname_15th,10);
 			}break;	
       case 0x10:
 			{
@@ -200,7 +200,7 @@ void SearchPrintMealID(uint8_t MealID)
 			}break;	
       case 0x11:
 			{
-				memcpy(p2,mealname_17th,10);
+				memcpy(p2,mealname_17th,12);
 			}break;	
 			default:break;			
 		}

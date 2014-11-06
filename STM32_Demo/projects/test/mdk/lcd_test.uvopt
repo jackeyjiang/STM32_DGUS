@@ -476,7 +476,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>28</TopLine>
+      <TopLine>27</TopLine>
       <CurrentLine>30</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\test_lcd.c</PathWithFileName>
@@ -500,7 +500,7 @@
 
   <Group>
     <GroupName>utilities</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <File>
@@ -635,10 +635,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>1</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>425</TopLine>
-      <CurrentLine>426</CurrentLine>
+      <TopLine>654</TopLine>
+      <CurrentLine>675</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\serialscreen\serialscreen.c</PathWithFileName>
       <FilenameWithoutPath>serialscreen.c</FilenameWithoutPath>
@@ -735,7 +735,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>129</TopLine>
+      <TopLine>127</TopLine>
       <CurrentLine>147</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\mini_hopper\Mini_hopper.c</PathWithFileName>
@@ -749,7 +749,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>210</TopLine>
+      <TopLine>208</TopLine>
       <CurrentLine>230</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\LedMsgHandle\MsgHandle.c</PathWithFileName>
@@ -761,10 +761,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>46</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>110</TopLine>
-      <CurrentLine>123</CurrentLine>
+      <TopLine>105</TopLine>
+      <CurrentLine>115</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\network_handle\network_handle.c</PathWithFileName>
       <FilenameWithoutPath>network_handle.c</FilenameWithoutPath>
@@ -775,10 +775,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>49</ColumnNumber>
+      <ColumnNumber>7</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>232</TopLine>
-      <CurrentLine>237</CurrentLine>
+      <TopLine>193</TopLine>
+      <CurrentLine>214</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\printer\printer.c</PathWithFileName>
       <FilenameWithoutPath>printer.c</FilenameWithoutPath>
@@ -789,10 +789,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>136</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>313</TopLine>
-      <CurrentLine>320</CurrentLine>
+      <TopLine>383</TopLine>
+      <CurrentLine>404</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\utilities\bsp\bsp.c</PathWithFileName>
       <FilenameWithoutPath>bsp.c</FilenameWithoutPath>
@@ -1414,7 +1414,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>169</TopLine>
+      <TopLine>168</TopLine>
       <CurrentLine>175</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Libraries\CMSIS\ST\STM32F4xx\Source\Templates\arm\startup_stm32f4xx.s</PathWithFileName>
@@ -1466,7 +1466,7 @@
 
   <Group>
     <GroupName>include</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <File>

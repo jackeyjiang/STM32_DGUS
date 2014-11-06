@@ -133,9 +133,9 @@ extern const char    mealname_11th[12];
 extern const char    mealname_12th[12];
 extern const char    mealname_13th[12];
 extern const char    mealname_14th[12];
-extern const char    mealname_15th[10];
+extern const char    mealname_15th[12];
 extern const char    mealname_16th[12];
-extern const char    mealname_17th[12];
+extern const char    mealname_17th[14];
 
 uint16_t mem_copy01(unsigned char *dest, const unsigned char *source, const long s_len);
 uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len);
