@@ -207,7 +207,7 @@ void MealArr(unsigned char index)
 		CustomerSel.DealBalance[4]      =       CustomerSel.DealBalance[4]/10 *16 +CustomerSel.DealBalance[4]%10 ;
 		CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
 		CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;		
-		/*要上传的已找零分析:第一次上传的售后MoneyPayBack_Already_2nd=0；第二次上传的时候UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already=0；
+		/*要上传的已找零分析:第一次上传的时候MoneyPayBack_Already_2nd=0；第二次上传的时候UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already=0；
     第一次就取餐失败的时候，UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already!=0,UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd!=0,两个相加就是总的退币
     */
     MoneyPayBack_Already_t= (UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already + UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd) *100;

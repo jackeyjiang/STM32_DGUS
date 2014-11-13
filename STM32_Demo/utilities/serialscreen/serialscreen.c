@@ -331,6 +331,12 @@ void MenuChange(uint8_t MenuNO)
       MealSet_interface= MealSet6th_interface;   
       memcpy(sell_type,sell_type_6th,4);     
     }break; 
+    case 0x07:
+    {
+      Menu_interface= Menu7th_interface;
+      MealSet_interface= MealSet7th_interface;   
+      memcpy(sell_type,sell_type_7th,4);     
+    }break;
     default:break;    
   }
 }
@@ -486,7 +492,39 @@ unsigned char GetMealPrice(char meal_type,char count)
 		case 0x11:
 		{
       price= price_17th*count;
-		}break;    
+		}break;
+		case 0x12:
+		{
+      price= price_18th*count;
+		}break; 
+		case 0x13:
+		{
+      price= price_19th*count;
+		}break; 
+		case 0x14:
+		{
+      price= price_20th*count;
+		}break; 
+		case 0x15:
+		{
+      price= price_21th*count;
+		}break;  
+		case 0x16:
+		{
+      price= price_22th*count;
+		}break; 
+		case 0x17:
+		{
+      price= price_23th*count;
+		}break; 
+		case 0x18:
+		{
+      price= price_24th*count;
+		}break; 
+		case 0x19:
+		{
+      price= price_25th*count;
+		}break;     
 		default:break;
 	}
 	return price;
@@ -638,13 +676,21 @@ void SyncMealNameDisp(uint8_t meal_id,uint8_t floor)
 			case 0x08:mystrcat(temp,mealname_8th,12);break;      
       case 0x09:mystrcat(temp,mealname_9th,12);break;   
       case 0x0A:mystrcat(temp,mealname_10th,12);break; 
-      case 0x0B:mystrcat(temp,mealname_11th,12);break; 
+      case 0x0B:mystrcat(temp,mealname_11th,14);break; 
       case 0x0C:mystrcat(temp,mealname_12th,12);break; 
       case 0x0D:mystrcat(temp,mealname_13th,12);break; 
       case 0x0E:mystrcat(temp,mealname_14th,12);break; 
-      case 0x0F:mystrcat(temp,mealname_15th,12);break; 
+      case 0x0F:mystrcat(temp,mealname_15th,16);break; 
       case 0x10:mystrcat(temp,mealname_16th,12);break; 
-      case 0x11:mystrcat(temp,mealname_17th,14);break;      
+      case 0x11:mystrcat(temp,mealname_17th,14);break; 
+      case 0x12:mystrcat(temp,mealname_18th,14);break; 
+      case 0x13:mystrcat(temp,mealname_19th,12);break; 
+      case 0x14:mystrcat(temp,mealname_20th,12);break; 
+      case 0x15:mystrcat(temp,mealname_21th,12);break;
+      case 0x16:mystrcat(temp,mealname_22th,14);break; 
+      case 0x17:mystrcat(temp,mealname_23th,12);break; 
+      case 0x18:mystrcat(temp,mealname_24th,12);break; 
+      case 0x19:mystrcat(temp,mealname_25th,12);break;       
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -704,13 +750,21 @@ void AbnomalMealNameDisp(uint8_t meal_id,uint8_t floor)
 			case 0x08:mystrcat(temp,mealname_8th,12);break;  
 			case 0x09:mystrcat(temp,mealname_9th,12);break;   
 			case 0x0A:mystrcat(temp,mealname_10th,12);break;  
-      case 0x0B:mystrcat(temp,mealname_11th,12);break; 
+      case 0x0B:mystrcat(temp,mealname_11th,14);break; 
       case 0x0C:mystrcat(temp,mealname_12th,12);break; 
       case 0x0D:mystrcat(temp,mealname_13th,12);break; 
       case 0x0E:mystrcat(temp,mealname_14th,12);break; 
-      case 0x0F:mystrcat(temp,mealname_15th,12);break; 
+      case 0x0F:mystrcat(temp,mealname_15th,16);break; 
       case 0x10:mystrcat(temp,mealname_16th,12);break; 
-      case 0x11:mystrcat(temp,mealname_17th,14);break;        
+      case 0x11:mystrcat(temp,mealname_17th,14);break;  
+      case 0x12:mystrcat(temp,mealname_18th,14);break;  
+      case 0x13:mystrcat(temp,mealname_19th,12);break;  
+      case 0x14:mystrcat(temp,mealname_20th,12);break;  
+      case 0x15:mystrcat(temp,mealname_21th,12);break;
+      case 0x16:mystrcat(temp,mealname_22th,14);break; 
+      case 0x17:mystrcat(temp,mealname_23th,12);break; 
+      case 0x18:mystrcat(temp,mealname_24th,12);break; 
+      case 0x19:mystrcat(temp,mealname_25th,12);break;        
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -1128,6 +1182,8 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
           case 0x04:   /*会员卡支付*/
           {
+            CurrentPoint =5;
+            if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro3");  //关闭现金接受
           }break;      
 					case 0x05:   /*取消*/
 					{

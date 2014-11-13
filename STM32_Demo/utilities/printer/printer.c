@@ -176,7 +176,7 @@ void SearchPrintMealID(uint8_t MealID)
 			}break;	
 			case 0x0B:
 			{
-				memcpy(p2,mealname_11th,10);
+				memcpy(p2,mealname_11th,12);
 			}break;	
 			case 0x0C:
 			{
@@ -192,7 +192,7 @@ void SearchPrintMealID(uint8_t MealID)
 			}break;	
       case 0x0F:
 			{
-				memcpy(p2,mealname_15th,10);
+				memcpy(p2,mealname_15th,14);
 			}break;	
       case 0x10:
 			{
@@ -202,6 +202,38 @@ void SearchPrintMealID(uint8_t MealID)
 			{
 				memcpy(p2,mealname_17th,12);
 			}break;	
+      case 0x12:
+			{
+				memcpy(p2,mealname_18th,12);
+			}break;	
+      case 0x13:
+			{
+				memcpy(p2,mealname_19th,10);
+			}break;
+      case 0x14:
+			{
+				memcpy(p2,mealname_20th,10);
+			}break;  
+      case 0x15:
+			{
+				memcpy(p2,mealname_21th,10);
+			}break;
+      case 0x16:
+			{
+				memcpy(p2,mealname_22th,12);
+			}break; 
+      case 0x17:
+			{
+				memcpy(p2,mealname_23th,10);
+			}break; 
+      case 0x18:
+			{
+				memcpy(p2,mealname_24th,10);
+			}break; 
+      case 0x19:
+			{
+				memcpy(p2,mealname_25th,10);
+			}break;       
 			default:break;			
 		}
 }

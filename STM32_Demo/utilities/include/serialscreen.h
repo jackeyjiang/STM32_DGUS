@@ -43,6 +43,8 @@
 #define MealSet5th_interface           0x3D  /*菜单五餐品设置界面*/
 #define Menu6th_interface              0x3F  /*菜单六餐品售卖界面*/
 #define MealSet6th_interface           0x42  /*菜单六餐品设置界面*/
+#define Menu7th_interface              0x44  /*菜单七餐品售卖界面*/
+#define MealSet7th_interface           0x47  /*菜单七餐品设置界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/

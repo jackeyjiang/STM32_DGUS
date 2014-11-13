@@ -3354,7 +3354,7 @@ bool Szt_GpbocAutoCheckIn(void)
 		else 
 		{
 			check_cont++;
-			if(check_cont>1000)
+			if(check_cont>5)
 				return false;
 		}
   }  
@@ -3372,7 +3372,7 @@ bool Szt_GpbocAutoCheckIn(void)
 		else 
 		{
 			check_cont++;
-			if(check_cont>1000)
+			if(check_cont>5)
 				return false;
 		}
   }

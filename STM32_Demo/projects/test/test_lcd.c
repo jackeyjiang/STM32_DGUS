@@ -29,7 +29,7 @@ int main(void)
 {
 	hardfawreInit(); //硬件初始化
 	PageChange(OnlymachieInit_interface);
-	if(erro_record&(1<<arm_limit)) 
+  if(erro_record&(1<<arm_limit)) 
   {
 		AbnormalHandle(arm_limit);//需要处理数据上传的断电
 	}
@@ -47,12 +47,15 @@ int main(void)
 	if(!SignInFunction())       AbnormalHandle(signin_erro); /*网络签到*/
   MenuChange(MenuNo[3]);      //显示出售哪种菜单
   DispLeftMeal();             //显示餐品数据	
-	ErrRecHandle();          //用户数据断电的数据处理与上传
+	ErrRecHandle();          //用户数据断电的数据处理与上传 
+  delay_ms(1000);
 	PageChange(Szt_GpbocAutoCheckIn_interface);
-	delay_ms(1000);
-  SendtoServce();          //上传前七天的数据
+  if(1==SD_GetCID(cid_data))
+    AbnormalHandle(sdcard_erro);	//SD卡检测*/
+  else
+    SendtoServce();          //上传前七天的数据
 //	if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);	
-	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
+//	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
  	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
  	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	StatusUploadingFun(0xE800); //开机加入正常上传
@@ -61,7 +64,6 @@ int main(void)
 	{		
 		if(!CloseCashSystem())AbnormalHandle(billset_erro);	
 	}
-  if(1==SD_GetCID(cid_data)) AbnormalHandle(sdcard_erro);	//SD卡检测
   delay_ms(200);
 	PageChange(Menu_interface); //显示选餐界面
   PageChange(Menu_interface); //显示选餐界面
@@ -147,7 +149,8 @@ int main(void)
           PageChange(TicketPrint_interface);/*打印发在显示处理函数*/
 					PlayMusic(VOICE_7);					
 					CloseTIM3();
-					CloseTIM7();		
+					CloseTIM7();
+          //payfor_meal= UserActMessageWriteToFlash.UserAct.MoneyBackShould; 有一些问题，当无币可退的时候。
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already =0;
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st=0;
           UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd=0;

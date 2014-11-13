@@ -269,12 +269,14 @@ unsigned char  WaitPayMoney(void)
 				//VariableChage(payment_bill,UserActMessageWriteToFlash.UserAct.PayForBills);
 			  UserPayMoney = 0 ;
 		  }
-			CurrentPoint = 5 ;
+			CurrentPoint = 6 ;
 		}break;    					
-	  case 5 ://显示接收了多少硬币	
+	  case 5 ://会员卡支付	
 	  {
-		  //VariableChage(payment_coin,UserActMessageWriteToFlash.UserAct.PayForCoins);	
-		  //VariableChage(payment_card,UserActMessageWriteToFlash.UserAct.PayForCards); 
+      UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/*会员卡支付*/
+			UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
+		  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
+			UART3_ClrRxBuf();
 			CurrentPoint = 6;
 		}break;		    
 	  case 6 : //统计钱数
@@ -294,7 +296,7 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
       PageChange(SwipingCard_interface);
 			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* 银行卡支付*/
-			//reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready)*100);//
+			//reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready)*100);///40
       reduce_money_flag = GpbocDeduct(1);
 			if(reduce_money_flag == 1)
 			{
@@ -318,7 +320,7 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
       PageChange(SwipingCard_interface);
 	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
-//	  reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);//
+   	  //reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);//
 			reduce_money_flag = SztDeduct(1);//扣一分
 			if(reduce_money_flag == 1)
 			{

@@ -11,7 +11,7 @@
 #define VOICE_8    7   //出餐中请等待
 #define VOICE_9    8   //请取餐
 #define VOICE_10   9   //请先取走出餐口的餐盒
-#define VOICE_11   20  //出餐出错请联系管理员 20没有定义
+#define VOICE_11   10  //出餐出错请联系管理员 20没有定义
 #define VOICE_12   11  //欢迎下次光临
 
 
