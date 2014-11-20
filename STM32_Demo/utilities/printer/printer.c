@@ -233,7 +233,24 @@ void SearchPrintMealID(uint8_t MealID)
       case 0x19:
 			{
 				memcpy(p2,mealname_25th,10);
+			}break;
+      case 0x1A:
+			{
+				memcpy(p2,mealname_26th,10);
+			}break; 
+      case 0x1B:
+			{
+				memcpy(p2,mealname_27th,10);
+			}break; 
+      case 0x1C:
+			{
+				memcpy(p2,mealname_28th,10);
+			}break; 
+      case 0x1D:
+			{
+				memcpy(p2,mealname_29th,10);
 			}break;       
+      
 			default:break;			
 		}
 }

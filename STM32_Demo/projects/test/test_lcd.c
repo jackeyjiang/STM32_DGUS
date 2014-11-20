@@ -50,20 +50,18 @@ int main(void)
 	ErrRecHandle();          //用户数据断电的数据处理与上传 
   delay_ms(1000);
 	PageChange(Szt_GpbocAutoCheckIn_interface);
-  if(1==SD_GetCID(cid_data))
-    AbnormalHandle(sdcard_erro);	//SD卡检测*/
-  else
-    SendtoServce();          //上传前七天的数据
-//	if(MealDataCompareFun()!=0xFFFFFFFF) PlayMusic(VOICE_5);	
-//	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
- 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
- 	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
+  SendtoServce();          //上传前七天的数据
+ 	if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);/*深圳通签到*/
+  if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
+  	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
 	StatusUploadingFun(0xE800); //开机加入正常上传
 	PageChange(Logo_interface);	
 	if(!CloseCashSystem())
 	{		
 		if(!CloseCashSystem())AbnormalHandle(billset_erro);	
 	}
+  if(1==SD_GetCID(cid_data))
+    AbnormalHandle(sdcard_erro);	//SD卡检测*/
   delay_ms(200);
 	PageChange(Menu_interface); //显示选餐界面
   PageChange(Menu_interface); //显示选餐界面

@@ -3,7 +3,7 @@
 #include "stdint.h"
 #include "stm32f4xx.h"
 #define FloorMealNum    15				   /*定义有多少个行*/
-#define MealKindTotoal  25           /*定义有几个餐品*/
+#define MealKindTotoal  29           /*定义有几个餐品*/
 typedef struct MealAt
 {
     

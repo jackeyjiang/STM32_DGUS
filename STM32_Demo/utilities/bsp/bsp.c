@@ -296,7 +296,7 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
       PageChange(SwipingCard_interface);
 			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* 银行卡支付*/
-			//reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready)*100);///40
+			//reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready)*100);
       reduce_money_flag = GpbocDeduct(1);
 			if(reduce_money_flag == 1)
 			{
@@ -320,7 +320,7 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
       PageChange(SwipingCard_interface);
 	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
-   	  //reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);//
+   	  //reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);
 			reduce_money_flag = SztDeduct(1);//扣一分
 			if(reduce_money_flag == 1)
 			{

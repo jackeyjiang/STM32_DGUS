@@ -3,7 +3,7 @@
 
  /*******************************************************************************
  * 函数名称:SetBills                                                                     
- * 描    述:设置接受10  20 5  的钱                                                                  
+ * 描    述:设置接受10  20 5 1 的钱                                                                  
  *           设置接收到暂存器，在程序处理过程中选择进钱或退钱                                                                     
  * 输    入:无                                                                     
  * 输    出:无                                                                     
@@ -12,7 +12,7 @@
  *******************************************************************************/ 
 void SetBills(void)
 {
-  unsigned char bufCmd[5] = {0x34, 0x00, 0x1e, 0x00, 0x00};
+  unsigned char bufCmd[5] = {0x34, 0x00, 0x1f, 0x00, 0x00};
 	uint8_t i;
 	for(i = 0; i < 5; i++)
 	{	
@@ -73,7 +73,7 @@ uint8_t  ReadBill(void)
 			{
 			  switch(BillDataBuffer[1]&0x0F)
 			  {
-				//case 0x00: BillValue = 1;break; /*不收1元*/
+				  case 0x00: BillValue = 1;break; /*不收1元*/
 				  case 0x01: BillValue = 5;break;
 				  case 0x02: BillValue = 10;break;
 				  case 0x03: BillValue = 20;break;

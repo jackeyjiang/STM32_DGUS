@@ -337,6 +337,18 @@ void MenuChange(uint8_t MenuNO)
       MealSet_interface= MealSet7th_interface;   
       memcpy(sell_type,sell_type_7th,4);     
     }break;
+    case 0x08:
+    {
+      Menu_interface= Menu8th_interface;
+      MealSet_interface= MealSet8th_interface;   
+      memcpy(sell_type,sell_type_8th,4);     
+    }break;
+    case 0x09:
+    {
+      Menu_interface= Menu9th_interface;
+      MealSet_interface= MealSet9th_interface;   
+      memcpy(sell_type,sell_type_9th,4);     
+    }break;
     default:break;    
   }
 }
@@ -690,7 +702,11 @@ void SyncMealNameDisp(uint8_t meal_id,uint8_t floor)
       case 0x16:mystrcat(temp,mealname_22th,14);break; 
       case 0x17:mystrcat(temp,mealname_23th,12);break; 
       case 0x18:mystrcat(temp,mealname_24th,12);break; 
-      case 0x19:mystrcat(temp,mealname_25th,12);break;       
+      case 0x19:mystrcat(temp,mealname_25th,12);break;
+      case 0x1A:mystrcat(temp,mealname_26th,12);break;   
+      case 0x1B:mystrcat(temp,mealname_27th,12);break;   
+      case 0x1C:mystrcat(temp,mealname_28th,12);break;   
+      case 0x1D:mystrcat(temp,mealname_29th,12);break;         
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -764,7 +780,11 @@ void AbnomalMealNameDisp(uint8_t meal_id,uint8_t floor)
       case 0x16:mystrcat(temp,mealname_22th,14);break; 
       case 0x17:mystrcat(temp,mealname_23th,12);break; 
       case 0x18:mystrcat(temp,mealname_24th,12);break; 
-      case 0x19:mystrcat(temp,mealname_25th,12);break;        
+      case 0x19:mystrcat(temp,mealname_25th,12);break;
+      case 0x1A:mystrcat(temp,mealname_26th,12);break;
+      case 0x1B:mystrcat(temp,mealname_27th,12);break;
+      case 0x1C:mystrcat(temp,mealname_28th,12);break;
+      case 0x1D:mystrcat(temp,mealname_29th,12);break;
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -1182,8 +1202,8 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
           case 0x04:   /*会员卡支付*/
           {
-            CurrentPoint =5;
-            if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro3");  //关闭现金接受
+            //CurrentPoint =5;
+            //if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro3");  //关闭现金接受
           }break;      
 					case 0x05:   /*取消*/
 					{

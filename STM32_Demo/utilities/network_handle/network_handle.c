@@ -13,7 +13,7 @@
 
 static long Batch = 0x00 ;//交易流水号
 __attribute__ ((aligned (4)))
-unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x06}; /*终端TID码：可修改*/
+unsigned char  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x39}; /*终端TID码：可修改*/
 unsigned char  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};	 /*交易流水线*/
 unsigned char  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号：可修改*/
 unsigned char  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号：可修改*/
@@ -79,6 +79,10 @@ const Meal_struction Meal[MealKindTotoal]={
                    0x00,0x00,	 0x10,0x00,0x00,0x63,  {"萝卜排骨饭      "},   0x00,0x00,0x00,0x00,0x12,0x00, 	{"C001"},
                    0x00,0x00,	 0x10,0x00,0x00,0x64,  {"红烧鸭块饭      "},   0x00,0x00,0x00,0x00,0x12,0x00, 	{"C001"},
                    0x00,0x00,	 0x10,0x00,0x00,0x65,  {"香菇滑鸡饭      "},   0x00,0x00,0x00,0x00,0x12,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x66,  {"红烧牛腩饭      "},   0x00,0x00,0x00,0x00,0x12,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x67,  {"土豆烧肉饭      "},   0x00,0x00,0x00,0x00,0x12,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x68,  {"卤香鸡腿饭      "},   0x00,0x00,0x00,0x00,0x12,0x00, 	{"C001"},
+                   0x00,0x00,	 0x10,0x00,0x00,0x69,  {"红烧大排饭      "},   0x00,0x00,0x00,0x00,0x12,0x00, 	{"C001"},     
 						   };
 unsigned char	Record_buffer[254] = {0} ;
 
@@ -111,6 +115,10 @@ const char price_22th= 12*Discount/10;
 const char price_23th= 12*Discount/10;
 const char price_24th= 12*Discount/10;
 const char price_25th= 12*Discount/10;
+const char price_26th= 12*Discount/10;
+const char price_27th= 12*Discount/10;
+const char price_28th= 12*Discount/10;
+const char price_29th= 12*Discount/10;
 /*屏幕显示的餐品名称*/
 const char    mealname_1st[12] = {"秘制猪手饭"}; 
 const char    mealname_2nd[12] = {"卤香鸡腿饭"};
@@ -137,6 +145,10 @@ const char    mealname_22th[14]= {"糖醋龙力鱼饭"};
 const char    mealname_23th[12]= {"萝卜排骨饭"};
 const char    mealname_24th[12]= {"红烧鸭块饭"};
 const char    mealname_25th[12]= {"香菇滑鸡饭"};
+const char    mealname_26th[12]= {"红烧牛腩饭"};
+const char    mealname_27th[12]= {"土豆烧肉饭"};
+const char    mealname_28th[12]= {"酱卤鸡腿饭"};
+const char    mealname_29th[12]= {"红烧大排饭"};
 uint8_t Menu_interface= 0x00;
 uint8_t MealSet_interface= 0x00;
 uint8_t sell_type[4]={0};//存储四个菜品的的ID,在签到的时候需要获取的有当前需要显示售卖的哪一个界面和那几个餐品
@@ -148,6 +160,8 @@ const uint8_t sell_type_4th[4]={0x09,0x0A,0x05,0x08}; //第四个售餐菜单
 const uint8_t sell_type_5th[4]={0x0E,0x0C,0x0D,0x02}; //第五个售餐菜单
 const uint8_t sell_type_6th[4]={0x0F,0x0B,0x10,0x11}; //第六个售餐菜单
 const uint8_t sell_type_7th[4]={0x17,0x19,0x18,0x16}; //第七个售餐菜单
+const uint8_t sell_type_8th[4]={0x12,0x13,0x14,0x15}; //第八个售餐菜单
+const uint8_t sell_type_9th[4]={0x1A,0x1B,0x1C,0x1D}; //第九个套餐菜单
  /*******************************************************************************
 * Function Name  : GetBRWN
 * Description    : 功能: 得到流水号
