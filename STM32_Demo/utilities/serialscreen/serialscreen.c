@@ -536,7 +536,23 @@ unsigned char GetMealPrice(char meal_type,char count)
 		case 0x19:
 		{
       price= price_25th*count;
-		}break;     
+		}break;
+		case 0x1A:
+		{
+      price= price_26th*count;
+		}break;
+		case 0x1B:
+		{
+      price= price_27th*count;
+		}break;
+		case 0x1C:
+		{
+      price= price_28th*count;
+		}break;
+		case 0x1D:
+		{
+      price= price_29th*count;
+		}break;    
 		default:break;
 	}
 	return price;
