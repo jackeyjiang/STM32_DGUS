@@ -174,19 +174,24 @@ void GetMeal(void)
 
 
 /*设置温度,*/
+uint8_t temper_old=0;
 void SetTemper(uint8_t temper)
 {
   uint8_t Cmd[6]={'H','D','0','0',0x0d,0x0a};
   uint8_t i;
-
-  Cmd[2] = Cmd[2] + (temper)/10;
-  Cmd[3] = Cmd[3] + (temper)%10;
-  
-  for(i=0;i<6;i++)
-  {
-    USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
-    while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
-  }
+	if(temper_old!=temper)
+	{
+		temper_old= temper;
+		//printf("tempratrue  set is %d\r\n",temper);
+		Cmd[2] = Cmd[2] + (temper)/10;
+		Cmd[3] = Cmd[3] + (temper)%10;
+		
+		for(i=0;i<6;i++)
+		{
+			USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
+			while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
+		}
+	}
 }
 
 

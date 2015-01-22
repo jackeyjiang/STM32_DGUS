@@ -43,12 +43,6 @@
 #define MealSet5th_interface           0x3D  /*菜单五餐品设置界面*/
 #define Menu6th_interface              0x3F  /*菜单六餐品售卖界面*/
 #define MealSet6th_interface           0x42  /*菜单六餐品设置界面*/
-#define Menu7th_interface              0x44  /*菜单七餐品售卖界面*/
-#define MealSet7th_interface           0x47  /*菜单七餐品设置界面*/
-#define Menu8th_interface              0x49  /*菜单八餐品售卖界面*/
-#define MealSet8th_interface           0x4C  /*菜单八餐品设置界面*/
-#define Menu9th_interface              0x4E  /*菜单九餐品售卖界面*/
-#define MealSet9th_interface           0x51  /*菜单九餐品设置界面*/
 
 /*寄存器空间定义*/
 #define Version 0x00  /*DGUS版本号*/
@@ -151,6 +145,20 @@
 #define sync_column3rd_number 0x4B00
 #define sync_column4th_number 0X4C00
 
+//主界面餐品名称
+#define menu_name_1st         0x4000
+#define menu_name_2nd         0x4100
+#define menu_name_3rd         0x4200
+#define menu_name_4th         0x4300
+//加入没有订餐的显示
+#define menu_name_none        0x4D00
+
+//主界面餐品单间显示
+#define menu_price_1st        0x4410
+#define menu_price_2nd        0x4420
+#define menu_price_3rd        0x4430
+#define menu_price_4th        0x4440
+
 //售餐时间设置界面
 #define set_sellmeal_hour     0x4E00    //售餐时间设置的小时变量
 #define set_sellmeal_minute   0x4E01    //售餐时间设置的分钟变量
@@ -196,6 +204,8 @@ void ClearUserBuffer(void);
 void PageChange(char page);
 void ReadPage(void);
 void ScreenControl(char cmd);
+void DispMenu(void);
+void DispMenuNone(void);
 void DispLeftMeal(void);
 void DealSeriAceptData(void);
 void VariableChage(uint16_t Variable,uint16_t Value);	
@@ -205,6 +215,7 @@ void DisplayRecordTime(void);
 void DisplayTimeCutDown(void);
 void SetScreenRtc(void);
 void MenuChange(uint8_t MenuNO);
-unsigned char GetMealPrice(char meal_type,char count);
+uint32_t GetMealPrice(uint8_t meal_type,uint8_t count);
+uint32_t GetMealLastPrice(uint8_t meal_type,uint8_t count);
 
 #endif

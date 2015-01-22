@@ -1,6 +1,9 @@
 #ifndef _bsp_H
 #define _bsp_H
 
+/******是否为测试状态********/
+#define test
+
 /*******主状态***********/
 #define current_temperature  0x01
 #define waitfor_money        0x02
@@ -137,6 +140,11 @@ extern uint32_t  erro_flag;  //错误状态
 extern uint32_t   erro_record;  //错误标记位
 extern uint32_t flash_record[18];
 
+extern uint8_t last_discount_1st; //第一种餐品的付款时折扣
+extern uint8_t last_discount_2nd;
+extern uint8_t last_discount_3rd;
+extern uint8_t last_discount_4th;
+
 bool CloseCashSystem(void);
 bool OpenCashSystem(void);
 void MoveToFisrtMeal(void);
@@ -158,5 +166,8 @@ void AcountCopy(void);
 void PayBackUserMoney(void);
 void ErrRecHandle(void);
 void TrackDateToBuff(void);
+void MachineHeatSet(void);
+bool GetDiscountCost(uint8_t payment);
+uint8_t GetDiscountValue(uint8_t meal_order);
 
 #endif

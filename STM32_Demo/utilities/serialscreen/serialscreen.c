@@ -100,7 +100,7 @@ const unsigned char rtc_write[13]={
               };
 #include "stdio.h"
 
-char *mystrcat(char *dest, const char *src, char length)
+uint8_t *mystrcat(uint8_t *dest, const uint8_t *src, uint8_t length)
 {
   int i=0;
 	for(i=0;i<length;i++)
@@ -260,6 +260,7 @@ void PageChange(char page)
 		pageunitil = page;
 		Uart3_Send(temp,sizeof(temp));
 }
+
  /*******************************************************************************
  * 函数名称:ReadPage                                                                     
  * 描    述:读取当前页,数据处理在DealSeriAceptData中处理                                                           
@@ -277,81 +278,6 @@ void ReadPage(void)
 		Uart3_Send(temp,sizeof(temp));
 }
 
- /*******************************************************************************
- * 函数名称:MenuChange                                                                     
- * 描    述:根据返回的数据更新所选的菜单                                                         
- *                                                                               
- * 输    入:无                                                                    
- * 输    出:                                                                     
- * 返    回:                                                             
- * 修改日期:2014年6月24日                                                                    
- *******************************************************************************/ 	
-void MenuChange(uint8_t MenuNO)
-{
-  switch(MenuNO)
-  {
-    case 0x00:
-    {
-      PageChange(Logo_interface);
-      while(1);
-    }break;
-    case 0x01:
-    {
-      Menu_interface= Menu1st_interface;
-      MealSet_interface= MealSet1st_interface;
-      memcpy(sell_type,sell_type_1st,4);
-    }break;
-    case 0x02:
-    {
-      Menu_interface= Menu2nd_interface;
-      MealSet_interface= MealSet2nd_interface;  
-      memcpy(sell_type,sell_type_2nd,4);      
-    }break;
-    case 0x03:
-    {
-      Menu_interface= Menu3rd_interface;
-      MealSet_interface= MealSet3rd_interface;   
-      memcpy(sell_type,sell_type_3rd,4);        
-    }break;
-    case 0x04:
-    {
-      Menu_interface= Menu4th_interface;
-      MealSet_interface= MealSet4th_interface;  
-      memcpy(sell_type,sell_type_4th,4);         
-    }break;
-    case 0x05:
-    {
-      Menu_interface= Menu5th_interface;
-      MealSet_interface= MealSet5th_interface;   
-      memcpy(sell_type,sell_type_5th,4);     
-    }break; 
-    case 0x06:
-    {
-      Menu_interface= Menu6th_interface;
-      MealSet_interface= MealSet6th_interface;   
-      memcpy(sell_type,sell_type_6th,4);     
-    }break; 
-    case 0x07:
-    {
-      Menu_interface= Menu7th_interface;
-      MealSet_interface= MealSet7th_interface;   
-      memcpy(sell_type,sell_type_7th,4);     
-    }break;
-    case 0x08:
-    {
-      Menu_interface= Menu8th_interface;
-      MealSet_interface= MealSet8th_interface;   
-      memcpy(sell_type,sell_type_8th,4);     
-    }break;
-    case 0x09:
-    {
-      Menu_interface= Menu9th_interface;
-      MealSet_interface= MealSet9th_interface;   
-      memcpy(sell_type,sell_type_9th,4);     
-    }break;
-    default:break;    
-  }
-}
  /*******************************************************************************
  * 函数名称:SetScreenRtc                                                                    
  * 描    述:读取当前页,数据处理在DealSeriAceptData中处理                                                           
@@ -377,6 +303,70 @@ void SetScreenRtc(void)
   temp[11]= RTC_TimeStructure.RTC_Minutes;
   temp[12]= RTC_TimeStructure.RTC_Seconds;
   Uart3_Send(temp,sizeof(temp));
+}
+ /*******************************************************************************
+ * 函数名称:DispMenu
+ * 描    述:显示四个餐品的名称和价格                                                          
+ *                                                                               
+ * 输    入:无                                                                   
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年11月16日                                                                    
+ *******************************************************************************/ 
+void DispMenu(void)
+{
+		uint8_t i;
+	  unsigned char temp[30]={0};  //存放串口数据的临时指针
+    GetMealDetail();   //获取餐品的信息
+		for(i=0;i<4;i++)  //显示菜名
+		{
+      memcpy(temp,VariableWrite,sizeof(VariableWrite));
+      temp[2]= sizeof(Meal_Union.Meal[i].MealName);
+      myunion.adress= menu_name_1st+i*0x0100; //在基地址推移位置
+      temp[4]= myunion.adr[1];
+      temp[5]= myunion.adr[0];
+			memcpy(temp+6,Meal_Union.Meal[i].MealName,sizeof(Meal_Union.Meal[i].MealName));	
+			Uart3_Send(temp,sizeof(temp));	
+		}
+    for(i=0;i<4;i++) //显示单价
+    {
+      memcpy(temp,VariableWrite,sizeof(VariableWrite));
+      temp[2]= 5;
+      myunion.adress= menu_price_1st+i*0x0010; //在基地址推移位置
+      temp[4]= myunion.adr[1];
+      temp[5]= myunion.adr[0];
+      switch(i)
+      {
+        case 0:temp[7]= price_1st;break;
+        case 1:temp[7]= price_2nd;break;
+        case 2:temp[7]= price_3rd;break;
+        case 3:temp[7]= price_4th;break;
+        default:break;
+      }
+			Uart3_Send(temp,sizeof(temp));      
+    }    
+}
+
+ /*******************************************************************************
+ * 函数名称:DispMenuNone
+ * 描    述:在中间显示餐品为服务器无数据                                                         
+ *                                                                               
+ * 输    入:无                                                                   
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2015年1月17日                                                                    
+ *******************************************************************************/ 
+const uint8_t menu_err[14]={"服务器无数据"};
+void DispMenuNone(void)
+{
+  uint8_t temp[30]={0};  //存放串口数据的临时指针
+  memcpy(temp,VariableWrite,sizeof(VariableWrite));
+  temp[2]= sizeof(menu_err)+5;
+  myunion.adress= menu_name_none;
+  temp[4]= myunion.adr[1];
+  temp[5]= myunion.adr[0];
+  memcpy(temp+6,menu_err,sizeof(menu_err));	
+  Uart3_Send(temp,sizeof(temp));	  
 }
  /*******************************************************************************
  * 函数名称:DispLeftMeal                                                                     
@@ -424,140 +414,62 @@ void CutDownDisp(char time)
 		Uart3_Send(temp,sizeof(temp));	
 }
  /*******************************************************************************
- * 函数名称:MealCostDisp                                                                     
- * 描    述:显示当前餐品应付的金额                                                          
+ * 函数名称:GetMealPrice                                                                     
+ * 描    述:获取当前餐品的价格                                                        
  *                                                                               
  * 输    入:                                                                 
  * 输    出:无                                                                     
  * 返    回:void                                                               
  * 修改日期:2014年3月13日                                                                    
  *******************************************************************************/ 
-unsigned char GetMealPrice(char meal_type,char count)
+uint32_t GetMealPrice(uint8_t meal_type,uint8_t count)
 {
 	char price= 0;
   switch(meal_type)
 	{
-		case 0x01:
-		{
-			price= price_1st*count;
-		}break;
-		case 0x02:
-		{
-      price= price_2nd*count;
-		}break;
-		case 0x03:
-		{
-      price= price_3rd*count;
-		}break;
-		case 0x04:
-		{
-      price= price_4th*count;
-		}break;
-		case 0x05:
-		{
-      price= price_5th*count;
-		}break;
-		case 0x06:
-		{
-      price= price_6th*count;
-		}break;
-		case 0x07:
-		{
-      price= price_7th*count;
-		}break;
-		case 0x08:
-		{
-      price= price_8th*count;
-		}break;
-		case 0x09:
-		{
-      price= price_9th*count;
-		}break;
-		case 0x0a:
-		{
-      price= price_10th*count;
-		}break;    
-		case 0x0b:
-		{
-      price= price_11th*count;
-		}break;
-		case 0x0c:
-		{
-      price= price_12th*count;
-		}break;   
-		case 0x0d:
-		{
-      price= price_13th*count;
-		}break;
-		case 0x0e:
-		{
-      price= price_14th*count;
-		}break;   
-		case 0x0f:
-		{
-      price= price_15th*count;
-		}break;
-		case 0x10:
-		{
-      price= price_16th*count;
-		}break;
-		case 0x11:
-		{
-      price= price_17th*count;
-		}break;
-		case 0x12:
-		{
-      price= price_18th*count;
-		}break; 
-		case 0x13:
-		{
-      price= price_19th*count;
-		}break; 
-		case 0x14:
-		{
-      price= price_20th*count;
-		}break; 
-		case 0x15:
-		{
-      price= price_21th*count;
-		}break;  
-		case 0x16:
-		{
-      price= price_22th*count;
-		}break; 
-		case 0x17:
-		{
-      price= price_23th*count;
-		}break; 
-		case 0x18:
-		{
-      price= price_24th*count;
-		}break; 
-		case 0x19:
-		{
-      price= price_25th*count;
-		}break;
-		case 0x1A:
-		{
-      price= price_26th*count;
-		}break;
-		case 0x1B:
-		{
-      price= price_27th*count;
-		}break;
-		case 0x1C:
-		{
-      price= price_28th*count;
-		}break;
-		case 0x1D:
-		{
-      price= price_29th*count;
-		}break;    
+		case 0x01:price= price_1st*count;break;
+		case 0x02:price= price_2nd*count;break;
+		case 0x03:price= price_3rd*count;break;
+		case 0x04:price= price_4th*count;break;
 		default:break;
 	}
 	return price;
 }
 
+ /*******************************************************************************
+ * 函数名称:GetMealLastPrice                                                                     
+ * 描    述:获取当前餐品的折后价格                                                        
+ *           作用于单个餐品数据上传的数据                                                                   
+ * 输    入:                                                                 
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2015年1月17日                                                                    
+ *******************************************************************************/ 
+uint32_t GetMealLastPrice(uint8_t meal_type,uint8_t count)
+{
+	uint32_t price= 0;
+  switch(meal_type)
+	{
+		case 0x01:
+		{
+			price= price_1st*last_discount_1st/100*count;
+		}break;
+		case 0x02:
+		{
+      price= price_2nd*last_discount_2nd/100*count;
+		}break;
+		case 0x03:
+		{
+      price= price_3rd*last_discount_3rd/100*count;
+		}break;
+		case 0x04:
+		{
+      price= price_4th*last_discount_4th/100*count;
+		}break;
+		default:break;
+	}
+	return price;
+}
  /*******************************************************************************
  * 函数名称:MealCostDisp                                                                     
  * 描    述:显示当前餐品应付的金额                                                          
@@ -603,15 +515,24 @@ void ClearUserBuffer(void)
 	UserActMessageWriteToFlash.UserAct.MealPrice_2nd=0;
 	UserActMessageWriteToFlash.UserAct.MealPrice_3rd=0;
 	UserActMessageWriteToFlash.UserAct.MealPrice_4th=0;   
+  UserActMessageWriteToFlash.UserAct.LastMealPrice_1st=0;
+	UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd=0;
+	UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd=0;
+	UserActMessageWriteToFlash.UserAct.LastMealPrice_4th=0; 
 	UserActMessageWriteToFlash.UserAct.MealCost_1st=0;
 	UserActMessageWriteToFlash.UserAct.MealCost_2nd=0;
 	UserActMessageWriteToFlash.UserAct.MealCost_3rd=0;
 	UserActMessageWriteToFlash.UserAct.MealCost_4th=0;
+	UserActMessageWriteToFlash.UserAct.LastMealCost_1st=0;
+	UserActMessageWriteToFlash.UserAct.LastMealCost_2nd=0;
+	UserActMessageWriteToFlash.UserAct.LastMealCost_3rd=0;
+	UserActMessageWriteToFlash.UserAct.LastMealCost_4th=0;  
 	UserActMessageWriteToFlash.UserAct.MealID=0;
 	UserActMessageWriteToFlash.UserAct.Meal_totoal=0;
 	UserActMessageWriteToFlash.UserAct.Meal_takeout=0;
 	UserActMessageWriteToFlash.UserAct.PayShould=0;
-	UserActMessageWriteToFlash.UserAct.PayType=0;
+  UserActMessageWriteToFlash.UserAct.LastPayShould=0;
+	UserActMessageWriteToFlash.UserAct.PayType=0x30;            //未选择支付方式
   UserActMessageWriteToFlash.UserAct.PayForCoins=0;           //用户投入的硬币数	
 	UserActMessageWriteToFlash.UserAct.PayForBills=0;           //用户投入的纸币数
 	UserActMessageWriteToFlash.UserAct.PayForCards=0;           //用户应经刷卡的数
@@ -646,6 +567,9 @@ void PutIntoShopCart(void)
 
   UserActMessageWriteToFlash.UserAct.MealCnt_4th=UserActMessageWriteToFlash.UserAct.MealCnt_4th_t;
   UserActMessageWriteToFlash.UserAct.MealCost_4th = GetMealPrice(UserActMessageWriteToFlash.UserAct.MealType_4th,UserActMessageWriteToFlash.UserAct.MealCnt_4th);
+  
+  UserActMessageWriteToFlash.UserAct.PayShould= UserActMessageWriteToFlash.UserAct.MealCost_1st +UserActMessageWriteToFlash.UserAct.MealCost_2nd\
+                                                +UserActMessageWriteToFlash.UserAct.MealCost_3rd+UserActMessageWriteToFlash.UserAct.MealCost_4th;
 
 	UserActMessageWriteToFlash.UserAct.Meal_totoal= +UserActMessageWriteToFlash.UserAct.MealCost_4th+UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
 }	
@@ -668,10 +592,10 @@ void SettleAccounts(void)
 	VariableChage(payment_bill,UserActMessageWriteToFlash.UserAct.PayForBills);
   //刷卡数
 	VariableChage(payment_card,UserActMessageWriteToFlash.UserAct.PayForCards);
+  /*计算账单*/
 	OpenTIM7();
-	//程序显示部分
-	UserActMessageWriteToFlash.UserAct.PayShould= UserActMessageWriteToFlash.UserAct.MealCost_1st+UserActMessageWriteToFlash.UserAct.MealCost_2nd+UserActMessageWriteToFlash.UserAct.MealCost_3rd+UserActMessageWriteToFlash.UserAct.MealCost_4th;
-	VariableChage(mealtotoal_cost,UserActMessageWriteToFlash.UserAct.PayShould);
+  
+  VariableChage(mealtotoal_cost,UserActMessageWriteToFlash.UserAct.PayShould);
 }
 
  /*******************************************************************************
@@ -685,7 +609,9 @@ void SettleAccounts(void)
  *******************************************************************************/ 							
 void SyncMealNameDisp(uint8_t meal_id,uint8_t floor)							
 {
-	  char temp[30]={0};  //存放串口数据的临时数组
+	  uint8_t temp[50]={0};  //存放串口数据的临时数组
+    uint8_t length_t=0;
+    uint8_t *p_t=" ";
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
 		temp[2]= 17; //0x83 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
 		myunion.adress= sync_column1st_name+ floor*(0x0100); 
@@ -694,35 +620,10 @@ void SyncMealNameDisp(uint8_t meal_id,uint8_t floor)
 		switch(meal_id)
 		{
 			case 0x00:break;
-			case 0x01:mystrcat(temp,mealname_1st,12);break;	
-			case 0x02:mystrcat(temp,mealname_2nd,14);break;		
-			case 0x03:mystrcat(temp,mealname_3rd,14);break;	
-			case 0x04:mystrcat(temp,mealname_4th,12);break;
-			case 0x05:mystrcat(temp,mealname_5th,12);break;
-			case 0x06:mystrcat(temp,mealname_6th,14);break;
-			case 0x07:mystrcat(temp,mealname_7th,12);break;
-			case 0x08:mystrcat(temp,mealname_8th,12);break;      
-      case 0x09:mystrcat(temp,mealname_9th,12);break;   
-      case 0x0A:mystrcat(temp,mealname_10th,12);break; 
-      case 0x0B:mystrcat(temp,mealname_11th,14);break; 
-      case 0x0C:mystrcat(temp,mealname_12th,12);break; 
-      case 0x0D:mystrcat(temp,mealname_13th,12);break; 
-      case 0x0E:mystrcat(temp,mealname_14th,12);break; 
-      case 0x0F:mystrcat(temp,mealname_15th,16);break; 
-      case 0x10:mystrcat(temp,mealname_16th,12);break; 
-      case 0x11:mystrcat(temp,mealname_17th,14);break; 
-      case 0x12:mystrcat(temp,mealname_18th,14);break; 
-      case 0x13:mystrcat(temp,mealname_19th,12);break; 
-      case 0x14:mystrcat(temp,mealname_20th,12);break; 
-      case 0x15:mystrcat(temp,mealname_21th,12);break;
-      case 0x16:mystrcat(temp,mealname_22th,14);break; 
-      case 0x17:mystrcat(temp,mealname_23th,12);break; 
-      case 0x18:mystrcat(temp,mealname_24th,12);break; 
-      case 0x19:mystrcat(temp,mealname_25th,12);break;
-      case 0x1A:mystrcat(temp,mealname_26th,12);break;   
-      case 0x1B:mystrcat(temp,mealname_27th,12);break;   
-      case 0x1C:mystrcat(temp,mealname_28th,12);break;   
-      case 0x1D:mystrcat(temp,mealname_29th,12);break;         
+			case 0x01:mystrcat(temp,mealname_1st,strcspn(mealname_1st,p_t));break;		
+			case 0x02:mystrcat(temp,mealname_2nd,strcspn(mealname_2nd,p_t));break;		
+			case 0x03:mystrcat(temp,mealname_3rd,strcspn(mealname_3rd,p_t));break;	
+			case 0x04:mystrcat(temp,mealname_4th,strcspn(mealname_4th,p_t));break;	   
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -763,7 +664,8 @@ void SyncMealCntDisp(uint8_t meal_cnt,uint8_t floor)
  *******************************************************************************/ 							
 void AbnomalMealNameDisp(uint8_t meal_id,uint8_t floor)							
 {
-	  char temp[30]={0};  //存放串口数据的临时数组
+	  uint8_t temp[50]={0};  //存放串口数据的临时数组
+    uint8_t *p_t=" ";
 		memcpy(temp,VariableWrite,sizeof(VariableWrite));
 		temp[2]= 17; //0x83 0x41 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
 		myunion.adress= record_column1st_name+ floor*(0x0100); 
@@ -772,35 +674,10 @@ void AbnomalMealNameDisp(uint8_t meal_id,uint8_t floor)
 		switch(meal_id)
 		{
 			case 0x00:break;
-			case 0x01:mystrcat(temp,mealname_1st,12);break;	
-			case 0x02:mystrcat(temp,mealname_2nd,14);break;		
-			case 0x03:mystrcat(temp,mealname_3rd,14);break;	
-			case 0x04:mystrcat(temp,mealname_4th,12);break;
-			case 0x05:mystrcat(temp,mealname_5th,12);break;
-			case 0x06:mystrcat(temp,mealname_6th,14);break;
-			case 0x07:mystrcat(temp,mealname_7th,12);break;
-			case 0x08:mystrcat(temp,mealname_8th,12);break;  
-			case 0x09:mystrcat(temp,mealname_9th,12);break;   
-			case 0x0A:mystrcat(temp,mealname_10th,12);break;  
-      case 0x0B:mystrcat(temp,mealname_11th,14);break; 
-      case 0x0C:mystrcat(temp,mealname_12th,12);break; 
-      case 0x0D:mystrcat(temp,mealname_13th,12);break; 
-      case 0x0E:mystrcat(temp,mealname_14th,12);break; 
-      case 0x0F:mystrcat(temp,mealname_15th,16);break; 
-      case 0x10:mystrcat(temp,mealname_16th,12);break; 
-      case 0x11:mystrcat(temp,mealname_17th,14);break;  
-      case 0x12:mystrcat(temp,mealname_18th,14);break;  
-      case 0x13:mystrcat(temp,mealname_19th,12);break;  
-      case 0x14:mystrcat(temp,mealname_20th,12);break;  
-      case 0x15:mystrcat(temp,mealname_21th,12);break;
-      case 0x16:mystrcat(temp,mealname_22th,14);break; 
-      case 0x17:mystrcat(temp,mealname_23th,12);break; 
-      case 0x18:mystrcat(temp,mealname_24th,12);break; 
-      case 0x19:mystrcat(temp,mealname_25th,12);break;
-      case 0x1A:mystrcat(temp,mealname_26th,12);break;
-      case 0x1B:mystrcat(temp,mealname_27th,12);break;
-      case 0x1C:mystrcat(temp,mealname_28th,12);break;
-      case 0x1D:mystrcat(temp,mealname_29th,12);break;
+			case 0x01:mystrcat(temp,mealname_1st,strcspn(mealname_1st,p_t));break;		
+			case 0x02:mystrcat(temp,mealname_2nd,strcspn(mealname_2nd,p_t));break;		
+			case 0x03:mystrcat(temp,mealname_3rd,strcspn(mealname_3rd,p_t));break;	
+			case 0x04:mystrcat(temp,mealname_4th,strcspn(mealname_4th,p_t));break;	   
 			default:break;			
 		}
 		Uart3_Sent(temp,sizeof(temp));	
@@ -1198,7 +1075,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				{
 					case 0x01:   /*现金支付*/
 					{
-            if(cash_limit_flag==true) break; //如果零钱找完，无法进入
+            //if(cash_limit_flag==true) break; //如果零钱找完，无法进入
             PageChange(PayWithCash_interface);
 						CurrentPoint =2;
             PlayMusic(VOICE_3);
@@ -1218,8 +1095,10 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 					}break;
           case 0x04:   /*会员卡支付*/
           {
-            //CurrentPoint =5;
-            //if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro3");  //关闭现金接受
+#ifdef test
+            CurrentPoint =5;
+            if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro3");  //关闭现金接受
+#endif
           }break;      
 					case 0x05:   /*取消*/
 					{

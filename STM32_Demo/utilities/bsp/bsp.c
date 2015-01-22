@@ -14,7 +14,44 @@
     *Time = 120;
  }
  
- 
+  /*******************************************************************************
+ * 函数名称:MachineHeatSet()                                                                     
+ * 描    述:根据时间设置机器的加热和制冷                                                               
+ *                                                                               
+ * 输    入:无                                                                     
+ * 输    出:无                                                                     
+ * 返    回:void                                                               
+ * 修改日期:2014年12月22日                                                                    
+ *******************************************************************************/ 
+#define heat_hours    8
+#define heat_minutes  20
+uint8_t old_hour=0;
+uint8_t old_minute=0;
+void MachineHeatSet(void)
+{
+#ifndef test
+	RTC_TimeShow();//获得时间
+	if(TimeDate.Hours<heat_hours)  //如果小于售餐小时
+	{
+		SetTemper(0x05); //设置制冷
+	}
+	else if(TimeDate.Hours==heat_hours) //如果等于售餐小时
+	{
+		if(TimeDate.Minutes<heat_minutes) //如果小于售餐分钟
+		{
+			SetTemper(0x05); //设置制冷
+		}
+		else
+		{
+			SetTemper(0x3C); //设置加热
+		}			
+	}
+	else if(TimeDate.Hours>heat_hours) //如果等于售餐小时
+	{
+		SetTemper(0x3C); //设置加热
+	}
+#endif
+}
  
  /*******************************************************************************
  * 函数名称:FindMeal                                                                     
@@ -257,6 +294,7 @@ unsigned char  WaitPayMoney(void)
 	    /*跳到选择付款方式界面*/
 			CurrentPoint = 3 ;
 		  UserActMessageWriteToFlash.UserAct.PayType = 0x31 ;/* 现金支付*/
+      GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
 	  }break;	  
 		         
 	  case 3 :  //读钱
@@ -273,8 +311,9 @@ unsigned char  WaitPayMoney(void)
 		}break;    					
 	  case 5 ://会员卡支付	
 	  {
-      UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/*会员卡支付*/
-			UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
+      UserActMessageWriteToFlash.UserAct.PayType = 0x34 ;/*会员卡支付*/
+      GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
+			UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.LastPayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
 		  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
 			UART3_ClrRxBuf();
 			CurrentPoint = 6;
@@ -282,7 +321,7 @@ unsigned char  WaitPayMoney(void)
 	  case 6 : //统计钱数
     {
       VariableChage(payment_coin,UserActMessageWriteToFlash.UserAct.PayAlready);	 
-	    if(UserActMessageWriteToFlash.UserAct.PayAlready +UserActMessageWriteToFlash.UserAct.PayForCards>=UserActMessageWriteToFlash.UserAct.PayShould)		//投的钱大于等于要付的钱
+	    if(UserActMessageWriteToFlash.UserAct.PayAlready +UserActMessageWriteToFlash.UserAct.PayForCards>=UserActMessageWriteToFlash.UserAct.LastPayShould)		//投的钱大于等于要付的钱
 		  {     
 		    CurrentPoint = 9;	             
 	   	}
@@ -296,11 +335,15 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
       PageChange(SwipingCard_interface);
 			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* 银行卡支付*/
-			//reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.PayShould-UserActMessageWriteToFlash.UserAct.PayAlready)*100);
-      reduce_money_flag = GpbocDeduct(1);
+      GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
+#ifndef test
+			reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.LastPayShould-UserActMessageWriteToFlash.UserAct.PayAlready)*100);
+#else
+      reduce_money_flag = GpbocDeduct(UserActMessageWriteToFlash.UserAct.LastPayShould-UserActMessageWriteToFlash.UserAct.PayAlready);
+#endif
 			if(reduce_money_flag == 1)
 			{
-				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
+				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.LastPayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
 			  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
 				UART3_ClrRxBuf();
 			  CurrentPoint =6;
@@ -311,7 +354,8 @@ unsigned char  WaitPayMoney(void)
 				PageChange(Acount_interface);
 				CurrentPoint = 0;
 			  /*支付方式*/			 
-			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;//清空支付方式			
+			  UserActMessageWriteToFlash.UserAct.PayType = 0x30;//清空支付方式		
+        GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/        
         UART3_ClrRxBuf();
 			}
 	  }break;
@@ -320,11 +364,15 @@ unsigned char  WaitPayMoney(void)
 			WaitTimeInit(&WaitTime);
       PageChange(SwipingCard_interface);
 	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
-   	  //reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.PayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);
-			reduce_money_flag = SztDeduct(1);//扣一分
+      GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
+#ifndef test
+   	  reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.LastPayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);
+#else
+			reduce_money_flag = SztDeduct(UserActMessageWriteToFlash.UserAct.LastPayShould- UserActMessageWriteToFlash.UserAct.PayAlready);//扣一分
+#endif
 			if(reduce_money_flag == 1)
 			{
-				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.PayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
+				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.LastPayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
 			  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
 				UART3_ClrRxBuf();
 			  CurrentPoint =6;
@@ -335,13 +383,14 @@ unsigned char  WaitPayMoney(void)
 				PageChange(Acount_interface);
 				CurrentPoint = 0;
 			  /*支付方式*/			 
-			  UserActMessageWriteToFlash.UserAct.PayType = 0x00;//清空支付方式
+			  UserActMessageWriteToFlash.UserAct.PayType = 0x30;//清空支付方式
+        GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
         UART3_ClrRxBuf();
 			}
 		}break;
 	  case 9 :  //付款成功关闭所有的收银系统
 		{
-			UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready - UserActMessageWriteToFlash.UserAct.PayShould;	
+			UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready - UserActMessageWriteToFlash.UserAct.LastPayShould;	
 			UserActMessageWriteToFlash.UserAct.Meal_totoal = UserActMessageWriteToFlash.UserAct.MealCnt_4th+UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
       UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.MoneyBack; //记录付钱之后第一次应该退的币	
       VariableChage(mealout_totle,UserActMessageWriteToFlash.UserAct.Meal_totoal);	
@@ -358,12 +407,12 @@ unsigned char  WaitPayMoney(void)
 			Print_Struct.P_Price2nd   = UserActMessageWriteToFlash.UserAct.MealPrice_2nd;
 			Print_Struct.P_Price3rd   = UserActMessageWriteToFlash.UserAct.MealPrice_3rd;
 			Print_Struct.P_Price4th   = UserActMessageWriteToFlash.UserAct.MealPrice_4th;      
-			Print_Struct.P_Cost1st   = UserActMessageWriteToFlash.UserAct.MealCost_1st;
-			Print_Struct.P_Cost2nd   = UserActMessageWriteToFlash.UserAct.MealCost_2nd;
-			Print_Struct.P_Cost3rd   = UserActMessageWriteToFlash.UserAct.MealCost_3rd;
-			Print_Struct.P_Cost4th   = UserActMessageWriteToFlash.UserAct.MealCost_4th;
+			Print_Struct.P_Cost1st   = UserActMessageWriteToFlash.UserAct.LastMealCost_1st;
+			Print_Struct.P_Cost2nd   = UserActMessageWriteToFlash.UserAct.LastMealCost_2nd;
+			Print_Struct.P_Cost3rd   = UserActMessageWriteToFlash.UserAct.LastMealCost_3rd;
+			Print_Struct.P_Cost4th   = UserActMessageWriteToFlash.UserAct.LastMealCost_4th;
 			Print_Struct.P_paymoney  = UserActMessageWriteToFlash.UserAct.PayForBills +	UserActMessageWriteToFlash.UserAct.PayForCoins +UserActMessageWriteToFlash.UserAct.PayForCards ;
-			Print_Struct.P_PayShould = UserActMessageWriteToFlash.UserAct.PayShould ;
+			Print_Struct.P_PayShould = UserActMessageWriteToFlash.UserAct.LastPayShould ;
 			Print_Struct.P_MoneyBack = UserActMessageWriteToFlash.UserAct.MoneyBack ;
 			CurrentPoint = 0 ;
 	       return  Status_OK;
@@ -729,7 +778,7 @@ void ClearingFuntion(void)
 }
   /*******************************************************************************
  * 函数名称:AcountCopy                                                                   
- * 描    述:异常处理                                                                 
+ * 描    述:用户数据拷贝                                                              
  *                                                                               
  * 输    入:无                                                                     
  * 输    出:无                                                                     
@@ -744,6 +793,103 @@ void AcountCopy(void)
 	UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= UserActMessageWriteToFlash.UserAct.MealCnt_4th; 
 }
 
+  /*******************************************************************************
+ * 函数名称:GetDiscountCost                                                                   
+ * 描    述:获取折后价格 及总的应付款项                                                            
+ *                                                                               
+ * 输    入:支付方式                                                                   
+ * 输    出:true / false                                                                   
+ * 返    回:void                                                               
+ * 修改日期:2013年1月16日                                                                    
+ *******************************************************************************/ 
+uint8_t last_discount_1st; //第一种餐品的付款时折扣
+uint8_t last_discount_2nd;
+uint8_t last_discount_3rd;
+uint8_t last_discount_4th;
+bool GetDiscountCost(uint8_t payment)
+{
+  switch(payment)
+  {
+    case 0x30:{  /*未选择支付方式*/
+      last_discount_1st = 100;
+      last_discount_2nd = 100;
+      last_discount_3rd = 100;
+      last_discount_4th = 100;      
+    }break;
+    case 0x31:{  /*现金*/
+      last_discount_1st = cashcut_1st;
+      last_discount_2nd = cashcut_2nd;
+      last_discount_3rd = cashcut_3rd;
+      last_discount_4th = cashcut_4th;
+    }break;
+    case 0x32:{  /*银联闪付卡*/
+      last_discount_1st = gboccut_1st;
+      last_discount_2nd = gboccut_2nd;
+      last_discount_3rd = gboccut_3rd;
+      last_discount_4th = gboccut_4th;
+    }break;
+    case 0x33:{  /*深圳通*/
+      last_discount_1st = sztcut_1st;
+      last_discount_2nd = sztcut_2nd;
+      last_discount_3rd = sztcut_3rd;
+      last_discount_4th = sztcut_4th;      
+    }break;
+    case 0x34:{ /*会员卡*/
+      last_discount_1st = vipcut_1st;
+      last_discount_2nd = vipcut_2nd;
+      last_discount_3rd = vipcut_3rd;
+      last_discount_4th = vipcut_4th; 
+    }break;
+    case 0x35:{ /*微信支付*/
+      last_discount_1st = vchatcut_1st;
+      last_discount_2nd = vchatcut_2nd;
+      last_discount_3rd = vchatcut_3rd;
+      last_discount_4th = vchatcut_4th;         
+    }break;
+    default:{
+      return false;
+    }break;
+  }
+  UserActMessageWriteToFlash.UserAct.LastMealPrice_1st = UserActMessageWriteToFlash.UserAct.MealPrice_1st*last_discount_1st/100;
+  UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd = UserActMessageWriteToFlash.UserAct.MealPrice_2nd*last_discount_2nd/100;
+  UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd = UserActMessageWriteToFlash.UserAct.MealPrice_3rd*last_discount_3rd/100;
+  UserActMessageWriteToFlash.UserAct.LastMealPrice_4th = UserActMessageWriteToFlash.UserAct.MealPrice_4th*last_discount_4th/100;
+  UserActMessageWriteToFlash.UserAct.LastMealCost_1st  = UserActMessageWriteToFlash.UserAct.LastMealPrice_1st\
+                                                         *UserActMessageWriteToFlash.UserAct.MealCnt_1st;  
+  UserActMessageWriteToFlash.UserAct.LastMealCost_2nd  = UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd\
+                                                         *UserActMessageWriteToFlash.UserAct.MealCnt_2nd;  
+  UserActMessageWriteToFlash.UserAct.LastMealCost_3rd  = UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd\
+                                                         *UserActMessageWriteToFlash.UserAct.MealCnt_3rd;  
+  UserActMessageWriteToFlash.UserAct.LastMealCost_4th  = UserActMessageWriteToFlash.UserAct.LastMealPrice_4th\
+                                                         *UserActMessageWriteToFlash.UserAct.MealCnt_4th;  
+  UserActMessageWriteToFlash.UserAct.LastPayShould = UserActMessageWriteToFlash.UserAct.LastMealCost_1st+UserActMessageWriteToFlash.UserAct.LastMealCost_2nd\
+                                                     +UserActMessageWriteToFlash.UserAct.LastMealCost_3rd+UserActMessageWriteToFlash.UserAct.LastMealCost_4th;
+	VariableChage(mealtotoal_cost,UserActMessageWriteToFlash.UserAct.LastPayShould);
+  return true;
+}
+
+  /*******************************************************************************
+ * 函数名称:GetDiscountValue                                                                   
+ * 描    述:获取当前餐品的折扣数据                                                           
+ *                  NG                                                             
+ * 输    入:支付方式                                                                   
+ * 输    出:true / false                                                                   
+ * 返    回:void                                                               
+ * 修改日期:2013年1月16日                                                                    
+ *******************************************************************************/ 
+uint8_t GetDiscountValue(uint8_t meal_order)
+{
+  uint8_t value_return=0;
+  switch(meal_order)
+  {
+    case 0x01:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_1st;break;
+    case 0x02:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd;break;
+    case 0x03:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd;break;
+    case 0x04:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_4th;break;
+    default:break;
+  }
+  return value_return;
+}
   /*******************************************************************************
  * 函数名称:PowerupAbnormalHandle                                                                    
  * 描    述:开机异常处理，只显示错误标识，更根据密码显示用户操作记录                                                                
@@ -804,15 +950,15 @@ void AbnormalHandle(uint32_t erro)
 					{
             //计算总的应退币数
             UserActMessageWriteToFlash.UserAct.MoneyBackShould +=
-                         (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
-                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);                                      
+                         (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
+                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);                                      
 					  //计算总的未退币数
             UserActMessageWriteToFlash.UserAct.MoneyBack += 
-                         (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
-                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);	  
+                         (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
+                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);	  
             //计算上传的交易金额
-            payfor_meal+=(UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
-                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);	
+            payfor_meal+=(UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
+                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);	
             //计算已退币的钱（需要处理，要两次退币的数据）
 						UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already= (UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);
             

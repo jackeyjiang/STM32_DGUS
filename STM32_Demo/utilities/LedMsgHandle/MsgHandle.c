@@ -178,21 +178,23 @@ bool SearchMeal(uint32_t MealID ,uint32_t MealNum)
  *******************************************************************************/ 
 uint32_t payfor_meal = 0;        //单个餐品已付的钱
 
-void MealArr(unsigned char index)
+void MealArr(uint8_t index)
 {
     uint32_t  PayBill=0;
     uint32_t  MoneyPayBack_Already_t=0;
     uint8_t   MealPrice_t=0;
-/*-------匹配ID和价格------------------------*/
-    memcpy(CustomerSel.MealID,Meal[index-1].MealID,4);
-    memcpy(CustomerSel.MealPrice,Meal[index-1].MealPrice,6);
+/*-------获取ID和价格及折后价格------------------------*/
+    memcpy(CustomerSel.MealID,Meal_Union.Meal[index-1].MealID,4);    
+    memcpy(CustomerSel.MealName,Meal_Union.Meal[index-1].MealName,20);
+    memcpy(CustomerSel.MealPrice,Meal_Union.Meal[index-1].MealPrice,6);
     MealPrice_t= RTC_Bcd2ToByte(CustomerSel.MealPrice[4]);  //1.先转换为bin  
-    CustomerSel.MealPrice[4]= RTC_ByteToBcd2(MealPrice_t*Discount/10); //2.将bin码X折扣，然后转换为BCD 
+    MealPrice_t= GetMealLastPrice(index,1);                      //获取折后价格
+    CustomerSel.MealPrice[4]= RTC_ByteToBcd2(MealPrice_t); //2.将bin码X折扣，然后转换为BCD 
+    //CustomerSel.MealPrice[4]= RTC_ByteToBcd2(MealPrice_t);  //2.将bin码X折扣，然后转换为BCD 
 /*------购买餐品的数量-----------------*/
 		CustomerSel.MealNo  =  0x01; //取一个餐品上传一次数据
 		/*购买餐品的类型*/
     CustomerSel.PayType =  UserActMessageWriteToFlash.UserAct.PayType;  //	UserAct.PayType  ;
-		CustomerSel.MealName =  	index ;
 	 	/*支付了多少钱*/
 		PayBill= payfor_meal* 100; //已付的钱=需找币的钱+餐品的单价，元转换为分
 		CustomerSel.DealBalance[0]      =	      PayBill / 10000000000 %100;
@@ -207,7 +209,7 @@ void MealArr(unsigned char index)
 		CustomerSel.DealBalance[4]      =       CustomerSel.DealBalance[4]/10 *16 +CustomerSel.DealBalance[4]%10 ;
 		CustomerSel.DealBalance[5]      =	      PayBill % 100 ;
 		CustomerSel.DealBalance[5]      =       CustomerSel.DealBalance[5]/10 *16 +CustomerSel.Change[5]%10 ;		
-		/*要上传的已找零分析:第一次上传的时候MoneyPayBack_Already_2nd=0；第二次上传的时候UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already=0；
+		/*要上传的已找零分析:第一次上传的售后MoneyPayBack_Already_2nd=0；第二次上传的时候UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already=0；
     第一次就取餐失败的时候，UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already!=0,UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd!=0,两个相加就是总的退币
     */
     MoneyPayBack_Already_t= (UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already + UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd) *100;

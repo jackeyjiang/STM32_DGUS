@@ -855,7 +855,7 @@ void SaveUserData(void)
  *******************************************************************************/ 
 void ReadUserData(void)
 {   
-   erro_record = RTC_ReadBackupRegister(RTC_BKP_DR3);
+   //erro_record = RTC_ReadBackupRegister(RTC_BKP_DR3);
    SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 ,UserActiontotoaDatalSize*4);
 
 }

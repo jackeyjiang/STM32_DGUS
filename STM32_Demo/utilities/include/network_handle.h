@@ -6,188 +6,184 @@
 #define Success 0x01
 #define Failed 0x02
 
+#define MealDataDatalSize  43
 
-extern   unsigned char   F_RX1_Right ;
+extern   uint8_t   F_RX1_Right ;
 extern   uint16_t		  rx1BufIndex ;
 extern   uint8_t		  F_RX1_VAILD ;
 extern   long  		    CrcValue ;
 extern   uint8_t		  F_RX1_SYNC ;
 extern   const uint8_t     Discount ;
 
-extern unsigned char  TID[7];
-extern unsigned char  BRWN[7+3];
-extern unsigned char  BNO[6];
-extern unsigned char  DeviceArea[3+3];
-extern unsigned char  DeviceAreaNO[4+3];
-extern unsigned char  DeviceStatus[2+3];
-extern unsigned char  DealData[7];
-extern unsigned char  DealTime[6];
-extern unsigned char  MAC[8+3];
-extern unsigned char  DealBalance[6+3];
-extern unsigned char  MealID[4+3];
-extern unsigned char  MealNO[1+3];
-extern unsigned char  MealName[20+3];
-extern unsigned char  MealPrice[6+3];
-extern unsigned char  PayType[1+3];
-extern unsigned char  Change[6+3];
-extern unsigned char  RemainMealNum[2+3];
-extern unsigned char  MName[20+3];
-extern unsigned char  APPVersion[8+3];
-extern unsigned char  ParaFileVersion[8+3];
-extern unsigned char  BDataFileVersion[8+3];
-extern unsigned char  ChechStatus[2+3];
-extern unsigned char  MID[3+3];
-extern unsigned char  TTCount[3+2];
-extern unsigned char  TNCT[6+3];
-extern unsigned char  TNtype[3+2];
-extern unsigned char  TotalChange[3+6];
-extern unsigned char  TakeMealFlag[3+2];
-extern unsigned char  MenuNo[4];
-extern unsigned char  UpdataFlag[4];
-extern unsigned char  WordKeyCipher[11];
-extern unsigned char  PosDevNum[10+3];  //13+18+13+20=64-3*4=
-extern unsigned char  PosTenantNum[15+3];
-extern unsigned char  PosBatchNum[10+3];
-extern unsigned char  PosUserNum[21+3];
+extern uint8_t  TID[7];
+extern uint8_t  BRWN[7+3];
+extern uint8_t  BNO[6];
+extern uint8_t  DeviceArea[3+3];
+extern uint8_t  DeviceAreaNO[4+3];
+extern uint8_t  DeviceStatus[2+3];
+extern uint8_t  DealData[7];
+extern uint8_t  DealTime[6];
+extern uint8_t  MAC[8+3];
+extern uint8_t  DealBalance[6+3];
+extern uint8_t  MealID[4+3];
+extern uint8_t  MealNO[1+3];
+extern uint8_t  MealName[20+3];
+extern uint8_t  MealPrice[6+3];
+extern uint8_t  PayType[1+3];
+extern uint8_t  Change[6+3];
+extern uint8_t  RemainMealNum[2+3];
+extern uint8_t  MName[20+3];
+extern uint8_t  APPVersion[8+3];
+extern uint8_t  ParaFileVersion[8+3];
+extern uint8_t  BDataFileVersion[8+3];
+extern uint8_t  ChechStatus[2+3];
+extern uint8_t  MID[3+3];
+extern uint8_t  TTCount[3+2];
+extern uint8_t  TNCT[6+3];
+extern uint8_t  TNtype[3+2];
+extern uint8_t  TotalChange[3+6];
+extern uint8_t  TakeMealFlag[3+2];
+extern uint8_t  MenuNo[4];
+extern uint8_t  UpdataFlag[4];
+extern uint8_t  WordKeyCipher[11];
+extern uint8_t  PosDevNum[10+3];  //13+18+13+20=64-3*4=
+extern uint8_t  PosTenantNum[15+3];
+extern uint8_t  PosBatchNum[10+3];
+extern uint8_t  PosUserNum[21+3];
+
+/******************************************
+相关折扣信息
+*******************************************/
+extern uint16_t MealNo_1st;
+extern uint16_t MealNo_2nd;
+extern uint16_t MealNo_3rd;
+extern uint16_t MealNo_4th;
+
+extern uint16_t price_1st; 
+extern uint16_t price_2nd;
+extern uint16_t price_3rd;
+extern uint16_t price_4th;
+
+extern uint8_t cashcut_1st;
+extern uint8_t cashcut_2nd;
+extern uint8_t cashcut_3rd;
+extern uint8_t cashcut_4th;
+
+extern uint8_t sztcut_1st;
+extern uint8_t sztcut_2nd;
+extern uint8_t sztcut_3rd;
+extern uint8_t sztcut_4th;
+
+extern uint8_t gboccut_1st;
+extern uint8_t gboccut_2nd;
+extern uint8_t gboccut_3rd;
+extern uint8_t gboccut_4th;
+
+extern uint8_t vipcut_1st;
+extern uint8_t vipcut_2nd;
+extern uint8_t vipcut_3rd;
+extern uint8_t vipcut_4th;
+
+extern uint8_t vchatcut_1st;
+extern uint8_t vchatcut_2nd;
+extern uint8_t vchatcut_3rd;
+extern uint8_t vchatcut_4th;
+
+extern uint8_t Order_1st;
+extern uint8_t Order_2nd;
+extern uint8_t Order_3rd;
+extern uint8_t Order_4th;
 
 /*******************************************
 这个结构体是定义4种餐品的定义
 设置餐品的时候定义的一个结构体 与服务器对比
 
 ********************************/
-typedef struct
+typedef struct _Meal_struction
 {
-  const unsigned char MealNum[2]; //将无用的数据放在结构体的头，有些数据就不会改变
-	const unsigned char MealID[4];
-	const unsigned char MealName[20];
-	const unsigned char MealPrice[6];
-	const unsigned char MealType[4];
-
+	uint8_t MealID[4];     //餐品ID
+	uint8_t MealName[20];  //餐品名 
+  uint8_t MealCnt[2];    //餐品数量
+	uint8_t MealPrice[6];  //餐品价格
+	uint8_t MealCut[2];    //现金折扣  
+  uint8_t VipCut[2];     //会员折扣
+  uint8_t SztCut[2];     //深圳通折扣
+  uint8_t GbocCut[2];    //银联折扣
+  uint8_t VchatCut[2];   //微信折扣
+  uint8_t MealOrder[1];  //餐品顺序
+	uint8_t MealType[4];   //餐品类型
 }Meal_struction;
-extern	const Meal_struction  	Meal[MealKindTotoal];
 
+union _Meal_Union
+{
+  Meal_struction Meal[MealKindTotoal];
+  uint8_t MealBuf[MealKindTotoal*47];
+};
+extern union _Meal_Union Meal_Union;
 
 /*******************************************
 这个结构体是用户选择取餐的时候需要定义的
 ********************************/
 typedef struct
 {
- unsigned char 	 MealID[4] ;        /*餐品的ID*/
- unsigned char   MealNo ;           /*餐品的数量*/
- unsigned char   DealBalance[6];	/*支付金额*/
- unsigned char   PayType;	        /*支付方式*/
- unsigned char   MealPrice[6];       /*餐品的价格*/
- unsigned char   Change[6] ;        /*应该找回多少钱*/
- unsigned char   RemainMealNum[2] ; /*剩余餐品数*/
- unsigned char   MealName;
-
+ uint8_t 	 MealID[4] ;        /*餐品的ID*/
+ uint8_t   MealName[20];      /*餐品的名称*/
+ uint8_t   MealNo ;           /*餐品的数量*/
+ uint8_t   DealBalance[6];	  /*支付金额*/
+ uint8_t   PayType;	          /*支付方式*/
+ uint8_t   MealPrice[6];      /*餐品的价格*/
+ uint8_t   Change[6] ;        /*应该找回多少钱*/
+ uint8_t   RemainMealNum[2] ; /*剩余餐品数*/
 }CustomerSel__struction ;
 extern CustomerSel__struction CustomerSel;
 
-extern char ReadSdBuff[512];
-extern char SendHostBuff[128];
-extern char ReadBuf[20];
+extern uint8_t ReadSdBuff[512];
+extern uint8_t SendHostBuff[128];
+extern uint8_t ReadBuf[20];
 
-extern unsigned char  F_RX1_Right;
-extern unsigned char  rx1Buf[512];	  //发送数据给服务器，服务器返回数据存在这个buffer
+extern uint8_t  F_RX1_Right;
+extern uint8_t  rx1Buf[512];	  //发送数据给服务器，服务器返回数据存在这个buffer
 
+extern uint8_t signin_state;  //与服务器通信的状态位
 extern uint8_t sell_type[4];  //存储售餐ID的数据
-extern const uint8_t sell_type_1st[4]; 
-extern const uint8_t sell_type_2nd[4]; 
-extern const uint8_t sell_type_3rd[4]; 
-extern const uint8_t sell_type_4th[4]; 
-extern const uint8_t sell_type_5th[4];
-extern const uint8_t sell_type_6th[4];
-extern const uint8_t sell_type_7th[4];
-extern const uint8_t sell_type_8th[4];
-extern const uint8_t sell_type_9th[4];
 extern uint8_t Menu_interface;//当前显示的售餐界面
 extern uint8_t Menuset_interface; //当前显示的设餐界面
 extern uint8_t Menu_interface;
 extern uint8_t MealSet_interface;
-extern const char price_1st;
-extern const char price_2nd;
-extern const char price_3rd;
-extern const char price_4th;
-extern const char price_5th;
-extern const char price_6th;
-extern const char price_7th;
-extern const char price_8th;
-extern const char price_9th;
-extern const char price_10th;
-extern const char price_11th;
-extern const char price_12th;
-extern const char price_13th;
-extern const char price_14th;
-extern const char price_15th;
-extern const char price_16th;
-extern const char price_17th;
-extern const char price_18th;
-extern const char price_19th;
-extern const char price_20th;
-extern const char price_21th;
-extern const char price_22th;
-extern const char price_23th;
-extern const char price_24th;
-extern const char price_25th;
-extern const char price_26th;
-extern const char price_27th;
-extern const char price_28th;
-extern const char price_29th;
-extern const char    mealname_1st[12]; 
-extern const char    mealname_2nd[12];
-extern const char    mealname_3rd[18];
-extern const char    mealname_4th[12];
-extern const char    mealname_5th[12];
-extern const char    mealname_6th[14];
-extern const char    mealname_7th[10];
-extern const char    mealname_8th[12];
-extern const char    mealname_9th[12];
-extern const char    mealname_10th[12];
-extern const char    mealname_11th[14];
-extern const char    mealname_12th[12];
-extern const char    mealname_13th[12];
-extern const char    mealname_14th[12];
-extern const char    mealname_15th[16];
-extern const char    mealname_16th[12];
-extern const char    mealname_17th[14];
-extern const char    mealname_18th[14];
-extern const char    mealname_19th[12];
-extern const char    mealname_20th[12];
-extern const char    mealname_21th[12];
-extern const char    mealname_22th[14];
-extern const char    mealname_23th[12];
-extern const char    mealname_24th[12];
-extern const char    mealname_25th[12];
-extern const char    mealname_26th[12];
-extern const char    mealname_27th[12];
-extern const char    mealname_28th[12];
-extern const char    mealname_29th[12];
+extern uint16_t price_1st;
+extern uint16_t price_2nd;
+extern uint16_t price_3rd;
+extern uint16_t price_4th;
+extern uint8_t mealname_1st[20]; 
+extern uint8_t mealname_2nd[20];
+extern uint8_t mealname_3rd[20];
+extern uint8_t mealname_4th[20];
 
-uint16_t mem_copy01(unsigned char *dest, const unsigned char *source, const long s_len);
-uint16_t mem_copy00(unsigned char *dest, const unsigned char *source, const long s_len);
-unsigned char TakeMealsFun1(unsigned char *SendBuffer);
+uint16_t mem_copy01(uint8_t *dest, const uint8_t *source, const long s_len);
+uint16_t mem_copy00(uint8_t *dest, const uint8_t *source, const long s_len);
+uint8_t TakeMealsFun1(uint8_t *SendBuffer);
 void memcpy_02(char *dest,char *source,char type);
-unsigned char SignInFun(void);
+uint8_t SignInFun(void);
 uint32_t  MealDataCompareFun(void);/*餐品数据对比*/
-unsigned char SignOutFun(void);/*退签*/
-unsigned char StatusUploadingFun(uint16_t erro_status);//状态上送
-unsigned char TemperatureUploadingFun(uint8_t Temperature_t); //温度上送
-unsigned char EchoFun(void);/*回响测试*/
-unsigned char TakeMealsFun(unsigned char *SendBuffer,unsigned char takeout_flag);/*取餐设置*/
-unsigned char MealUploadingFun(void);/*上送餐品数据*/
-unsigned char ClearingFun(void);/*结算命令*/
+uint8_t SignOutFun(void);/*退签*/
+uint8_t StatusUploadingFun(uint16_t erro_status);//状态上送
+uint8_t TemperatureUploadingFun(uint8_t Temperature_t); //温度上送
+uint8_t EchoFun(void);/*回响测试*/
+uint8_t TakeMealsFun(uint8_t *SendBuffer,uint8_t takeout_flag);/*取餐设置*/
+uint8_t MealUploadingFun(void);/*上送餐品数据*/
+uint8_t ClearingFun(void);/*结算命令*/
 //void  EchoFuntion(void (*fptr)(void)) ;
-unsigned char 	Resend(unsigned char *p,long lenght);
+uint8_t 	Resend(uint8_t *p,long lenght);
 void WriteToSD_data(void);
-void DataUpload(unsigned char takemeal_flag);
+void DataUpload(uint8_t takemeal_flag);
 void StateSend(void);
 //void SignInFunction(void);
 void GetBRWN(void);
+void GetMealDetail(void);
 
-unsigned int GetCrc16(unsigned char *bufData,unsigned int sizeData);
-void HL_IntToBuffer(const uint16_t int_v, unsigned char *ret_buf);
-bool StringToHexGroup1(unsigned char *OutHexBuffer, char *InStrBuffer, unsigned int strLength);
+unsigned int GetCrc16(uint8_t *bufData,unsigned int sizeData);
+void HL_IntToBuffer(const uint16_t int_v, uint8_t *ret_buf);
+bool StringToHexGroup1(uint8_t *OutHexBuffer, char *InStrBuffer, unsigned int strLength);
 
 bool EchoFuntion(void (*fptr)(void));
 bool SignInFunction(void);

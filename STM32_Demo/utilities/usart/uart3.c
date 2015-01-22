@@ -47,7 +47,7 @@ void Uart3_Send(const uint8_t *p,uint8_t length)
     	    
 	 }
 }
-void Uart3_Sent(const char *p,uint8_t length)
+void Uart3_Sent(const uint8_t *p,uint8_t length)
 {
    uint8_t i=0;
 	 USART_ClearFlag(USART3,USART_FLAG_TC);

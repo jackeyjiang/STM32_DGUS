@@ -70,6 +70,7 @@ LOGINLOG_TO_HOST UpCheckOutData; //银联批结返回结构体
 uint8_t freq_toSendGpboc;
 //交易成功次数记数，达到要求次数后上送深圳通数据，上送完了之后此数归0
 uint8_t freq_toSendSzt;
+uint8_t Flag_szt_gpboc_ok =0;
 
 
 //extern u32 tmp_hh = 0x17, tmp_mm = 0x3b, tmp_ss = 0x01;
@@ -3332,51 +3333,32 @@ uint8_t SztAutoSend(void)
 }
 
 
-
-/*深圳通签到*/
-bool Szt_GpbocAutoCheckIn(void)
+/*读头总签到*/
+void Szt_GpbocAutoCheckIn(void)
 {
   uint8_t Szt_DiverInitFlag =0;
   uint8_t Gpboc_DiverInitFlag =0;
-  uint16_t check_cont=0;
-  while(1)	 
+    
+  if( Gpboc_DiverInitFlag ==0)
   {
-    if( Gpboc_DiverInitFlag ==0)
- 	  {
- 	    delay_us(500);
- 	    Gpboc_DiverInitFlag = Gpboc_CheckIn();
- 	  }
-	  if( Gpboc_DiverInitFlag == 1)
-	  {
-			check_cont=0;
-	    break;
-	  }
-		else 
-		{
-			check_cont++;
-			if(check_cont>5)
-				return false;
-		}
-  }  
-  while(1)	 
-  {
-    if( Szt_DiverInitFlag ==0)
- 	  {
- 	    delay_us(500);
- 	    Szt_DiverInitFlag = Szt_CheckIn();
- 	  }
-	  if(Szt_DiverInitFlag == 1)
-	  {
-		  break;
-	  }
-		else 
-		{
-			check_cont++;
-			if(check_cont>5)
-				return false;
-		}
+    delay_us(500);
+    Gpboc_DiverInitFlag = Gpboc_CheckIn();
   }
-	return true;
+     
+  
+  if( Szt_DiverInitFlag ==0)
+  {
+    delay_us(500);
+    Szt_DiverInitFlag = Szt_CheckIn();
+  }
+  
+
+	if((Szt_DiverInitFlag == 1)&&(Gpboc_DiverInitFlag ==1))
+	{
+	  Flag_szt_gpboc_ok =1;
+	}
+		 
+//	return true;
 }
 
 /*一个2位的BCD码转换成一个十进制码*/

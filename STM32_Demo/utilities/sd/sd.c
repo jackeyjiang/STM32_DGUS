@@ -601,7 +601,7 @@ void Sd_Write(char erro_flag,char takeout_flag)
 
 	  //这里赋值餐品的名字
 	 for(j=0;j<20;j++)
-	   MealName[3+j]=Meal[CustomerSel.MealName-1].MealName[j];
+	   MealName[3+j]=CustomerSel.MealName[j];
     /*餐品名字无法好好处理*/
 	  
 	 CmdLenght +=mem_copy01(&Send_Buf[CmdLenght],&MealName[3],sizeof(MealName)-3);			  /*餐品名字*/

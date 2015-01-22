@@ -31,6 +31,7 @@ void Uart1_Card(const uint8_t *p,uint8_t sizeData)
 红烧鱼块      1    25     25
 脆皮烤鸭      1    30     30
 付款方式：银行卡支付/深圳通支付/现金支付
+折扣信息：75折
 应收:90  已收:100  找回:10
 时间:2014-04-16 23:19
 */
@@ -136,121 +137,20 @@ void SearchPrintMealID(uint8_t MealID)
 			case 0x00:break;
 			case 0x01:
 			{
-				memcpy(p2,mealname_1st,10);
+				memcpy(p2,mealname_1st,sizeof(mealname_1st));
 			}break;	
 			case 0x02:
 			{
-				memcpy(p2,mealname_2nd,10);
+				memcpy(p2,mealname_2nd,sizeof(mealname_1st));
 			}break;	
 			case 0x03:
 			{
-				memcpy(p2,mealname_3rd,14);
+				memcpy(p2,mealname_3rd,sizeof(mealname_1st));
 			}break;	
 			case 0x04:
 			{
-				memcpy(p2,mealname_4th,10);
+				memcpy(p2,mealname_4th,sizeof(mealname_1st));
 			}break;	
-			case 0x05:
-			{
-				memcpy(p2,mealname_5th,10);
-			}break;	
-			case 0x06:
-			{
-				memcpy(p2,mealname_6th,12);
-			}break;	    
-			case 0x07:
-			{
-				memcpy(p2,mealname_7th,8);
-			}break;	
-			case 0x08:
-			{
-				memcpy(p2,mealname_8th,10);
-			}break;	
-			case 0x09:
-			{
-				memcpy(p2,mealname_9th,10);
-			}break;
-			case 0x0A:
-			{
-				memcpy(p2,mealname_10th,10);
-			}break;	
-			case 0x0B:
-			{
-				memcpy(p2,mealname_11th,12);
-			}break;	
-			case 0x0C:
-			{
-				memcpy(p2,mealname_12th,10);
-			}break;	
-      case 0x0D:
-			{
-				memcpy(p2,mealname_13th,10);
-			}break;	
-      case 0x0E:
-			{
-				memcpy(p2,mealname_14th,10);
-			}break;	
-      case 0x0F:
-			{
-				memcpy(p2,mealname_15th,14);
-			}break;	
-      case 0x10:
-			{
-				memcpy(p2,mealname_16th,10);
-			}break;	
-      case 0x11:
-			{
-				memcpy(p2,mealname_17th,12);
-			}break;	
-      case 0x12:
-			{
-				memcpy(p2,mealname_18th,12);
-			}break;	
-      case 0x13:
-			{
-				memcpy(p2,mealname_19th,10);
-			}break;
-      case 0x14:
-			{
-				memcpy(p2,mealname_20th,10);
-			}break;  
-      case 0x15:
-			{
-				memcpy(p2,mealname_21th,10);
-			}break;
-      case 0x16:
-			{
-				memcpy(p2,mealname_22th,12);
-			}break; 
-      case 0x17:
-			{
-				memcpy(p2,mealname_23th,10);
-			}break; 
-      case 0x18:
-			{
-				memcpy(p2,mealname_24th,10);
-			}break; 
-      case 0x19:
-			{
-				memcpy(p2,mealname_25th,10);
-			}break;
-      case 0x1A:
-			{
-				memcpy(p2,mealname_26th,10);
-			}break; 
-      case 0x1B:
-			{
-				memcpy(p2,mealname_27th,10);
-			}break; 
-      case 0x1C:
-			{
-				memcpy(p2,mealname_28th,10);
-			}break; 
-      case 0x1D:
-			{
-				memcpy(p2,mealname_29th,10);
-			}break;       
-      
 			default:break;			
 		}
 }
@@ -276,16 +176,16 @@ void  SPRT(void)
   Uart1_Card(PrintInitCmd,sizeof(PrintInitCmd));
   Uart1_Card(SetEntryPrintCHinese,sizeof(SetEntryPrintCHinese));
 /--------------打票机可以使用--------------------*/
-  printf("菜品         数量  单价  金额\r\n");
+  printf("菜品         数量 单价  折后金额\r\n");
 	if(Print_Struct.P_Number1st>0)
   {
     memset(p2,0x20,34-4);
 	  SearchPrintMealID(Print_Struct.P_Type1st);
 		sprintf(num_t,"%1d",Print_Struct.P_Number1st);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",Print_Struct.P_Price1st*10/Discount);
+		sprintf(num_t,"%2d",Print_Struct.P_Price1st);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",Print_Struct.P_Cost1st*10/Discount);
+    sprintf(num_t,"%3d",Print_Struct.P_Cost1st);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
   }
@@ -295,9 +195,9 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type2nd);
 		sprintf(num_t,"%1d",Print_Struct.P_Number2nd);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",Print_Struct.P_Price2nd*10/Discount);
+		sprintf(num_t,"%2d",Print_Struct.P_Price2nd);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",Print_Struct.P_Cost2nd*10/Discount);
+    sprintf(num_t,"%3d",Print_Struct.P_Cost2nd);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
@@ -307,9 +207,9 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type3rd);
 		sprintf(num_t,"%1d",Print_Struct.P_Number3rd);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",Print_Struct.P_Price3rd*10/Discount);
+		sprintf(num_t,"%2d",Print_Struct.P_Price3rd);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",Print_Struct.P_Cost3rd*10/Discount);
+    sprintf(num_t,"%3d",Print_Struct.P_Cost3rd);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
@@ -319,9 +219,9 @@ void  SPRT(void)
 	  SearchPrintMealID(Print_Struct.P_Type4th);
 		sprintf(num_t,"%1d",Print_Struct.P_Number4th);
 		memcpy(p2+14,num_t,1);
-		sprintf(num_t,"%2d",Print_Struct.P_Price4th*10/Discount);
+		sprintf(num_t,"%2d",Print_Struct.P_Price4th);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",Print_Struct.P_Cost4th*10/Discount);
+    sprintf(num_t,"%3d",Print_Struct.P_Cost4th);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
