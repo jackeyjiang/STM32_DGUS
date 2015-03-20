@@ -281,7 +281,7 @@ unsigned char  WaitPayMoney(void)
 	    /*显示付款方式，现金，银行卡，深圳通*/
 			if(WaitTime<53)
 			{
-			  CurrentPoint = 3;
+			  //CurrentPoint = 3;
 			  /*支付方式*/			 
 			  //UserActMessageWriteToFlash.UserAct.PayType = 0x31;/* 现金支付*/
         //取消自动
@@ -538,6 +538,7 @@ uint8_t WaitMeal(void)
 			case 3 :    /*发送取餐命令*/
 			{
 				//查询机械手是否准备好，如果准备好发送取餐命令
+				machinerec.remealaway = 0;  /*初始化*/
 				//如果超时则 返回错误，
 			  if(LinkTime > 10)    //超时
 				{
@@ -578,7 +579,7 @@ uint8_t WaitMeal(void)
 					//播放请取餐语音
 					PlayMusic(VOICE_9);
 				}
-				if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
+				else if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
 				{
 					machinerec.reenablegetmeal =0; //新加的需要把相关标记清零
 					//printf("取餐5秒了还未取到餐\r\n");	 
@@ -586,7 +587,7 @@ uint8_t WaitMeal(void)
 					return takemeal_erro;
 				}
 				//printf("餐未超过了三分钟还未被取走\r\n");
-				if( machinerec.remealaway == 1) //餐已被取走
+				else if( machinerec.remealaway == 1) //餐已被取走
 				{
 				//printf("餐已被取走\r\n");
 					LinkTime =0;
@@ -594,7 +595,7 @@ uint8_t WaitMeal(void)
 				  MealoutCurrentPointer=5;
 					break;
 				}
-				if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
+				else if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
 			  {
 					if( LinkTime >=25) //餐在出餐口未被取走，一直等待时间时间大于20s播放语音提示取餐
 					{
@@ -602,7 +603,7 @@ uint8_t WaitMeal(void)
 						LinkTime= 0;
 					}
         }					
-				if(takemeal_timecnt==1) //如果没有收到过了20S餐盒没有被取走则从到达出餐口的位置计时
+				else if(takemeal_timecnt==1) //如果没有收到过了20S餐盒没有被取走则从到达出餐口的位置计时
 				{
           if(LinkTime >=25)
 					{
@@ -816,35 +817,177 @@ bool GetDiscountCost(uint8_t payment)
       last_discount_3rd = 100;
       last_discount_4th = 100;      
     }break;
+    /*折扣计算出问题了，需要获取当前餐品的折扣信息*/
     case 0x31:{  /*现金*/
-      last_discount_1st = cashcut_1st;
-      last_discount_2nd = cashcut_2nd;
-      last_discount_3rd = cashcut_3rd;
-      last_discount_4th = cashcut_4th;
+         /*已知现金支付，根据选择的第一份餐品的内部序号，将该序号下的餐品的折扣信息赋值给用户第一份餐品的折扣用于计算*/
+        switch(UserActMessageWriteToFlash.UserAct.MealType_1st) 
+        {
+          case 0x01:{last_discount_1st = cashcut_1st;};break;
+          case 0x02:{last_discount_1st = cashcut_2nd;};break;
+          case 0x03:{last_discount_1st = cashcut_3rd;};break;
+          case 0x04:{last_discount_1st = cashcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+        {
+          case 0x01:{last_discount_2nd = cashcut_1st;};break;
+          case 0x02:{last_discount_2nd = cashcut_2nd;};break;
+          case 0x03:{last_discount_2nd = cashcut_3rd;};break;
+          case 0x04:{last_discount_2nd = cashcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+        {
+          case 0x01:{last_discount_3rd = cashcut_1st;};break;
+          case 0x02:{last_discount_3rd = cashcut_2nd;};break;
+          case 0x03:{last_discount_3rd = cashcut_3rd;};break;
+          case 0x04:{last_discount_3rd = cashcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+        {
+          case 0x01:{last_discount_4th = cashcut_1st;};break;
+          case 0x02:{last_discount_4th = cashcut_2nd;};break;
+          case 0x03:{last_discount_4th = cashcut_3rd;};break;
+          case 0x04:{last_discount_4th = cashcut_4th;};break;
+          default :break;
+        }
     }break;
     case 0x32:{  /*银联闪付卡*/
-      last_discount_1st = gboccut_1st;
-      last_discount_2nd = gboccut_2nd;
-      last_discount_3rd = gboccut_3rd;
-      last_discount_4th = gboccut_4th;
+        switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
+        {
+          case 0x01:{last_discount_1st = gboccut_1st;};break;
+          case 0x02:{last_discount_2nd = gboccut_2nd;};break;
+          case 0x03:{last_discount_3rd = gboccut_3rd;};break;
+          case 0x04:{last_discount_4th = gboccut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+        {
+          case 0x01:{last_discount_2nd = gboccut_1st;};break;
+          case 0x02:{last_discount_2nd = gboccut_2nd;};break;
+          case 0x03:{last_discount_2nd = gboccut_3rd;};break;
+          case 0x04:{last_discount_2nd = gboccut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+        {
+          case 0x01:{last_discount_3rd = gboccut_1st;};break;
+          case 0x02:{last_discount_3rd = gboccut_2nd;};break;
+          case 0x03:{last_discount_3rd = gboccut_3rd;};break;
+          case 0x04:{last_discount_3rd = gboccut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+        {
+          case 0x01:{last_discount_4th = gboccut_1st;};break;
+          case 0x02:{last_discount_4th = gboccut_2nd;};break;
+          case 0x03:{last_discount_4th = gboccut_3rd;};break;
+          case 0x04:{last_discount_4th = gboccut_4th;};break;
+          default :break;
+        }
     }break;
     case 0x33:{  /*深圳通*/
-      last_discount_1st = sztcut_1st;
-      last_discount_2nd = sztcut_2nd;
-      last_discount_3rd = sztcut_3rd;
-      last_discount_4th = sztcut_4th;      
+        switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
+        {
+          case 0x01:{last_discount_1st = sztcut_1st;};break;
+          case 0x02:{last_discount_2nd = sztcut_2nd;};break;
+          case 0x03:{last_discount_3rd = sztcut_3rd;};break;
+          case 0x04:{last_discount_4th = sztcut_4th;};break;
+          default :break; 
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+        {
+          case 0x01:{last_discount_2nd = sztcut_1st;};break;
+          case 0x02:{last_discount_2nd = sztcut_2nd;};break;
+          case 0x03:{last_discount_2nd = sztcut_3rd;};break;
+          case 0x04:{last_discount_2nd = sztcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+        {
+          case 0x01:{last_discount_3rd = sztcut_1st;};break;
+          case 0x02:{last_discount_3rd = sztcut_2nd;};break;
+          case 0x03:{last_discount_3rd = sztcut_3rd;};break;
+          case 0x04:{last_discount_3rd = sztcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+        {
+          case 0x01:{last_discount_4th = sztcut_1st;};break;
+          case 0x02:{last_discount_4th = sztcut_2nd;};break;
+          case 0x03:{last_discount_4th = sztcut_3rd;};break;
+          case 0x04:{last_discount_4th = sztcut_4th;};break;
+          default :break;
+        }        
     }break;
     case 0x34:{ /*会员卡*/
-      last_discount_1st = vipcut_1st;
-      last_discount_2nd = vipcut_2nd;
-      last_discount_3rd = vipcut_3rd;
-      last_discount_4th = vipcut_4th; 
+        switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
+        {
+          case 0x01:{last_discount_1st = vipcut_1st;};break;
+          case 0x02:{last_discount_2nd = vipcut_2nd;};break;
+          case 0x03:{last_discount_3rd = vipcut_3rd;};break;
+          case 0x04:{last_discount_4th = vipcut_4th;};break;
+          default :break; 
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+        {
+          case 0x01:{last_discount_2nd = vipcut_1st;};break;
+          case 0x02:{last_discount_2nd = vipcut_2nd;};break;
+          case 0x03:{last_discount_2nd = vipcut_3rd;};break;
+          case 0x04:{last_discount_2nd = vipcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+        {
+          case 0x01:{last_discount_3rd = vipcut_1st;};break;
+          case 0x02:{last_discount_3rd = vipcut_2nd;};break;
+          case 0x03:{last_discount_3rd = vipcut_3rd;};break;
+          case 0x04:{last_discount_3rd = vipcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+        {
+          case 0x01:{last_discount_4th = vipcut_1st;};break;
+          case 0x02:{last_discount_4th = vipcut_2nd;};break;
+          case 0x03:{last_discount_4th = vipcut_3rd;};break;
+          case 0x04:{last_discount_4th = vipcut_4th;};break;
+          default :break;
+        }         
     }break;
     case 0x35:{ /*微信支付*/
-      last_discount_1st = vchatcut_1st;
-      last_discount_2nd = vchatcut_2nd;
-      last_discount_3rd = vchatcut_3rd;
-      last_discount_4th = vchatcut_4th;         
+        switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
+        {
+          case 0x01:{last_discount_1st = vchatcut_1st;};break;
+          case 0x02:{last_discount_2nd = vchatcut_2nd;};break;
+          case 0x03:{last_discount_3rd = vchatcut_3rd;};break;
+          case 0x04:{last_discount_4th = vchatcut_4th;};break;
+          default :break; 
+        } 
+        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+        {
+          case 0x01:{last_discount_2nd = vchatcut_1st;};break;
+          case 0x02:{last_discount_2nd = vchatcut_2nd;};break;
+          case 0x03:{last_discount_2nd = vchatcut_3rd;};break;
+          case 0x04:{last_discount_2nd = vchatcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+        {
+          case 0x01:{last_discount_3rd = vchatcut_1st;};break;
+          case 0x02:{last_discount_3rd = vchatcut_2nd;};break;
+          case 0x03:{last_discount_3rd = vchatcut_3rd;};break;
+          case 0x04:{last_discount_3rd = vchatcut_4th;};break;
+          default :break;
+        }
+        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+        {
+          case 0x01:{last_discount_4th = vchatcut_1st;};break;
+          case 0x02:{last_discount_4th = vchatcut_2nd;};break;
+          case 0x03:{last_discount_4th = vchatcut_3rd;};break;
+          case 0x04:{last_discount_4th = vchatcut_4th;};break;
+          default :break;
+        }         
     }break;
     default:{
       return false;

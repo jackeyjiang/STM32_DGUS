@@ -2,9 +2,9 @@
   ******************************************************************************
   * 文件: test_lcd.c
   * 作者: jackey
-  * 版本: V1.1.0
-  * 描述: 满足很多餐品的菜单需求，具体改动方法见文档
-  *       test_lcd
+  * 版本: V4.0.1
+  * 描述: 离职之后的最后一版，已经基本稳定。
+  *       如果要增加微信支付，需要将网络通信部分全部修改，作者有将网络重写。
   ******************************************************************************
   *
   *                  	作为STM32F407开发的模板
@@ -27,7 +27,7 @@ uint32_t sellsecond_remain_old=0;
 uint8_t cid_data[50]={0};
 int main(void)
 {
-	hardfawreInit(); //硬件初始化
+  hardfawreInit(); //硬件初始化
 	if(SD_Initialize()) AbnormalHandle(sdcard_erro);	//SD卡检测*/ 
 	PageChange(OnlymachieInit_interface);
   if(erro_record&(1<<arm_limit)) 
@@ -46,12 +46,17 @@ int main(void)
     SetScreenRtc();/*设置屏幕的RTC*/
 	MachineHeatSet();//根据时间判断是否开启加热
 	PageChange(SignInFunction_interface);
-	if(!SignInFunction())       AbnormalHandle(signin_erro); /*网络签到*/
+	if(!SignInFunction())       
+		AbnormalHandle(signin_erro); /*网络签到*/
+  if(signin_state == 3) DispMenu();
+  else  DispMenuNone(); 
+	Current= current_temperature;
   DispLeftMeal();             //显示餐品数据	
 	ErrRecHandle();          //用户数据断电的数据处理与上传
 	PageChange(Szt_GpbocAutoCheckIn_interface);
 	delay_ms(1000);
   SendtoServce();          //上传前七天的数据
+	//if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);//深圳通签到
 	Szt_GpbocAutoCheckIn();
  	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
  	  AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
@@ -64,9 +69,7 @@ int main(void)
   delay_ms(200);
 	PageChange(Menu_interface); //显示选餐界面
   PageChange(Menu_interface); //显示选餐界面
-  if(signin_state== 3) DispMenu();
-  else  DispMenuNone(); 
-	Current= current_temperature;
+
 	while(1)
   {
 		DealSeriAceptData();

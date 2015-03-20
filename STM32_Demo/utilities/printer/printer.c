@@ -228,17 +228,21 @@ void  SPRT(void)
   //printf("优惠信息:%d折\r\n",Discount);  
   printf("%s",p0);
 	printf("%s",p1);
-	if(UserActMessageWriteToFlash.UserAct.PayType == '2' )
-	{
-		 printf("支付方式：银行卡支付\r\n");
-	}
-  if(UserActMessageWriteToFlash.UserAct.PayType == '1')
+	if(UserActMessageWriteToFlash.UserAct.PayType == '1' )
 	{
 		 printf("支付方式：现金支付\r\n");
 	}
-	if(UserActMessageWriteToFlash.UserAct.PayType == '3')
+  else if(UserActMessageWriteToFlash.UserAct.PayType == '2')
+	{
+		 printf("支付方式：银行卡支付\r\n");
+	}
+	else if(UserActMessageWriteToFlash.UserAct.PayType == '3')
 	{
 		printf("支付方式：深圳通支付\r\n");
+	}
+	else if(UserActMessageWriteToFlash.UserAct.PayType == '4')
+	{
+		printf("支付方式：会员卡支付\r\n");
 	}
   printf("服务热线：400-0755-677\r\n");
 	Uart1_Card(huan3,sizeof(huan3)); 

@@ -1593,8 +1593,6 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 						if(ErrorType ==1)  //退币机无币错误,再次发送退币
 						{
 							MoneyBack_cnt= SendOutN_Coin(MoneyBack_cnt);
-							//RefundButton(UserAct.MoneyBack);如果使用这个会造成退币机错误
-							//已完全退币，显示退币出错界面，请重启
 						}	
 					}						
 				}

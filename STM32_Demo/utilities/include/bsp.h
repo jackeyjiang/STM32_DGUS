@@ -52,9 +52,9 @@
 #define Z_downlimit      0x18 //z马达下动作超出
 #define solenoid_timeout 0x19 //电磁阀超时
 #define Eeprom_erro      0x1a //eeprom 异常
-#define SendUR6Erro      0x1b  //发送数据异常或超时
-#define GetMealError     0x1c  //机械手5秒取不到餐
-#define MealNoAway       0x1d   //餐在出餐口20秒还未被取走
+#define SendUR6Erro      0x1b //发送数据异常或超时
+#define GetMealError     0x1c //机械手5秒取不到餐
+#define MealNoAway       0x1d //餐在出餐口20秒还未被取走
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_conf.h"
