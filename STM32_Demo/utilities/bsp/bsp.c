@@ -857,9 +857,9 @@ bool GetDiscountCost(uint8_t payment)
         switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
         {
           case 0x01:{last_discount_1st = gboccut_1st;};break;
-          case 0x02:{last_discount_2nd = gboccut_2nd;};break;
-          case 0x03:{last_discount_3rd = gboccut_3rd;};break;
-          case 0x04:{last_discount_4th = gboccut_4th;};break;
+          case 0x02:{last_discount_1st = gboccut_2nd;};break;
+          case 0x03:{last_discount_1st = gboccut_3rd;};break;
+          case 0x04:{last_discount_1st = gboccut_4th;};break;
           default :break;
         }
         switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
@@ -891,9 +891,9 @@ bool GetDiscountCost(uint8_t payment)
         switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
         {
           case 0x01:{last_discount_1st = sztcut_1st;};break;
-          case 0x02:{last_discount_2nd = sztcut_2nd;};break;
-          case 0x03:{last_discount_3rd = sztcut_3rd;};break;
-          case 0x04:{last_discount_4th = sztcut_4th;};break;
+          case 0x02:{last_discount_1st = sztcut_2nd;};break;
+          case 0x03:{last_discount_1st = sztcut_3rd;};break;
+          case 0x04:{last_discount_1st = sztcut_4th;};break;
           default :break; 
         }
         switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
@@ -925,9 +925,9 @@ bool GetDiscountCost(uint8_t payment)
         switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
         {
           case 0x01:{last_discount_1st = vipcut_1st;};break;
-          case 0x02:{last_discount_2nd = vipcut_2nd;};break;
-          case 0x03:{last_discount_3rd = vipcut_3rd;};break;
-          case 0x04:{last_discount_4th = vipcut_4th;};break;
+          case 0x02:{last_discount_1st = vipcut_2nd;};break;
+          case 0x03:{last_discount_1st = vipcut_3rd;};break;
+          case 0x04:{last_discount_1st = vipcut_4th;};break;
           default :break; 
         }
         switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
@@ -959,9 +959,9 @@ bool GetDiscountCost(uint8_t payment)
         switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
         {
           case 0x01:{last_discount_1st = vchatcut_1st;};break;
-          case 0x02:{last_discount_2nd = vchatcut_2nd;};break;
-          case 0x03:{last_discount_3rd = vchatcut_3rd;};break;
-          case 0x04:{last_discount_4th = vchatcut_4th;};break;
+          case 0x02:{last_discount_1st = vchatcut_2nd;};break;
+          case 0x03:{last_discount_1st = vchatcut_3rd;};break;
+          case 0x04:{last_discount_1st = vchatcut_4th;};break;
           default :break; 
         } 
         switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 

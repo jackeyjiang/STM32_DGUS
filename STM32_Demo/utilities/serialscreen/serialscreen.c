@@ -439,7 +439,7 @@ uint32_t GetMealPrice(uint8_t meal_type,uint8_t count)
  /*******************************************************************************
  * 函数名称:GetMealLastPrice                                                                     
  * 描    述:获取当前餐品的折后价格                                                        
- *           作用于单个餐品数据上传的数据                                                                   
+ *           先判断餐品的ID，后根据付款方式，获取当前的餐品在当前的付款方式下的折扣。                                                                  
  * 输    入:                                                                 
  * 输    出:无                                                                     
  * 返    回:void                                                               
@@ -448,26 +448,73 @@ uint32_t GetMealPrice(uint8_t meal_type,uint8_t count)
 uint32_t GetMealLastPrice(uint8_t meal_type,uint8_t count)
 {
 	uint32_t price= 0;
+  uint32_t last_discount_t= 0; /*折扣数据*/
   switch(meal_type)
 	{
-		case 0x01:
+		case 0x01:  /*先确定餐品ID*/
 		{
-			price= price_1st*last_discount_1st/100*count;
+      switch(UserActMessageWriteToFlash.UserAct.PayType)
+      {
+        /*后根据付款方式UserActMessageWriteToFlash.UserAct.PayType，获取从后台下发的原始折扣数据*/
+        case 0x31: /*现金*/
+          last_discount_t= cashcut_1st;break;
+        case 0x32: /*银联*/
+          last_discount_t= gboccut_1st;break;
+        case 0x33: /*深圳通*/
+          last_discount_t= sztcut_1st;break;
+        case 0x34: /*会员卡*/
+          last_discount_t= vipcut_1st;break;
+        default:break;
+      }
 		}break;
-		case 0x02:
+		case 0x02:  /*根据餐品的顺序改变*/
 		{
-      price= price_2nd*last_discount_2nd/100*count;
+      switch(UserActMessageWriteToFlash.UserAct.PayType)
+      {
+        case 0x31: /*现金*/
+          last_discount_t= cashcut_2nd;break;
+        case 0x32: /*银联*/
+          last_discount_t= gboccut_2nd;break;
+        case 0x33: /*深圳通*/
+          last_discount_t= sztcut_2nd;break;
+        case 0x34: /*会员卡*/
+          last_discount_t= vipcut_2nd;break;
+        default:break;
+      }
 		}break;
-		case 0x03:
+		case 0x03:  /*根据餐品的顺序改变*/
 		{
-      price= price_3rd*last_discount_3rd/100*count;
+      switch(UserActMessageWriteToFlash.UserAct.PayType)
+      {
+        case 0x31: /*现金*/
+          last_discount_t= cashcut_3rd;break;
+        case 0x32: /*银联*/
+          last_discount_t= gboccut_3rd;break;
+        case 0x33: /*深圳通*/
+          last_discount_t= sztcut_3rd;break;
+        case 0x34: /*会员卡*/
+          last_discount_t= vipcut_3rd;break;
+        default:break;
+      }
 		}break;
-		case 0x04:
+		case 0x04:  /*根据餐品的顺序改变*/
 		{
-      price= price_4th*last_discount_4th/100*count;
-		}break;
+      switch(UserActMessageWriteToFlash.UserAct.PayType)
+      {
+        case 0x31: /*现金*/
+          last_discount_t= cashcut_4th;break;
+        case 0x32: /*银联*/
+          last_discount_t= gboccut_4th;break;
+        case 0x33: /*深圳通*/
+          last_discount_t= sztcut_4th;break;
+        case 0x34: /*会员卡*/
+          last_discount_t= vipcut_4th;break;
+        default:break;
+      }
+		}break;    
 		default:break;
 	}
+  price= price_1st*last_discount_t/100*count;
 	return price;
 }
  /*******************************************************************************
