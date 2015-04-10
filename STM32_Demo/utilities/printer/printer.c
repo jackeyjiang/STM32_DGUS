@@ -96,7 +96,7 @@ void COPY(Struct_TD  a,unsigned char *p10,unsigned char *p11)
 {
   char temp[10]={0};
   char length=0,length_totoal=0;
-  length=sprintf(temp,"应付:%0d元 ",UserActMessageWriteToFlash.UserAct.PayShould);
+  length=sprintf(temp,"应付:%0d元 ",UserActMessageWriteToFlash.UserAct.LastPayShould);
   memcpy(p10,temp,length);
   length_totoal+=length;
   length=sprintf(temp,"已付:%0d元 ",Print_Struct.P_paymoney);

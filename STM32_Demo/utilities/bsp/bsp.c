@@ -627,6 +627,7 @@ uint8_t WaitMeal(void)
 			case 5:     /*对用户数据进行减一*/  //?? 如果需要进行错误退币，需要修该返回值所在范围
 			{
 				machinerec.remealnoaway = 0;
+        machinerec.remealaway = 0;
 				UserActMessageWriteToFlash.UserAct.Meal_takeout++;//取餐数据加
 				VariableChage(mealout_already,UserActMessageWriteToFlash.UserAct.Meal_takeout);	//UI显示
 				MealoutCurrentPointer= 0;
