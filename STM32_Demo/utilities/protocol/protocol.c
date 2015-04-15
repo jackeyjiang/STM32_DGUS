@@ -175,7 +175,7 @@ void GetMeal(void)
 
 /*设置温度,*/
 uint8_t temper_old=0;
-void SetTemper(uint8_t temper)
+uint8_t SetTemper(uint8_t temper)
 {
   uint8_t Cmd[6]={'H','D','0','0',0x0d,0x0a};
   uint8_t i;
@@ -191,7 +191,12 @@ void SetTemper(uint8_t temper)
 			USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
 			while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
 		}
+    return 0;
 	}
+  else
+  {
+    return 1;
+  } 
 }
 
 
@@ -684,7 +689,6 @@ uint8_t OrderGetMeal(void)
 			RetryFre ++;
 			GetMeal();			
 		} 
-		
 		if( RetryFre>=3)
 		{
 			LinkTime =0;
@@ -692,9 +696,7 @@ uint8_t OrderGetMeal(void)
 			machinerec.renack = 0;
 			return 0;
 		}
-		
 	}
-	
 }
 
 
@@ -705,7 +707,7 @@ uint8_t OrderSetTemper(uint8_t inputtemper)
 	
 	LinkTime =0;
 	RetryFre =0;
-	SetTemper(inputtemper);
+	if(1 == SetTemper(inputtemper) )return 1; //表示已存储当前温度，返回1
 	delay_ms(5);
 	while(1)
 	{

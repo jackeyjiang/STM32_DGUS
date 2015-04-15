@@ -28,7 +28,6 @@ uint8_t cid_data[50]={0};
 int main(void)
 {
   hardfawreInit(); //硬件初始化
-	if(SD_Initialize()) AbnormalHandle(sdcard_erro);	//SD卡检测*/ 
 	PageChange(OnlymachieInit_interface);
   if(erro_record&(1<<arm_limit)) 
   {
@@ -39,12 +38,15 @@ int main(void)
     delay_ms(1000);    //延时优化机械手复位
 	  OnlymachieInit();  //机械手初始化
   }
+  if(SD_Initialize()) AbnormalHandle(sdcard_erro);	//SD卡检测*/ 
 	PageChange(SignInFunction_interface);
   if(!EchoFuntion(RTC_TimeRegulate)) 
     AbnormalHandle(network_erro);  /*从网络获得时间,更新本地时钟*/
   else
+  {
     SetScreenRtc();/*设置屏幕的RTC*/
-	MachineHeatSet();//根据时间判断是否开启加热
+    MachineHeatSet();//根据时间判断是否开启加热
+  }
 	PageChange(SignInFunction_interface);
 	if(!SignInFunction())       
 		AbnormalHandle(signin_erro); /*网络签到*/

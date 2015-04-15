@@ -62,7 +62,7 @@ void SendCoord(uint8_t floor,uint8_t row);
 void SendLink(void);
 void StopSell(void);
 void GetMeal(void);
-void SetTemper(uint8_t temper);
+uint8_t SetTemper(uint8_t temper);
 
 void manageusart6data(void);
 

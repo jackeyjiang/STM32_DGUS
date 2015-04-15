@@ -21,38 +21,35 @@
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:void                                                               
- * 修改日期:2014年12月22日                                                                    
+ * 修改日期:2015年04月215日                                                                    
  *******************************************************************************/ 
-#define heat_hours    8
-#define heat_minutes  20
+#define heat_hours    10
+#define heat_minutes  38
+#define close_hours   10
+#define close_minute  40
 uint8_t old_hour=0;
 uint8_t old_minute=0;
 void MachineHeatSet(void)
 {
 #ifndef test
-	RTC_TimeShow();//获得时间
-	if(TimeDate.Hours<heat_hours)  //如果小于售餐小时
+	static uint32_t heat_minute_total = 0;
+	static uint32_t close_minute_totoal = 0;
+	static uint32_t current_minute_totoal = 0;
+  heat_minute_total = heat_hours*60 + heat_minutes ;
+	close_minute_totoal = close_hours*60 + close_minute	;
+	current_minute_totoal = TimeDate.Hours*60+TimeDate.Minutes;
+  RTC_TimeShow();//获取时间的结构体
+	if((current_minute_totoal>=heat_minute_total)&&(current_minute_totoal<close_minute_totoal))
 	{
-		SetTemper(0x05); //设置制冷
+		if(0==OrderSetTemper(0x3C)) OrderSetTemper(0x3C); //加热
 	}
-	else if(TimeDate.Hours==heat_hours) //如果等于售餐小时
+	else
 	{
-		if(TimeDate.Minutes<heat_minutes) //如果小于售餐分钟
-		{
-			SetTemper(0x05); //设置制冷
-		}
-		else
-		{
-			SetTemper(0x3C); //设置加热
-		}			
-	}
-	else if(TimeDate.Hours>heat_hours) //如果等于售餐小时
-	{
-		SetTemper(0x3C); //设置加热
-	}
+		if(0==OrderSetTemper(0x63)) OrderSetTemper(0x63); //关加热
+	} 
+
 #endif
 }
- 
  /*******************************************************************************
  * 函数名称:FindMeal                                                                     
  * 描    述:查找那个地方有餐                                                                  
@@ -1355,6 +1352,7 @@ void AbnormalHandle(uint32_t erro)
       RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
       break;
     }
+    MachineHeatSet();//防止进入错误处理的时候卡死
   }
 }
   /*******************************************************************************
