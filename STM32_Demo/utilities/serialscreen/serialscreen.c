@@ -1034,9 +1034,15 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 				//如果是按的是管理用户按键的话，直接弹出密码对话框，break
 				if(VariableData[1]==0x0f) 
 				{
-					PageChange(Password_interface); 
-					break;
+					if((Current == current_temperature)||(Current == erro_hanle)||(Current == 0))
+						PageChange(Password_interface); 
+						break;
 				}	
+				//判断是不是在出餐状态,如果不是空闲状态则break;
+				else if(Current != current_temperature)
+        {
+          break;
+        }
 				//在这里根据四个按键的返回值，结合套餐判断是哪一个ID
 				else
 				{
@@ -1187,6 +1193,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
             {
               UserActMessageWriteToFlash.UserAct.PrintTick= 0x00000001;
               PrintTickFun(&UserActMessageWriteToFlash.UserAct.PrintTick);
+							PageChange(Menu_interface);
               CloseTIM4();
             }              
           }break;
@@ -1196,6 +1203,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
             {
               UserActMessageWriteToFlash.UserAct.PrintTick= 0x00000002;
               PrintTickFun(&UserActMessageWriteToFlash.UserAct.PrintTick);
+							PageChange(Menu_interface);
               CloseTIM4();				
             }
 					}break;  
@@ -1566,7 +1574,8 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
         else
         {
           SetTemper(VariableData[1]);
-          temprature_old= VariableData[1];    
+          temprature_old= VariableData[1];  
+          auto_heat_flag = false;					
           if(VariableData[1]==99)  VariableChage(temprature_set,temprature_old);  //显示当前的温度   
         }
 				

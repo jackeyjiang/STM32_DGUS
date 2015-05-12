@@ -23,32 +23,41 @@
  * 返    回:void                                                               
  * 修改日期:2015年04月215日                                                                    
  *******************************************************************************/ 
-#define heat_hours    10
-#define heat_minutes  38
-#define close_hours   10
-#define close_minute  40
+#ifdef test
+	#define heat_hours    10
+	#define heat_minutes  00
+	#define close_hours   11
+	#define close_minute  00
+#else
+ 	#define heat_hours    8
+	#define heat_minutes  10
+	#define close_hours   14
+	#define close_minute  00
+#endif
+ 
 uint8_t old_hour=0;
 uint8_t old_minute=0;
+bool    auto_heat_flag = true ;
 void MachineHeatSet(void)
 {
-#ifndef test
-	static uint32_t heat_minute_total = 0;
-	static uint32_t close_minute_totoal = 0;
-	static uint32_t current_minute_totoal = 0;
-  heat_minute_total = heat_hours*60 + heat_minutes ;
-	close_minute_totoal = close_hours*60 + close_minute	;
-	current_minute_totoal = TimeDate.Hours*60+TimeDate.Minutes;
-  RTC_TimeShow();//获取时间的结构体
-	if((current_minute_totoal>=heat_minute_total)&&(current_minute_totoal<close_minute_totoal))
+	if(auto_heat_flag)
 	{
-		if(0==OrderSetTemper(0x3C)) OrderSetTemper(0x3C); //加热
+		static uint32_t heat_minute_total = 0;
+		static uint32_t close_minute_totoal = 0;
+		static uint32_t current_minute_totoal = 0;
+		heat_minute_total = heat_hours*60 + heat_minutes ;
+		close_minute_totoal = close_hours*60 + close_minute	;
+		current_minute_totoal = TimeDate.Hours*60+TimeDate.Minutes;
+		RTC_TimeShow();//获取时间的结构体
+		if((current_minute_totoal>=heat_minute_total)&&(current_minute_totoal<close_minute_totoal))
+		{
+			if(0==OrderSetTemper(0x3C)) OrderSetTemper(0x3C); //加热
+		}
+		else
+		{
+			if(0==OrderSetTemper(0x63)) OrderSetTemper(0x63); //关加热
+		} 
 	}
-	else
-	{
-		if(0==OrderSetTemper(0x63)) OrderSetTemper(0x63); //关加热
-	} 
-
-#endif
 }
  /*******************************************************************************
  * 函数名称:FindMeal                                                                     
@@ -1352,7 +1361,13 @@ void AbnormalHandle(uint32_t erro)
       RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
       break;
     }
-    MachineHeatSet();//防止进入错误处理的时候卡死
+		if(erro_record&(1<<arm_limit)) 
+		{
+		}
+		else
+		{
+			MachineHeatSet();//防止进入错误处理的时候卡死
+		}
   }
 }
   /*******************************************************************************

@@ -137,8 +137,9 @@ extern uint8_t   TemperatureCur;
 extern uint8_t   Current ;    //主状态
 extern uint8_t   CurrentPointer; //餐品出餐状态
 extern uint32_t  erro_flag;  //错误状态
-extern uint32_t   erro_record;  //错误标记位
-extern uint32_t flash_record[18];
+extern uint32_t  erro_record;  //错误标记位
+extern uint32_t  flash_record[18];
+extern bool      auto_heat_flag; 
 
 extern uint8_t last_discount_1st; //第一种餐品的付款时折扣
 extern uint8_t last_discount_2nd;
