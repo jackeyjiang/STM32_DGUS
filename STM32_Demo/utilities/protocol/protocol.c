@@ -704,10 +704,9 @@ uint8_t OrderGetMeal(void)
 uint8_t OrderSetTemper(uint8_t inputtemper)
 {
 	uint8_t RetryFre;
-	
+	if(1 == SetTemper(inputtemper) )return 1; //表示已存储当前温度，返回1
 	LinkTime =0;
 	RetryFre =0;
-	if(1 == SetTemper(inputtemper) )return 1; //表示已存储当前温度，返回1
 	delay_ms(5);
 	while(1)
 	{

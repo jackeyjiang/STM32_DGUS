@@ -15,9 +15,9 @@ uint32_t Coins_totoal=0; //硬币总数统计
 
 /*
 PE11为出币控制信号
-P10为吃币点数输出
+P10为计币器输出
 PE9为空币信号输出
-PE8为计币器输出（暂不用），
+PE8为禁能输输出
 */
 void InitMiniGPIO(void)
 {
@@ -56,7 +56,13 @@ void InitMiniGPIO(void)
    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+   GPIO_Init(GPIOE,&GPIO_InitStructure);
+	 
+   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
    GPIO_Init(GPIOE,&GPIO_InitStructure);
 }
 
@@ -92,21 +98,23 @@ void CloseCoins(void)
 * Return         : 
 *******************************************************************************/
 uint8_t ErrorType;
+
 uint8_t SendOutN_Coin(int num)
 {
-  int i;
+  int i=0,waitime_cnt=0;
+  uint8_t old_coins_tmp=0,new_coins_tmp=0;
   ErrorType = 0;
+  old_coins_tmp = CoinsTotoalMessageWriteToFlash.CoinTotoal;
   for(i=0;i<num;i++)
   {
-    if( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9) != 0)
+      if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9) == Bit_SET)
 	  {
 		  GPIO_ResetBits(GPIOE,GPIO_Pin_11);
-		  delay_ms(15);
+		  delay_ms(5);
 		  GPIO_SetBits(GPIOE,GPIO_Pin_11);
-		  delay_ms(15);
+		  delay_ms(30);
 		  GPIO_ResetBits(GPIOE,GPIO_Pin_11);
-		  delay_ms(50);
-			
+		  delay_ms(60);
 	  }
 	  else
 	  {
@@ -114,7 +122,17 @@ uint8_t SendOutN_Coin(int num)
 	    return num-i;
 	  }
   }
-  return 0;
+  do
+  {
+	delay_ms(1);
+	waitime_cnt++;
+  }
+  while((GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_8) == Bit_RESET)||(waitime_cnt>=5000)); //直接死等(5S/最多10个币)，等待硬币出完
+  new_coins_tmp = CoinsTotoalMessageWriteToFlash.CoinTotoal;
+  if((old_coins_tmp - new_coins_tmp) != i)
+	  return (num -(old_coins_tmp - new_coins_tmp));
+  else
+	  return 0;
 }
 
  /*******************************************************************************

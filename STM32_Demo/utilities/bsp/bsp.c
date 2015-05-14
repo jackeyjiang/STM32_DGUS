@@ -24,9 +24,9 @@
  * 修改日期:2015年04月215日                                                                    
  *******************************************************************************/ 
 #ifdef test
-	#define heat_hours    10
-	#define heat_minutes  00
-	#define close_hours   11
+	#define heat_hours    8
+	#define heat_minutes  10
+	#define close_hours   14
 	#define close_minute  00
 #else
  	#define heat_hours    8
@@ -35,9 +35,7 @@
 	#define close_minute  00
 #endif
  
-uint8_t old_hour=0;
-uint8_t old_minute=0;
-bool    auto_heat_flag = true ;
+bool  auto_heat_flag = true ;
 void MachineHeatSet(void)
 {
 	if(auto_heat_flag)
