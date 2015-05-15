@@ -127,10 +127,14 @@ uint8_t SendOutN_Coin(int num)
 	delay_ms(1);
 	waitime_cnt++;
   }
-  while((GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_8) == Bit_RESET)||(waitime_cnt>=5000)); //直接死等(5S/最多10个币)，等待硬币出完
+	 //当PE8低高的时候，说明退币机正常了  ，当时间大于5000ms，则退出循环
+  while(!((GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_8) == Bit_SET)||(waitime_cnt>3000))); //直接死等(5S/最多10个币)，等待硬币出完
   new_coins_tmp = CoinsTotoalMessageWriteToFlash.CoinTotoal;
   if((old_coins_tmp - new_coins_tmp) != i)
+	{
+		ErrorType = 1;
 	  return (num -(old_coins_tmp - new_coins_tmp));
+	}
   else
 	  return 0;
 }

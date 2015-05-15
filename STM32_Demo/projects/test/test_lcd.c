@@ -60,8 +60,8 @@ int main(void)
 	SendtoServce();          //上传前七天的数据
 	//if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);//深圳通签到
 	Szt_GpbocAutoCheckIn();
-	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== 0)) 	
-		AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 
+	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== Bit_RESET)) 	
+		AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 ,还可以加上禁能信号。
 	StatusUploadingFun(0xE800); //开机加入正常上传
 	PageChange(Logo_interface);	
 	if(!CloseCashSystem())
@@ -104,6 +104,7 @@ int main(void)
 				}
 				if(LinkTime >=5)
 				{
+					VariableChage(current_temprature,Temperature);
 					if(OrderSendLink()==0)//链接失败直接报错
 					{
 						if(OrderSendLink()==0)
