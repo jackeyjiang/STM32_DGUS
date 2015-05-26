@@ -1155,13 +1155,13 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
           }break;      
 					case 0x05:   /*取消*/
 					{
-	 loop7:		temp1= UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
+	loop7:		if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro5");  //关闭现金接受
+						temp1= UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 	          temp2= UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready; //总的应该退的钱
             ClearUserBuffer();
             UserActMessageWriteToFlash.UserAct.MoneyBack= temp1;
             UserActMessageWriteToFlash.UserAct.MoneyBackShould= temp2;
             SaveUserData();
-			      if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro5");  //关闭现金接受
             PageChange(Menu_interface);
 						CloseTIM3();
 						CloseTIM7();
@@ -1642,7 +1642,7 @@ void ChangeVariableValues(int16_t VariableAdress,char *VariableData,char length)
 								else
 									break;
 							}
-							delay_ms(1500); 
+							//delay_ms(1500); 
 							VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal);//显示机内硬币数
 							VariableChage(coins_back,Coins_cnt);												
 						}							

@@ -1,6 +1,7 @@
 #include "stm32f4xx.h" 
 #include "string.h"
 #include "bill.h"
+#include "bsp.h"
 void Uart4_Configuration(void)
 {
   	GPIO_InitTypeDef GPIO_InitStructure;
@@ -47,9 +48,11 @@ char         RX4Buffer[40]={0};	  /*串口4接受数据缓冲区 */
 uint8_t 	   rx4DataLen =0 ;  /*串口4接受数据个数*/
 uint8_t      rx4ack;		      /*接受数据应答*/
 uint8_t      rx4Check ;		    /*接受数据校验位*/
+
 unsigned char  BillDataBuffer[20]={0}; //作为转换完成的数组
 void UART4_IRQHandler(void)
 {
+	uint8_t  rec_money;          /*接收的钱*/
 	if(USART_GetITStatus(UART4,USART_IT_RXNE)!=RESET)//数据接收扫描
 	{  
 		USART_ClearITPendingBit(UART4,USART_FLAG_RXNE);//清接收标志
@@ -58,9 +61,20 @@ void UART4_IRQHandler(void)
 		{
 		   if(StringToHexGroup(BillDataBuffer, RX4Buffer, rx4DataLen)) //转换数组
 		   {
-		     rx4Check  = 1 ;  // 需要做标记
-         rx4DataLen= 0 ;  //
-		   }
+					//如果可以直接转换为UserAct.PayForBill
+				  rec_money = ReadBill();
+				  UserActMessageWriteToFlash.UserAct.PayForBills += rec_money;
+				  UserActMessageWriteToFlash.UserAct.PayAlready  += rec_money;
+          rx4DataLen= 0 ;
+					//通过查看用户应付的钱是否 == 0，确定是否要退币
+					if((UserActMessageWriteToFlash.UserAct.PayShould == 0)&&(rec_money>=1))
+					{
+					  UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready;
+						UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready;
+						UserActMessageWriteToFlash.UserAct.Cancle = 0x01;
+						if(Current == current_temperature) Current = hpper_out;
+					}
+		   } 
 		   else
 		   {
           memset(RX4Buffer,0,rx4DataLen);				 

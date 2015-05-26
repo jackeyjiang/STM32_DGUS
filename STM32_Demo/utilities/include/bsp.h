@@ -2,7 +2,7 @@
 #define _bsp_H
 
 /******ÊÇ·ñÎª²âÊÔ×´Ì¬********/
-//#define test
+#define test
 
 /*******Ö÷×´Ì¬***********/
 #define current_temperature  0x01

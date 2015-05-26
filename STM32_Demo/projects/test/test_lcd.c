@@ -156,7 +156,7 @@ int main(void)
 					PlayMusic(VOICE_7);					
 					CloseTIM3();
 					CloseTIM7();
-					payfor_meal= UserActMessageWriteToFlash.UserAct.MoneyBackShould; /*测试，有一些问题，当无币可退的时候需要将应该退币的数量加上*/
+					payfor_meal= UserActMessageWriteToFlash.UserAct.MoneyBackShould; 
 					UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already =0;
 					UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_1st=0;
 					UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already_2nd=0;
@@ -178,8 +178,6 @@ int main(void)
 					VariableChage(mealout_already,UserActMessageWriteToFlash.UserAct.Meal_takeout);	//UI显示					
 					if(UserActMessageWriteToFlash.UserAct.PayType == '1') //现金
 					{
-						CloseCoinMachine();			    //关闭投币机	
-						delay_ms(500);
 						if(!CloseCashSystem()){CloseCashSystem();};// printf("cash system is erro1\r\n");  //关闭现金接受
 					}
 					TrackDateToBuff(); //传输将数据保存刷卡器的数据数组中
@@ -216,7 +214,7 @@ int main(void)
 						if(ErrorType ==1) //出错再次发送退币 
 						{
 							erro_record |= (1<<coinhooperset_empty);
-							delay_ms(1500); 
+							//delay_ms(1500); 
 							UserActMessageWriteToFlash.UserAct.MoneyBack= SendOutN_Coin(UserActMessageWriteToFlash.UserAct.MoneyBack);//还有多少币未退
 							if(ErrorType ==1)//退币机无币错误,直接进入错误状态
 							{
@@ -349,6 +347,11 @@ int main(void)
 					 //需要上传交易金额 = 就是没有出的餐品的总价
 						payfor_meal+= (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.MealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.MealPrice_2nd
 													+UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.MealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.MealPrice_4th);	                 
+						Current = erro_hanle;	
+					}
+					else if(UserActMessageWriteToFlash.UserAct.Cancle== 0x01)//如果是取消购买,出错进入错误处理
+					{
+						UserActMessageWriteToFlash.UserAct.Cancle= 0x00;
 						Current = erro_hanle;	
 					}
 					else

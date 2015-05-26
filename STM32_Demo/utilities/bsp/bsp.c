@@ -296,23 +296,10 @@ unsigned char  WaitPayMoney(void)
 	  case 2:  //由屏幕控制跳转
 	  {
 	    /*跳到选择付款方式界面*/
-			CurrentPoint = 3 ;
+			CurrentPoint = 6 ;
 		  UserActMessageWriteToFlash.UserAct.PayType = 0x31 ;/* 现金支付*/
       GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
-	  }break;	  
-		         
-	  case 3 :  //读钱
-		{			
-	    UserPayMoney = ReadBills();			 
-		  if(UserPayMoney !=0 )	   //表示收到了钱
-		  {
-			  UserActMessageWriteToFlash.UserAct.PayAlready  += UserPayMoney;
-			  UserActMessageWriteToFlash.UserAct.PayForBills += UserPayMoney;	
-				//VariableChage(payment_bill,UserActMessageWriteToFlash.UserAct.PayForBills);
-			  UserPayMoney = 0 ;
-		  }
-			CurrentPoint = 6 ;
-		}break;    					
+	  }break;	  					
 	  case 5 ://会员卡支付	
 	  {
       UserActMessageWriteToFlash.UserAct.PayType = 0x34 ;/*会员卡支付*/
@@ -329,10 +316,6 @@ unsigned char  WaitPayMoney(void)
 		  {     
 		    CurrentPoint = 9;	             
 	   	}
-	    else
-	    { 
-		    CurrentPoint = 3; 
-	    } 	
 		}break;   				 
     case 7 :  /*银行卡支付由屏幕控制*/
 		{
