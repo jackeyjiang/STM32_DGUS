@@ -11,10 +11,10 @@
  *******************************************************************************/ 
  void  WaitTimeInit(uint8_t *Time)
  {
-    *Time = 120;
+	*Time = 120;
  }
  
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:MachineHeatSet()                                                                     
  * 描    述:根据时间设置机器的加热和制冷                                                               
  *                                                                               
@@ -29,7 +29,7 @@
 	#define close_hours   14
 	#define close_minute  00
 #else
- 	#define heat_hours    8
+	#define heat_hours    8
 	#define heat_minutes  10
 	#define close_hours   14
 	#define close_minute  00
@@ -71,18 +71,18 @@ void MachineHeatSet(void)
  uint8_t    Line = 0,Column = 0 ;
  bool FindMeal(MealAttribute *DefineMeal) 
  {
-    for(Line = 0; Line < FloorMealNum; Line++)  //查找层
+	for(Line = 0; Line < FloorMealNum; Line++)  //查找层
+	{
+		for(Column = 0; Column < 3; Column++)     //查找列
 		{
-			for(Column = 0; Column < 3; Column++)     //查找列
-			{
-			  if(DefineMeal[UserActMessageWriteToFlash.UserAct.MealID - 1].Position[Line][Column] > 0)	
-			    return true;		                           //当该位置有餐的话返回0
-			}
+			if(DefineMeal[UserActMessageWriteToFlash.UserAct.MealID - 1].Position[Line][Column] > 0)	
+				return true;		                           //当该位置有餐的话返回0
 		}
-		return false ;
+	}
+	return false ;
  }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:MoveToFisrtMeal();                                                                    
  * 描    述:找到用户选择的第一份餐品，并且移动到相应位置                                                              
  *                                                                               
@@ -95,11 +95,11 @@ void MoveToFisrtMeal(void)
 {
 	if(UserActMessageWriteToFlash.UserAct.MealCnt_1st>0)
 	{
-	  UserActMessageWriteToFlash.UserAct.MealID = 0x01; 
+		UserActMessageWriteToFlash.UserAct.MealID = 0x01; 
 	}				
 	else if(UserActMessageWriteToFlash.UserAct.MealCnt_2nd>0)
-  {
-    UserActMessageWriteToFlash.UserAct.MealID = 0x02;
+	{
+		UserActMessageWriteToFlash.UserAct.MealID = 0x02;
 	}				
 	else if(UserActMessageWriteToFlash.UserAct.MealCnt_3rd>0)
 	{
@@ -109,13 +109,13 @@ void MoveToFisrtMeal(void)
 	{
 		UserActMessageWriteToFlash.UserAct.MealID = 0x04;	
 	}
-  if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
-  {
+	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
+	{
 		OrderSendCoord(Line,Column);
 	}   
 }
  
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:PrintTick                                                                     
  * 描    述:是否打印小票                                                                
  *                                                                               
@@ -134,11 +134,11 @@ void PrintTickFun(uint32_t *PrintTickFlag)
 	}	 
 	if(*PrintTickFlag == 0x00000002 )
 	{
-    /*不打印*/
+		/*不打印*/
 	}
 	
 }	
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:StrToBCD                                                                
  * 描    述:将刷卡的数据读取转换后添加到数组中                                                             
  *           可以将字符串先转换为Int                                                                    
@@ -149,32 +149,32 @@ void PrintTickFun(uint32_t *PrintTickFlag)
  *******************************************************************************/ 
 int8_t StrToBCD( uint8_t* pDest,const uint8_t* pSrc, uint8_t destLen)
 {
-   uint8_t i=0;
-   for(i=0;i<destLen;i++)
-   {
-   	if((pSrc[i]<'0')||(pSrc[i]>'9')) 
-	 return -1;
-   }
-   if( destLen/2==0)
-   {
-     for(i=0;i<destLen;i+=2)
-     {
-        pDest[i/2] =(((pSrc[i]-0x30)<<4)|(pSrc[i+1]-0x30));
-     }
-	 return  destLen/2;
-   }
-   else
-   {
-     pDest[0]= (pSrc[0]-0x30);
-     for(i=1;i<destLen;i+=2)
-     {
-        pDest[(i+1)/2] =(((pSrc[i]-0x30)<<4)|(pSrc[i+1]-0x30));
-     }
-	 return  destLen/2;          
-   }
+	uint8_t i=0;
+	for(i=0;i<destLen;i++)
+	{
+		if((pSrc[i]<'0')||(pSrc[i]>'9')) 
+		return -1;
+	}
+	if( destLen/2==0)
+	{
+		for(i=0;i<destLen;i+=2)
+		{
+			pDest[i/2] =(((pSrc[i]-0x30)<<4)|(pSrc[i+1]-0x30));
+		}
+		return  destLen/2;
+	}
+	else
+	{
+		pDest[0]= (pSrc[0]-0x30);
+		for(i=1;i<destLen;i+=2)
+		{
+			pDest[(i+1)/2] =(((pSrc[i]-0x30)<<4)|(pSrc[i+1]-0x30));
+		}
+		return  destLen/2;          
+	}
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:IntToBCD                                                                
  * 描    述:将刷卡的数据读取转换后添加到数组中                                                             
  *           将int型的变量转换为BCD数组                                                               
@@ -185,10 +185,10 @@ int8_t StrToBCD( uint8_t* pDest,const uint8_t* pSrc, uint8_t destLen)
  *******************************************************************************/ 
 void IntToBCD( uint8_t* pDes,const uint32_t  iv, uint8_t destLen)
 {
-  uint8_t sv[20]={0};
-  StrToBCD(pDes,sv,sprintf(sv,"%010u",iv));
+	uint8_t sv[20]={0};
+	StrToBCD(pDes,sv,sprintf((char*)sv,"%010u",iv));
 }
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:TrackDateToBuff                                                                
  * 描    述:将刷卡的数据读取转换后添加到数组中                                                             
  *                                                                               
@@ -199,67 +199,67 @@ void IntToBCD( uint8_t* pDes,const uint32_t  iv, uint8_t destLen)
  *******************************************************************************/ 
 void TrackDateToBuff(void)
 {
-  uint8_t i;
-  char   temp_t[10]={0};
-  uint8_t TraceNum[10]={0};
-  //银联
-  if(UserActMessageWriteToFlash.UserAct.PayType == '2') //银行卡
-  {
-    for(i=0;i<10;i++)
-      PosDevNum[3+i]=0x00; 
-    PosDevNum[2]= strlen(UpDeductData.szPosId);
-    for(i=0;i<PosDevNum[2];i++)
-    {
-      PosDevNum[3+i]= UpDeductData.szPosId[i]; //终端号
-    }
-    PosTenantNum[2]= strlen(UpInitData[0].szMerchantId);
-    for(i=0;i<PosTenantNum[2];i++)
-    {
-      PosTenantNum[3+i]=UpInitData[0].szMerchantId[i]; //商户号
-    }
-    PosBatchNum[2]= sprintf(TraceNum,"%d",UpDeductData.lTraceNo);
-    for(i=0;i<PosBatchNum[2];i++)
-    {
-      PosBatchNum[3+i]=TraceNum[i];  //流水号
-    }
-    PosUserNum[2]= strlen(UpDeductData.szCardNo);
-    for(i=0;i<PosUserNum[2];i++)
-    {
-      PosUserNum[3+i]= UpDeductData.szCardNo[i]; //卡号
-    } 
-  }
-  //UpDeductData.szPosId;
-  //UpInitData.szMerchantId;
-  //UpDeductData.lTraceNo;
-  //UpDeductData.szCardNo
-  //深圳通
-  else if(UserActMessageWriteToFlash.UserAct.PayType == '3')
-  {
-    PosDevNum[2]= sprintf(temp_t,"%d",SztReductInf.machineNum);
-    for(i=0;i<PosDevNum[2];i++)
-      PosDevNum[3+i]=temp_t[i];  //终端号
-    
-    PosTenantNum[2]= strlen(UpInitData[0].szMerchantId);   
-    for(i=0;i<PosTenantNum[2];i++)
-      PosTenantNum[3+i]=UpInitData[0].szMerchantId[i];  //商户号
-    
-    PosBatchNum[2]= sprintf(temp_t,"%d",SztReductInf.TradeNum);  
-    for(i=0;i<PosBatchNum[2];i++)
-      PosBatchNum[3+i]=temp_t[i];  //流水号
-    
-    PosUserNum[2]= sprintf(temp_t,"%d",SztReductInf.CardNum);    
-    for(i=0;i<PosUserNum[2];i++)
-      PosUserNum[3+i]= temp_t[i];   //卡号 
-  }    
-  //SztReductInf.machineNum;
-  //UpDeductData.szMerchantld;  
-  //SztReductInf.TradeNum;
-  //SztReductInf.CardNum;  
-  //s
+	uint8_t i;
+	char   temp_t[10]={0};
+	uint8_t TraceNum[10]={0};
+	//银联
+	if(UserActMessageWriteToFlash.UserAct.PayType == '2') //银行卡
+	{
+		for(i=0;i<10;i++)
+			PosDevNum[3+i]=0x00; 
+		PosDevNum[2]= strlen((char*)UpDeductData.szPosId);
+		for(i=0;i<PosDevNum[2];i++)
+		{
+			PosDevNum[3+i]= UpDeductData.szPosId[i]; //终端号
+		}
+		PosTenantNum[2]= strlen((char*)UpInitData[0].szMerchantId);
+		for(i=0;i<PosTenantNum[2];i++)
+		{
+			PosTenantNum[3+i]=UpInitData[0].szMerchantId[i]; //商户号
+		}
+		PosBatchNum[2]= sprintf((char*)TraceNum,"%d",UpDeductData.lTraceNo);
+		for(i=0;i<PosBatchNum[2];i++)
+		{
+			PosBatchNum[3+i]=TraceNum[i];  //流水号
+		}
+		PosUserNum[2]= strlen((char*)UpDeductData.szCardNo);
+		for(i=0;i<PosUserNum[2];i++)
+		{
+			PosUserNum[3+i]= UpDeductData.szCardNo[i]; //卡号
+		} 
+	}
+	//UpDeductData.szPosId;
+	//UpInitData.szMerchantId;
+	//UpDeductData.lTraceNo;
+	//UpDeductData.szCardNo
+	//深圳通
+	else if(UserActMessageWriteToFlash.UserAct.PayType == '3')
+	{
+		PosDevNum[2]= sprintf(temp_t,"%d",SztReductInf.machineNum);
+		for(i=0;i<PosDevNum[2];i++)
+			PosDevNum[3+i]=temp_t[i];  //终端号
+		
+		PosTenantNum[2]= strlen((char*)UpInitData[0].szMerchantId);   
+		for(i=0;i<PosTenantNum[2];i++)
+			PosTenantNum[3+i]=UpInitData[0].szMerchantId[i];  //商户号
+		
+		PosBatchNum[2]= sprintf(temp_t,"%d",SztReductInf.TradeNum);  
+		for(i=0;i<PosBatchNum[2];i++)
+			PosBatchNum[3+i]=temp_t[i];  //流水号
+		
+		PosUserNum[2]= sprintf(temp_t,"%d",SztReductInf.CardNum);    
+		for(i=0;i<PosUserNum[2];i++)
+			PosUserNum[3+i]= temp_t[i];   //卡号 
+	}    
+	//SztReductInf.machineNum;
+	//UpDeductData.szMerchantld;  
+	//SztReductInf.TradeNum;
+	//SztReductInf.CardNum;  
+	//s
 }
 
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:WaitPayMoney                                                                     
  * 描    述:等待接收用户投的钱                                                                 
  *                                                                               
@@ -268,125 +268,127 @@ void TrackDateToBuff(void)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
+static uint32_t OldWaitTime=0;
 
 uint8_t CurrentPoint = 1 ; 
 uint8_t UserPayMoney =0 ;
-unsigned char NewCoinsCnt=0;
-unsigned char OldCoinsCnt=0;
+uint32_t NewCoinsCnt=0;
+uint32_t OldCoinsCnt=0;
+
 unsigned char  WaitPayMoney(void)
 {
 	uint8_t reduce_money_flag = 0;
 	uint32_t temp1=0,temp2=0;
 	//VariableChage(wait_payfor,WaitTime);
-  switch(CurrentPoint)
+	switch(CurrentPoint)
 	{
-	  case 1 : 
-	  {
-	    /*显示付款方式，现金，银行卡，深圳通*/
+		case 1 : 
+		{
+			/*显示付款方式，现金，银行卡，深圳通*/
 			if(WaitTime<53)
 			{
-			  //CurrentPoint = 3;
-			  /*支付方式*/			 
-			  //UserActMessageWriteToFlash.UserAct.PayType = 0x31;/* 现金支付*/
-        //取消自动
-        //PlayMusic(VOICE_3);
+				//CurrentPoint = 3;
+				/*支付方式*/			 
+				//UserActMessageWriteToFlash.UserAct.PayType = 0x31;/* 现金支付*/
+				//取消自动
+				//PlayMusic(VOICE_3);
 				//if(!OpenCashSystem()){OpenCashSystem();};// printf("cash system is erro2");  //关闭现金接受
 			}
 		}break;    		
-	  case 2:  //由屏幕控制跳转
-	  {
-	    /*跳到选择付款方式界面*/
+		case 2:  //由屏幕控制跳转
+		{
+			/*跳到选择付款方式界面*/
 			CurrentPoint = 6 ;
-		  UserActMessageWriteToFlash.UserAct.PayType = 0x31 ;/* 现金支付*/
-      GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
-	  }break;	  					
-	  case 5 ://会员卡支付	
-	  {
-      UserActMessageWriteToFlash.UserAct.PayType = 0x34 ;/*会员卡支付*/
-      GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
+			UserActMessageWriteToFlash.UserAct.PayType = 0x31 ;/* 现金支付*/
+			GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
+		}break;	  					
+		case 5 ://会员卡支付	
+		{
+			UserActMessageWriteToFlash.UserAct.PayType = 0x34 ;/*会员卡支付*/
+			GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
 			UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.LastPayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
-		  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
+			UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
 			UART3_ClrRxBuf();
 			CurrentPoint = 6;
 		}break;		    
-	  case 6 : //统计钱数
-    {
-      VariableChage(payment_coin,UserActMessageWriteToFlash.UserAct.PayAlready);	 
-	    if(UserActMessageWriteToFlash.UserAct.PayAlready +UserActMessageWriteToFlash.UserAct.PayForCards>=UserActMessageWriteToFlash.UserAct.LastPayShould)		//投的钱大于等于要付的钱
-		  {     
-		    CurrentPoint = 9;	             
-	   	}
+		case 6 : //统计钱数
+		{
+			VariableChage(payment_coin,UserActMessageWriteToFlash.UserAct.PayAlready);	 
+			if(UserActMessageWriteToFlash.UserAct.PayAlready +UserActMessageWriteToFlash.UserAct.PayForCards>=UserActMessageWriteToFlash.UserAct.LastPayShould)		//投的钱大于等于要付的钱
+			{     
+				CurrentPoint = 9;	             
+			}
 		}break;   				 
-    case 7 :  /*银行卡支付由屏幕控制*/
+		case 7 :  /*银行卡支付由屏幕控制*/
 		{
 			WaitTimeInit(&WaitTime);
-      PageChange(SwipingCard_interface);
+			PageChange(SwipingCard_interface);
 			UserActMessageWriteToFlash.UserAct.PayType = 0x32 ;/* 银行卡支付*/
-      GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
+			GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
 #ifndef test
 			reduce_money_flag = GpbocDeduct((UserActMessageWriteToFlash.UserAct.LastPayShould-UserActMessageWriteToFlash.UserAct.PayAlready)*100);
 #else
-      reduce_money_flag = GpbocDeduct(UserActMessageWriteToFlash.UserAct.LastPayShould-UserActMessageWriteToFlash.UserAct.PayAlready);
+			reduce_money_flag = GpbocDeduct(UserActMessageWriteToFlash.UserAct.LastPayShould-UserActMessageWriteToFlash.UserAct.PayAlready);
 #endif
 			if(reduce_money_flag == 1)
 			{
 				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.LastPayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
-			  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
+				UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
 				UART3_ClrRxBuf();
-			  CurrentPoint =6;
+				CurrentPoint =6;
 			}
 			else
 			{
 				WaitTimeInit(&WaitTime);
 				PageChange(Acount_interface);
 				CurrentPoint = 0;
-			  /*支付方式*/			 
-			  UserActMessageWriteToFlash.UserAct.PayType = 0x30;//清空支付方式		
-        GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/        
-        UART3_ClrRxBuf();
+				/*支付方式*/			 
+				UserActMessageWriteToFlash.UserAct.PayType = 0x30;//清空支付方式		
+				GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/        
+				UART3_ClrRxBuf();
 			}
-	  }break;
-	  case 8 :/*深圳通支付由屏幕控制*/
-	  {
+		}break;
+		case 8 :/*深圳通支付由屏幕控制*/
+		{
 			WaitTimeInit(&WaitTime);
-      PageChange(SwipingCard_interface);
-	    UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
-      GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
+			PageChange(SwipingCard_interface);
+			UserActMessageWriteToFlash.UserAct.PayType = 0x33 ;/* 深圳通支付*/
+			GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
 #ifndef test
-   	  reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.LastPayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);
+			reduce_money_flag = SztDeduct((UserActMessageWriteToFlash.UserAct.LastPayShould- UserActMessageWriteToFlash.UserAct.PayAlready)*100);
 #else
 			reduce_money_flag = SztDeduct(UserActMessageWriteToFlash.UserAct.LastPayShould- UserActMessageWriteToFlash.UserAct.PayAlready);//扣一分
 #endif
 			if(reduce_money_flag == 1)
 			{
 				UserActMessageWriteToFlash.UserAct.PayForCards = UserActMessageWriteToFlash.UserAct.LastPayShould - UserActMessageWriteToFlash.UserAct.PayAlready;
-			  UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
+				UserActMessageWriteToFlash.UserAct.PayAlready += UserActMessageWriteToFlash.UserAct.PayForCards ;
 				UART3_ClrRxBuf();
-			  CurrentPoint =6;
+				CurrentPoint =6;
 			}
 			else
 			{
 				WaitTimeInit(&WaitTime);
 				PageChange(Acount_interface);
 				CurrentPoint = 0;
-			  /*支付方式*/			 
-			  UserActMessageWriteToFlash.UserAct.PayType = 0x30;//清空支付方式
-        GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
-        UART3_ClrRxBuf();
+				/*支付方式*/			 
+				UserActMessageWriteToFlash.UserAct.PayType = 0x30;//清空支付方式
+				GetDiscountCost(UserActMessageWriteToFlash.UserAct.PayType);/*根据支付方式计算餐品的折后价格和应付价格*/
+				UART3_ClrRxBuf();
 			}
 		}break;
-	  case 9 :  //付款成功关闭所有的收银系统
+		case 9 :  //付款成功关闭所有的收银系统
 		{
 			UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready - UserActMessageWriteToFlash.UserAct.LastPayShould;	
 			UserActMessageWriteToFlash.UserAct.Meal_totoal = UserActMessageWriteToFlash.UserAct.MealCnt_4th+UserActMessageWriteToFlash.UserAct.MealCnt_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_2nd+UserActMessageWriteToFlash.UserAct.MealCnt_1st;
-      UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.MoneyBack; //记录付钱之后第一次应该退的币	
-      VariableChage(mealout_totle,UserActMessageWriteToFlash.UserAct.Meal_totoal);	
-      //将需要打印的数据赋值到相关结构体	
+			UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.MoneyBack; //记录付钱之后第一次应该退的币	
+			VariableChage(mealout_totle,UserActMessageWriteToFlash.UserAct.Meal_totoal);	
+			//将需要打印的数据赋值到相关结构体	
 			Print_Struct.P_Type1st   = UserActMessageWriteToFlash.UserAct.MealType_1st;
 			Print_Struct.P_Type2nd   = UserActMessageWriteToFlash.UserAct.MealType_2nd;
 			Print_Struct.P_Type3rd   = UserActMessageWriteToFlash.UserAct.MealType_3rd;
 			Print_Struct.P_Type4th   = UserActMessageWriteToFlash.UserAct.MealType_4th;
-     	Print_Struct.P_Number1st = UserActMessageWriteToFlash.UserAct.MealCnt_1st;
+			Print_Struct.P_Number1st = UserActMessageWriteToFlash.UserAct.MealCnt_1st;
 			Print_Struct.P_Number2nd = UserActMessageWriteToFlash.UserAct.MealCnt_2nd;
 			Print_Struct.P_Number3rd = UserActMessageWriteToFlash.UserAct.MealCnt_3rd;
 			Print_Struct.P_Number4th = UserActMessageWriteToFlash.UserAct.MealCnt_4th;
@@ -402,50 +404,54 @@ unsigned char  WaitPayMoney(void)
 			Print_Struct.P_PayShould = UserActMessageWriteToFlash.UserAct.LastPayShould ;
 			Print_Struct.P_MoneyBack = UserActMessageWriteToFlash.UserAct.MoneyBack ;
 			CurrentPoint = 0 ;
-	       return  Status_OK;
+				 return  Status_OK;
 		}
-	  default :break;
-  }
+		default :break;
+	}
 	if(WaitTime<=1) 
 	{
-    WaitTimeInit(&WaitTime);
+		WaitTimeInit(&WaitTime);
 		PageChange(Menu_interface);//超时退出用户餐品数量选择界面
 		if(!CloseCashSystem()){CloseCashSystem();};//printf("cash system is erro6\r\n");  //关闭现金接受
+		UserActMessageWriteToFlash.UserAct.PayType = 0x30;
 		CurrentPoint = 0 ;
 		temp1= UserActMessageWriteToFlash.UserAct.MoneyBack= UserActMessageWriteToFlash.UserAct.PayAlready; //超时将收到的钱以硬币的形式返还
 		temp2= UserActMessageWriteToFlash.UserAct.MoneyBackShould= UserActMessageWriteToFlash.UserAct.PayAlready; //数据需要记录
 		ClearUserBuffer();//清空用户数据
-    UserActMessageWriteToFlash.UserAct.MoneyBack= temp1;
-    UserActMessageWriteToFlash.UserAct.MoneyBackShould= temp2;
-    SaveUserData();//保存用户数据  
+		UserActMessageWriteToFlash.UserAct.MoneyBack= temp1;
+		UserActMessageWriteToFlash.UserAct.MoneyBackShould= temp2;
+		SaveUserData();//保存用户数据  
 		if(UserActMessageWriteToFlash.UserAct.MoneyBack>0)
-		  Current= hpper_out;
-    else
-      Current= current_temperature;
+			Current= hpper_out;
+		else
+			Current= current_temperature;
 	}
-  else
-  {
-    if(WaitTime%5==1) 
-    {
-      if(UserActMessageWriteToFlash.UserAct.PayType==0x31)
-      {
-        PlayMusic(VOICE_3);
-      }
-      else
-      {
-        PlayMusic(VOICE_2);
-      }        
-    }    
-  }
-  return  Status_Action;
+	else
+	{
+		if(OldWaitTime!=WaitTime)
+		{
+			OldWaitTime = WaitTime;
+			if(OldWaitTime%5==1) 
+			{
+				if(UserActMessageWriteToFlash.UserAct.PayType==0x31)
+				{
+					PlayMusic(VOICE_3);
+				}
+				else
+				{
+					PlayMusic(VOICE_2);
+				}        
+			}
+		}			
+	}
+	return  Status_Action;
 }												
 
 
 uint8_t WaitMeal(void)
 {
 	uint8_t MealoutCurrentPointer=0;
-  uint8_t takemeal_timecnt=0;
-  //static unsigned char Cmd[20]={0x05, 0x31, 0x30, 0x30, 0x31, 0x30 ,0x30, 0x36, 0x34, 0x30, 0x30, 0x30, 0x34, 0x4D, 0x31, 0x35, 0x43, 0x03, 0x0D ,0x0A};
+	uint8_t takemeal_timecnt=0;
 	uint8_t temp;
 	do
 	{
@@ -479,12 +485,12 @@ uint8_t WaitMeal(void)
 					PlayMusic(VOICE_12);				
 					return takeafter_meal;
 				}
-      	if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
-        {
+				if(FindMeal(DefineMeal)) /*查找餐品ID的位置*/
+				{
 					PlayMusic(VOICE_8);	
 					MealoutCurrentPointer= 1;
 				}
-        //printf("case 0/UserAct.MealID == %d\r\n",UserAct.MealID);				
+				//printf("case 0/UserAct.MealID == %d\r\n",UserAct.MealID);				
 			}break;
 			case 1 : /* 发送餐的数目减一*/
 			{			 
@@ -527,9 +533,9 @@ uint8_t WaitMeal(void)
 				//查询机械手是否准备好，如果准备好发送取餐命令
 				machinerec.remealaway = 0;  /*初始化*/
 				//如果超时则 返回错误，
-			  if(LinkTime > 10)    //超时
+				if(LinkTime > 10)    //超时
 				{
-				  LinkTime =0;
+					LinkTime =0;
 					//printf("move to coord timeout!\r\n");
 					erro_record |= (1<<SendUR6Erro);
 					return takemeal_erro;
@@ -548,7 +554,7 @@ uint8_t WaitMeal(void)
 					}
 					else          //发送失败     
 					{
-					  //printf(" send getmeal order error\r\n");
+						//printf(" send getmeal order error\r\n");
 						erro_record |= (1<<SendUR6Erro);
 						return takemeal_erro;
 					}
@@ -561,8 +567,8 @@ uint8_t WaitMeal(void)
 				if(machinerec.retodoor == 1)   //到达出餐口
 				{
 					machinerec.retodoor = 0;
-          LinkTime =0;	
-          takemeal_timecnt=1;
+					LinkTime =0;	
+					takemeal_timecnt=1;
 					//播放请取餐语音
 					PlayMusic(VOICE_9);
 				}
@@ -579,42 +585,42 @@ uint8_t WaitMeal(void)
 				//printf("餐已被取走\r\n");
 					LinkTime =0;
 					machinerec.remealaway = 0;
-				  MealoutCurrentPointer=5;
+					MealoutCurrentPointer=5;
 					break;
 				}
 				else if( machinerec.remealnoaway == 1)  //餐在取餐口过了20秒还未被取走
-			  {
+				{
 					if( LinkTime >=25) //餐在出餐口未被取走，一直等待时间时间大于20s播放语音提示取餐
 					{
 						PlayMusic(VOICE_10);
 						LinkTime= 0;
 					}
-        }					
+				}					
 				else if(takemeal_timecnt==1) //如果没有收到过了20S餐盒没有被取走则从到达出餐口的位置计时
 				{
-          if(LinkTime >=25)
+					if(LinkTime >=25)
 					{
-            if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_1st)UserActMessageWriteToFlash.UserAct.MealCnt_1st--;
-            else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_2nd)UserActMessageWriteToFlash.UserAct.MealCnt_2nd--;
-            else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_3rd)UserActMessageWriteToFlash.UserAct.MealCnt_3rd--;
-            else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_4th)UserActMessageWriteToFlash.UserAct.MealCnt_4th--;
+						if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_1st)UserActMessageWriteToFlash.UserAct.MealCnt_1st--;
+						else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_2nd)UserActMessageWriteToFlash.UserAct.MealCnt_2nd--;
+						else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_3rd)UserActMessageWriteToFlash.UserAct.MealCnt_3rd--;
+						else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_4th)UserActMessageWriteToFlash.UserAct.MealCnt_4th--;
 						erro_record |= (1<<MealNoAway);
-					  return takemeal_erro;
+						return takemeal_erro;
 					}
 				}	
 				else   //从发送完取餐命令计时
 				{
-          if(LinkTime>60)
+					if(LinkTime>60)
 					{
 						erro_record |= (1<<GetMealError);
-					  return takemeal_erro;	
+						return takemeal_erro;	
 					}						
 				} 
 			}break;			    
 			case 5:     /*对用户数据进行减一*/  //?? 如果需要进行错误退币，需要修该返回值所在范围
 			{
 				machinerec.remealnoaway = 0;
-        machinerec.remealaway = 0;
+				machinerec.remealaway = 0;
 				UserActMessageWriteToFlash.UserAct.Meal_takeout++;//取餐数据加
 				VariableChage(mealout_already,UserActMessageWriteToFlash.UserAct.Meal_takeout);	//UI显示
 				MealoutCurrentPointer= 0;
@@ -631,7 +637,7 @@ uint8_t WaitMeal(void)
 					else
 					{
 						//printf("tookone_meal\r\n");
-				    return tookone_meal;
+						return tookone_meal;
 					}	
 				}
 				else if(UserActMessageWriteToFlash.UserAct.MealID == UserActMessageWriteToFlash.UserAct.MealType_2nd)
@@ -646,7 +652,7 @@ uint8_t WaitMeal(void)
 					else
 					{
 						//printf("tookone_meal\r\n");
-				    return tookone_meal;
+						return tookone_meal;
 					}						
 				}
 				else if(UserActMessageWriteToFlash.UserAct.MealID == UserActMessageWriteToFlash.UserAct.MealType_3rd)
@@ -661,7 +667,7 @@ uint8_t WaitMeal(void)
 					else
 					{
 						//printf("tookone_meal\r\n");
-				    return tookone_meal;
+						return tookone_meal;
 					}						
 				}				
 				else if(UserActMessageWriteToFlash.UserAct.MealID == UserActMessageWriteToFlash.UserAct.MealType_4th)
@@ -676,20 +682,20 @@ uint8_t WaitMeal(void)
 					else
 					{
 						//printf("tookone_meal\r\n");
-				    return tookone_meal;
+						return tookone_meal;
 					}						
 				}        
 				else 
 				{
 					printf("tookone_meal erro\r\n");
-        }
+				}
 			}
 			default:break;
-	  }
+		}
 	}while(1);
 }	
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:CloseCashSystem                                                                     
  * 描    述:关闭现金接受                                                        
  *                                                                               
@@ -702,7 +708,7 @@ uint8_t WaitMeal(void)
 bool CloseCashSystem(void)
 {
 	uint8_t cnt_t=253;
-  CloseCoinMachine();			    //关闭投币机	
+	CloseCoinMachine();			    //关闭投币机	
 	delay_ms(bill_time);
 	memset(BillDataBuffer,0xFE,sizeof(BillDataBuffer));
 	DisableBills();             //设置并关闭纸币机
@@ -745,7 +751,7 @@ bool OpenCashSystem(void)
 	return false; 
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:ClearingFuntion                                                                     
  * 描    述:结算命令 检验数据是否发送成功，加入没有发送成功，继续发送。全部发送完毕后结算。                                                                   
  *                                                                               
@@ -760,12 +766,12 @@ void ClearingFuntion(void)
 	RTC_TimeShow();//获得时间
 	if(TimeDate.Hours == 5 || TimeDate.Hours == 19)
 	{
-	  // 结算命令 ；
-	  //   ClearingFun();	  //后台结算命令
+		// 结算命令 ；
+		//   ClearingFun();	  //后台结算命令
 		// BankFlashCard_Upload(); //数据上送	 不是退签
 	}		 		 
 }
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:AcountCopy                                                                   
  * 描    述:用户数据拷贝                                                              
  *                                                                               
@@ -782,7 +788,7 @@ void AcountCopy(void)
 	UserActMessageWriteToFlash.UserAct.MealCnt_4th_t= UserActMessageWriteToFlash.UserAct.MealCnt_4th; 
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:GetDiscountCost                                                                   
  * 描    述:获取折后价格 及总的应付款项                                                            
  *                                                                               
@@ -797,209 +803,215 @@ uint8_t last_discount_3rd;
 uint8_t last_discount_4th;
 bool GetDiscountCost(uint8_t payment)
 {
-  switch(payment)
-  {
-    case 0x30:{  /*未选择支付方式*/
-      last_discount_1st = 100;
-      last_discount_2nd = 100;
-      last_discount_3rd = 100;
-      last_discount_4th = 100;      
-    }break;
-    /*折扣计算出问题了，需要获取当前餐品的折扣信息*/
-    case 0x31:{  /*现金*/
-         /*已知现金支付，根据选择的第一份餐品的内部序号，将该序号下的餐品的折扣信息赋值给用户第一份餐品的折扣用于计算*/
-        switch(UserActMessageWriteToFlash.UserAct.MealType_1st) 
-        {
-          case 0x01:{last_discount_1st = cashcut_1st;};break;
-          case 0x02:{last_discount_1st = cashcut_2nd;};break;
-          case 0x03:{last_discount_1st = cashcut_3rd;};break;
-          case 0x04:{last_discount_1st = cashcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
-        {
-          case 0x01:{last_discount_2nd = cashcut_1st;};break;
-          case 0x02:{last_discount_2nd = cashcut_2nd;};break;
-          case 0x03:{last_discount_2nd = cashcut_3rd;};break;
-          case 0x04:{last_discount_2nd = cashcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
-        {
-          case 0x01:{last_discount_3rd = cashcut_1st;};break;
-          case 0x02:{last_discount_3rd = cashcut_2nd;};break;
-          case 0x03:{last_discount_3rd = cashcut_3rd;};break;
-          case 0x04:{last_discount_3rd = cashcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
-        {
-          case 0x01:{last_discount_4th = cashcut_1st;};break;
-          case 0x02:{last_discount_4th = cashcut_2nd;};break;
-          case 0x03:{last_discount_4th = cashcut_3rd;};break;
-          case 0x04:{last_discount_4th = cashcut_4th;};break;
-          default :break;
-        }
-    }break;
-    case 0x32:{  /*银联闪付卡*/
-        switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
-        {
-          case 0x01:{last_discount_1st = gboccut_1st;};break;
-          case 0x02:{last_discount_1st = gboccut_2nd;};break;
-          case 0x03:{last_discount_1st = gboccut_3rd;};break;
-          case 0x04:{last_discount_1st = gboccut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
-        {
-          case 0x01:{last_discount_2nd = gboccut_1st;};break;
-          case 0x02:{last_discount_2nd = gboccut_2nd;};break;
-          case 0x03:{last_discount_2nd = gboccut_3rd;};break;
-          case 0x04:{last_discount_2nd = gboccut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
-        {
-          case 0x01:{last_discount_3rd = gboccut_1st;};break;
-          case 0x02:{last_discount_3rd = gboccut_2nd;};break;
-          case 0x03:{last_discount_3rd = gboccut_3rd;};break;
-          case 0x04:{last_discount_3rd = gboccut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
-        {
-          case 0x01:{last_discount_4th = gboccut_1st;};break;
-          case 0x02:{last_discount_4th = gboccut_2nd;};break;
-          case 0x03:{last_discount_4th = gboccut_3rd;};break;
-          case 0x04:{last_discount_4th = gboccut_4th;};break;
-          default :break;
-        }
-    }break;
-    case 0x33:{  /*深圳通*/
-        switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
-        {
-          case 0x01:{last_discount_1st = sztcut_1st;};break;
-          case 0x02:{last_discount_1st = sztcut_2nd;};break;
-          case 0x03:{last_discount_1st = sztcut_3rd;};break;
-          case 0x04:{last_discount_1st = sztcut_4th;};break;
-          default :break; 
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
-        {
-          case 0x01:{last_discount_2nd = sztcut_1st;};break;
-          case 0x02:{last_discount_2nd = sztcut_2nd;};break;
-          case 0x03:{last_discount_2nd = sztcut_3rd;};break;
-          case 0x04:{last_discount_2nd = sztcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
-        {
-          case 0x01:{last_discount_3rd = sztcut_1st;};break;
-          case 0x02:{last_discount_3rd = sztcut_2nd;};break;
-          case 0x03:{last_discount_3rd = sztcut_3rd;};break;
-          case 0x04:{last_discount_3rd = sztcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
-        {
-          case 0x01:{last_discount_4th = sztcut_1st;};break;
-          case 0x02:{last_discount_4th = sztcut_2nd;};break;
-          case 0x03:{last_discount_4th = sztcut_3rd;};break;
-          case 0x04:{last_discount_4th = sztcut_4th;};break;
-          default :break;
-        }        
-    }break;
-    case 0x34:{ /*会员卡*/
-        switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
-        {
-          case 0x01:{last_discount_1st = vipcut_1st;};break;
-          case 0x02:{last_discount_1st = vipcut_2nd;};break;
-          case 0x03:{last_discount_1st = vipcut_3rd;};break;
-          case 0x04:{last_discount_1st = vipcut_4th;};break;
-          default :break; 
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
-        {
-          case 0x01:{last_discount_2nd = vipcut_1st;};break;
-          case 0x02:{last_discount_2nd = vipcut_2nd;};break;
-          case 0x03:{last_discount_2nd = vipcut_3rd;};break;
-          case 0x04:{last_discount_2nd = vipcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
-        {
-          case 0x01:{last_discount_3rd = vipcut_1st;};break;
-          case 0x02:{last_discount_3rd = vipcut_2nd;};break;
-          case 0x03:{last_discount_3rd = vipcut_3rd;};break;
-          case 0x04:{last_discount_3rd = vipcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
-        {
-          case 0x01:{last_discount_4th = vipcut_1st;};break;
-          case 0x02:{last_discount_4th = vipcut_2nd;};break;
-          case 0x03:{last_discount_4th = vipcut_3rd;};break;
-          case 0x04:{last_discount_4th = vipcut_4th;};break;
-          default :break;
-        }         
-    }break;
-    case 0x35:{ /*微信支付*/
-        switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
-        {
-          case 0x01:{last_discount_1st = vchatcut_1st;};break;
-          case 0x02:{last_discount_1st = vchatcut_2nd;};break;
-          case 0x03:{last_discount_1st = vchatcut_3rd;};break;
-          case 0x04:{last_discount_1st = vchatcut_4th;};break;
-          default :break; 
-        } 
-        switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
-        {
-          case 0x01:{last_discount_2nd = vchatcut_1st;};break;
-          case 0x02:{last_discount_2nd = vchatcut_2nd;};break;
-          case 0x03:{last_discount_2nd = vchatcut_3rd;};break;
-          case 0x04:{last_discount_2nd = vchatcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
-        {
-          case 0x01:{last_discount_3rd = vchatcut_1st;};break;
-          case 0x02:{last_discount_3rd = vchatcut_2nd;};break;
-          case 0x03:{last_discount_3rd = vchatcut_3rd;};break;
-          case 0x04:{last_discount_3rd = vchatcut_4th;};break;
-          default :break;
-        }
-        switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
-        {
-          case 0x01:{last_discount_4th = vchatcut_1st;};break;
-          case 0x02:{last_discount_4th = vchatcut_2nd;};break;
-          case 0x03:{last_discount_4th = vchatcut_3rd;};break;
-          case 0x04:{last_discount_4th = vchatcut_4th;};break;
-          default :break;
-        }         
-    }break;
-    default:{
-      return false;
-    }break;
-  }
-  UserActMessageWriteToFlash.UserAct.LastMealPrice_1st = UserActMessageWriteToFlash.UserAct.MealPrice_1st*last_discount_1st/100;
-  UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd = UserActMessageWriteToFlash.UserAct.MealPrice_2nd*last_discount_2nd/100;
-  UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd = UserActMessageWriteToFlash.UserAct.MealPrice_3rd*last_discount_3rd/100;
-  UserActMessageWriteToFlash.UserAct.LastMealPrice_4th = UserActMessageWriteToFlash.UserAct.MealPrice_4th*last_discount_4th/100;
-  UserActMessageWriteToFlash.UserAct.LastMealCost_1st  = UserActMessageWriteToFlash.UserAct.LastMealPrice_1st\
-                                                         *UserActMessageWriteToFlash.UserAct.MealCnt_1st;  
-  UserActMessageWriteToFlash.UserAct.LastMealCost_2nd  = UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd\
-                                                         *UserActMessageWriteToFlash.UserAct.MealCnt_2nd;  
-  UserActMessageWriteToFlash.UserAct.LastMealCost_3rd  = UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd\
-                                                         *UserActMessageWriteToFlash.UserAct.MealCnt_3rd;  
-  UserActMessageWriteToFlash.UserAct.LastMealCost_4th  = UserActMessageWriteToFlash.UserAct.LastMealPrice_4th\
-                                                         *UserActMessageWriteToFlash.UserAct.MealCnt_4th;  
-  UserActMessageWriteToFlash.UserAct.LastPayShould = UserActMessageWriteToFlash.UserAct.LastMealCost_1st+UserActMessageWriteToFlash.UserAct.LastMealCost_2nd\
-                                                     +UserActMessageWriteToFlash.UserAct.LastMealCost_3rd+UserActMessageWriteToFlash.UserAct.LastMealCost_4th;
+	switch(payment)
+	{
+		case 0x30:
+		{  /*未选择支付方式*/
+			last_discount_1st = 100;
+			last_discount_2nd = 100;
+			last_discount_3rd = 100;
+			last_discount_4th = 100;      
+		}break;
+		/*折扣计算出问题了，需要获取当前餐品的折扣信息*/
+		case 0x31:
+		{  /*现金*/
+			 /*已知现金支付，根据选择的第一份餐品的内部序号，将该序号下的餐品的折扣信息赋值给用户第一份餐品的折扣用于计算*/
+			switch(UserActMessageWriteToFlash.UserAct.MealType_1st) 
+			{
+				case 0x01:{last_discount_1st = cashcut_1st;};break;
+				case 0x02:{last_discount_1st = cashcut_2nd;};break;
+				case 0x03:{last_discount_1st = cashcut_3rd;};break;
+				case 0x04:{last_discount_1st = cashcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+			{
+				case 0x01:{last_discount_2nd = cashcut_1st;};break;
+				case 0x02:{last_discount_2nd = cashcut_2nd;};break;
+				case 0x03:{last_discount_2nd = cashcut_3rd;};break;
+				case 0x04:{last_discount_2nd = cashcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+			{
+				case 0x01:{last_discount_3rd = cashcut_1st;};break;
+				case 0x02:{last_discount_3rd = cashcut_2nd;};break;
+				case 0x03:{last_discount_3rd = cashcut_3rd;};break;
+				case 0x04:{last_discount_3rd = cashcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+			{
+				case 0x01:{last_discount_4th = cashcut_1st;};break;
+				case 0x02:{last_discount_4th = cashcut_2nd;};break;
+				case 0x03:{last_discount_4th = cashcut_3rd;};break;
+				case 0x04:{last_discount_4th = cashcut_4th;};break;
+				default :break;
+			}
+		}break;
+		case 0x32:
+		{  /*银联闪付卡*/
+			switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
+			{
+				case 0x01:{last_discount_1st = gboccut_1st;};break;
+				case 0x02:{last_discount_1st = gboccut_2nd;};break;
+				case 0x03:{last_discount_1st = gboccut_3rd;};break;
+				case 0x04:{last_discount_1st = gboccut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+			{
+				case 0x01:{last_discount_2nd = gboccut_1st;};break;
+				case 0x02:{last_discount_2nd = gboccut_2nd;};break;
+				case 0x03:{last_discount_2nd = gboccut_3rd;};break;
+				case 0x04:{last_discount_2nd = gboccut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+			{
+				case 0x01:{last_discount_3rd = gboccut_1st;};break;
+				case 0x02:{last_discount_3rd = gboccut_2nd;};break;
+				case 0x03:{last_discount_3rd = gboccut_3rd;};break;
+				case 0x04:{last_discount_3rd = gboccut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+			{
+				case 0x01:{last_discount_4th = gboccut_1st;};break;
+				case 0x02:{last_discount_4th = gboccut_2nd;};break;
+				case 0x03:{last_discount_4th = gboccut_3rd;};break;
+				case 0x04:{last_discount_4th = gboccut_4th;};break;
+				default :break;
+			}
+		}break;
+		case 0x33:
+		{  /*深圳通*/
+			switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
+			{
+				case 0x01:{last_discount_1st = sztcut_1st;};break;
+				case 0x02:{last_discount_1st = sztcut_2nd;};break;
+				case 0x03:{last_discount_1st = sztcut_3rd;};break;
+				case 0x04:{last_discount_1st = sztcut_4th;};break;
+				default :break; 
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+			{
+				case 0x01:{last_discount_2nd = sztcut_1st;};break;
+				case 0x02:{last_discount_2nd = sztcut_2nd;};break;
+				case 0x03:{last_discount_2nd = sztcut_3rd;};break;
+				case 0x04:{last_discount_2nd = sztcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+			{
+				case 0x01:{last_discount_3rd = sztcut_1st;};break;
+				case 0x02:{last_discount_3rd = sztcut_2nd;};break;
+				case 0x03:{last_discount_3rd = sztcut_3rd;};break;
+				case 0x04:{last_discount_3rd = sztcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+			{
+				case 0x01:{last_discount_4th = sztcut_1st;};break;
+				case 0x02:{last_discount_4th = sztcut_2nd;};break;
+				case 0x03:{last_discount_4th = sztcut_3rd;};break;
+				case 0x04:{last_discount_4th = sztcut_4th;};break;
+				default :break;
+			}        
+		}break;
+		case 0x34:
+		{ /*会员卡*/
+			switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
+			{
+				case 0x01:{last_discount_1st = vipcut_1st;};break;
+				case 0x02:{last_discount_1st = vipcut_2nd;};break;
+				case 0x03:{last_discount_1st = vipcut_3rd;};break;
+				case 0x04:{last_discount_1st = vipcut_4th;};break;
+				default :break; 
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+			{
+				case 0x01:{last_discount_2nd = vipcut_1st;};break;
+				case 0x02:{last_discount_2nd = vipcut_2nd;};break;
+				case 0x03:{last_discount_2nd = vipcut_3rd;};break;
+				case 0x04:{last_discount_2nd = vipcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+			{
+				case 0x01:{last_discount_3rd = vipcut_1st;};break;
+				case 0x02:{last_discount_3rd = vipcut_2nd;};break;
+				case 0x03:{last_discount_3rd = vipcut_3rd;};break;
+				case 0x04:{last_discount_3rd = vipcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+			{
+				case 0x01:{last_discount_4th = vipcut_1st;};break;
+				case 0x02:{last_discount_4th = vipcut_2nd;};break;
+				case 0x03:{last_discount_4th = vipcut_3rd;};break;
+				case 0x04:{last_discount_4th = vipcut_4th;};break;
+				default :break;
+			}         
+		}break;
+		case 0x35:
+		{ /*微信支付*/
+			switch(UserActMessageWriteToFlash.UserAct.MealType_1st)
+			{
+				case 0x01:{last_discount_1st = vchatcut_1st;};break;
+				case 0x02:{last_discount_1st = vchatcut_2nd;};break;
+				case 0x03:{last_discount_1st = vchatcut_3rd;};break;
+				case 0x04:{last_discount_1st = vchatcut_4th;};break;
+				default :break; 
+			} 
+			switch(UserActMessageWriteToFlash.UserAct.MealType_2nd) 
+			{
+				case 0x01:{last_discount_2nd = vchatcut_1st;};break;
+				case 0x02:{last_discount_2nd = vchatcut_2nd;};break;
+				case 0x03:{last_discount_2nd = vchatcut_3rd;};break;
+				case 0x04:{last_discount_2nd = vchatcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_3rd) 
+			{
+				case 0x01:{last_discount_3rd = vchatcut_1st;};break;
+				case 0x02:{last_discount_3rd = vchatcut_2nd;};break;
+				case 0x03:{last_discount_3rd = vchatcut_3rd;};break;
+				case 0x04:{last_discount_3rd = vchatcut_4th;};break;
+				default :break;
+			}
+			switch(UserActMessageWriteToFlash.UserAct.MealType_4th) 
+			{
+				case 0x01:{last_discount_4th = vchatcut_1st;};break;
+				case 0x02:{last_discount_4th = vchatcut_2nd;};break;
+				case 0x03:{last_discount_4th = vchatcut_3rd;};break;
+				case 0x04:{last_discount_4th = vchatcut_4th;};break;
+				default :break;
+			}         
+		}break;
+		default:{
+			return false;
+		}break;
+	}
+	UserActMessageWriteToFlash.UserAct.LastMealPrice_1st = UserActMessageWriteToFlash.UserAct.MealPrice_1st*last_discount_1st/100;
+	UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd = UserActMessageWriteToFlash.UserAct.MealPrice_2nd*last_discount_2nd/100;
+	UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd = UserActMessageWriteToFlash.UserAct.MealPrice_3rd*last_discount_3rd/100;
+	UserActMessageWriteToFlash.UserAct.LastMealPrice_4th = UserActMessageWriteToFlash.UserAct.MealPrice_4th*last_discount_4th/100;
+	UserActMessageWriteToFlash.UserAct.LastMealCost_1st  = UserActMessageWriteToFlash.UserAct.LastMealPrice_1st\
+																												 *UserActMessageWriteToFlash.UserAct.MealCnt_1st;  
+	UserActMessageWriteToFlash.UserAct.LastMealCost_2nd  = UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd\
+																												 *UserActMessageWriteToFlash.UserAct.MealCnt_2nd;  
+	UserActMessageWriteToFlash.UserAct.LastMealCost_3rd  = UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd\
+																												 *UserActMessageWriteToFlash.UserAct.MealCnt_3rd;  
+	UserActMessageWriteToFlash.UserAct.LastMealCost_4th  = UserActMessageWriteToFlash.UserAct.LastMealPrice_4th\
+																												 *UserActMessageWriteToFlash.UserAct.MealCnt_4th;  
+	UserActMessageWriteToFlash.UserAct.LastPayShould = UserActMessageWriteToFlash.UserAct.LastMealCost_1st+UserActMessageWriteToFlash.UserAct.LastMealCost_2nd\
+																										 +UserActMessageWriteToFlash.UserAct.LastMealCost_3rd+UserActMessageWriteToFlash.UserAct.LastMealCost_4th;
 	VariableChage(mealtotoal_cost,UserActMessageWriteToFlash.UserAct.LastPayShould);
-  return true;
+	return true;
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:GetDiscountValue                                                                   
  * 描    述:获取当前餐品的折扣数据                                                           
  *                  NG                                                             
@@ -1010,22 +1022,22 @@ bool GetDiscountCost(uint8_t payment)
  *******************************************************************************/ 
 uint8_t GetDiscountValue(uint8_t meal_order)
 {
-  uint8_t value_return=0;
-  switch(meal_order)
-  {
-    case 0x01:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_1st;break;
-    case 0x02:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd;break;
-    case 0x03:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd;break;
-    case 0x04:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_4th;break;
-    default:break;
-  }
-  return value_return;
+	uint8_t value_return=0;
+	switch(meal_order)
+	{
+		case 0x01:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_1st;break;
+		case 0x02:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd;break;
+		case 0x03:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd;break;
+		case 0x04:value_return = UserActMessageWriteToFlash.UserAct.LastMealPrice_4th;break;
+		default:break;
+	}
+	return value_return;
 }
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:PowerupAbnormalHandle                                                                    
  * 描    述:开机异常处理，只显示错误标识，更根据密码显示用户操作记录                                                                
  *            首先需要判断是否断电，再判断UserActMessageWriteToFlash.UserAct.paybacke是否大于0，显示用户选择的
-              餐品数，未出的餐品数，以及钱数                                                                   
+							餐品数，未出的餐品数，以及钱数                                                                   
  * 输    入:无                                                                     
  * 输    出:无                                                                     
  * 返    回:void                                                               
@@ -1033,11 +1045,11 @@ uint8_t GetDiscountValue(uint8_t meal_order)
  *******************************************************************************/ 
 void PowerupAbnormalHandle(int32_t erro_record_t)
 {
-  AbnormalHandle(erro_record_t);
+	AbnormalHandle(erro_record_t);
 	erro_record=0;
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:PollAbnormalHandle                                                                   
  * 描    述:轮询                                                                 
  * 输    入:无                                                                     
@@ -1055,7 +1067,7 @@ void PollAbnormalHandle(void)
 	}	
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:AbnormalHandle                                                                    
  * 描    述:异常处理 ，包含用户数据的显示                                                                
  *           包含开机异常处理，需要进行判断，相当于开机判断                                                                     
@@ -1073,275 +1085,275 @@ void AbnormalHandle(uint32_t erro)
 	switch(erro)
 	{
 		case outage_erro:      //断电：只有在开机的时候判断是否有断电的情况发生 ，计算应该退的钱，还有就是付钱的时候断电
-			{            /*取餐出错的情况*/              /*退币出错的情况,包含付钱的时候断电*/
-			  if((UserActMessageWriteToFlash.UserAct.Meal_totoal!=UserActMessageWriteToFlash.UserAct.Meal_takeout)||(UserActMessageWriteToFlash.UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
+		{            /*取餐出错的情况*/              /*退币出错的情况,包含付钱的时候断电*/
+			if((UserActMessageWriteToFlash.UserAct.Meal_totoal!=UserActMessageWriteToFlash.UserAct.Meal_takeout)||(UserActMessageWriteToFlash.UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
+			{
+				/*这里加上调试信息，查看以上连个条件的数值*/
+				if(UserActMessageWriteToFlash.UserAct.MealID>0)
 				{
-					/*这里加上调试信息，查看以上连个条件的数值*/
-          if(UserActMessageWriteToFlash.UserAct.MealID>0)
-					{
-            //计算总的应退币数
-            UserActMessageWriteToFlash.UserAct.MoneyBackShould +=
-                         (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
-                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);                                      
-					  //计算总的未退币数
-            UserActMessageWriteToFlash.UserAct.MoneyBack += 
-                         (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
-                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);	  
-            //计算上传的交易金额
-            payfor_meal+=(UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
-                         +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);	
-            //计算已退币的钱（需要处理，要两次退币的数据）
-						UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already= (UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);
-            
-              //显示用户已付 和  应退  和 已退
-            VariableChage(record_UserActPayAlready,UserActMessageWriteToFlash.UserAct.PayAlready);
-              //应退的钱 = 总的应该退币的钱
-            VariableChage(record_UserActPayBack,UserActMessageWriteToFlash.UserAct.MoneyBackShould);
-              //已退的钱 = 总的应该退币的钱- 还未退的钱
-            VariableChage(record_UserActPayBackAlready,UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);            
-                      
-						DataUpload(Failed);//只有当UserActMessageWriteToFlash.UserAct.MealID!=0的时候才上传餐品的数据
-						SaveUserData();
-					}
-					DisplayAbnormal("E070");
-					PageChange(Err_interface);
-        }
-				else 
-				{
-					erro_record &= ~(1<<erro); //如果需要处理其他异常呢
-					erro_flag= 0;
-					return;
+					//计算总的应退币数
+					UserActMessageWriteToFlash.UserAct.MoneyBackShould +=
+											 (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
+											 +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);                                      
+					//计算总的未退币数
+					UserActMessageWriteToFlash.UserAct.MoneyBack += 
+											 (UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
+											 +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);	  
+					//计算上传的交易金额
+					payfor_meal+=(UserActMessageWriteToFlash.UserAct.MealCnt_1st*UserActMessageWriteToFlash.UserAct.LastMealPrice_1st+UserActMessageWriteToFlash.UserAct.MealCnt_2nd*UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd
+											 +UserActMessageWriteToFlash.UserAct.MealCnt_3rd*UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd+UserActMessageWriteToFlash.UserAct.MealCnt_4th*UserActMessageWriteToFlash.UserAct.LastMealPrice_4th);	
+					//计算已退币的钱（需要处理，要两次退币的数据）
+					UserActMessageWriteToFlash.UserAct.MoneyPayBack_Already= (UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);
+					
+						//显示用户已付 和  应退  和 已退
+					VariableChage(record_UserActPayAlready,UserActMessageWriteToFlash.UserAct.PayAlready);
+						//应退的钱 = 总的应该退币的钱
+					VariableChage(record_UserActPayBack,UserActMessageWriteToFlash.UserAct.MoneyBackShould);
+						//已退的钱 = 总的应该退币的钱- 还未退的钱
+					VariableChage(record_UserActPayBackAlready,UserActMessageWriteToFlash.UserAct.MoneyBackShould-UserActMessageWriteToFlash.UserAct.MoneyBack);            
+										
+					DataUpload(Failed);//只有当UserActMessageWriteToFlash.UserAct.MealID!=0的时候才上传餐品的数据
+					SaveUserData();
 				}
-			}break;
-		case sdcard_erro:     //SD卡存储异常
+				DisplayAbnormal("E070");
+				PageChange(Err_interface);
+			}
+			else 
 			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E000");
-	      PageChange(Err_interface);					
-				StatusUploadingFun(0xE000); //状态上送
-			}break;
-		case billset_erro:    //纸币机异常
-			{
-	      PlayMusic(VOICE_11);	  			
-				DisplayAbnormal("E010"); 
-        PageChange(Err_interface);	
-				StatusUploadingFun(0xE010); //状态上送
-			}break;
-		case coinset_erro:      //投币机
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E020");
-	      PageChange(Err_interface);				
-				StatusUploadingFun(0xE020); //状态上送
-			}break;
-		case coinhooperset_erro:    //退币机
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E030");
-	      PageChange(Err_interface);				
-				StatusUploadingFun(0xE030); //状态上送
-				//没有币可退的时候，UserActMessageWriteToFlash.UserAct.Payback 不为0
-			}break;
-		case coinhooperset_empty:   //找零用光
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E032");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE032); //状态上送
-			}break;
-		case printer_erro:      //打印机异常
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E040");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE040); //状态上送
-			}break;
-		case cardread_erro:     //读卡器异常
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E050");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE050); //状态上送
-			}break;
-		case network_erro:     //网络异常
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E060");
-	      PageChange(Err_interface);
-			}break;
-		case signin_erro:    //签到异常
-		   {
-	       PlayMusic(VOICE_11);	
-         DisplayAbnormal("E061");			
-	       PageChange(Err_interface);  
-       }break;
-		case upload_erro:     //数据上传的时候突然断电
-			{
-        DataUpload(Success);
-				erro_record &= ~(1<<upload_erro);
+				erro_record &= ~(1<<erro); //如果需要处理其他异常呢
+				erro_flag= 0;
 				return;
-			};
-    case arm_limit: //机械手禁止复位
-		  {
-			  if((UserActMessageWriteToFlash.UserAct.Meal_totoal!=UserActMessageWriteToFlash.UserAct.Meal_takeout)||(UserActMessageWriteToFlash.UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
-				{
-					/*这里加上调试信息，查看以上连个条件的数值*/
-          if(UserActMessageWriteToFlash.UserAct.MealID>0)
-					{					
-						SaveUserData();
-					}
-					DisplayAbnormal("E100");
-					PageChange(Err_interface);
-        }
-				else 
-				{
-					erro_record &= ~(1<<erro); //如果需要处理其他异常呢
-					erro_flag= 0;
-					return;
-				}				
-      }break;			
+			}
+		}break;
+		case sdcard_erro:     //SD卡存储异常
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E000");
+			PageChange(Err_interface);					
+			StatusUploadingFun(0xE000); //状态上送
+		}break;
+		case billset_erro:    //纸币机异常
+		{
+			PlayMusic(VOICE_11);	  			
+			DisplayAbnormal("E010"); 
+			PageChange(Err_interface);	
+			StatusUploadingFun(0xE010); //状态上送
+		}break;
+		case coinset_erro:      //投币机
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E020");
+			PageChange(Err_interface);				
+			StatusUploadingFun(0xE020); //状态上送
+		}break;
+		case coinhooperset_erro:    //退币机
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E030");
+			PageChange(Err_interface);				
+			StatusUploadingFun(0xE030); //状态上送
+			//没有币可退的时候，UserActMessageWriteToFlash.UserAct.Payback 不为0
+		}break;
+		case coinhooperset_empty:   //找零用光
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E032");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE032); //状态上送
+		}break;
+		case printer_erro:      //打印机异常
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E040");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE040); //状态上送
+		}break;
+		case cardread_erro:     //读卡器异常
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E050");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE050); //状态上送
+		}break;
+		case network_erro:     //网络异常
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E060");
+			PageChange(Err_interface);
+		}break;
+		case signin_erro:    //签到异常
+		 {
+			 PlayMusic(VOICE_11);	
+			 DisplayAbnormal("E061");			
+			 PageChange(Err_interface);  
+		 }break;
+		case upload_erro:     //数据上传的时候突然断电
+		{
+			DataUpload(Success);
+			erro_record &= ~(1<<upload_erro);
+			return;
+		};
+		case arm_limit: //机械手禁止复位
+		{
+			if((UserActMessageWriteToFlash.UserAct.Meal_totoal!=UserActMessageWriteToFlash.UserAct.Meal_takeout)||(UserActMessageWriteToFlash.UserAct.MoneyBack>0))//先判断是否还有餐品没有取出和再判断用户未退的钱
+			{
+				/*这里加上调试信息，查看以上连个条件的数值*/
+				if(UserActMessageWriteToFlash.UserAct.MealID>0)
+				{					
+					SaveUserData();
+				}
+				DisplayAbnormal("E100");
+				PageChange(Err_interface);
+			}
+			else 
+			{
+				erro_record &= ~(1<<erro); //如果需要处理其他异常呢
+				erro_flag= 0;
+				return;
+			}				
+		}break;			
 		case X_timeout:        //x轴传感器超时
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E101");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE101); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E101");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE101); //状态上送
+			DataUpload(Failed);
+		}break;
 		case X_leftlimit:      //马达左动作极限输出
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E102");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE102); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E102");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE102); //状态上送
+			DataUpload(Failed);
+		}break;
 		case X_rightlimit:     //马达右动作极限输出
-			{
-				DisplayAbnormal("E103");
-	      PlayMusic(VOICE_11);
-        StatusUploadingFun(0xE103); //状态上送	
-	      PageChange(Err_interface);
-				DataUpload(Failed);
-			}break;
+		{
+			DisplayAbnormal("E103");
+			PlayMusic(VOICE_11);
+			StatusUploadingFun(0xE103); //状态上送	
+			PageChange(Err_interface);
+			DataUpload(Failed);
+		}break;
 		case mealtake_timeout: //取餐口传感器超时
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E201");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE201); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E201");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE201); //状态上送
+			DataUpload(Failed);
+		}break;
 		case Y_timeout:        //y轴传感器超时
-			{
-	      PlayMusic(VOICE_11);
-        DisplayAbnormal("E301");	
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE302); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);
+			DisplayAbnormal("E301");	
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE302); //状态上送
+			DataUpload(Failed);
+		}break;
 		case link_timeout:     //链接超时
-			{
-	      PlayMusic(VOICE_11);
-        DisplayAbnormal("E401");	
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE401); //状态上送
-			}break;
+		{
+			PlayMusic(VOICE_11);
+			DisplayAbnormal("E401");	
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE401); //状态上送
+		}break;
 		case Z_timeout:        //z轴传感器超时
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E501");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE501); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E501");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE501); //状态上送
+			DataUpload(Failed);
+		}break;
 		case Z_uplimit:        //z轴马达上动作超出
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E502");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE502); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E502");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE502); //状态上送
+			DataUpload(Failed);
+		}break;
 		case Z_downlimit:      //z马达下动作超出
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E503");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE503); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E503");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE503); //状态上送
+			DataUpload(Failed);
+		}break;
 		case solenoid_timeout: //电磁阀超时  ???有时有异常
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E601");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE601); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E601");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE601); //状态上送
+			DataUpload(Failed);
+		}break;
 		case Eeprom_erro:      //eeprom 异常
-			{
-	      PlayMusic(VOICE_11);	
-        DisplayAbnormal("E711");
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE711); //状态上送
-				DataUpload(Failed);
-			}break;
+		{
+			PlayMusic(VOICE_11);	
+			DisplayAbnormal("E711");
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE711); //状态上送
+			DataUpload(Failed);
+		}break;
 		case SendUR6Erro:      //机械手串口通讯超时
-			{
-	      PlayMusic(VOICE_11);
-        DisplayAbnormal("E801");	
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE801); //状态上送
-				DataUpload(Failed);
-      }break;
-    case GetMealError:     //机械手5秒取不到餐
-			{
-	      PlayMusic(VOICE_11);
-        DisplayAbnormal("E802");	
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE802); //状态上送
-				DataUpload(Failed);
-      }break;
-    case MealNoAway:       //餐在出餐口20秒还未被取走
-			{
-	      PlayMusic(VOICE_11);
-        DisplayAbnormal("E803");	
-	      PageChange(Err_interface);
-				StatusUploadingFun(0xE803); //状态上送
-        DataUpload(Success);
-      }break;
+		{
+			PlayMusic(VOICE_11);
+			DisplayAbnormal("E801");	
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE801); //状态上送
+			DataUpload(Failed);
+		}break;
+		case GetMealError:     //机械手5秒取不到餐
+		{
+			PlayMusic(VOICE_11);
+			DisplayAbnormal("E802");	
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE802); //状态上送
+			DataUpload(Failed);
+		}break;
+		case MealNoAway:       //餐在出餐口20秒还未被取走
+		{
+			PlayMusic(VOICE_11);
+			DisplayAbnormal("E803");	
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE803); //状态上送
+			DataUpload(Success);
+		}break;
 		default:break;
 	}
-  SaveUserData(); //错误处理一次数据保存一次
-  while(1)
-  {
-    DealSeriAceptData();
-    if(erro_flag==0)
-    {
-      if(erro_record&(1<<arm_limit)) //开机的机械手禁止复位
-      {
-        PageChange(OnlymachieInit_interface);					
-        OnlymachieInit(); //机械手的初始化
-        erro_record &= ~(1<<arm_limit);
-        RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
-      }
-      else
-      {
-        UserActMessageWriteToFlash.UserAct.MoneyBack=0;
-        UserActMessageWriteToFlash.UserAct.MoneyBackShould=0;
-        UserActMessageWriteToFlash.UserAct.MoneyBackAlready=0;
-        ClearUserBuffer();
-        SaveUserData();						
-      }
-      if(erro_record>=(1<<X_timeout))//如果是机械售错误值上传一次数据，对高位取反
-      {
-        erro_record&=~0xFFFF0000; //只显示一次异常
-      }
-      erro_record &= ~(1<<erro); //一次只处理一次异常
-      RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
-      break;
-    }
+	SaveUserData(); //错误处理一次数据保存一次
+	while(1)
+	{
+		DealSeriAceptData();
+		if(erro_flag==0)
+		{
+			if(erro_record&(1<<arm_limit)) //开机的机械手禁止复位
+			{
+				PageChange(OnlymachieInit_interface);					
+				OnlymachieInit(); //机械手的初始化
+				erro_record &= ~(1<<arm_limit);
+				RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
+			}
+			else
+			{
+				UserActMessageWriteToFlash.UserAct.MoneyBack=0;
+				UserActMessageWriteToFlash.UserAct.MoneyBackShould=0;
+				UserActMessageWriteToFlash.UserAct.MoneyBackAlready=0;
+				ClearUserBuffer();
+				SaveUserData();						
+			}
+			if(erro_record>=(1<<X_timeout))//如果是机械售错误值上传一次数据，对高位取反
+			{
+				erro_record&=~0xFFFF0000; //只显示一次异常
+			}
+			erro_record &= ~(1<<erro); //一次只处理一次异常
+			RTC_WriteBackupRegister(RTC_BKP_DR13, erro_record);
+			break;
+		}
 		if(erro_record&(1<<arm_limit)) 
 		{
 		}
@@ -1349,9 +1361,9 @@ void AbnormalHandle(uint32_t erro)
 		{
 			MachineHeatSet();//防止进入错误处理的时候卡死
 		}
-  }
+	}
 }
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:ErrRecHandle                                                                     
  * 描    述:错误记录处理                                                              
  *                                                                               
@@ -1362,39 +1374,39 @@ void AbnormalHandle(uint32_t erro)
  *******************************************************************************/ 
 void ErrRecHandle(void)
 {
-	 if(erro_record!=0) //当有错误记录，需要进行处理
-	 {
-		 AbnormalHandle(outage_erro);//相当于开机异常处理
-		 if(erro_record&(1<<upload_erro))
-		 {
-			 if(UserActMessageWriteToFlash.UserAct.MealID!=0)
-			   AbnormalHandle(upload_erro);//需要处理数据上传的断电
-		 }
-		 erro_record=0;
-	 }
-	 else
-	 {
-		 ClearUserBuffer(); //清除之前读取的数据
-		 UserActMessageWriteToFlash.UserAct.MoneyBack=0;//
-	 }
-   SaveUserData(); 	
+	if(erro_record!=0) //当有错误记录，需要进行处理
+	{
+		AbnormalHandle(outage_erro);//相当于开机异常处理
+		if(erro_record&(1<<upload_erro))
+		{
+			if(UserActMessageWriteToFlash.UserAct.MealID!=0)
+				AbnormalHandle(upload_erro);//需要处理数据上传的断电
+		}
+		erro_record=0;
+	}
+	else
+	{
+		ClearUserBuffer(); //清除之前读取的数据
+		UserActMessageWriteToFlash.UserAct.MoneyBack=0;//
+	}
+	SaveUserData(); 	
 }
 
  /*
-  PVD ---- 低电压检测                抢占优先级  0      亚优先级 0 		用于保护sd卡
-  硬币机               外部中断5                 0                1
-  纸币机               串口4                     0                2
-  IC卡                 串口2                     0                3  
-  屏幕                 串口中断3                 0                4
-                       CAN通信                   0                5
-  打印                 串口1                     0                6
-  退币倒计时           定时器4                   1                0
-  定时倒计时60s        定时器3                   1                1
-  驱动电机             定时器2                   1                2
-  驱动电机             外部中断4                 1                3
-  定时采集温度采集     定时器7                   1                4
+	PVD ---- 低电压检测                抢占优先级  0      亚优先级 0 		用于保护sd卡
+	硬币机               外部中断5                 0                1
+	纸币机               串口4                     0                2
+	IC卡                 串口2                     0                3  
+	屏幕                 串口中断3                 0                4
+											 CAN通信                   0                5
+	打印                 串口1                     0                6
+	退币倒计时           定时器4                   1                0
+	定时倒计时60s        定时器3                   1                1
+	驱动电机             定时器2                   1                2
+	驱动电机             外部中断4                 1                3
+	定时采集温度采集     定时器7                   1                4
  */
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:hardfawreInit                                                                     
  * 描    述:硬件初始化                                                                   
  *                                                                               
@@ -1405,10 +1417,10 @@ void ErrRecHandle(void)
  *******************************************************************************/ 
 void hardfawreInit(void)
 {
-  uint8_t i, j, k;
+	uint8_t i, j, k;
 	Uart6_Configuration();   //机械手 1 ,2
  //初始化存放位置数据结构体
-  for(i = 0; i <MealKindTotoal; i++)
+	for(i = 0; i <MealKindTotoal; i++)
 	{
 		DefineMeal[i].MealPrice = 0;
 		DefineMeal[i].MealCount = 0;
@@ -1420,48 +1432,48 @@ void hardfawreInit(void)
 			}
 		}	
 	}
- 	 UserActMessageWriteToFlash.UserAct.PayForCoins     = 0;
-	 UserActMessageWriteToFlash.UserAct.PayForBills     = 0;
-	 UserActMessageWriteToFlash.UserAct.PayForCards     = 0;
-	 UserActMessageWriteToFlash.UserAct.PayAlready      = 0;
-   SystemInit();
-	 PVD_Configuration();        //掉电检测初始化 0 , 0
-	 Uart4_Configuration();     //纸币机串口初始化 1, 2
-	 Uart1_Configuration();	    //打印机串口初始化
-	 Uart3_Configuration();	    // 串口屏初始化  0 , 3
-	 Uart2_Configuration();	    //深圳通、银联卡串口 1 , 0
-	 Uart5_Configuration();		//网络串口初始化 1 , 1
-	 TIM2_Init();		        //电机
-	 TIM3_Init();		        //餐品数量选择倒计时
-	 TIM4_Init();		        //售餐倒计时
-	 TIM5_Init();		        //机械手倒计时
-	 TIM7_Init();				    //购物车界面倒计时
-   InitCoins();		        //投币机初始化
-   InitMiniGPIO() ;		   //退币器始化	 
-	 InitVoice();             //语音初始化
-	 MyRTC_Init();              //RTC初始化
-//	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
-	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
-	 IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
-	 IWDG_SetReload(0x0138); // 1S
-	 IWDG_Enable();
-	 OpenTIM2();
-	 delay_ms(1000);
-	 SPI_FLASH_Init();          //Flash初始化
-	 SPI_FLASH_Init();          //重复初始化才行
-   SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品
-   ReadCoins();//读取有多少硬币	 
-	 for(i=0;i<90;i++)
-	 {
-	   if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
-	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
-	 }
-	 //WriteMeal();  //写入餐品数据,不需要因为写入餐品的数据需要花费很长世间，如果突然在开机过程突然断电数据就会丢失
-	 StatisticsTotal(); //后面的程序需要使用  	
-	 ReadUserData();  //需要进行数据处理，判断
-   for(i=0;i<UserActiontotoaDatalSize*4;i++)
-	 {
-	   if(UserActMessageWriteToFlash.FlashBuffer[i] == 0xff)
-	   FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
-	 }
+	UserActMessageWriteToFlash.UserAct.PayForCoins     = 0;
+	UserActMessageWriteToFlash.UserAct.PayForBills     = 0;
+	UserActMessageWriteToFlash.UserAct.PayForCards     = 0;
+	UserActMessageWriteToFlash.UserAct.PayAlready      = 0;
+	SystemInit();
+	PVD_Configuration();        //掉电检测初始化 0 , 0
+	Uart4_Configuration();     //纸币机串口初始化 1, 2
+	Uart1_Configuration();	    //打印机串口初始化
+	Uart3_Configuration();	    // 串口屏初始化  0 , 3
+	Uart2_Configuration();	    //深圳通、银联卡串口 1 , 0
+	Uart5_Configuration();		//网络串口初始化 1 , 1
+	TIM2_Init();		        //电机
+	TIM3_Init();		        //餐品数量选择倒计时
+	TIM4_Init();		        //售餐倒计时
+	TIM5_Init();		        //机械手倒计时
+	TIM7_Init();				    //购物车界面倒计时
+	InitCoins();		        //投币机初始化
+	InitMiniGPIO() ;		   //退币器始化	 
+	InitVoice();             //语音初始化
+	MyRTC_Init();              //RTC初始化
+	//	 IWDG_WriteAccessCmd(IWDG_WriteAccess_Disable); //打开看门狗
+	IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); //打开看门狗
+	IWDG_SetPrescaler(IWDG_Prescaler_128); //40K /128 =312 = 0X0138
+	IWDG_SetReload(0x0138); // 1S
+	IWDG_Enable();
+	OpenTIM2();
+	delay_ms(1000);
+	SPI_FLASH_Init();          //Flash初始化
+	SPI_FLASH_Init();          //重复初始化才行
+	SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);//读取各层的餐品
+	ReadCoins();//读取有多少硬币	 
+	for(i=0;i<90;i++)
+	{
+		if(FloorMealMessageWriteToFlash.FlashBuffer[i] == 0xff)
+		FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
+	}
+	//WriteMeal();  //写入餐品数据,不需要因为写入餐品的数据需要花费很长世间，如果突然在开机过程突然断电数据就会丢失
+	StatisticsTotal(); //后面的程序需要使用  	
+	ReadUserData();  //需要进行数据处理，判断
+	for(i=0;i<UserActiontotoaDatalSize*4;i++)
+	{
+		if(UserActMessageWriteToFlash.FlashBuffer[i] == 0xff)
+		FloorMealMessageWriteToFlash.FlashBuffer[i]    = 0 ;
+	}
 }														 

@@ -14,13 +14,13 @@
  *******************************************************************************/
 void Uart1_Card(const uint8_t *p,uint8_t sizeData)
 {
-    uint8_t i;		   
-	  for(i=0; i<sizeData; i++)
-	  {
-        USART_SendData(USART1, p[i]);//串口1发送一个字符
-		    while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);//等待发送完成
- 	  }
-}								   	
+	uint8_t i;
+	for(i=0; i<sizeData; i++)
+	{
+		USART_SendData(USART1, p[i]);//串口1发送一个字符
+		while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);//等待发送完成
+	}
+}                   
 										
 
 
@@ -37,9 +37,9 @@ void Uart1_Card(const uint8_t *p,uint8_t sizeData)
 */
 
 const uint8_t PrintInitCmd[2]={0x1b,0x40};          //打印机初始化
-const uint8_t SetEntryPrintCHinese[2]={0x1c,0x26};	//进入汉子打印模式
-const uint8_t SetExitPrintCHinese[2]={0x1c,0x2e};	  //退出打印模式
-const uint8_t SendStc[3]={0x1d,0x56,0x01};		      //切纸命令
+const uint8_t SetEntryPrintCHinese[2]={0x1c,0x26};  //进入汉子打印模式
+const uint8_t SetExitPrintCHinese[2]={0x1c,0x2e};   //退出打印模式
+const uint8_t SendStc[3]={0x1d,0x56,0x01};          //切纸命令
 const uint8_t huan3[3]={0x1b,0x64,0x06};            //换三行
 
 unsigned char  p0[36]={0};
@@ -56,31 +56,31 @@ unsigned char  p2[32]={"              1     20    20 \r\n"};
  *******************************************************************************/
 uint8_t CheckPrintStatus(void)
 {
-  uint8_t CurrentPoint = 0;
+	uint8_t CurrentPoint = 0;
 	uint8_t Cmd[3]={0x10,0x04,0x04};
-  switch(CurrentPoint)
-  {
-    case 0:
-	  {			
+	switch(CurrentPoint)
+	{
+		case 0:
+		{     
 			PrintIndex = 0;
-	    Uart1_Card(Cmd,sizeof(Cmd));
-	    CurrentPoint = 1;
+			Uart1_Card(Cmd,sizeof(Cmd));
+			CurrentPoint = 1;
 			delay_ms(100);
-	  }break;	  
-	  case 1: 
-	  {
-	    switch(PrintBuf[0])
-		  {
-			  case 0x00 :	break ;
-			  case 0x02 :	break ;
-			  case 0x0c :	break ;
-			  case 0x10 :	break ;
-			  case 0x60 :	return 1;     //break ;  //表示没有纸了
+		}break;   
+		case 1: 
+		{
+			switch(PrintBuf[0])
+			{
+				case 0x00 : break ;
+				case 0x02 : break ;
+				case 0x0c : break ;
+				case 0x10 : break ;
+				case 0x60 : return 1;     //break ;  //表示没有纸了
 				default: break;
-		  }
-    }  
-    return 0;//表示正常
-  }
+			}
+		}  
+		return 0;//表示正常
+	}
 	return 1;
 }
  /*******************************************************************************
@@ -94,16 +94,16 @@ uint8_t CheckPrintStatus(void)
  *******************************************************************************/
 void COPY(Struct_TD  a,unsigned char *p10,unsigned char *p11)
 {
-  char temp[10]={0};
-  char length=0,length_totoal=0;
-  length=sprintf(temp,"应付:%0d元 ",UserActMessageWriteToFlash.UserAct.LastPayShould);
-  memcpy(p10,temp,length);
-  length_totoal+=length;
-  length=sprintf(temp,"已付:%0d元 ",Print_Struct.P_paymoney);
-  memcpy(p10+length_totoal,temp,length);
-  length_totoal+=length;
-  length=sprintf(temp,"找回:%0d元\r\n",Print_Struct.P_MoneyBack);
-  memcpy(p10+length_totoal,temp,length);
+	char temp[10]={0};
+	char length=0,length_totoal=0;
+	length=sprintf(temp,"应付:%0d元 ",UserActMessageWriteToFlash.UserAct.LastPayShould);
+	memcpy(p10,temp,length);
+	length_totoal+=length;
+	length=sprintf(temp,"已付:%0d元 ",Print_Struct.P_paymoney);
+	memcpy(p10+length_totoal,temp,length);
+	length_totoal+=length;
+	length=sprintf(temp,"找回:%0d元\r\n",Print_Struct.P_MoneyBack);
+	memcpy(p10+length_totoal,temp,length);
 			
 	p11[5]  ='2';
 	p11[6] = '0';
@@ -118,7 +118,7 @@ void COPY(Struct_TD  a,unsigned char *p10,unsigned char *p11)
 	p11[19] = a.Minutes  / 10+'0';
 	p11[20] = a.Minutes  % 10+'0';
 	p11[22] = a.Senconds / 10+'0';
-  p11[23] = a.Senconds % 10+'0';
+	p11[23] = a.Senconds % 10+'0';
 }
  /*******************************************************************************
  * 函数名称:SearchPrintMealID
@@ -132,27 +132,27 @@ void COPY(Struct_TD  a,unsigned char *p10,unsigned char *p11)
 void SearchPrintMealID(uint8_t MealID)
 {
 	/*如果有则赋值相关的餐品ID的数量*/
-		switch(MealID)
+	switch(MealID)
+	{
+		case 0x00:break;
+		case 0x01:
 		{
-			case 0x00:break;
-			case 0x01:
-			{
-				memcpy(p2,mealname_1st,sizeof(mealname_1st));
-			}break;	
-			case 0x02:
-			{
-				memcpy(p2,mealname_2nd,sizeof(mealname_1st));
-			}break;	
-			case 0x03:
-			{
-				memcpy(p2,mealname_3rd,sizeof(mealname_1st));
-			}break;	
-			case 0x04:
-			{
-				memcpy(p2,mealname_4th,sizeof(mealname_1st));
-			}break;	
-			default:break;			
-		}
+			memcpy(p2,mealname_1st,sizeof(mealname_1st));
+		}break; 
+		case 0x02:
+		{
+			memcpy(p2,mealname_2nd,sizeof(mealname_1st));
+		}break; 
+		case 0x03:
+		{
+			memcpy(p2,mealname_3rd,sizeof(mealname_1st));
+		}break; 
+		case 0x04:
+		{
+			memcpy(p2,mealname_4th,sizeof(mealname_1st));
+		}break; 
+		default:break;      
+	}
 }
 	
 
@@ -170,69 +170,69 @@ P_stuction Print_Struct;
 void  SPRT(void)
 {
 	char num_t[10]={0};
-  RTC_TimeShow();//得到当前的时间
+	RTC_TimeShow();//得到当前的时间
 	COPY(TimeDate,p0,p1);
 /*--------------打票机初始化----------------------/
-  Uart1_Card(PrintInitCmd,sizeof(PrintInitCmd));
-  Uart1_Card(SetEntryPrintCHinese,sizeof(SetEntryPrintCHinese));
+	Uart1_Card(PrintInitCmd,sizeof(PrintInitCmd));
+	Uart1_Card(SetEntryPrintCHinese,sizeof(SetEntryPrintCHinese));
 /--------------打票机可以使用--------------------*/
-  printf("菜品         数量 单价  折后金额\r\n");
+	printf("菜品         数量 单价  折后金额\r\n");
 	if(Print_Struct.P_Number1st>0)
-  {
-    memset(p2,0x20,34-4);
-	  SearchPrintMealID(Print_Struct.P_Type1st);
+	{
+		memset(p2,0x20,34-4);
+		SearchPrintMealID(Print_Struct.P_Type1st);
 		sprintf(num_t,"%1d",Print_Struct.P_Number1st);
 		memcpy(p2+14,num_t,1);
 		sprintf(num_t,"%2d",Print_Struct.P_Price1st);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",Print_Struct.P_Cost1st);
+		sprintf(num_t,"%3d",Print_Struct.P_Cost1st);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
-  }
+	}
 	if(Print_Struct.P_Number2nd>0)
 	{
-    memset(p2,0x20,34-4);
-	  SearchPrintMealID(Print_Struct.P_Type2nd);
+		memset(p2,0x20,34-4);
+		SearchPrintMealID(Print_Struct.P_Type2nd);
 		sprintf(num_t,"%1d",Print_Struct.P_Number2nd);
 		memcpy(p2+14,num_t,1);
 		sprintf(num_t,"%2d",Print_Struct.P_Price2nd);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",Print_Struct.P_Cost2nd);
+		sprintf(num_t,"%3d",Print_Struct.P_Cost2nd);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
-  if(Print_Struct.P_Number3rd>0)
+	if(Print_Struct.P_Number3rd>0)
 	{
-    memset(p2,0x20,34-4);
-	  SearchPrintMealID(Print_Struct.P_Type3rd);
+		memset(p2,0x20,34-4);
+		SearchPrintMealID(Print_Struct.P_Type3rd);
 		sprintf(num_t,"%1d",Print_Struct.P_Number3rd);
 		memcpy(p2+14,num_t,1);
 		sprintf(num_t,"%2d",Print_Struct.P_Price3rd);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",Print_Struct.P_Cost3rd);
+		sprintf(num_t,"%3d",Print_Struct.P_Cost3rd);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
 	if(Print_Struct.P_Number4th>0)
-	{	
-    memset(p2,0x20,34-4);    
-	  SearchPrintMealID(Print_Struct.P_Type4th);
+	{ 
+		memset(p2,0x20,34-4);    
+		SearchPrintMealID(Print_Struct.P_Type4th);
 		sprintf(num_t,"%1d",Print_Struct.P_Number4th);
 		memcpy(p2+14,num_t,1);
 		sprintf(num_t,"%2d",Print_Struct.P_Price4th);
 		memcpy(p2+20,num_t,2);
-    sprintf(num_t,"%3d",Print_Struct.P_Cost4th);
+		sprintf(num_t,"%3d",Print_Struct.P_Cost4th);
 		memcpy(p2+25,num_t,3);
 		printf("%s",p2);
 	}
-  //printf("优惠信息:%d折\r\n",Discount);  
-  printf("%s",p0);
+	//printf("优惠信息:%d折\r\n",Discount);  
+	printf("%s",p0);
 	printf("%s",p1);
 	if(UserActMessageWriteToFlash.UserAct.PayType == '1' )
 	{
 		 printf("支付方式：现金支付\r\n");
 	}
-  else if(UserActMessageWriteToFlash.UserAct.PayType == '2')
+	else if(UserActMessageWriteToFlash.UserAct.PayType == '2')
 	{
 		 printf("支付方式：银行卡支付\r\n");
 	}
@@ -244,13 +244,13 @@ void  SPRT(void)
 	{
 		printf("支付方式：会员卡支付\r\n");
 	}
-  printf("服务热线：400-0755-677\r\n");
+	printf("服务热线：400-0755-677\r\n");
 	Uart1_Card(huan3,sizeof(huan3)); 
 	Uart1_Card(huan3,sizeof(huan3)); 
-	Uart1_Card(SendStc,sizeof(SendStc));//	切纸
+	Uart1_Card(SendStc,sizeof(SendStc));//  切纸
 	Uart1_Card(huan3,sizeof(huan3));  
-  printf("深圳市速来食餐饮管理有限公司\r\n");
-  printf("\r\n");//切纸后换行，以免纸进入缝隙中	
-	printf("\r\n");//切纸后换行，以免纸进入缝隙中	
+	printf("深圳市速来食餐饮管理有限公司\r\n");
+	printf("\r\n");//切纸后换行，以免纸进入缝隙中 
+	printf("\r\n");//切纸后换行，以免纸进入缝隙中 
 }
 

@@ -18,7 +18,7 @@ void File_delete(void);
 void SendtoServce(void);
 void DataRecord(void);
 void Sd_Write(char erro_flag,char takeout_flag);
-uint32_t SearchSeparator(char *dest,char *souce,int Separator);
+uint32_t SearchSeparator(uint8_t *dest,uint8_t *souce,int Separator);
 #endif
 
 

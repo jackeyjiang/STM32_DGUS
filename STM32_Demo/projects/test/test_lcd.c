@@ -25,6 +25,7 @@ uint16_t VarDataTab[NB_OF_VAR] = {0, 0, 0};
 uint16_t VarValue = 0;
 uint32_t sellsecond_remain_old=0;
 uint8_t cid_data[50]={0};
+uint32_t LinkTime_old = 0;
 int main(void)
 {
 	hardfawreInit(); //硬件初始化
@@ -97,8 +98,9 @@ int main(void)
 				}
 				StateSend();   //状态上送 ,增加了数据上送。
 				MachineHeatSet();  //设置加热或者制冷
-				if((LinkTime==1)||(LinkTime==2)||(LinkTime==3))
+				if(LinkTime_old!=LinkTime)
 				{
+					LinkTime_old = LinkTime;
 					VariableChage(coins_in,CoinsTotoalMessageWriteToFlash.CoinTotoal+CoinTotoal_t);//显示机内硬币数
 					VariableChage(coins_back,Coins_cnt);
 				}

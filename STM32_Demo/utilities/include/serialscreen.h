@@ -193,7 +193,7 @@
 
 extern bool cardbalence_cancel_flag;
 extern bool sellmeal_flag; 
-extern char record_time[20];
+extern uint8_t record_time[20];
 extern uint8_t pageunitil;
 extern int16_t CoinTotoal_t;
 extern int8_t	selltime_hour,selltime_hour_t,selltime_hour_r;
@@ -201,15 +201,15 @@ extern int8_t	selltime_minute, selltime_minute_t,selltime_minute_r;
 extern int8_t  selltime_second_r;
 extern uint32_t sellsecond_remain;
 void ClearUserBuffer(void);
-void PageChange(char page);
+void PageChange(uint8_t page);
 void ReadPage(void);
-void ScreenControl(char cmd);
+void ScreenControl(uint8_t cmd);
 void DispMenu(void);
 void DispMenuNone(void);
 void DispLeftMeal(void);
 void DealSeriAceptData(void);
 void VariableChage(uint16_t Variable,uint16_t Value);	
-void DisplayAbnormal(char *abnomal_code);
+void DisplayAbnormal(uint8_t *abnomal_code);
 void VariableChagelong (uint16_t Variable,uint32_t Value);
 void DisplayRecordTime(void);
 void DisplayTimeCutDown(void);

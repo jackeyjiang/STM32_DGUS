@@ -43,7 +43,7 @@ DSTATUS disk_initialize (
 	u8 state;
 	state=SD_Initialize();
 	if(!state){
-	 return STA_NODISK;
+	   return STA_NODISK;
 	}   
 	return 0;									  
 }

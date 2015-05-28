@@ -1,37 +1,37 @@
 /**
-  ******************************************************************************
-  * @file    ADC/ADC3_DMA/stm32f4xx_it.c 
-  * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    30-September-2011
-  * @brief   Main Interrupt Service Routines.
-  *          This file provides template for all exceptions handler and 
-  *          peripherals interrupt service routine.
-  ******************************************************************************
-  * @attention
-  *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
-  *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************
-  */ 
+	******************************************************************************
+	* @file    ADC/ADC3_DMA/stm32f4xx_it.c 
+	* @author  MCD Application Team
+	* @version V1.0.0
+	* @date    30-September-2011
+	* @brief   Main Interrupt Service Routines.
+	*          This file provides template for all exceptions handler and 
+	*          peripherals interrupt service routine.
+	******************************************************************************
+	* @attention
+	*
+	* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+	* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+	* TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+	* DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+	* FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+	* CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+	*
+	* <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+	******************************************************************************
+	*/ 
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 #include "bsp.h"
 
 /** @addtogroup STM32F4xx_StdPeriph_Examples
-  * @{
-  */
+	* @{
+	*/
 
 /** @addtogroup ADC_ADC3_DMA
-  * @{
-  */  
+	* @{
+	*/  
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -45,98 +45,98 @@
 /******************************************************************************/
 
 /**
-  * @brief   This function handles NMI exception.
-  * @param  None
-  * @retval None
-  */
+	* @brief   This function handles NMI exception.
+	* @param  None
+	* @retval None
+	*/
 void NMI_Handler(void)
 {
 }
 
 /**
-  * @brief  This function handles Hard Fault exception.
-  * @param  None
-  * @retval None
-  */
+	* @brief  This function handles Hard Fault exception.
+	* @param  None
+	* @retval None
+	*/
 void HardFault_Handler(void)
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Hard Fault exception occurs */
+	while (1)
+	{
+	}
 }
 
 /**
-  * @brief  This function handles Memory Manage exception.
-  * @param  None
-  * @retval None
-  */
+	* @brief  This function handles Memory Manage exception.
+	* @param  None
+	* @retval None
+	*/
 void MemManage_Handler(void)
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Memory Manage exception occurs */
+	while (1)
+	{
+	}
 }
 
 /**
-  * @brief  This function handles Bus Fault exception.
-  * @param  None
-  * @retval None
-  */
+	* @brief  This function handles Bus Fault exception.
+	* @param  None
+	* @retval None
+	*/
 void BusFault_Handler(void)
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Bus Fault exception occurs */
+	while (1)
+	{
+	}
 }
 
 /**
-  * @brief  This function handles Usage Fault exception.
-  * @param  None
-  * @retval None
-  */
+	* @brief  This function handles Usage Fault exception.
+	* @param  None
+	* @retval None
+	*/
 void UsageFault_Handler(void)
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+	/* Go to infinite loop when Usage Fault exception occurs */
+	while (1)
+	{
+	}
 }
 
 /**
-  * @brief  This function handles SVCall exception.
-  * @param  None
-  * @retval None
-  */
+	* @brief  This function handles SVCall exception.
+	* @param  None
+	* @retval None
+	*/
 void SVC_Handler(void)
 {
 }
 
 /**
-  * @brief  This function handles Debug Monitor exception.
-  * @param  None
-  * @retval None
-  */
+	* @brief  This function handles Debug Monitor exception.
+	* @param  None
+	* @retval None
+	*/
 void DebugMon_Handler(void)
 {
 }
 
 /**
-  * @brief  This function handles PendSVC exception.
-  * @param  None
-  * @retval None
-  */
+	* @brief  This function handles PendSVC exception.
+	* @param  None
+	* @retval None
+	*/
 void PendSV_Handler(void)
 {
 }
 
 /**
-  * @brief  This function handles SysTick Handler.
-  * @param  None
-  * @retval None
-  */
+	* @brief  This function handles SysTick Handler.
+	* @param  None
+	* @retval None
+	*/
 extern int ntime;
 void SysTick_Handler(void)
 {
@@ -146,31 +146,31 @@ void SysTick_Handler(void)
 
 void RCC_IRQHandler(void)
 {
-  if(RCC_GetITStatus(RCC_IT_HSERDY) != RESET)
-  { 
-    /* Clear HSERDY interrupt pending bit */
-    RCC_ClearITPendingBit(RCC_IT_HSERDY);
+	if(RCC_GetITStatus(RCC_IT_HSERDY) != RESET)
+	{ 
+		/* Clear HSERDY interrupt pending bit */
+		RCC_ClearITPendingBit(RCC_IT_HSERDY);
 
-    /* Check if the HSE clock is still available */
-    if (RCC_GetFlagStatus(RCC_FLAG_HSERDY) != RESET)
-    { 
-      /* Enable PLL: once the PLL is ready the PLLRDY interrupt is generated */ 
-      RCC_PLLCmd(ENABLE);     
-    }
-  }
+		/* Check if the HSE clock is still available */
+		if (RCC_GetFlagStatus(RCC_FLAG_HSERDY) != RESET)
+		{ 
+			/* Enable PLL: once the PLL is ready the PLLRDY interrupt is generated */ 
+			RCC_PLLCmd(ENABLE);     
+		}
+	}
 
-  if(RCC_GetITStatus(RCC_IT_PLLRDY) != RESET)
-  { 
-    /* Clear PLLRDY interrupt pending bit */
-    RCC_ClearITPendingBit(RCC_IT_PLLRDY);
+	if(RCC_GetITStatus(RCC_IT_PLLRDY) != RESET)
+	{ 
+		/* Clear PLLRDY interrupt pending bit */
+		RCC_ClearITPendingBit(RCC_IT_PLLRDY);
 
-    /* Check if the PLL is still locked */
-    if (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) != RESET)
-    { 
-      /* Select PLL as system clock source */
-      RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-    }
-  }
+		/* Check if the PLL is still locked */
+		if (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) != RESET)
+		{ 
+			/* Select PLL as system clock source */
+			RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+		}
+	}
 }
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */
@@ -181,11 +181,11 @@ void RCC_IRQHandler(void)
 
 
 /**
-  * @brief  This function handles PPP interrupt request.
-  * @param  None
-  * @retval None
-  */
-   /*******************************************************************************
+	* @brief  This function handles PPP interrupt request.
+	* @param  None
+	* @retval None
+	*/
+	 /*******************************************************************************
  * 函数名称:TIM2_IRQHandler                                                                     
  * 描    述:用于定时                                                                 
  *                                                                               
@@ -195,7 +195,7 @@ void RCC_IRQHandler(void)
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
 
-   /*******************************************************************************
+	 /*******************************************************************************
  * 函数名称:TIM2_IRQHandler                                                                     
  * 描    述:喂狗                                                                
  *                                                                               
@@ -206,13 +206,13 @@ void RCC_IRQHandler(void)
  *******************************************************************************/ 
 void TIM2_IRQHandler(void)
 {	    
-  if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
+	if(TIM_GetITStatus(TIM2,TIM_IT_Update)!=RESET)
 	{
-	   TIM_ClearITPendingBit(TIM2, TIM_IT_Update); 
+		 TIM_ClearITPendingBit(TIM2, TIM_IT_Update); 
 		 IWDG_ReloadCounter();   
-  }
+	}
 }
-   /*******************************************************************************
+	 /*******************************************************************************
  * 函数名称:EXTI15_10_IRQHandler                                                                     
  * 描    述:投币机中断线接收                                                                 
  *                                                                               
@@ -221,19 +221,19 @@ void TIM2_IRQHandler(void)
  * 返    回:void                                                               
  * 修改日期:2013年8月28日                                                                    
  *******************************************************************************/ 
-unsigned int   CoinsCount=0;
-unsigned int   CoinsOutFlat=1;
-extern unsigned char NewCoinsCnt;
+uint32_t   CoinsCount=0;
+uint32_t   CoinsOutFlat=1;
+extern uint32_t NewCoinsCnt;
 void EXTI15_10_IRQHandler(void)
 {
-  unsigned char PinStatus;
-  if (EXTI_GetITStatus(EXTI_Line12) != RESET)
+	unsigned char PinStatus;
+	if (EXTI_GetITStatus(EXTI_Line12) != RESET)
 	{
-	  PinStatus=GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_12);
+		PinStatus=GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_12);
 		if(PinStatus == 0)
 		{
-		  CoinsCount++;
-		  if(CoinsCount == 2)
+			CoinsCount++;
+			if(CoinsCount == 2)
 			{
 				CoinsCount = 0;
 				UserActMessageWriteToFlash.UserAct.PayForCoins++;
@@ -241,19 +241,19 @@ void EXTI15_10_IRQHandler(void)
 				CoinsTotoalMessageWriteToFlash.CoinTotoal++;
 			}
 		}
-    EXTI_ClearITPendingBit(EXTI_Line12);
+		EXTI_ClearITPendingBit(EXTI_Line12);
 	}
 	
 	if( EXTI_GetITStatus(EXTI_Line10) != RESET)	
 	{
 		Coins_cnt++; 
 		CoinsTotoalMessageWriteToFlash.CoinTotoal--;
-	  EXTI_ClearITPendingBit(EXTI_Line10);	
+		EXTI_ClearITPendingBit(EXTI_Line10);	
 	}
 	WriteCoins();
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:TIM3_IRQHandler                                                                     
  * 描    述:中断程序  用于倒计时60秒。时间到返回主界面                                                                  
  *                                                                               
@@ -264,9 +264,9 @@ void EXTI15_10_IRQHandler(void)
  *******************************************************************************/ 
 void TIM3_IRQHandler(void)
 {
-  if(TIM_GetITStatus(TIM3,TIM_IT_Update)!=RESET)
+	if(TIM_GetITStatus(TIM3,TIM_IT_Update)!=RESET)
 	{	 
-	  TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 		if(WaitTime > 0)
 		{
 			WaitTime--;
@@ -275,12 +275,12 @@ void TIM3_IRQHandler(void)
 		{
 			CloseTIM3();
 			ClearUserBuffer();//清空用户数据
-      SaveUserData();
-	  }	     
-  }
+			SaveUserData();
+		}	     
+	}
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:TIM4_IRQHandler                                                                     
  * 描    述:打印倒计时5S                                                                 
  *                                                                               
@@ -291,18 +291,18 @@ void TIM3_IRQHandler(void)
  *******************************************************************************/ 
 void TIM4_IRQHandler(void)
 {
-  if(TIM_GetITStatus(TIM4,TIM_IT_Update)!=RESET)
+	if(TIM_GetITStatus(TIM4,TIM_IT_Update)!=RESET)
 	{	 
-	  TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-    if(sellsecond_remain>0)
-    {
-      sellsecond_remain--;
-    }
-    else
-    {
-      CloseTIM4(); 
-    }      
-  }
+		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+		if(sellsecond_remain>0)
+		{
+			sellsecond_remain--;
+		}
+		else
+		{
+			CloseTIM4(); 
+		}      
+	}
 }
  /*******************************************************************************
  * 函数名称:TIM5_IRQHandler                                                                     
@@ -316,14 +316,14 @@ void TIM4_IRQHandler(void)
 //  uint8_t LinkTime; 
 void TIM5_IRQHandler(void)
 {
-  if(TIM_GetITStatus(TIM5,TIM_IT_Update)!=RESET)
+	if(TIM_GetITStatus(TIM5,TIM_IT_Update)!=RESET)
 	{	 
-	  TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
+		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
 		LinkTime++;   
-  }
+	}
 }
 
-   /*******************************************************************************
+	 /*******************************************************************************
  * 函数名称:TIM7_IRQHandler                                                                     
  * 描    述:购物车倒计时                                                                
  *                                                                               
@@ -334,9 +334,9 @@ void TIM5_IRQHandler(void)
  *******************************************************************************/ 
 void TIM7_IRQHandler(void)
 {			
-  if(TIM_GetITStatus(TIM7,TIM_IT_Update)!=RESET)
+	if(TIM_GetITStatus(TIM7,TIM_IT_Update)!=RESET)
 	{	 
-	  TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
+		TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
 		if(WaitTime > 0)
 		{
 			WaitTime--;
@@ -344,10 +344,10 @@ void TIM7_IRQHandler(void)
 		else 
 		{
 			CloseTIM7();
-	  }	     
-  }
+		}	     
+	}
 }
-   /*******************************************************************************
+	 /*******************************************************************************
  * 函数名称:PVD_IRQHandler                                                                    
  * 描    述:掉电检测                                                        
  *                                                                               
@@ -359,79 +359,79 @@ void TIM7_IRQHandler(void)
 extern  FIL fsrc;
 void PVD_IRQHandler(void) 
 {
-  uint32_t temp1=0,temp2=0;
-  EXTI_ClearITPendingBit(EXTI_Line16); 
-  if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
-  {
-    PWR_ClearFlag(PWR_FLAG_PVDO);
+	uint32_t temp1=0,temp2=0;
+	EXTI_ClearITPendingBit(EXTI_Line16); 
+	if(PWR_GetFlagStatus(PWR_FLAG_PVDO)) //
+	{
+		PWR_ClearFlag(PWR_FLAG_PVDO);
 		if((Current == waitfor_money)&&(UserActMessageWriteToFlash.UserAct.PayAlready>0)) //当处于付钱状态的时候需要清楚用户的其他数据，除了UserActMessageWriteToFlash.UserAct.MoneyBack
 		{
-      erro_record |= (1<<outage_erro);  //需要加入，以免还在付钱的时候断电
+			erro_record |= (1<<outage_erro);  //需要加入，以免还在付钱的时候断电
 			temp1= UserActMessageWriteToFlash.UserAct.MoneyBack = UserActMessageWriteToFlash.UserAct.PayAlready;
 			temp2= UserActMessageWriteToFlash.UserAct.MoneyBackShould = UserActMessageWriteToFlash.UserAct.PayAlready;
 			ClearUserBuffer();
-      UserActMessageWriteToFlash.UserAct.MoneyBack =temp1;
-      UserActMessageWriteToFlash.UserAct.MoneyBackShould= temp2;
-    }
+			UserActMessageWriteToFlash.UserAct.MoneyBack =temp1;
+			UserActMessageWriteToFlash.UserAct.MoneyBackShould= temp2;
+		}
 		else if(Current == meal_out) //取餐的时候断电，没有计算UserActMessageWriteToFlash.UserAct.MoneyBack,需要计算一次后，就不再计算了，所以加了标记
 		{
-      erro_record |= (1<<outage_erro);
+			erro_record |= (1<<outage_erro);
 			erro_record |= (1<<arm_limit);
-      if(OldCoinsCnt!=0)
+			if(OldCoinsCnt!=0)
 			{
 				UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退			
 			}
-    }
-    else if(Current ==hpper_out) //不仅在退币状态下统计，也需要在出餐状态统计，是出餐的时候退的币
-    {
-      erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
+		}
+		else if(Current ==hpper_out) //不仅在退币状态下统计，也需要在出餐状态统计，是出餐的时候退的币
+		{
+			erro_record |= (1<<outage_erro);  //需要加入，以免取餐的时候断电
 			UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
 			if(erro_record>=(1<<X_timeout))  //如果是机械手错误，需要锁定机械手
 			{
 				 erro_record |= (1<<arm_limit);
 			}
-    }
-    else if(Current == erro_hanle) //如果在Current==erro_record,所需的数据都已经计算完毕了，可以不需要断电记录，清除该标记位，其他的错误标记位还是会被标记
-    {
+		}
+		else if(Current == erro_hanle) //如果在Current==erro_record,所需的数据都已经计算完毕了，可以不需要断电记录，清除该标记位，其他的错误标记位还是会被标记
+		{
 			if(OldCoinsCnt!=0)
 			{
-			  UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+				UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
 			}
 			if(erro_record>=(1<<X_timeout))  //如果是机械手错误，需要锁定机械手
 			{
 				 erro_record |= (1<<arm_limit);
 			}
 			erro_record &= ~(1<<outage_erro); 
-    }
+		}
 		else if(Current == current_temperature)
 		{
 			if(OldCoinsCnt!=0)
 			{
-			  UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
+				UserActMessageWriteToFlash.UserAct.MoneyBack= NewCoinsCnt-(OldCoinsCnt- CoinsTotoalMessageWriteToFlash.CoinTotoal);//通过全局的硬币计数，得到还有多少币未退
 			}
-		  if(UserActMessageWriteToFlash.UserAct.MoneyBack>0)
+			if(UserActMessageWriteToFlash.UserAct.MoneyBack>0)
 				erro_record |= (1<<outage_erro);
 			else
 				erro_record &= ~(1<<outage_erro); 
-    }
+		}
 		else if(Current == data_upload) //上传的时候断电
 		{
 			if(UserActMessageWriteToFlash.UserAct.MealID!=0)
 			{
 				erro_record |= (1<<upload_erro);
-      }
-    }
-    RTC_WriteBackupRegister(RTC_BKP_DR3,  erro_record);
-    //SaveUserData();/*时间太长了*/
-    f_close(&fsrc);	  
-  }	
+			}
+		}
+		RTC_WriteBackupRegister(RTC_BKP_DR3,  erro_record);
+		//SaveUserData();/*时间太长了*/
+		f_close(&fsrc);	  
+	}	
 }
 
 
 
 /**
-  * @}
-  */ 
+	* @}
+	*/ 
 
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

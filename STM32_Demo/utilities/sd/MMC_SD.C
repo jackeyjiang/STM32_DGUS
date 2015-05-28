@@ -1,9 +1,10 @@
-#include "stm32f4xx.h"
+
+#include <stm32f4xx.h>
 #include "mmc_sd.h"			   
 #include "sd.h"
 #include "printer.h"	
 /////////////////////////////////////////////////////////
-					   					   
+												 
 u8  SD_Type=0;//SD卡的类型 
 
 //移植时候的接口
@@ -12,7 +13,7 @@ u8  SD_Type=0;//SD卡的类型
 u8 SD_SPI_ReadWriteByte(u8 data)
 {
 //	return SPI1_ReadWriteByte(data);
-   	return 	SD_spi_read();
+		return 	SD_spi_read();
 }	  
 //SD卡初始化的时候,需要低速
 //void SD_SPI_SpeedLow(void)
@@ -27,17 +28,17 @@ u8 SD_SPI_ReadWriteByte(u8 data)
 //SPI硬件层初始化
 void SD_SPI_Init(void)
 {
-  SD_GPIO_Configuration();
+	SD_GPIO_Configuration();
 	Set_SD_CS;
 }
 ///////////////////////////////////////////////////////////////////////////////////
 //取消选择,释放SPI总线
 void SD_DisSelect(void)
 {
-  unsigned char i ;
+	unsigned char i ;
 	Set_SD_CS;
 	for(i=0;i<8;i++)
- 	SD_spi_write(0xff);//提供额外的8个时钟
+	SD_spi_write(0xff);//提供额外的8个时钟
 }
 //选择sd卡,并且等待卡准备OK
 //返回值:0,成功;1,失败;
@@ -78,15 +79,15 @@ u8 SD_GetResponse(u8 Response)
 u8 SD_RecvData(u8*buf,u16 len)
 {			  	  
 	if(SD_GetResponse(0xFE))return 1;//等待SD卡发回数据起始令牌0xFE
-    while(len--)//开始接收数据
-    {
-        *buf=SD_spi_read();
-        buf++;
-    }
-    //下面是2个伪CRC（dummy CRC）
-    SD_spi_write(0xFF);
-    SD_spi_write(0xFF);									  					    
-    return 0;//读取成功
+		while(len--)//开始接收数据
+		{
+			*buf=SD_spi_read();
+			buf++;
+		}
+		//下面是2个伪CRC（dummy CRC）
+		SD_spi_write(0xFF);
+		SD_spi_write(0xFF);									  					    
+		return 0;//读取成功
 }
 //向sd卡写入一个数据包的内容 512字节
 //buf:数据缓存区
@@ -101,16 +102,14 @@ u8 SD_SendBlock(u8*buf,u8 cmd)
 	{
 		for(t=0;t<512;t++)
 		SD_spi_write(buf[t]);
-		
-				
+					
 		//提高速度,减少函数传参时间
-	    SD_spi_write(0xFF);//忽略crc
-	    SD_spi_write(0xFF);
+		SD_spi_write(0xFF);//忽略crc
+		SD_spi_write(0xFF);
 		t=SD_spi_read();//接收响应
 		if((t&0x1F)!=0x05)return 2;//响应错误									  					    
-	}	
-			 									  					    
-    return 0;//写入成功
+	}																				
+	return 0;//写入成功
 }
 
 //向SD卡发送一个命令
@@ -120,26 +119,26 @@ u8 SD_SendBlock(u8*buf,u8 cmd)
 //返回值:SD卡返回的响应															  
 u8 SD_SendCmd(u8 cmd, u32 arg, u8 crc)
 {
-  u8 r1;	
+	u8 r1;	
 	u8 Retry=0; 
 	SD_DisSelect();//取消上次片选
 	if(SD_Select())return 0XFF;//片选失效 
 	//发送
-    SD_spi_write(cmd | 0x40);//分别写入命令
-    SD_spi_write(arg >> 24);
-    SD_spi_write(arg >> 16);
-    SD_spi_write(arg >> 8);
-    SD_spi_write(arg);	  
-    SD_spi_write(crc); 
+	SD_spi_write(cmd | 0x40);//分别写入命令
+	SD_spi_write(arg >> 24);
+	SD_spi_write(arg >> 16);
+	SD_spi_write(arg >> 8);
+	SD_spi_write(arg);	  
+	SD_spi_write(crc); 
 	if(cmd==CMD12)SD_spi_write(0xff);//Skip a stuff byte when stop reading
-    //等待响应，或超时退出
+		//等待响应，或超时退出
 	Retry=0X1F;
 	do
 	{
 		r1=SD_spi_read();
 	}while((r1&0X80) && Retry--);	 
 	//返回状态值
-    return r1;
+	return r1;
 }		    																			  
 //获取SD卡的CID信息，包括制造商信息
 //输入: u8 *cid_data(存放CID的内存，至少16Byte）	  
@@ -147,13 +146,13 @@ u8 SD_SendCmd(u8 cmd, u32 arg, u8 crc)
 //		 1：错误														   
 u8 SD_GetCID(u8 *cid_data)
 {
-  u8 r1;	   
-  //发CMD10命令，读CID
-  r1=SD_SendCmd(CMD10,0,0x01);
-  if(r1==0x00)
+	u8 r1;	   
+	//发CMD10命令，读CID
+	r1=SD_SendCmd(CMD10,0,0x01);
+	if(r1==0x00)
 	{
 		r1=SD_RecvData(cid_data,16);//接收16个字节的数据	 
-    }
+	}
 	SD_DisSelect();//取消片选
 	if(r1)return 1;
 	else return 0;
@@ -164,12 +163,12 @@ u8 SD_GetCID(u8 *cid_data)
 //		 1：错误														   
 u8 SD_GetCSD(u8 *csd_data)
 {
-  u8 r1;	 
-  r1=SD_SendCmd(CMD9,0,0x01);//发CMD9命令，读CSD
-  if(r1==0)
+	u8 r1;	 
+	r1=SD_SendCmd(CMD9,0,0x01);//发CMD9命令，读CSD
+	if(r1==0)
 	{
 		r1=SD_RecvData(csd_data, 16);//接收16个字节的数据 
-  }
+	}
 	SD_DisSelect();//取消片选
 	if(r1)return 1;
 	else return 0;
@@ -180,43 +179,43 @@ u8 SD_GetCSD(u8 *csd_data)
 //每扇区的字节数必为512，因为如果不是512，则初始化不能通过.														  
 u32 SD_GetSectorCount(void)
 {
-  u8 csd[16];
-  u32 Capacity;  
-  u8 n;
+	u8 csd[16];
+	u32 Capacity;  
+	u8 n;
 	u16 csize;  					    
 	//取CSD信息，如果期间出错，返回0
-  if(SD_GetCSD(csd)!=0) return 0;	    
-  //如果为SDHC卡，按照下面方式计算
-  if((csd[0]&0xC0)==0x40)	 //V2.00的卡
-  {	
+	if(SD_GetCSD(csd)!=0) return 0;	    
+	//如果为SDHC卡，按照下面方式计算
+	if((csd[0]&0xC0)==0x40)	 //V2.00的卡
+	{	
 		csize = csd[9] + ((u16)csd[8] << 8) + 1;
 		Capacity = (u32)csize << 10;//得到扇区数	 		   
-  }
+	}
 	else//V1.XX的卡
-  {	
+	{	
 		n = (csd[5] & 15) + ((csd[10] & 128) >> 7) + ((csd[9] & 3) << 1) + 2;
 		csize = (csd[8] >> 6) + ((u16)csd[7] << 2) + ((u16)(csd[6] & 3) << 10) + 1;
 		Capacity= (u32)csize << (n - 9);//得到扇区数   
-  }
-    return Capacity;
+	}
+	return Capacity;
 }
 //初始化SD卡
 u8 SD_Initialize(void)
 {
-  u8 r1;      // 存放SD卡的返回值
-  u16 retry;  // 用来进行超时计数
-  u8 buf[4];  
+	u8 r1;      // 存放SD卡的返回值
+	u16 retry;  // 用来进行超时计数
+	u8 buf[4];  
 	u16 i;
 	SD_SPI_Init();		//初始化IO
 // 	SD_SPI_SpeedLow();	//设置到低速模式 
-  is_init = 1;
- 	for(i=0;i<10;i++)SD_spi_write(0Xff);//发送最少74个脉冲
+	is_init = 1;
+	for(i=0;i<10;i++)SD_spi_write(0Xff);//发送最少74个脉冲
 	retry=20;
 	do
 	{
 		r1=SD_SendCmd(CMD0,0,0x95);//进入IDLE状态
 	}while((r1!=0X01) && retry--);
- 	SD_Type=0;//默认无卡
+	SD_Type=0;//默认无卡
 	if(r1==0X01)
 	{
 		if(SD_SendCmd(CMD8,0x1AA,0x87)==1)//SD V2.0
@@ -264,7 +263,7 @@ u8 SD_Initialize(void)
 	}
 	SD_DisSelect();//取消片选
 //	SD_SPI_SpeedHigh();//高速
-    is_init = 0 ;
+	is_init = 0 ;
 	if(SD_Type)return 0;
 	else if(r1)return r1; 	   
 	return 0xaa;//其他错误
@@ -330,7 +329,7 @@ u8 SD_WriteDisk(u8*buf,u32 sector,u8 cnt)
 			SD_SendCmd(CMD55,0,0X01);	
 			SD_SendCmd(CMD23,cnt,0X01);//发送指令	
 		}
- 		r1=SD_SendCmd(CMD25,sector,0X01);//连续读命令
+		r1=SD_SendCmd(CMD25,sector,0X01);//连续读命令
 		if(r1==0)
 		{
 			do

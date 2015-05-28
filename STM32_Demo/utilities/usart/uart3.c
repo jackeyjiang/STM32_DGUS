@@ -2,31 +2,31 @@
  
 void Uart3_Configuration(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure;
-  	USART_InitTypeDef USART_InitStructure;
-  	NVIC_InitTypeDef NVIC_InitStructure;
-  	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);//外设时钟使能 
-  	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
-  	GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF_USART3);//连接复用引脚  
-  	GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF_USART3);
-  	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
-  	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  	GPIO_Init(GPIOD, &GPIO_InitStructure);//初始化串口1的GPIO  
-	 
-  	USART_InitStructure.USART_BaudRate = 115200;//波特率设置
-  	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//8位数据模式
-  	USART_InitStructure.USART_StopBits = USART_StopBits_1;//1位停止位
-  	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
-  	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件溢出控制
-  	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;//双工模式
-		USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
-  	USART_Init(USART3, &USART_InitStructure);	
-    USART_ClearFlag(USART3, USART_FLAG_TC);//清传送完成标志
-  	USART_Cmd(USART3, ENABLE);
-  	
+	GPIO_InitTypeDef GPIO_InitStructure;
+	USART_InitTypeDef USART_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);//外设时钟使能 
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF_USART3);//连接复用引脚  
+	GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF_USART3);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_Init(GPIOD, &GPIO_InitStructure);//初始化串口1的GPIO  
+
+	USART_InitStructure.USART_BaudRate = 115200;//波特率设置
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//8位数据模式
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;//1位停止位
+	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件溢出控制
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;//双工模式
+	USART_ITConfig(USART3,USART_IT_RXNE,ENABLE);
+	USART_Init(USART3, &USART_InitStructure);	
+	USART_ClearFlag(USART3, USART_FLAG_TC);//清传送完成标志
+	USART_Cmd(USART3, ENABLE);
+
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); //嵌套优先级分组为1
 	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;//嵌套通道为USART3_IRQn
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;//抢占优先级为0
@@ -37,26 +37,24 @@ void Uart3_Configuration(void)
 
 void Uart3_Send(const uint8_t *p,uint8_t length)
 {
-   uint8_t i=0;
-	 USART_ClearFlag(USART3,USART_FLAG_TC);
-	 for(i=0;i<length;i++)
-	 {	
-		  //while((USART3->SR&0X40)==0);//循环发送,直到发送完毕    
-	    USART_SendData(USART3, (u8) p[i]);   
-    	while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    	    
-	 }
+	uint8_t i=0;
+	USART_ClearFlag(USART3,USART_FLAG_TC);
+	for(i=0;i<length;i++)
+	{	
+		//while((USART3->SR&0X40)==0);//循环发送,直到发送完毕    
+		USART_SendData(USART3, (u8) p[i]);   
+		while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET); 
+	}
 }
 void Uart3_Sent(const uint8_t *p,uint8_t length)
 {
-   uint8_t i=0;
-	 USART_ClearFlag(USART3,USART_FLAG_TC);
-	 for(i=0;i<length;i++)
-	 {	  
-	    USART3->DR = (u8) p[i];       
-    	while((USART3->SR&0X40)==0);//循环发送,直到发送完毕   
-    	    
-	 }
+	uint8_t i=0;
+	USART_ClearFlag(USART3,USART_FLAG_TC);
+	for(i=0;i<length;i++)
+	{	  
+		USART3->DR = (u8) p[i];       
+		while((USART3->SR&0X40)==0);//循环发送,直到发送完毕   
+	}
 }
   /*******************************************************************************
  * 函数名称:_LCD_Disable_RxInit                                                                     
@@ -160,12 +158,11 @@ void USART3_IRQHandler(void)
 {	
 	if(USART_GetITStatus(USART3,USART_IT_RXNE)!=RESET)//数据接收扫描
 	{
-  		
-	UART_InpLen++;
-	RX3_BUFF[RX_IndexW]=USART_ReceiveData(USART3);
-	if(++RX_IndexW >=RX3BUF_SIZE)
-	{
-		RX_IndexW =0;
-	}
+		UART_InpLen++;
+		RX3_BUFF[RX_IndexW]=USART_ReceiveData(USART3);
+		if(++RX_IndexW >=RX3BUF_SIZE)
+		{
+			RX_IndexW =0;
+		}
 	}
 }

@@ -19,8 +19,8 @@
 
 typedef enum 
 {
-  FAILED = 0, 
-  PASSED = !FAILED
+	FAILED = 0, 
+	PASSED = !FAILED
 } TestStatus;
 
  TestStatus Buffercmp(u8* pBuffer1, u8* pBuffer2, u16 BufferLength);
@@ -65,69 +65,69 @@ void SPI_FLASH_Init(void)
 	
 	//SPI初始值；
 	
-  SPI_InitTypeDef  SPI_InitStructure;
-  GPIO_InitTypeDef GPIO_InitStructure;
+	SPI_InitTypeDef  SPI_InitStructure;
+	GPIO_InitTypeDef GPIO_InitStructure;
 
-  /*!< Configure SPI_FLASH_SPI_CS_PIN pin: SPI_FLASH Card CS pin */
-  GPIO_InitStructure.GPIO_Pin = SPI_FLASH_CS_PIN;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-  GPIO_Init(SPI_FLASH_CS_GPIO_PORT, &GPIO_InitStructure);
-  
-  /* Enable SPI1 and GPIO clocks */
-  /*!< SPI_FLASH_SPI_CS_GPIO, SPI_FLASH_SPI_MOSI_GPIO, 
-       SPI_FLASH_SPI_MISO_GPIO, SPI_FLASH_SPI_DETECT_GPIO 
-       and SPI_FLASH_SPI_SCK_GPIO Periph clock enable */
-  RCC_AHB1PeriphClockCmd(SPI_FLASH_SPI_MOSI_GPIO_CLK | SPI_FLASH_SPI_MISO_GPIO_CLK |
-                             SPI_FLASH_SPI_SCK_GPIO_CLK,  ENABLE);
-  RCC_AHB1PeriphClockCmd(SPI_FLASH_CS_GPIO_CLK, ENABLE);
-  
-  /*!< SPI_FLASH_SPI Periph clock enable */
-  RCC_APB1PeriphClockCmd(SPI_FLASH_SPI_CLK, ENABLE);
+	/*!< Configure SPI_FLASH_SPI_CS_PIN pin: SPI_FLASH Card CS pin */
+	GPIO_InitStructure.GPIO_Pin = SPI_FLASH_CS_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_Init(SPI_FLASH_CS_GPIO_PORT, &GPIO_InitStructure);
+	
+	/* Enable SPI1 and GPIO clocks */
+	/*!< SPI_FLASH_SPI_CS_GPIO, SPI_FLASH_SPI_MOSI_GPIO, 
+			 SPI_FLASH_SPI_MISO_GPIO, SPI_FLASH_SPI_DETECT_GPIO 
+			 and SPI_FLASH_SPI_SCK_GPIO Periph clock enable */
+	RCC_AHB1PeriphClockCmd(SPI_FLASH_SPI_MOSI_GPIO_CLK | SPI_FLASH_SPI_MISO_GPIO_CLK |
+														 SPI_FLASH_SPI_SCK_GPIO_CLK,  ENABLE);
+	RCC_AHB1PeriphClockCmd(SPI_FLASH_CS_GPIO_CLK, ENABLE);
+	
+	/*!< SPI_FLASH_SPI Periph clock enable */
+	RCC_APB1PeriphClockCmd(SPI_FLASH_SPI_CLK, ENABLE);
 
- 	GPIO_PinAFConfig( GPIOB,GPIO_PinSource10,GPIO_AF_SPI2);
+	GPIO_PinAFConfig( GPIOB,GPIO_PinSource10,GPIO_AF_SPI2);
 	GPIO_PinAFConfig( GPIOC,GPIO_PinSource2,GPIO_AF_SPI2);
 	GPIO_PinAFConfig( GPIOC,GPIO_PinSource3,GPIO_AF_SPI2);
 
-      
-  /*!< Configure SPI_FLASH_SPI pins: SCK */
-  GPIO_InitStructure.GPIO_Pin = SPI_FLASH_SPI_SCK_PIN;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(SPI_FLASH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
+			
+	/*!< Configure SPI_FLASH_SPI pins: SCK */
+	GPIO_InitStructure.GPIO_Pin = SPI_FLASH_SPI_SCK_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+	GPIO_Init(SPI_FLASH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SPI_FLASH_SPI pins: MISO */
-  GPIO_InitStructure.GPIO_Pin = SPI_FLASH_SPI_MISO_PIN;
-  GPIO_Init(SPI_FLASH_SPI_MISO_GPIO_PORT, &GPIO_InitStructure);
+	/*!< Configure SPI_FLASH_SPI pins: MISO */
+	GPIO_InitStructure.GPIO_Pin = SPI_FLASH_SPI_MISO_PIN;
+	GPIO_Init(SPI_FLASH_SPI_MISO_GPIO_PORT, &GPIO_InitStructure);
 
-  /*!< Configure SPI_FLASH_SPI pins: MOSI */
-  GPIO_InitStructure.GPIO_Pin = SPI_FLASH_SPI_MOSI_PIN;
-  GPIO_Init(SPI_FLASH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
+	/*!< Configure SPI_FLASH_SPI pins: MOSI */
+	GPIO_InitStructure.GPIO_Pin = SPI_FLASH_SPI_MOSI_PIN;
+	GPIO_Init(SPI_FLASH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
 
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 
-  /* SPI1 configuration */
-  // W25X16: data input on the DIO pin is sampled on the rising edge of the CLK. 
-  // Data on the DO and DIO pins are clocked out on the falling edge of CLK.
-  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
-  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-  SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;
-  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
-  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
-  SPI_InitStructure.SPI_CRCPolynomial = 7;
-  SPI_Init(SPI2, &SPI_InitStructure);
+	/* SPI1 configuration */
+	// W25X16: data input on the DIO pin is sampled on the rising edge of the CLK. 
+	// Data on the DO and DIO pins are clocked out on the falling edge of CLK.
+	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
+	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
+	SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;
+	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;
+	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
+	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
+	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
+	SPI_InitStructure.SPI_CRCPolynomial = 7;
+	SPI_Init(SPI2, &SPI_InitStructure);
 
-  /* Enable SPI1  */
-  SPI_Cmd(SPI2, ENABLE);
+	/* Enable SPI1  */
+	SPI_Cmd(SPI2, ENABLE);
 }
 
 /*******************************************************************************
@@ -139,25 +139,25 @@ void SPI_FLASH_Init(void)
 *******************************************************************************/
 void SPI_FLASH_SectorErase(u32 SectorAddr)
 {
-  /* Send write enable instruction */
-  SPI_FLASH_WriteEnable();
+	/* Send write enable instruction */
+	SPI_FLASH_WriteEnable();
 
-  /* Sector Erase */
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
-  /* Send Sector Erase instruction */
-  SPI_FLASH_SendByte(W25X_SectorErase);
-  /* Send SectorAddr high nibble address byte */
-  SPI_FLASH_SendByte((SectorAddr & 0xFF0000) >> 16);
-  /* Send SectorAddr medium nibble address byte */
-  SPI_FLASH_SendByte((SectorAddr & 0xFF00) >> 8);
-  /* Send SectorAddr low nibble address byte */
-  SPI_FLASH_SendByte(SectorAddr & 0xFF);
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Sector Erase */
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
+	/* Send Sector Erase instruction */
+	SPI_FLASH_SendByte(W25X_SectorErase);
+	/* Send SectorAddr high nibble address byte */
+	SPI_FLASH_SendByte((SectorAddr & 0xFF0000) >> 16);
+	/* Send SectorAddr medium nibble address byte */
+	SPI_FLASH_SendByte((SectorAddr & 0xFF00) >> 8);
+	/* Send SectorAddr low nibble address byte */
+	SPI_FLASH_SendByte(SectorAddr & 0xFF);
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 
-  /* Wait the end of Flash writing */
-  SPI_FLASH_WaitForWriteEnd();
+	/* Wait the end of Flash writing */
+	SPI_FLASH_WaitForWriteEnd();
 }
 
 /*******************************************************************************
@@ -169,19 +169,19 @@ void SPI_FLASH_SectorErase(u32 SectorAddr)
 *******************************************************************************/
 void SPI_FLASH_BulkErase(void)
 {
-  /* Send write enable instruction */
-  SPI_FLASH_WriteEnable();
+	/* Send write enable instruction */
+	SPI_FLASH_WriteEnable();
 
-  /* Bulk Erase */
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
-  /* Send Bulk Erase instruction  */
-  SPI_FLASH_SendByte(W25X_ChipErase);
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Bulk Erase */
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
+	/* Send Bulk Erase instruction  */
+	SPI_FLASH_SendByte(W25X_ChipErase);
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 
-  /* Wait the end of Flash writing */
-  SPI_FLASH_WaitForWriteEnd();
+	/* Wait the end of Flash writing */
+	SPI_FLASH_WaitForWriteEnd();
 }
 
 /*******************************************************************************
@@ -200,41 +200,41 @@ void SPI_FLASH_BulkErase(void)
 void SPI_FLASH_PageWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 {
  
-  /* Enable the write access to the FLASH */
-  SPI_FLASH_WriteEnable();
+	/* Enable the write access to the FLASH */
+	SPI_FLASH_WriteEnable();
 
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
-  /* Send "Write to Memory " instruction */
-  SPI_FLASH_SendByte(W25X_PageProgram);
-  /* Send WriteAddr high nibble address byte to write to */
-  SPI_FLASH_SendByte((WriteAddr & 0xFF0000) >> 16);
-  /* Send WriteAddr medium nibble address byte to write to */
-  SPI_FLASH_SendByte((WriteAddr & 0xFF00) >> 8);
-  /* Send WriteAddr low nibble address byte to write to */
-  SPI_FLASH_SendByte(WriteAddr & 0xFF);
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
+	/* Send "Write to Memory " instruction */
+	SPI_FLASH_SendByte(W25X_PageProgram);
+	/* Send WriteAddr high nibble address byte to write to */
+	SPI_FLASH_SendByte((WriteAddr & 0xFF0000) >> 16);
+	/* Send WriteAddr medium nibble address byte to write to */
+	SPI_FLASH_SendByte((WriteAddr & 0xFF00) >> 8);
+	/* Send WriteAddr low nibble address byte to write to */
+	SPI_FLASH_SendByte(WriteAddr & 0xFF);
 
-  if(NumByteToWrite > SPI_FLASH_PerWritePageSize)
-  {
-     NumByteToWrite = SPI_FLASH_PerWritePageSize;
-  //  printf("\n\r Err: SPI_FLASH_PageWrite too large!");
-  }
+	if(NumByteToWrite > SPI_FLASH_PerWritePageSize)
+	{
+		 NumByteToWrite = SPI_FLASH_PerWritePageSize;
+	//  printf("\n\r Err: SPI_FLASH_PageWrite too large!");
+	}
 
-  /* while there is data to be written on the FLASH */
-  while (NumByteToWrite--)
-  {
-    /* Send the current byte */
+	/* while there is data to be written on the FLASH */
+	while (NumByteToWrite--)
+	{
+		/* Send the current byte */
 //	printf("*pBuffer[%d]=%d\r\n",NumByteToWrite,*pBuffer);
-    SPI_FLASH_SendByte(*pBuffer);
-    /* Point on the next byte to be written */
-    pBuffer++;
-  }
+		SPI_FLASH_SendByte(*pBuffer);
+		/* Point on the next byte to be written */
+		pBuffer++;
+	}
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 
-  /* Wait the end of Flash writing */
-  SPI_FLASH_WaitForWriteEnd();
+	/* Wait the end of Flash writing */
+	SPI_FLASH_WaitForWriteEnd();
 }
 
 /*******************************************************************************
@@ -250,73 +250,73 @@ void SPI_FLASH_PageWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 *******************************************************************************/
 void SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 {
-  u8 NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
+	u8 NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
 
-  Addr = WriteAddr % SPI_FLASH_PageSize;
-  count = SPI_FLASH_PageSize - Addr;
-  NumOfPage =  NumByteToWrite / SPI_FLASH_PageSize;
-  NumOfSingle = NumByteToWrite % SPI_FLASH_PageSize;
+	Addr = WriteAddr % SPI_FLASH_PageSize;
+	count = SPI_FLASH_PageSize - Addr;
+	NumOfPage =  NumByteToWrite / SPI_FLASH_PageSize;
+	NumOfSingle = NumByteToWrite % SPI_FLASH_PageSize;
 
-  if (Addr == 0) /* WriteAddr is SPI_FLASH_PageSize aligned  */
-  {
-    if (NumOfPage == 0) /* NumByteToWrite < SPI_FLASH_PageSize */
-    {
-      SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumByteToWrite);
-    }
-    else /* NumByteToWrite > SPI_FLASH_PageSize */
-    {
-      while (NumOfPage--)
-      {
-        SPI_FLASH_PageWrite(pBuffer, WriteAddr, SPI_FLASH_PageSize);
-        WriteAddr +=  SPI_FLASH_PageSize;
-        pBuffer += SPI_FLASH_PageSize;
-      }
+	if (Addr == 0) /* WriteAddr is SPI_FLASH_PageSize aligned  */
+	{
+		if (NumOfPage == 0) /* NumByteToWrite < SPI_FLASH_PageSize */
+		{
+			SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumByteToWrite);
+		}
+		else /* NumByteToWrite > SPI_FLASH_PageSize */
+		{
+			while (NumOfPage--)
+			{
+				SPI_FLASH_PageWrite(pBuffer, WriteAddr, SPI_FLASH_PageSize);
+				WriteAddr +=  SPI_FLASH_PageSize;
+				pBuffer += SPI_FLASH_PageSize;
+			}
 
-      SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumOfSingle);
-    }
-  }
-  else /* WriteAddr is not SPI_FLASH_PageSize aligned  */
-  {
-    if (NumOfPage == 0) /* NumByteToWrite < SPI_FLASH_PageSize */
-    {
-      if (NumOfSingle > count) /* (NumByteToWrite + WriteAddr) > SPI_FLASH_PageSize */
-      {
-        temp = NumOfSingle - count;
+			SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumOfSingle);
+		}
+	}
+	else /* WriteAddr is not SPI_FLASH_PageSize aligned  */
+	{
+		if (NumOfPage == 0) /* NumByteToWrite < SPI_FLASH_PageSize */
+		{
+			if (NumOfSingle > count) /* (NumByteToWrite + WriteAddr) > SPI_FLASH_PageSize */
+			{
+				temp = NumOfSingle - count;
 
-        SPI_FLASH_PageWrite(pBuffer, WriteAddr, count);
-        WriteAddr +=  count;
-        pBuffer += count;
+				SPI_FLASH_PageWrite(pBuffer, WriteAddr, count);
+				WriteAddr +=  count;
+				pBuffer += count;
 
-        SPI_FLASH_PageWrite(pBuffer, WriteAddr, temp);
-      }
-      else
-      {
-        SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumByteToWrite);
-      }
-    }
-    else /* NumByteToWrite > SPI_FLASH_PageSize */
-    {
-      NumByteToWrite -= count;
-      NumOfPage =  NumByteToWrite / SPI_FLASH_PageSize;
-      NumOfSingle = NumByteToWrite % SPI_FLASH_PageSize;
+				SPI_FLASH_PageWrite(pBuffer, WriteAddr, temp);
+			}
+			else
+			{
+				SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumByteToWrite);
+			}
+		}
+		else /* NumByteToWrite > SPI_FLASH_PageSize */
+		{
+			NumByteToWrite -= count;
+			NumOfPage =  NumByteToWrite / SPI_FLASH_PageSize;
+			NumOfSingle = NumByteToWrite % SPI_FLASH_PageSize;
 
-      SPI_FLASH_PageWrite(pBuffer, WriteAddr, count);
-      WriteAddr +=  count;
-      pBuffer += count;
+			SPI_FLASH_PageWrite(pBuffer, WriteAddr, count);
+			WriteAddr +=  count;
+			pBuffer += count;
 
-      while (NumOfPage--)
-      {
-        SPI_FLASH_PageWrite(pBuffer, WriteAddr, SPI_FLASH_PageSize);
-        WriteAddr +=  SPI_FLASH_PageSize;
-        pBuffer += SPI_FLASH_PageSize;
-      }
+			while (NumOfPage--)
+			{
+				SPI_FLASH_PageWrite(pBuffer, WriteAddr, SPI_FLASH_PageSize);
+				WriteAddr +=  SPI_FLASH_PageSize;
+				pBuffer += SPI_FLASH_PageSize;
+			}
 
-      if (NumOfSingle != 0)
-      {
-        SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumOfSingle);
-      }
-    }
-  }
+			if (NumOfSingle != 0)
+			{
+				SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumOfSingle);
+			}
+		}
+	}
 }
 
 /*******************************************************************************
@@ -331,31 +331,31 @@ void SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 *******************************************************************************/
 void SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
 {
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
 
-  /* Send "Read from Memory " instruction */
-  SPI_FLASH_SendByte(W25X_ReadData);
+	/* Send "Read from Memory " instruction */
+	SPI_FLASH_SendByte(W25X_ReadData);
 
-  /* Send ReadAddr high nibble address byte to read from */
-  SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
-  /* Send ReadAddr medium nibble address byte to read from */
-  SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
-  /* Send ReadAddr low nibble address byte to read from */
-  SPI_FLASH_SendByte(ReadAddr & 0xFF);
+	/* Send ReadAddr high nibble address byte to read from */
+	SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
+	/* Send ReadAddr medium nibble address byte to read from */
+	SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
+	/* Send ReadAddr low nibble address byte to read from */
+	SPI_FLASH_SendByte(ReadAddr & 0xFF);
 
-  while (NumByteToRead--) /* while there is data to be read */
-  {
-    /* Read a byte from the FLASH */
-    *pBuffer = SPI_FLASH_SendByte(Dummy_Byte);
-    /* Point to the next location where the byte read will be saved */
+	while (NumByteToRead--) /* while there is data to be read */
+	{
+		/* Read a byte from the FLASH */
+		*pBuffer = SPI_FLASH_SendByte(Dummy_Byte);
+		/* Point to the next location where the byte read will be saved */
  //	 printf("*   pBuffer[%d]=%d\r\n",NumByteToRead,*pBuffer);
-     pBuffer++;
+		 pBuffer++;
 
-  }
+	}
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 }
 
 /*******************************************************************************
@@ -367,29 +367,29 @@ void SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
 *******************************************************************************/
 u32 SPI_FLASH_ReadID(void)
 {
-  u32 Temp = 0, Temp0 = 0, Temp1 = 0, Temp2 = 0;
+	u32 Temp = 0, Temp0 = 0, Temp1 = 0, Temp2 = 0;
 
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
 
-  /* Send "RDID " instruction */
-  SPI_FLASH_SendByte(W25X_JedecDeviceID);
+	/* Send "RDID " instruction */
+	SPI_FLASH_SendByte(W25X_JedecDeviceID);
 
-  /* Read a byte from the FLASH */
-  Temp0 = SPI_FLASH_SendByte(Dummy_Byte);
+	/* Read a byte from the FLASH */
+	Temp0 = SPI_FLASH_SendByte(Dummy_Byte);
 
-  /* Read a byte from the FLASH */
-  Temp1 = SPI_FLASH_SendByte(Dummy_Byte);
+	/* Read a byte from the FLASH */
+	Temp1 = SPI_FLASH_SendByte(Dummy_Byte);
 
-  /* Read a byte from the FLASH */
-  Temp2 = SPI_FLASH_SendByte(Dummy_Byte);
+	/* Read a byte from the FLASH */
+	Temp2 = SPI_FLASH_SendByte(Dummy_Byte);
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 
-  Temp = (Temp0 << 16) | (Temp1 << 8) | Temp2;
+	Temp = (Temp0 << 16) | (Temp1 << 8) | Temp2;
 
-  return Temp;
+	return Temp;
 }
 /*******************************************************************************
 * Function Name  : SPI_FLASH_ReadID
@@ -400,24 +400,24 @@ u32 SPI_FLASH_ReadID(void)
 *******************************************************************************/
 u32 SPI_FLASH_ReadDeviceID(void)
 {
-  u32 Temp = 0;
+	u32 Temp = 0;
 
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
 
-  /* Send "RDID " instruction */
-  SPI_FLASH_SendByte(W25X_DeviceID);
-  SPI_FLASH_SendByte(Dummy_Byte);
-  SPI_FLASH_SendByte(Dummy_Byte);
-  SPI_FLASH_SendByte(Dummy_Byte);
-  
-  /* Read a byte from the FLASH */
-  Temp = SPI_FLASH_SendByte(Dummy_Byte);
+	/* Send "RDID " instruction */
+	SPI_FLASH_SendByte(W25X_DeviceID);
+	SPI_FLASH_SendByte(Dummy_Byte);
+	SPI_FLASH_SendByte(Dummy_Byte);
+	SPI_FLASH_SendByte(Dummy_Byte);
+	
+	/* Read a byte from the FLASH */
+	Temp = SPI_FLASH_SendByte(Dummy_Byte);
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 
-  return Temp;
+	return Temp;
 }
 /*******************************************************************************
 * Function Name  : SPI_FLASH_StartReadSequence
@@ -433,19 +433,19 @@ u32 SPI_FLASH_ReadDeviceID(void)
 *******************************************************************************/
 void SPI_FLASH_StartReadSequence(u32 ReadAddr)
 {
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
 
-  /* Send "Read from Memory " instruction */
-  SPI_FLASH_SendByte(W25X_ReadData);
+	/* Send "Read from Memory " instruction */
+	SPI_FLASH_SendByte(W25X_ReadData);
 
-  /* Send the 24-bit address of the address to read from -----------------------*/
-  /* Send ReadAddr high nibble address byte */
-  SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
-  /* Send ReadAddr medium nibble address byte */
-  SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
-  /* Send ReadAddr low nibble address byte */
-  SPI_FLASH_SendByte(ReadAddr & 0xFF);
+	/* Send the 24-bit address of the address to read from -----------------------*/
+	/* Send ReadAddr high nibble address byte */
+	SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
+	/* Send ReadAddr medium nibble address byte */
+	SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
+	/* Send ReadAddr low nibble address byte */
+	SPI_FLASH_SendByte(ReadAddr & 0xFF);
 }
 
 /*******************************************************************************
@@ -459,7 +459,7 @@ void SPI_FLASH_StartReadSequence(u32 ReadAddr)
 *******************************************************************************/
 u8 SPI_FLASH_ReadByte(void)
 {
-  return (SPI_FLASH_SendByte(Dummy_Byte));
+	return (SPI_FLASH_SendByte(Dummy_Byte));
 }
 
 /*******************************************************************************
@@ -472,17 +472,17 @@ u8 SPI_FLASH_ReadByte(void)
 *******************************************************************************/
 u8 SPI_FLASH_SendByte(u8 byte)
 {
-  /* Loop while DR register in not emplty */
-  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
+	/* Loop while DR register in not emplty */
+	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
 
-  /* Send byte through the SPI1 peripheral */
-  SPI_I2S_SendData(SPI2, byte);
+	/* Send byte through the SPI1 peripheral */
+	SPI_I2S_SendData(SPI2, byte);
 
-  /* Wait to receive a byte */
-  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
+	/* Wait to receive a byte */
+	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
 
-  /* Return the byte read from the SPI bus */
-  return SPI_I2S_ReceiveData(SPI2);
+	/* Return the byte read from the SPI bus */
+	return SPI_I2S_ReceiveData(SPI2);
 }
 
 /*******************************************************************************
@@ -495,17 +495,17 @@ u8 SPI_FLASH_SendByte(u8 byte)
 *******************************************************************************/
 u16 SPI_FLASH_SendHalfWord(u16 HalfWord)
 {
-  /* Loop while DR register in not emplty */
-  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
+	/* Loop while DR register in not emplty */
+	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
 
-  /* Send Half Word through the SPI1 peripheral */
-  SPI_I2S_SendData(SPI2, HalfWord);
+	/* Send Half Word through the SPI1 peripheral */
+	SPI_I2S_SendData(SPI2, HalfWord);
 
-  /* Wait to receive a Half Word */
-  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
+	/* Wait to receive a Half Word */
+	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
 
-  /* Return the Half Word read from the SPI bus */
-  return SPI_I2S_ReceiveData(SPI2);
+	/* Return the Half Word read from the SPI bus */
+	return SPI_I2S_ReceiveData(SPI2);
 }
 
 /*******************************************************************************
@@ -517,14 +517,14 @@ u16 SPI_FLASH_SendHalfWord(u16 HalfWord)
 *******************************************************************************/
 void SPI_FLASH_WriteEnable(void)
 {
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
 
-  /* Send "Write Enable" instruction */
-  SPI_FLASH_SendByte(W25X_WriteEnable);
+	/* Send "Write Enable" instruction */
+	SPI_FLASH_SendByte(W25X_WriteEnable);
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 }
 
 /*******************************************************************************
@@ -538,53 +538,53 @@ void SPI_FLASH_WriteEnable(void)
 *******************************************************************************/
 void SPI_FLASH_WaitForWriteEnd(void)
 {
-  u8 FLASH_Status = 0;
+	u8 FLASH_Status = 0;
 
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
 
-  /* Send "Read Status Register" instruction */
-  SPI_FLASH_SendByte(W25X_ReadStatusReg);
+	/* Send "Read Status Register" instruction */
+	SPI_FLASH_SendByte(W25X_ReadStatusReg);
 
-  /* Loop as long as the memory is busy with a write cycle */
-  do
-  {
-    /* Send a dummy byte to generate the clock needed by the FLASH
-    and put the value of the status register in FLASH_Status variable */
-    FLASH_Status = SPI_FLASH_SendByte(Dummy_Byte);
+	/* Loop as long as the memory is busy with a write cycle */
+	do
+	{
+		/* Send a dummy byte to generate the clock needed by the FLASH
+		and put the value of the status register in FLASH_Status variable */
+		FLASH_Status = SPI_FLASH_SendByte(Dummy_Byte);
 
-  }
-  while ((FLASH_Status & WIP_Flag) == SET); /* Write in progress */
+	}
+	while ((FLASH_Status & WIP_Flag) == SET); /* Write in progress */
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 }
 
 
 //进入掉电模式
 void SPI_Flash_PowerDown(void)   
 { 
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
 
-  /* Send "Power Down" instruction */
-  SPI_FLASH_SendByte(W25X_PowerDown);
+	/* Send "Power Down" instruction */
+	SPI_FLASH_SendByte(W25X_PowerDown);
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();
 }   
 
 //唤醒
 void SPI_Flash_WAKEUP(void)   
 {
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
+	/* Select the FLASH: Chip Select low */
+	SPI_FLASH_CS_LOW();
 
-  /* Send "Power Down" instruction */
-  SPI_FLASH_SendByte(W25X_ReleasePowerDown);
+	/* Send "Power Down" instruction */
+	SPI_FLASH_SendByte(W25X_ReleasePowerDown);
 
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();                             //等待TRES1
+	/* Deselect the FLASH: Chip Select high */
+	SPI_FLASH_CS_HIGH();                             //等待TRES1
 }   
 
 #define  sFLASH_ID              0xEF3015
@@ -608,104 +608,104 @@ volatile TestStatus TransferStatus1 = FAILED, TransferStatus2 = PASSED;
 void SPI_FLASH_TEST(void)
 
 {
-   __IO uint32_t FlashID = 0;
-   __IO uint32_t DeviceID = 0;
+	 __IO uint32_t FlashID = 0;
+	 __IO uint32_t DeviceID = 0;
 
 
-  /* Initialize the SPI FLASH driver */
-  SPI_FLASH_Init();
-  
-  /* Get SPI Flash Device ID */
-  DeviceID = SPI_FLASH_ReadDeviceID();
+	/* Initialize the SPI FLASH driver */
+	SPI_FLASH_Init();
+	
+	/* Get SPI Flash Device ID */
+	DeviceID = SPI_FLASH_ReadDeviceID();
  
-  
-  /* Get SPI Flash ID */
-  FlashID = SPI_FLASH_ReadID();
+	
+	/* Get SPI Flash ID */
+	FlashID = SPI_FLASH_ReadID();
 
-  printf("\r\n FlashID is 0x%X,  Manufacturer Device ID is 0x%X", FlashID, DeviceID);
-  /* Check the SPI Flash ID */
-  if ((FlashID == sFLASH_ID) || (FlashID == W25Q64_FLASH_ID)) 
-  {
-    /* OK: Turn on LED1 */
-  
-    if ((FlashID == sFLASH_ID))  /* #define  sFLASH_ID       0xEF3015 */
-    {
-        printf("\r\n Winbond Serial Flash W25X64 Identitied!");
-    }
-    else
-    {
-        printf("\r\n Winbond Serial Flash W25Q64 Identitied!");
-    } 
+	printf("\r\n FlashID is 0x%X,  Manufacturer Device ID is 0x%X", FlashID, DeviceID);
+	/* Check the SPI Flash ID */
+	if ((FlashID == sFLASH_ID) || (FlashID == W25Q64_FLASH_ID)) 
+	{
+		/* OK: Turn on LED1 */
+	
+		if ((FlashID == sFLASH_ID))  /* #define  sFLASH_ID       0xEF3015 */
+		{
+				printf("\r\n Winbond Serial Flash W25X64 Identitied!");
+		}
+		else
+		{
+				printf("\r\n Winbond Serial Flash W25Q64 Identitied!");
+		} 
 
-    printf("\r\n default Flash addres is 0x%X.", FLASH_SectorToErase);
+		printf("\r\n default Flash addres is 0x%X.", FLASH_SectorToErase);
 
-    /* Perform a write in the Flash followed by a read of the written data */
-    /* Erase SPI FLASH Sector to write on */
-    SPI_FLASH_SectorErase(FLASH_SectorToErase);
+		/* Perform a write in the Flash followed by a read of the written data */
+		/* Erase SPI FLASH Sector to write on */
+		SPI_FLASH_SectorErase(FLASH_SectorToErase);
 
-    printf("\r\n SPI FLASH Write:\n\r%s\r\n ", Tx_Buffer);
-    
-    /* Write Tx_Buffer data to SPI FLASH memory */
-    SPI_FLASH_BufferWrite(Tx_Buffer, FLASH_WriteAddress, BufferSize);
+		printf("\r\n SPI FLASH Write:\n\r%s\r\n ", Tx_Buffer);
+		
+		/* Write Tx_Buffer data to SPI FLASH memory */
+		SPI_FLASH_BufferWrite(Tx_Buffer, FLASH_WriteAddress, BufferSize);
 
-    /* Read data from SPI FLASH memory */
-    SPI_FLASH_BufferRead(Rx_Buffer, FLASH_ReadAddress, BufferSize);
+		/* Read data from SPI FLASH memory */
+		SPI_FLASH_BufferRead(Rx_Buffer, FLASH_ReadAddress, BufferSize);
 
-    /* Check the corectness of written dada */
-    TransferStatus1 = Buffercmp(Tx_Buffer, Rx_Buffer, BufferSize);
-    /* TransferStatus1 = PASSED, if the transmitted and received data by SPI1
-       are the same */
-    /* TransferStatus1 = FAILED, if the transmitted and received data by SPI1
-       are different */
+		/* Check the corectness of written dada */
+		TransferStatus1 = Buffercmp(Tx_Buffer, Rx_Buffer, BufferSize);
+		/* TransferStatus1 = PASSED, if the transmitted and received data by SPI1
+			 are the same */
+		/* TransferStatus1 = FAILED, if the transmitted and received data by SPI1
+			 are different */
 
-    /* Perform an erase in the Flash followed by a read of the written data */
-    /* Erase SPI FLASH Sector to write on */
-    SPI_FLASH_SectorErase(FLASH_SectorToErase);
+		/* Perform an erase in the Flash followed by a read of the written data */
+		/* Erase SPI FLASH Sector to write on */
+		SPI_FLASH_SectorErase(FLASH_SectorToErase);
 
-    /* Read data from SPI FLASH memory */
-    SPI_FLASH_BufferRead(Rx_Buffer, FLASH_ReadAddress, BufferSize);
+		/* Read data from SPI FLASH memory */
+		SPI_FLASH_BufferRead(Rx_Buffer, FLASH_ReadAddress, BufferSize);
 
-    /* Check the corectness of erasing operation dada */
-    for (Index = 0; Index < BufferSize; Index++)
-    {
-      if (Rx_Buffer[Index] != 0xFF)
-      {
-        TransferStatus2 = FAILED;
-      }
-      printf(".");
-    }
-    
-    /* TransferStatus2 = PASSED, if the specified sector part is erased */
-    /* TransferStatus2 = FAILED, if the specified sector part is not well erased */
+		/* Check the corectness of erasing operation dada */
+		for (Index = 0; Index < BufferSize; Index++)
+		{
+			if (Rx_Buffer[Index] != 0xFF)
+			{
+				TransferStatus2 = FAILED;
+			}
+			printf(".");
+		}
+		
+		/* TransferStatus2 = PASSED, if the specified sector part is erased */
+		/* TransferStatus2 = FAILED, if the specified sector part is not well erased */
 
-    if((PASSED == TransferStatus1) && (PASSED == TransferStatus2))
+		if((PASSED == TransferStatus1) && (PASSED == TransferStatus2))
 
-    {
-        /* OK: Turn on LED2 */
-       
-        if ((FlashID == sFLASH_ID))  /* #define  sFLASH_ID       0xEF3015 */
-        {
-            printf("\r\n W25X16 Test Sucessed!\n\r");
-        }
-        else
-        {
-            printf("\r\n W25Q16 Test Sucessed!\n\r");
-        } 
-    }
-    else
-    {
+		{
+				/* OK: Turn on LED2 */
+			 
+				if ((FlashID == sFLASH_ID))  /* #define  sFLASH_ID       0xEF3015 */
+				{
+						printf("\r\n W25X16 Test Sucessed!\n\r");
+				}
+				else
+				{
+						printf("\r\n W25Q16 Test Sucessed!\n\r");
+				} 
+		}
+		else
+		{
 
-        printf("\r\n -->Failed: W25*16 Test Failed!\n\r");
-    }
-  }
-  else
-  {
-    /* Error: Turn on LED3 */
+				printf("\r\n -->Failed: W25*16 Test Failed!\n\r");
+		}
+	}
+	else
+	{
+		/* Error: Turn on LED3 */
 
-    printf("\r\n W25*16 Test Failed!\n\r");
-  }
+		printf("\r\n W25*16 Test Failed!\n\r");
+	}
 
-  SPI_Flash_PowerDown();  
+	SPI_Flash_PowerDown();  
 
 }
 
@@ -720,18 +720,18 @@ void SPI_FLASH_TEST(void)
 *******************************************************************************/
 TestStatus Buffercmp(u8* pBuffer1, u8* pBuffer2, u16 BufferLength)
 {
-  while(BufferLength--)
-  {
+	while(BufferLength--)
+	{
 
-    if(*pBuffer1 != *pBuffer2)
-    {
-      return FAILED;
-    }
-    pBuffer1++;
-    pBuffer2++;
-  }
+		if(*pBuffer1 != *pBuffer2)
+		{
+			return FAILED;
+		}
+		pBuffer1++;
+		pBuffer2++;
+	}
 
-  return PASSED;
+	return PASSED;
 }
 /*
 
@@ -757,50 +757,50 @@ TestStatus Buffercmp(u8* pBuffer1, u8* pBuffer2, u16 BufferLength)
 
 void  WriteMeal(void) //在初始化时，flash的数据易丢失
 {
-   __IO uint32_t FlashID = 0;
-   __IO uint32_t DeviceID = 0;
+	 __IO uint32_t FlashID = 0;
+	 __IO uint32_t DeviceID = 0;
 	unsigned char TempBuffer[FloorMealNum*6]={0};
-  /* Initialize the SPI FLASH driver */
-    //SPI_FLASH_Init();
-	  //SPI_FLASH_Init();
-	  //SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
-    /* Perform a write in the Flash followed by a read of the written data */
-    /* Erase SPI FLASH Sector to write on */
-	    DeviceID = SPI_FLASH_ReadDeviceID();
-    /* Get SPI Flash ID */
-     FlashID = SPI_FLASH_ReadID(); 
-    /* Write Tx_Buffer data to SPI FLASH memory */
-	  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);/*参看原始数据*/
+	/* Initialize the SPI FLASH driver */
+		//SPI_FLASH_Init();
+		//SPI_FLASH_Init();
+		//SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+		/* Perform a write in the Flash followed by a read of the written data */
+		/* Erase SPI FLASH Sector to write on */
+			DeviceID = SPI_FLASH_ReadDeviceID();
+		/* Get SPI Flash ID */
+		 FlashID = SPI_FLASH_ReadID(); 
+		/* Write Tx_Buffer data to SPI FLASH memory */
+		SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);/*参看原始数据*/
 	
-	  SPI_FLASH_SectorErase(FLASH_SectorToErase);
-    SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
-    /* Read data from SPI FLASH memory */
-	  //delay_ms(10); //延时测试
-    SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+		SPI_FLASH_SectorErase(FLASH_SectorToErase);
+		SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
+		/* Read data from SPI FLASH memory */
+		//delay_ms(10); //延时测试
+		SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
 
-    /* Check the corectness of written dada */
-    TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
+		/* Check the corectness of written dada */
+		TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
 		if(TransferStatus1 == FAILED )/*加入可以排错*/
-    {
-	    SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
-      /* Read data from SPI FLASH memory */
-      SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
-      /* Check the corectness of written dada */
-      TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
-    }
+		{
+			SPI_FLASH_BufferWrite(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+			/* Read data from SPI FLASH memory */
+			SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0, FloorMealNum*6);
+			/* Check the corectness of written dada */
+			TransferStatus1 = Buffercmp(FloorMealMessageWriteToFlash.FlashBuffer, TempBuffer, FloorMealNum*6);
+		}
 }
 
 void ReadMeal(void)
 {
-  SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
+	SPI_FLASH_BufferRead(FloorMealMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector0 , FloorMealNum*6);
 }
 void ClearMealInfo(void)
 {
-  SPI_FLASH_SectorErase(FLASH_SectorToErase);	
+	SPI_FLASH_SectorErase(FLASH_SectorToErase);	
 }
 void WriteCoins(void)
 {
-  RTC_WriteBackupRegister(RTC_BKP_DR19,CoinsTotoalMessageWriteToFlash.CoinTotoal);
+	RTC_WriteBackupRegister(RTC_BKP_DR19,CoinsTotoalMessageWriteToFlash.CoinTotoal);
 	
 }
 void ReadCoins(void)
@@ -809,7 +809,7 @@ void ReadCoins(void)
 	CoinsTotoalMessageWriteToFlash.CoinTotoal  = RTC_ReadBackupRegister(RTC_BKP_DR19);
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:SaveUserData                                                                    
  * 描    述:掉电保存                                                               
  *                                                                               
@@ -821,30 +821,30 @@ void ReadCoins(void)
 uint32_t flash_record[18]={0};
 void SaveUserData(void)
 {
-    unsigned char TempBuffer[UserActiontotoaDatalSize*4]={0};
-    /* Write Tx_Buffer data to SPI FLASH memory */
-    RTC_WriteBackupRegister(RTC_BKP_DR3,  erro_record);
-	  SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, UserActiontotoaDatalSize*4);/*参看原始数据*/
-	  TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, UserActiontotoaDatalSize*4);
-    if(TransferStatus1 == PASSED ) return; //减少flash的写入次数
-	  SPI_FLASH_SectorErase(FLASH_SectorToErase1);
-    SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 , UserActiontotoaDatalSize*4);
-    /* Read data from SPI FLASH memory */
-    SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1 , UserActiontotoaDatalSize*4);
+	unsigned char TempBuffer[UserActiontotoaDatalSize*4]={0};
+	/* Write Tx_Buffer data to SPI FLASH memory */
+	RTC_WriteBackupRegister(RTC_BKP_DR3,  erro_record);
+	SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1, UserActiontotoaDatalSize*4);/*参看原始数据*/
+	TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, UserActiontotoaDatalSize*4);
+	if(TransferStatus1 == PASSED ) return; //减少flash的写入次数
+	SPI_FLASH_SectorErase(FLASH_SectorToErase1);
+	SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 , UserActiontotoaDatalSize*4);
+	/* Read data from SPI FLASH memory */
+	SPI_FLASH_BufferRead(TempBuffer, SPI_FLASH_Sector1 , UserActiontotoaDatalSize*4);
 
-    /* Check the corectness of written dada */
-    TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, UserActiontotoaDatalSize*4);
-		if(TransferStatus1 == FAILED )/*加入可以排错*/
-    {
-	    SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, UserActiontotoaDatalSize*4);
-      /* Read data from SPI FLASH memory */
-      SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, UserActiontotoaDatalSize*4);
-      /* Check the corectness of written dada */
-      TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, UserActiontotoaDatalSize*4);
-    }
+	/* Check the corectness of written dada */
+	TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, UserActiontotoaDatalSize*4);
+	if(TransferStatus1 == FAILED )/*加入可以排错*/
+	{
+		SPI_FLASH_BufferWrite(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, UserActiontotoaDatalSize*4);
+		/* Read data from SPI FLASH memory */
+		SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1, UserActiontotoaDatalSize*4);
+		/* Check the corectness of written dada */
+		TransferStatus1 = Buffercmp(UserActMessageWriteToFlash.FlashBuffer, TempBuffer, UserActiontotoaDatalSize*4);
+	}
 }
 
-  /*******************************************************************************
+	/*******************************************************************************
  * 函数名称:ReadUserData                                                                    
  * 描    述:掉电保存                                                               
  *                                                                               
@@ -855,9 +855,8 @@ void SaveUserData(void)
  *******************************************************************************/ 
 void ReadUserData(void)
 {   
-   erro_record = RTC_ReadBackupRegister(RTC_BKP_DR3);  
-   SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 ,UserActiontotoaDatalSize*4);
-
+	erro_record = RTC_ReadBackupRegister(RTC_BKP_DR3);  
+	SPI_FLASH_BufferRead(UserActMessageWriteToFlash.FlashBuffer, SPI_FLASH_Sector1 ,UserActiontotoaDatalSize*4);
 }
 
 /******************* (C) COPYRIGHT 2010 www.armjishu.com *****END OF FILE****/

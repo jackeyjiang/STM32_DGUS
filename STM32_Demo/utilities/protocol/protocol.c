@@ -15,7 +15,7 @@ uint8_t LinkTime;
 
 ErrorFlagInf ErFlag;
 Urart6RecFlagInf machinerec;
-  /***********************************************
+	/***********************************************
  用于定时时间。
  *************************************************/
 //通用定时器6初始化,对84MHz（TIM6时钟源为168MHz/2）进行TIM_scale分频后作为计数时钟
@@ -28,29 +28,29 @@ Urart6RecFlagInf machinerec;
 *******************************************************************************/
  void TIM5_Init(void)//TIM_Period为16位的数	   //设置1秒钟中断一次
 {
-  
+	
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-  	NVIC_InitTypeDef  NVIC_InitStructure; 
-	 
-  	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);//外设时钟使能  
-  	NVIC_InitStructure.NVIC_IRQChannel = TIM5_IRQn;					
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 9;//抢占优先级最高
-  	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;//子优先级
-  	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  	NVIC_Init(&NVIC_InitStructure);					
-  	TIM_TimeBaseStructure.TIM_Period = 19999;//计数器重装值
-  	TIM_TimeBaseStructure.TIM_Prescaler = 4199;
-  	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-  	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//递增计数方式
-  	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
-  	TIM_PrescalerConfig(TIM5, (4200-1), TIM_PSCReloadMode_Immediate);//设置16位时钟分频系数,立即重载模式
-	  TIM_ClearFlag(TIM5, TIM_FLAG_Update);							    		/* 清除溢出中断标志 */
-  	TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);//计满中断
-  	TIM_Cmd(TIM5, DISABLE);
+	NVIC_InitTypeDef  NVIC_InitStructure; 
+
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);//外设时钟使能  
+	NVIC_InitStructure.NVIC_IRQChannel = TIM5_IRQn;					
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 9;//抢占优先级最高
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;//子优先级
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);					
+	TIM_TimeBaseStructure.TIM_Period = 19999;//计数器重装值
+	TIM_TimeBaseStructure.TIM_Prescaler = 4199;
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//递增计数方式
+	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
+	TIM_PrescalerConfig(TIM5, (4200-1), TIM_PSCReloadMode_Immediate);//设置16位时钟分频系数,立即重载模式
+	TIM_ClearFlag(TIM5, TIM_FLAG_Update);							    		/* 清除溢出中断标志 */
+	TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);//计满中断
+	TIM_Cmd(TIM5, DISABLE);
 
 }
 
-    /*******************************************************************************
+		/*******************************************************************************
 * Function Name  : OpenTIM5
 * Description    : 打开定时器5
 * Input          : void
@@ -59,10 +59,10 @@ Urart6RecFlagInf machinerec;
 *******************************************************************************/
 void OpenTIM5(void)
 {
-   TIM_Cmd(TIM5, ENABLE);
+	TIM_Cmd(TIM5, ENABLE);
 }
 
-    /*******************************************************************************
+		/*******************************************************************************
 * Function Name  : CloseTIM5
 * Description    : 关闭定时器5
 * Input          : void
@@ -71,14 +71,14 @@ void OpenTIM5(void)
 *******************************************************************************/
 void CloseTIM5(void)
 {
-   TIM_Cmd(TIM5, DISABLE);
+	TIM_Cmd(TIM5, DISABLE);
 }
 
 /*发送ACK*/
 void SendAck(void)
 {
-  USART_SendData(USART6,0x06 );//串口1发送一个字符
-  while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
+	USART_SendData(USART6,0x06 );//串口1发送一个字符
+	while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
 }
 
 
@@ -87,8 +87,8 @@ void SendAck(void)
 
 void SendNack(void)
 {
-  USART_SendData(USART6,0x15 );//串口1发送一个字符
-  while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
+	USART_SendData(USART6,0x15 );//串口1发送一个字符
+	while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
 }
 
 
@@ -97,14 +97,14 @@ void SendNack(void)
 /*下发机械手初始化命令，开机时用，机械手收到后返回0x06,异常时返回E***等错误代码*/
 void MachineInit(void)
 {
-  uint8_t Cmd[6]={'I','0','0','0',0x0d,0x0a};
-  uint8_t i;
-  
-  for(i=0;i<6;i++)
-  {
-    USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
-    while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
-  }
+	uint8_t Cmd[6]={'I','0','0','0',0x0d,0x0a};
+	uint8_t i;
+	
+	for(i=0;i<6;i++)
+	{
+		USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
+		while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
+	}
 }
 
 
@@ -112,18 +112,18 @@ void MachineInit(void)
 机械手收到后返回ACK(0x06)*/
 void SendCoord(uint8_t floor,uint8_t row)
 {
-  uint8_t Cmd[6]={'M','0','0','A',0x0d,0x0a};
-  uint8_t i;
+	uint8_t Cmd[6]={'M','0','0','A',0x0d,0x0a};
+	uint8_t i;
 
-  
-  Cmd[1] = Cmd[1]+(floor + 1)/10;
-  Cmd[2] = Cmd[2]+ (floor +1)%10;
-  Cmd[3] = Cmd[3] + row;
-  for(i=0;i<6;i++)
-  {
-    USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
-    while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
-  }
+	
+	Cmd[1] = Cmd[1]+(floor + 1)/10;
+	Cmd[2] = Cmd[2]+ (floor +1)%10;
+	Cmd[3] = Cmd[3] + row;
+	for(i=0;i<6;i++)
+	{
+		USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
+		while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
+	}
 }
 
 
@@ -131,14 +131,14 @@ void SendCoord(uint8_t floor,uint8_t row)
 /*发确认机械手连接指令，正常返回0x06,异常时返回E000*/
 void SendLink(void)
 {
-  uint8_t Cmd[6]={'P','0','0','0',0x0d,0x0a};
-  uint8_t i;
-  USART_ClearFlag(USART6,USART_FLAG_TC);
-  for(i=0;i<6;i++)
-  {
-    USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
-    while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
-  }
+	uint8_t Cmd[6]={'P','0','0','0',0x0d,0x0a};
+	uint8_t i;
+	USART_ClearFlag(USART6,USART_FLAG_TC);
+	for(i=0;i<6;i++)
+	{
+		USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
+		while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
+	}
 }
 
 
@@ -147,14 +147,14 @@ void SendLink(void)
 即不能销售*/
 void StopSell(void)
 {
-  uint8_t Cmd[6]={'C','0','0','0',0x0d,0x0a};
-  uint8_t i;
-  
-  for(i=0;i<6;i++)
-  {
-    USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
-    while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
-  }
+	uint8_t Cmd[6]={'C','0','0','0',0x0d,0x0a};
+	uint8_t i;
+	
+	for(i=0;i<6;i++)
+	{
+		USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
+		while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
+	}
 }
 
 
@@ -162,14 +162,14 @@ void StopSell(void)
 /*取餐信号，机械手收到此信号后，返回0x06,并从餐架上取走餐，并把餐送到出餐口*/
 void GetMeal(void)
 {
-  uint8_t Cmd[6]={'G','0','0','0',0x0d,0x0a};
-  uint8_t i;
-  
-  for(i=0;i<6;i++)
-  {
-    USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
-    while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
-  }
+	uint8_t Cmd[6]={'G','0','0','0',0x0d,0x0a};
+	uint8_t i;
+	
+	for(i=0;i<6;i++)
+	{
+		USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
+		while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
+	}
 }
 
 
@@ -177,8 +177,8 @@ void GetMeal(void)
 uint8_t temper_old=0;
 uint8_t SetTemper(uint8_t temper)
 {
-  uint8_t Cmd[6]={'H','D','0','0',0x0d,0x0a};
-  uint8_t i;
+	uint8_t Cmd[6]={'H','D','0','0',0x0d,0x0a};
+	uint8_t i;
 	if(temper_old!=temper)
 	{
 		temper_old= temper;
@@ -191,12 +191,12 @@ uint8_t SetTemper(uint8_t temper)
 			USART_SendData(USART6,Cmd[i] );//串口1发送一个字符
 			while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET);//等待发送完成
 		}
-    return 0;
+		return 0;
 	}
-  else
-  {
-    return 1;
-  } 
+	else
+	{
+		return 1;
+	} 
 }
 
 
@@ -204,15 +204,15 @@ uint8_t SetTemper(uint8_t temper)
 /*解析返回Usart6数据*/
 void manageusart6data(void)
 {
-  if(Usart6DataFlag ==1)
+	if(Usart6DataFlag ==1)
 	{
 		Usart6DataFlag = 0;
 		switch (Usart6Buff[0])
 		{
 			case 'E':
 				if( Usart6Buff[1] == 1)
-				  {
-				    if( Usart6Buff[2] == 0 )
+					{
+						if( Usart6Buff[2] == 0 )
 						{
 							if( Usart6Buff[3] == 1 )
 							{
@@ -236,7 +236,7 @@ void manageusart6data(void)
 						else
 						{
 						}
-				  }
+					}
 				else if( Usart6Buff[1] ==2)
 				{
 					if( Usart6Buff[2] == 0 )
@@ -359,11 +359,11 @@ void manageusart6data(void)
 				 break;
 			case 'D':
 				if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0'))
-			  		{
-			  		  //开门
-			  		  machinerec.redoor = 0;
+						{
+							//开门
+							machinerec.redoor = 0;
 	
-			  		}
+						}
 				else  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '1'))
 				{
 					//关门
@@ -375,20 +375,20 @@ void manageusart6data(void)
 				break;
 			case 'N':
 				if((Usart6Buff[1]== 'O')&&(Usart6Buff[2]== 'R')&&(Usart6Buff[3]== '0'))
-				  		{
-				  		  //到达相对原点，即待机位置
-						  machinerec.rerelative = 1;
-				  		}
+							{
+								//到达相对原点，即待机位置
+							machinerec.rerelative = 1;
+							}
 				else
 					{
 					}
 				break;
 			case 'S':
 				if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0'))
-			  		{
-			  		  //到达取餐点
-					  machinerec.regoal = 1;
-			  		}
+						{
+							//到达取餐点
+						machinerec.regoal = 1;
+						}
 				else
 				{
 				
@@ -396,10 +396,10 @@ void manageusart6data(void)
 				break;
 			case 'O':
 				if((Usart6Buff[1]== 'U')&&(Usart6Buff[2]== 'T')&&(Usart6Buff[3]== '0'))
-			  		{
-			  		  //餐已到达出餐口
-					  machinerec.retodoor = 1;
-			  		}
+						{
+							//餐已到达出餐口
+						machinerec.retodoor = 1;
+						}
 				else
 				{
 				
@@ -407,10 +407,10 @@ void manageusart6data(void)
 				break;
 			case 'F':
 				if((Usart6Buff[1]== 'I')&&(Usart6Buff[2]== 'N')&&(Usart6Buff[3]== '0'))
-			  		{
-			  		  //餐已被取餐
-					  machinerec.remealaway = 1;
-			  		}
+						{
+							//餐已被取餐
+						machinerec.remealaway = 1;
+						}
 				else
 				{
 				
@@ -449,9 +449,9 @@ void manageusart6data(void)
 				break;
 			case 'A':
 				if( Usart6Buff[1] == '+' )
-				  {
-				    TemperSign =0;
-				  }
+					{
+						TemperSign =0;
+					}
 				else if( Usart6Buff[1] == '-' )
 				{
 					TemperSign =1;
@@ -462,7 +462,7 @@ void manageusart6data(void)
 				Temperature =  (Usart6Buff[2] - 48)*10 + (Usart6Buff[3] - 48);
 				break;
 			default : 
-		  	break;
+				break;
 		}
 		Usart6Index =0;
 		memset(Usart6Buff,0,6);
@@ -749,16 +749,16 @@ uint8_t OrderSetTemper(uint8_t inputtemper)
 /*机械手初始化*/
 void OnlymachieInit(void)
 {
-  uint8_t temp;
-  uint8_t InitOkflag =0; 
-  uint8_t mancineinitflag;
+	uint8_t temp;
+	uint8_t InitOkflag =0; 
+	uint8_t mancineinitflag;
 	uint8_t linkflag =0;  //
-  
-  LinkTime =0;
+	
+	LinkTime =0;
 	OpenTIM5();
 	Usart6Index =0; 
 	memset(Usart6Buff,0,6); 
-  machinerec.rerelative = 0;
+	machinerec.rerelative = 0;
 	linkflag = OrderSendLink(); 
 	while(1)
 	{

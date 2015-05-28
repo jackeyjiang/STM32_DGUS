@@ -183,7 +183,7 @@ void GetMealDetail(void);
 
 unsigned int GetCrc16(uint8_t *bufData,unsigned int sizeData);
 void HL_IntToBuffer(const uint16_t int_v, uint8_t *ret_buf);
-bool StringToHexGroup1(uint8_t *OutHexBuffer, char *InStrBuffer, unsigned int strLength);
+bool StringToHexGroup1(uint8_t *OutHexBuffer, uint8_t *InStrBuffer, unsigned int strLength);
 
 bool EchoFuntion(void (*fptr)(void));
 bool SignInFunction(void);
