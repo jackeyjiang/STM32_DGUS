@@ -14,7 +14,7 @@
 
 static long Batch = 0x00 ;//交易流水号
 //__attribute__ ((aligned (4)))
-uint8_t  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x54}; /*终端TID码：可修改*/
+uint8_t  TID[7] = {0xa2,0x00,0x04,0x10,0x00,0x00,0x66}; /*终端TID码：可修改*/
 uint8_t  BRWN[7+3] = {0xa6,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00};  /*交易流水线*/
 uint8_t  BNO[6] = {0xa7,0x00,0x03,0x00,0x00,0x00};               /*批次号：可修改*/
 uint8_t  DeviceArea[3+3]={0xac,0x00,0x03,0x17,0x03,0x02};         /*终端所在区域编号：可修改*/
@@ -37,7 +37,7 @@ uint8_t  APPVersion[8+3]={ 0xc2,0x00,0x08,'0','4','0','0','0','4',0x0D,0x0A};   
 uint8_t  ParaFileVersion[8+3]={0xc3,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01};   /*参数文件版本*/
 uint8_t  BDataFileVersion[8+3]={0xc4,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01};  /*业务数据文件版本*/
 uint8_t  ChechStatus[2+3]={0xab,0x00,0x02,0x00,0x00};                                     /*自检状态*/
-uint8_t  MID[3+3]={ 0xa3,0x00,0x03,0x20,0x00,0x09};                                       /*商户号MID*/
+uint8_t  MID[3+3]={ 0xa3,0x00,0x03,0x10,0x00,0x01};                                       /*商户号MID*/
 uint8_t  TTCount[3+2]     ={0xb7,0x00,0x02,0x00,0x00};                                    /*交易总笔数 */
 uint8_t  TNCT[6+3]        ={0xb8,0x00,0x06,0x00,0x00,0x00,0x00,0x00,0x00};                /*交易总金额*/
 uint8_t  TNtype[3+2]      ={0xd9,0x00,0x02,0x00,0x00};                              /*交易总产品数 d9*/
@@ -696,7 +696,7 @@ uint32_t  MealDataCompareFun(void)
 //  uint8_t MealID = 0 ;
 	long  CmdLenght = 0 ;
 	uint8_t status = 0 ;
-	uint8_t Send_Buf[400];
+	uint8_t Send_Buf[300]={0};
 	uint8_t TempBuffer[37*4]={0};
 	uint8_t Buffer[36*4]={0};
 	mem_set_00(rx1Buf,sizeof(rx1Buf));
@@ -765,10 +765,13 @@ uint32_t  MealDataCompareFun(void)
 				MealCompareData.MealComparePart[i]=rx1Buf[36+i*37];
 			}       
 		}
-		return MealCompareData.MealCompareTotoal ;/*餐品对比信息*/
+		return 1 ;  //返回对比正确
 	}
-	MealCompareData.MealCompareTotoal=0;
-	return MealCompareData.MealCompareTotoal;
+	else
+	{
+		MealCompareData.MealCompareTotoal=0;
+		return 0;    //返回对比错误
+	}
 }
 
 
@@ -1088,7 +1091,6 @@ uint8_t signin_state=0;
 bool SignInFunction(void)
 {
 	uint8_t i = 80 ;
-	
 	do
 	{
 		if((signin_state=SignInFun())>2)
@@ -1125,7 +1127,7 @@ void StateSend(void)
 		{
 			case 5:
 			case 10:
-			case 15:                         
+			case 15:
 			case 20:
 			case 25:
 			case 30:

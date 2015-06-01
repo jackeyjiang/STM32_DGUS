@@ -275,7 +275,7 @@ uint8_t UserPayMoney =0 ;
 uint32_t NewCoinsCnt=0;
 uint32_t OldCoinsCnt=0;
 
-unsigned char  WaitPayMoney(void)
+uint8_t  WaitPayMoney(void)
 {
 	uint8_t reduce_money_flag = 0;
 	uint32_t temp1=0,temp2=0;
@@ -455,7 +455,10 @@ uint8_t WaitMeal(void)
 	uint8_t temp;
 	do
 	{
-		manageusart6data();  //将机械手的数据处理放在取餐头，不适用while(1)
+		if(!manageusart6data()) //将机械手的数据处理放在取餐头，不适用while(1)
+		{		
+			return takemeal_erro;  //如果返回错误直接返回取餐出错
+		}
 		DealSeriAceptData(); //只处理打印数据
 		switch(MealoutCurrentPointer)
 		{

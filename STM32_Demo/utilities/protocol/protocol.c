@@ -26,7 +26,7 @@ Urart6RecFlagInf machinerec;
 * Output         : void
 * Return         : void
 *******************************************************************************/
- void TIM5_Init(void)//TIM_Period为16位的数	   //设置1秒钟中断一次
+void TIM5_Init(void)//TIM_Period为16位的数	   //设置1秒钟中断一次
 {
 	
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -202,7 +202,7 @@ uint8_t SetTemper(uint8_t temper)
 
 
 /*解析返回Usart6数据*/
-void manageusart6data(void)
+bool manageusart6data(void)
 {
 	if(Usart6DataFlag ==1)
 	{
@@ -210,268 +210,232 @@ void manageusart6data(void)
 		switch (Usart6Buff[0])
 		{
 			case 'E':
-				if( Usart6Buff[1] == 1)
+			{
+				if( Usart6Buff[1] == '1')
 					{
-						if( Usart6Buff[2] == 0 )
+						if( Usart6Buff[2] == '0' )
 						{
-							if( Usart6Buff[3] == 1 )
+							if( Usart6Buff[3] == '1' )
 							{
 								ErFlag.E101 = true;
-								AbnormalHandle(X_timeout);
+								erro_record |= (1<<X_timeout);
+								//Current= erro_hanle;
+								return false; //返回失败
+								//AbnormalHandle(X_timeout);
 							}
-							else if( Usart6Buff[3] == 2 )
+							else if( Usart6Buff[3] == '2' )
 							{
 								ErFlag.E102 = true;
-								AbnormalHandle(X_leftlimit);
+								erro_record |= (1<<X_leftlimit);
+								//Current= erro_hanle;
+								return false; //返回失败
+								//AbnormalHandle(X_leftlimit);
 							}
-							else if( Usart6Buff[3] == 3 )
+							else if( Usart6Buff[3] == '3' )
 							{
 								ErFlag.E103 = true;
-								AbnormalHandle(X_rightlimit);
+								erro_record |= (1<<X_rightlimit);
+								//Current= erro_hanle;
+								return false; //返回失败								
+								//AbnormalHandle(X_rightlimit);
 							}
-							else
-							{
-							}
-						}
-						else
-						{
 						}
 					}
-				else if( Usart6Buff[1] ==2)
+				else if( Usart6Buff[1] == '2')
 				{
-					if( Usart6Buff[2] == 0 )
+					if( Usart6Buff[2] == '0' )
 					{
-						if( Usart6Buff[3] == 1 )
+						if( Usart6Buff[3] == '1' )
 						{
 							ErFlag.E201 = true;
-							AbnormalHandle(mealtake_timeout);
+							erro_record |= (1<<mealtake_timeout);
+							//Current= erro_hanle;
+							return false; //返回失败							
+							//AbnormalHandle(mealtake_timeout);
 						}
-						else
-						{
-						}
-					}
-					else
-					{
 					}
 				}
-				else if( Usart6Buff[1] ==3)
+				else if( Usart6Buff[1] == '3')
 				{
-					if( Usart6Buff[2] == 0 )
+					if( Usart6Buff[2] == '0' )
 					{
-						if( Usart6Buff[3] == 1 )
+						if( Usart6Buff[3] == '1' )
 						{
 							ErFlag.E301 = true;
-							AbnormalHandle(Y_timeout);
+							erro_record |= (1<<Y_timeout);
+							//Current= erro_hanle;
+							return false; //返回失败
+							//AbnormalHandle(Y_timeout);
 						}
-						else
-						{
-						}
-					}
-					else
-					{
 					}
 				}
-				else if( Usart6Buff[1] ==4)
+				else if( Usart6Buff[1] =='4' )
 				{
-					if( Usart6Buff[2] == 0 )
+					if( Usart6Buff[2] == '0' )
 					{
-						if( Usart6Buff[3] == 1 )
+						if( Usart6Buff[3] == '1' )
 						{
 							ErFlag.E401 = true;
-							AbnormalHandle(link_timeout);
+							erro_record |= (1<<link_timeout);
+							//Current= erro_hanle;
+							return false; //返回失败							
+							//AbnormalHandle(link_timeout);
 						}
-						else
-						{
-						}
-					}
-					else
-					{
 					}
 				}
-				else if( Usart6Buff[1] ==5)
+				else if( Usart6Buff[1] =='5')
 				{
-					if( Usart6Buff[2] == 0 )
+					if( Usart6Buff[2] == '0')
 					{
-						if( Usart6Buff[3] == 1 )
+						if( Usart6Buff[3] == '1')
 						{
 							ErFlag.E501 = true;
-							AbnormalHandle(Z_timeout);
+							erro_record |= (1<<Z_timeout);
+							//Current= erro_hanle;
+							return false; //返回失败							
+							//AbnormalHandle(Z_timeout);
 						}
-						else if( Usart6Buff[3] == 2 )
+						else if( Usart6Buff[3] == '2')
 						{
 							ErFlag.E502 = true;
-							AbnormalHandle(Z_uplimit);
+							erro_record |= (1<<Z_uplimit);
+							//Current= erro_hanle;	
+							return false; //返回失败							
+							//AbnormalHandle(Z_uplimit);
 						}
-						else if( Usart6Buff[3] == 3 )
+						else if( Usart6Buff[3] == '3')
 						{
 							ErFlag.E503 = true;
-							AbnormalHandle(Z_downlimit);
+							erro_record |= (1<<Z_downlimit);
+							//Current= erro_hanle;
+							return false; //返回失败							
+							//AbnormalHandle(Z_downlimit);
 						}
-						else
-						{
-						}
-					}
-					else
-					{
 					}
 				}
-				else if( Usart6Buff[1] ==6)
+				else if( Usart6Buff[1] =='6')
 				{
-					if( Usart6Buff[2] == 0 )
+					if( Usart6Buff[2] == '0')
 					{
-						if( Usart6Buff[3] == 1 )
+						if( Usart6Buff[3] == '1')
 						{
 							ErFlag.E601 = true;
-							AbnormalHandle(solenoid_timeout);
+							erro_record |= (1<<solenoid_timeout);
+							//Current= erro_hanle;
+							return false; //返回失败							
+							//AbnormalHandle(solenoid_timeout);
 						}
-						else
-						{
-						}
-					}
-					else
-					{
 					}
 				}
-				else if( Usart6Buff[1] ==7)
+				else if( Usart6Buff[1] =='7')
 				{
-					if( Usart6Buff[2] == 0 )
+					if(Usart6Buff[2] == '1' ) 
 					{
-						
-					}
-					else if(Usart6Buff[2] == 1 ) 
-					{
-						if( Usart6Buff[3] == 1 )
+						if( Usart6Buff[3] == '1' )
 						{
 							ErFlag.E711 = true;
-							AbnormalHandle(Eeprom_erro);
-						}
-						else
-						{
+							erro_record |= (1<<Eeprom_erro);
+							//Current= erro_hanle;	
+							return false; //返回失败							
+							//AbnormalHandle(Eeprom_erro);
 						}
 					}
-					else
-					{
-					}
 				}
-				else
-				{
-				}
-				 break;
+			}break;
 			case 'D':
+			{
 				if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0'))
-						{
-							//开门
-							machinerec.redoor = 0;
-	
-						}
+				{
+					//开门
+					machinerec.redoor = 0;
+				}
 				else  if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '1'))
 				{
 					//关门
 					machinerec.redoor = 1;
 				}
-				else
-				{
-				}
-				break;
+
+			}break;
 			case 'N':
+			{
 				if((Usart6Buff[1]== 'O')&&(Usart6Buff[2]== 'R')&&(Usart6Buff[3]== '0'))
-							{
-								//到达相对原点，即待机位置
-							machinerec.rerelative = 1;
-							}
-				else
-					{
-					}
-				break;
+				{
+					//到达相对原点，即待机位置
+					machinerec.rerelative = 1;
+				}
+			}break;
 			case 'S':
+			{
 				if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0'))
-						{
-							//到达取餐点
-						machinerec.regoal = 1;
-						}
-				else
 				{
-				
+					//到达取餐点
+					machinerec.regoal = 1;
 				}
-				break;
+			}break;
 			case 'O':
+			{
 				if((Usart6Buff[1]== 'U')&&(Usart6Buff[2]== 'T')&&(Usart6Buff[3]== '0'))
-						{
-							//餐已到达出餐口
-						machinerec.retodoor = 1;
-						}
-				else
 				{
-				
+					//餐已到达出餐口
+					machinerec.retodoor = 1;
 				}
-				break;
+			}break;
 			case 'F':
+			{
 				if((Usart6Buff[1]== 'I')&&(Usart6Buff[2]== 'N')&&(Usart6Buff[3]== '0'))
-						{
-							//餐已被取餐
-						machinerec.remealaway = 1;
-						}
-				else
 				{
-				
+					//餐已被取餐
+					machinerec.remealaway = 1;
 				}
-				break;
+			}break;
 			case 'T':
+			{
 				if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '0')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
-					{
-						//餐在取餐口过了20秒还未被取走
-					machinerec.remealnoaway = 1;
-					}
-				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '1')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
-					{
-						//取餐5秒了还未取到餐
-					machinerec.reenablegetmeal = 1;
-					}
-				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '2')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
-					{
-						//取餐5秒了还未取到餐
-					machinerec.reenablegetmeal = 1;
-					}
-				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '3')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
-					{
-						//取餐5秒了还未取到餐
-					machinerec.reenablegetmeal = 1;
-					}
-				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '4')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
-					{
-						//取餐5秒了还未取到餐
-					machinerec.reenablegetmeal = 1;
-					}
-					else
 				{
-				
+					//餐在取餐口过了20秒还未被取走
+					machinerec.remealnoaway = 1;
 				}
-				break;
+				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '1')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+				{
+					//便当未被取出信号，取餐5秒了还未取到餐
+					machinerec.reenablegetmeal = 1;
+				}
+				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '2')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+				{
+					//便当从餐架跑偏的检测信号
+					machinerec.reenablegetmeal = 1;
+				}
+				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '3')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+				{
+					//便当卡在餐架上
+					machinerec.reenablegetmeal = 1;
+				}
+				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '4')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
+				{
+					//取餐5秒了还未取到餐
+					machinerec.reenablegetmeal = 1;
+				}
+			}break;
 			case 'A':
+			{
 				if( Usart6Buff[1] == '+' )
-					{
-						TemperSign =0;
-					}
+				{
+					TemperSign =0;
+				}
 				else if( Usart6Buff[1] == '-' )
 				{
 					TemperSign =1;
 				}
-				else
-				{
-				}
 				Temperature =  (Usart6Buff[2] - 48)*10 + (Usart6Buff[3] - 48);
-				break;
+			}break;
 			default : 
 				break;
 		}
 		Usart6Index =0;
 		memset(Usart6Buff,0,6);
 	}
+	return true;
 }
-
-
-
-
 
 
 /*返回1表示连接成功，返回0表示连接失败*/
@@ -491,31 +455,26 @@ uint8_t OrderSendLink(void)
 			machinerec.renack = 0;
 			return 1;
 		}
-		
 		if( LinkTime >1)  //超时
 		{
 			LinkTime =0;
 			return 0;
 		}
-		
 		if(machinerec.renack ==1)  //nack
 		{
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			RetryFre ++;
 			SendLink();			
-		} 
-		
+		} 	
 		if( RetryFre>=3)
 		{
 			LinkTime =0;
 			machinerec.reack = 0;
 			machinerec.renack = 0; 
 			return 0;
-		}
-		
+		}	
 	}
-	
 }
 
 

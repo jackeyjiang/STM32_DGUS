@@ -64,7 +64,7 @@ void StopSell(void);
 void GetMeal(void);
 uint8_t SetTemper(uint8_t temper);
 
-void manageusart6data(void);
+bool manageusart6data(void);
 
 uint8_t OrderSendLink(void);
 uint8_t OrderMachineInit(void);

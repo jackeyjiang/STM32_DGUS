@@ -2,7 +2,7 @@
 #define _bsp_H
 
 /******ÊÇ·ñÎª²âÊÔ×´Ì¬********/
-#define test
+//#define test
 
 /*******Ö÷×´Ì¬***********/
 #define current_temperature  0x01
@@ -151,7 +151,7 @@ bool OpenCashSystem(void);
 void MoveToFisrtMeal(void);
 bool FindMeal(MealAttribute *DefineMeal); 
 int8_t StrToBCD( uint8_t* pDest,const uint8_t* pSrc, uint8_t destLen);
-unsigned char  WaitPayMoney(void);
+uint8_t WaitPayMoney(void);
 uint8_t WaitMeal(void);
 void hardfawreInit(void);
 void  WaitTimeInit(uint8_t *Time);

@@ -136,7 +136,7 @@ void UART5_IRQHandler(void)
 					return ;
 				}
 			}
-			rx1BufIndex++;
+			if(rx1BufIndex<510)rx1BufIndex++;
 		}
 	}  
 }
