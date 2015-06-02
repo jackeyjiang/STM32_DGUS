@@ -466,6 +466,7 @@ uint32_t GetMealLastPrice(uint8_t meal_type,uint8_t count)
 					last_discount_t= vipcut_1st;break;
 				default:break;
 			}
+			price= price_1st*last_discount_t/100*count;
 		}break;
 		case 0x02:  /*根据餐品的顺序改变*/
 		{
@@ -481,6 +482,7 @@ uint32_t GetMealLastPrice(uint8_t meal_type,uint8_t count)
 					last_discount_t= vipcut_2nd;break;
 				default:break;
 			}
+			price= price_2nd*last_discount_t/100*count;
 		}break;
 		case 0x03:  /*根据餐品的顺序改变*/
 		{
@@ -496,6 +498,7 @@ uint32_t GetMealLastPrice(uint8_t meal_type,uint8_t count)
 					last_discount_t= vipcut_3rd;break;
 				default:break;
 			}
+			price= price_3rd*last_discount_t/100*count;
 		}break;
 		case 0x04:  /*根据餐品的顺序改变*/
 		{
@@ -511,10 +514,10 @@ uint32_t GetMealLastPrice(uint8_t meal_type,uint8_t count)
 					last_discount_t= vipcut_4th;break;
 				default:break;
 			}
+			price= price_4th*last_discount_t/100*count;
 		}break;    
 		default:break;
 	}
-	price= price_1st*last_discount_t/100*count;
 	return price;
 }
  /*******************************************************************************

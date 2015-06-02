@@ -218,7 +218,7 @@ bool manageusart6data(void)
 							if( Usart6Buff[3] == '1' )
 							{
 								ErFlag.E101 = true;
-								erro_record |= (1<<X_timeout);
+								//erro_record |= (1<<X_timeout);
 								//Current= erro_hanle;
 								return false; //·µ»ØÊ§°Ü
 								//AbnormalHandle(X_timeout);
@@ -226,7 +226,7 @@ bool manageusart6data(void)
 							else if( Usart6Buff[3] == '2' )
 							{
 								ErFlag.E102 = true;
-								erro_record |= (1<<X_leftlimit);
+								//erro_record |= (1<<X_leftlimit);
 								//Current= erro_hanle;
 								return false; //·µ»ØÊ§°Ü
 								//AbnormalHandle(X_leftlimit);
@@ -234,7 +234,7 @@ bool manageusart6data(void)
 							else if( Usart6Buff[3] == '3' )
 							{
 								ErFlag.E103 = true;
-								erro_record |= (1<<X_rightlimit);
+								//erro_record |= (1<<X_rightlimit);
 								//Current= erro_hanle;
 								return false; //·µ»ØÊ§°Ü								
 								//AbnormalHandle(X_rightlimit);
@@ -248,7 +248,7 @@ bool manageusart6data(void)
 						if( Usart6Buff[3] == '1' )
 						{
 							ErFlag.E201 = true;
-							erro_record |= (1<<mealtake_timeout);
+							//erro_record |= (1<<mealtake_timeout);
 							//Current= erro_hanle;
 							return false; //·µ»ØÊ§°Ü							
 							//AbnormalHandle(mealtake_timeout);
@@ -262,7 +262,7 @@ bool manageusart6data(void)
 						if( Usart6Buff[3] == '1' )
 						{
 							ErFlag.E301 = true;
-							erro_record |= (1<<Y_timeout);
+							//erro_record |= (1<<Y_timeout);
 							//Current= erro_hanle;
 							return false; //·µ»ØÊ§°Ü
 							//AbnormalHandle(Y_timeout);
@@ -276,7 +276,7 @@ bool manageusart6data(void)
 						if( Usart6Buff[3] == '1' )
 						{
 							ErFlag.E401 = true;
-							erro_record |= (1<<link_timeout);
+							//erro_record |= (1<<link_timeout);
 							//Current= erro_hanle;
 							return false; //·µ»ØÊ§°Ü							
 							//AbnormalHandle(link_timeout);
@@ -290,7 +290,7 @@ bool manageusart6data(void)
 						if( Usart6Buff[3] == '1')
 						{
 							ErFlag.E501 = true;
-							erro_record |= (1<<Z_timeout);
+							//erro_record |= (1<<Z_timeout);
 							//Current= erro_hanle;
 							return false; //·µ»ØÊ§°Ü							
 							//AbnormalHandle(Z_timeout);
@@ -298,7 +298,7 @@ bool manageusart6data(void)
 						else if( Usart6Buff[3] == '2')
 						{
 							ErFlag.E502 = true;
-							erro_record |= (1<<Z_uplimit);
+							//erro_record |= (1<<Z_uplimit);
 							//Current= erro_hanle;	
 							return false; //·µ»ØÊ§°Ü							
 							//AbnormalHandle(Z_uplimit);
@@ -306,7 +306,7 @@ bool manageusart6data(void)
 						else if( Usart6Buff[3] == '3')
 						{
 							ErFlag.E503 = true;
-							erro_record |= (1<<Z_downlimit);
+							//erro_record |= (1<<Z_downlimit);
 							//Current= erro_hanle;
 							return false; //·µ»ØÊ§°Ü							
 							//AbnormalHandle(Z_downlimit);
@@ -320,7 +320,7 @@ bool manageusart6data(void)
 						if( Usart6Buff[3] == '1')
 						{
 							ErFlag.E601 = true;
-							erro_record |= (1<<solenoid_timeout);
+							//erro_record |= (1<<solenoid_timeout);
 							//Current= erro_hanle;
 							return false; //·µ»ØÊ§°Ü							
 							//AbnormalHandle(solenoid_timeout);
@@ -334,9 +334,9 @@ bool manageusart6data(void)
 						if( Usart6Buff[3] == '1' )
 						{
 							ErFlag.E711 = true;
-							erro_record |= (1<<Eeprom_erro);
+							//erro_record |= (1<<Eeprom_erro);
 							//Current= erro_hanle;	
-							return false; //·µ»ØÊ§°Ü							
+							//return false; //·µ»ØÊ§°Ü							
 							//AbnormalHandle(Eeprom_erro);
 						}
 					}
@@ -398,22 +398,22 @@ bool manageusart6data(void)
 				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '1')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
 				{
 					//±ãµ±Î´±»È¡³öÐÅºÅ£¬È¡²Í5ÃëÁË»¹Î´È¡µ½²Í
-					machinerec.reenablegetmeal = 1;
+					machinerec.reenablegetmeal1 = 1;
 				}
 				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '2')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
 				{
 					//±ãµ±´Ó²Í¼ÜÅÜÆ«µÄ¼ì²âÐÅºÅ
-					machinerec.reenablegetmeal = 1;
+					machinerec.reenablegetmeal2 = 1;
 				}
 				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '3')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
 				{
 					//±ãµ±¿¨ÔÚ²Í¼ÜÉÏ
-					machinerec.reenablegetmeal = 1;
+					machinerec.reenablegetmeal3 = 1;
 				}
 				else if((Usart6Buff[1]== '0')&&(Usart6Buff[2]== '0')&&(Usart6Buff[3]== '4')&&(Usart6Buff[4]== 0x0d)&&(Usart6Buff[5]== 0x0a))
 				{
 					//È¡²Í5ÃëÁË»¹Î´È¡µ½²Í
-					machinerec.reenablegetmeal = 1;
+					machinerec.reenablegetmeal4 = 1;
 				}
 			}break;
 			case 'A':
@@ -496,22 +496,19 @@ uint8_t OrderMachineInit(void)
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			return 1;
-		}
-		
+		}	
 		if( LinkTime >1)  //³¬Ê±
 		{
 			LinkTime =0;
 			return 0;
 		}
-		
 		if(machinerec.renack ==1)  //nack
 		{
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			RetryFre ++;
 			MachineInit();			
-		} 
-		
+		} 	
 		if( RetryFre>=3)
 		{
 			LinkTime =0;
@@ -542,13 +539,11 @@ uint8_t OrderSendCoord(uint8_t floor,uint8_t row)
 			machinerec.renack = 0;
 			return 1;
 		}
-		
 		if( LinkTime >1)  //³¬Ê± ??? 
 		{
 			LinkTime =0;
 			return 0;
 		}
-		
 		if(machinerec.renack ==1)  //nack
 		{
 			machinerec.reack = 0;
@@ -594,25 +589,21 @@ uint8_t OrderStopSell(void)
 			LinkTime =0;
 			return 0;
 		}
-		
 		if(machinerec.renack ==1)  //nack
 		{
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			RetryFre ++;
 			StopSell();			
-		} 
-		
+		} 	
 		if( RetryFre>=3)
 		{
 			LinkTime =0;
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			return 0;
-		}
-		
-	}
-	
+		}	
+	}	
 }
 
 
@@ -633,14 +624,12 @@ uint8_t OrderGetMeal(void)
 			machinerec.reack = 0;
 			machinerec.renack = 0;
 			return 1;
-		}
-		
+		}	
 		if( LinkTime >1)  //³¬Ê±
 		{
 			LinkTime =0;
 			return 0;
-		}
-		
+		}	
 		if(machinerec.renack ==1)  //nack
 		{
 			machinerec.reack = 0;
@@ -676,13 +665,11 @@ uint8_t OrderSetTemper(uint8_t inputtemper)
 			machinerec.renack = 0;
 			return 1;
 		}
-		
 		if( LinkTime >1)  //³¬Ê±
 		{
 			LinkTime =0;
 			return 0;
 		}
-		
 		if(machinerec.renack ==1)  //nack
 		{
 			machinerec.reack = 0;

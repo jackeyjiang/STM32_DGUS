@@ -455,10 +455,7 @@ uint8_t WaitMeal(void)
 	uint8_t temp;
 	do
 	{
-		if(!manageusart6data()) //将机械手的数据处理放在取餐头，不适用while(1)
-		{		
-			return takemeal_erro;  //如果返回错误直接返回取餐出错
-		}
+		manageusart6data(); //将机械手的数据处理放在取餐头，不适用while(1)
 		DealSeriAceptData(); //只处理打印数据
 		switch(MealoutCurrentPointer)
 		{
@@ -565,22 +562,98 @@ uint8_t WaitMeal(void)
 			}break;
 			case 4 :  	/*播放语音，请取餐*/
 			{
+/*===================报错处理==========================*/
+				if(ErFlag.E101 == true)
+				{
+					erro_record |= (1<<X_timeout);
+					return takemeal_erro;
+				}
+				else if(ErFlag.E102 == true)
+				{	
+					erro_record |= (1<<X_leftlimit);
+					return takemeal_erro;
+				}
+				else if(ErFlag.E103 == true)
+				{
+					erro_record |= (1<<X_rightlimit);
+					return takemeal_erro;				
+				}
+				else if(ErFlag.E201 == true)
+				{	
+					erro_record |= (1<<mealtake_timeout);
+					return takemeal_erro;
+				}
+				else if(ErFlag.E301 == true)
+				{	
+					erro_record |= (1<<Y_timeout);
+					return takemeal_erro;
+				}
+				else if(ErFlag.E401 == true)
+				{
+					erro_record |= (1<<link_timeout);
+					return takemeal_erro;
+				}
+				else if(ErFlag.E501 == true)
+				{	
+					erro_record |= (1<<Z_timeout);
+					return takemeal_erro;
+				}
+				else if(ErFlag.E502 == true)
+				{	
+					erro_record |= (1<<Z_uplimit);
+					return takemeal_erro;
+				}
+				else if(ErFlag.E503 == true)
+				{	
+					erro_record |= (1<<Z_downlimit);
+					return takemeal_erro;
+				}
+				else if(ErFlag.E601 == true)
+				{	
+					erro_record |= (1<<solenoid_timeout);
+					return takemeal_erro;
+				}
+//				else if(ErFlag.E711 == true)
+//				{	
+//				}	没有使用			
+				else if(machinerec.reenablegetmeal1 ==1)  //取餐5秒了还未取到餐
+				{
+					machinerec.reenablegetmeal1 =0; //新加的需要把相关标记清零
+					//printf("取餐5秒了还未取到餐\r\n");	 
+					erro_record |= (1<<GetMealError1);
+					return takemeal_erro;
+				}
+				else if(machinerec.reenablegetmeal2 ==1)  //取餐5秒了还未取到餐
+				{
+					machinerec.reenablegetmeal2 =0; //新加的需要把相关标记清零
+					//printf("取餐5秒了还未取到餐\r\n");	 
+					erro_record |= (1<<GetMealError2);
+					return takemeal_erro;
+				}
+				else if(machinerec.reenablegetmeal3 ==1)  //取餐5秒了还未取到餐
+				{
+					machinerec.reenablegetmeal1 =0; //新加的需要把相关标记清零
+					//printf("取餐5秒了还未取到餐\r\n");	 
+					erro_record |= (1<<GetMealError3);
+					return takemeal_erro;
+				}
+				else if(machinerec.reenablegetmeal4 ==1)  //取餐5秒了还未取到餐
+				{
+					machinerec.reenablegetmeal1 =0; //新加的需要把相关标记清零
+					//printf("取餐5秒了还未取到餐\r\n");	 
+					erro_record |= (1<<GetMealError4);
+					return takemeal_erro;
+				}
+/*===================报错处理==========================*/
 				//如果餐品到达取餐口播放语音
 				//如果餐品取出则 跳出子程序进行数据上传  
-				if(machinerec.retodoor == 1)   //到达出餐口
+				else if(machinerec.retodoor == 1)   //到达出餐口
 				{
 					machinerec.retodoor = 0;
 					LinkTime =0;	
 					takemeal_timecnt=1;
 					//播放请取餐语音
 					PlayMusic(VOICE_9);
-				}
-				else if(machinerec.reenablegetmeal ==1)  //取餐5秒了还未取到餐
-				{
-					machinerec.reenablegetmeal =0; //新加的需要把相关标记清零
-					//printf("取餐5秒了还未取到餐\r\n");	 
-					erro_record |= (1<<GetMealError);
-					return takemeal_erro;
 				}
 				//printf("餐未超过了三分钟还未被取走\r\n");
 				else if( machinerec.remealaway == 1) //餐已被取走
@@ -607,7 +680,7 @@ uint8_t WaitMeal(void)
 						else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_2nd)UserActMessageWriteToFlash.UserAct.MealCnt_2nd--;
 						else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_3rd)UserActMessageWriteToFlash.UserAct.MealCnt_3rd--;
 						else if(UserActMessageWriteToFlash.UserAct.MealID==UserActMessageWriteToFlash.UserAct.MealType_4th)UserActMessageWriteToFlash.UserAct.MealCnt_4th--;
-						erro_record |= (1<<MealNoAway);
+						erro_record |= (1<<SendUR6Erro);
 						return takemeal_erro;
 					}
 				}	
@@ -615,7 +688,7 @@ uint8_t WaitMeal(void)
 				{
 					if(LinkTime>60)
 					{
-						erro_record |= (1<<GetMealError);
+						erro_record |= (1<<SendUR6Erro);
 						return takemeal_erro;	
 					}						
 				} 
@@ -1001,15 +1074,15 @@ bool GetDiscountCost(uint8_t payment)
 	UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd = UserActMessageWriteToFlash.UserAct.MealPrice_3rd*last_discount_3rd/100;
 	UserActMessageWriteToFlash.UserAct.LastMealPrice_4th = UserActMessageWriteToFlash.UserAct.MealPrice_4th*last_discount_4th/100;
 	UserActMessageWriteToFlash.UserAct.LastMealCost_1st  = UserActMessageWriteToFlash.UserAct.LastMealPrice_1st\
-																												 *UserActMessageWriteToFlash.UserAct.MealCnt_1st;  
+															*UserActMessageWriteToFlash.UserAct.MealCnt_1st;  
 	UserActMessageWriteToFlash.UserAct.LastMealCost_2nd  = UserActMessageWriteToFlash.UserAct.LastMealPrice_2nd\
-																												 *UserActMessageWriteToFlash.UserAct.MealCnt_2nd;  
+															*UserActMessageWriteToFlash.UserAct.MealCnt_2nd;  
 	UserActMessageWriteToFlash.UserAct.LastMealCost_3rd  = UserActMessageWriteToFlash.UserAct.LastMealPrice_3rd\
-																												 *UserActMessageWriteToFlash.UserAct.MealCnt_3rd;  
+															*UserActMessageWriteToFlash.UserAct.MealCnt_3rd;  
 	UserActMessageWriteToFlash.UserAct.LastMealCost_4th  = UserActMessageWriteToFlash.UserAct.LastMealPrice_4th\
-																												 *UserActMessageWriteToFlash.UserAct.MealCnt_4th;  
+															*UserActMessageWriteToFlash.UserAct.MealCnt_4th;  
 	UserActMessageWriteToFlash.UserAct.LastPayShould = UserActMessageWriteToFlash.UserAct.LastMealCost_1st+UserActMessageWriteToFlash.UserAct.LastMealCost_2nd\
-																										 +UserActMessageWriteToFlash.UserAct.LastMealCost_3rd+UserActMessageWriteToFlash.UserAct.LastMealCost_4th;
+														+UserActMessageWriteToFlash.UserAct.LastMealCost_3rd+UserActMessageWriteToFlash.UserAct.LastMealCost_4th;
 	VariableChage(mealtotoal_cost,UserActMessageWriteToFlash.UserAct.LastPayShould);
 	return true;
 }
@@ -1294,14 +1367,14 @@ void AbnormalHandle(uint32_t erro)
 			StatusUploadingFun(0xE601); //状态上送
 			DataUpload(Failed);
 		}break;
-		case Eeprom_erro:      //eeprom 异常
-		{
-			PlayMusic(VOICE_11);	
-			DisplayAbnormal("E711");
-			PageChange(Err_interface);
-			StatusUploadingFun(0xE711); //状态上送
-			DataUpload(Failed);
-		}break;
+//		case Eeprom_erro:      //eeprom 异常
+//		{
+//			PlayMusic(VOICE_11);	
+//			DisplayAbnormal("E711");
+//			PageChange(Err_interface);
+//			StatusUploadingFun(0xE711); //状态上送
+//			DataUpload(Failed);
+//		}break;
 		case SendUR6Erro:      //机械手串口通讯超时
 		{
 			PlayMusic(VOICE_11);
@@ -1310,21 +1383,37 @@ void AbnormalHandle(uint32_t erro)
 			StatusUploadingFun(0xE801); //状态上送
 			DataUpload(Failed);
 		}break;
-		case GetMealError:     //机械手5秒取不到餐
+		case GetMealError1:     //机械手5秒取不到餐
 		{
 			PlayMusic(VOICE_11);
-			DisplayAbnormal("E802");	
+			DisplayAbnormal("E901");	
 			PageChange(Err_interface);
 			StatusUploadingFun(0xE802); //状态上送
 			DataUpload(Failed);
 		}break;
-		case MealNoAway:       //餐在出餐口20秒还未被取走
+		case GetMealError2:     //机械手5秒取不到餐
 		{
 			PlayMusic(VOICE_11);
-			DisplayAbnormal("E803");	
+			DisplayAbnormal("E902");	
 			PageChange(Err_interface);
-			StatusUploadingFun(0xE803); //状态上送
-			DataUpload(Success);
+			StatusUploadingFun(0xE802); //状态上送
+			DataUpload(Failed);
+		}break;
+		case GetMealError3:     //机械手5秒取不到餐
+		{
+			PlayMusic(VOICE_11);
+			DisplayAbnormal("E903");	
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE802); //状态上送
+			DataUpload(Failed);
+		}break;
+		case GetMealError4:     //机械手5秒取不到餐
+		{
+			PlayMusic(VOICE_11);
+			DisplayAbnormal("E904");	
+			PageChange(Err_interface);
+			StatusUploadingFun(0xE802); //状态上送
+			DataUpload(Failed);
 		}break;
 		default:break;
 	}

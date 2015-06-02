@@ -11,7 +11,10 @@ typedef struct
   uint8_t regoal;	  //到达取餐点，等待取餐命令标志，0表示不在取餐点，1表示已到取餐点，等待取餐命令
   uint8_t retodoor;	   //到达出餐口标志，0表示未到达出餐口，1表示到达出餐口，等待取走餐
   uint8_t remealaway;	//餐已被取走标志，0表示餐未被取走，1表示餐已被取走
-  uint8_t reenablegetmeal;	 //取餐5秒还取不到餐标志，0表示取餐正常，1表示不能取到餐
+  uint8_t reenablegetmeal1;	 //取餐5秒还取不到餐标志，0表示取餐正常，1表示不能取到餐
+  uint8_t reenablegetmeal2;	 //取餐5秒还取不到餐标志，0表示取餐正常，1表示不能取到餐
+  uint8_t reenablegetmeal3;	 //取餐5秒还取不到餐标志，0表示取餐正常，1表示不能取到餐
+  uint8_t reenablegetmeal4;	 //取餐5秒还取不到餐标志，0表示取餐正常，1表示不能取到餐
   uint8_t remealnoaway; 	//出餐口的餐超过20秒还未被取走标志，0表示常态或餐已被取走，1表示出餐口的餐超过20秒还未被取走
 }Urart6RecFlagInf;
 

@@ -39,6 +39,7 @@ int main(void)
 		delay_ms(1000);    //延时优化机械手复位
 		OnlymachieInit();  //机械手初始化
 	}
+	if(!CloseCashSystem()) if(!CloseCashSystem())AbnormalHandle(billset_erro);	//关闭纸币机
 	if(SD_Initialize()) AbnormalHandle(sdcard_erro);	//SD卡检测*/ 
 	PageChange(SignInFunction_interface);
 	if(!EchoFuntion(RTC_TimeRegulate)) 
@@ -59,16 +60,11 @@ int main(void)
 	PageChange(Szt_GpbocAutoCheckIn_interface);
 	delay_ms(1000);
 	SendtoServce();          //上传前七天的数据
-	//if(!Szt_GpbocAutoCheckIn()) AbnormalHandle(cardchck_erro);//深圳通签到
-	Szt_GpbocAutoCheckIn();
+	Szt_GpbocAutoCheckIn();  //深圳通签到
 	if((CoinsTotoalMessageWriteToFlash.CoinTotoal<50)||( GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_9)== Bit_RESET)) 	
 		AbnormalHandle(coinhooperset_erro); //当机内硬币数小于50 和 硬币机传感器线 报错 ,还可以加上禁能信号。
 	StatusUploadingFun(0xE800); //开机加入正常上传
 	PageChange(Logo_interface);	
-	if(!CloseCashSystem())
-	{		
-		if(!CloseCashSystem())AbnormalHandle(billset_erro);	
-	}
 	delay_ms(200);
 	PageChange(Menu_interface); //显示选餐界面
 	PageChange(Menu_interface); //显示选餐界面

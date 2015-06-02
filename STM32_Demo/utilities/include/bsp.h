@@ -2,7 +2,7 @@
 #define _bsp_H
 
 /******是否为测试状态********/
-//#define test
+#define test
 
 /*******主状态***********/
 #define current_temperature  0x01
@@ -51,10 +51,12 @@
 #define Z_uplimit        0x17 //z轴马达上动作超出
 #define Z_downlimit      0x18 //z马达下动作超出
 #define solenoid_timeout 0x19 //电磁阀超时
-#define Eeprom_erro      0x1a //eeprom 异常
-#define SendUR6Erro      0x1b //发送数据异常或超时
-#define GetMealError     0x1c //机械手5秒取不到餐
-#define MealNoAway       0x1d //餐在出餐口20秒还未被取走
+//#define Eeprom_erro	 0x1a //电磁阀异常取消
+#define SendUR6Erro      0x1a //发送数据异常或超时
+#define GetMealError1    0x1b //机械手5秒取不到餐
+#define GetMealError2    0x1c //机械手5秒取不到餐
+#define GetMealError3    0x1d //机械手5秒取不到餐
+#define GetMealError4    0x1e //机械手5秒取不到餐
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_conf.h"
