@@ -48,13 +48,13 @@ int Flash_Write(uint32_t iAddress, uint8_t *buf, uint32_t iNbrToWrite)
 	FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | 
 									FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR); 
 
+	StartSector = GetSector(iAddress);
 
-
-	for (cnt_t = StartSector; cnt_t <= EndSector; cnt_t += 8)
+	for (SectorCounter = StartSector; SectorCounter < (StartSector+iNbrToWrite); SectorCounter += 1)
 	{
 		/* Device voltage range supposed to be [2.7V to 3.6V], the operation will
 			 be done by word */ 
-		if (FLASH_EraseSector(cnt_t, VoltageRange_3) != FLASH_COMPLETE)
+		if (FLASH_EraseSector(SectorCounter, VoltageRange_1) != FLASH_COMPLETE)
 		{ 
 			/* Error occurred while sector erase. 
 				 User can add here some code to deal with this error  */
@@ -63,21 +63,6 @@ int Flash_Write(uint32_t iAddress, uint8_t *buf, uint32_t iNbrToWrite)
 			}
 		}
 	}
-//  StartSector = GetSector(iAddress);
-
-//  for (SectorCounter = StartSector; SectorCounter < (StartSector+iNbrToWrite); SectorCounter += 1)
-//  {
-//    /* Device voltage range supposed to be [2.7V to 3.6V], the operation will
-//       be done by word */ 
-//    if (FLASH_EraseSector(SectorCounter, VoltageRange_1) != FLASH_COMPLETE)
-//    { 
-//      /* Error occurred while sector erase. 
-//         User can add here some code to deal with this error  */
-//      while (1)
-//      {
-//      }
-//    }
-//  }
 
 	/* Program the user Flash area word by word
 		(area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) ***********/
